@@ -1,0 +1,35 @@
+{{set cdata=pagedata.totalData.studygrouplistblock}}
+<div class="col-xs-12 col-sm-8 col-md-4">
+    <div class="xinwen">
+        <div class="pull-left xinwen1">学习小组</div>
+        <div class="pull-right"><a href=""><img src="/img/2.jpg" alt=""></a></div>
+    </div>
+    <div class="xwxq">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+
+                <div class="slick">
+                    {{each cdata.data}}
+                    <div class="waibu"><a href=""><img src="{{$value.sgpPhoto}}" alt=""></a>
+                        <div class="xiabu">
+                            <div class="weiqi">{{$value.sgpName}}</div>
+                            <a class="jiaru" href="">加入小组</a>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('.slick').slick({
+            dots: false,
+
+        });
+    });
+
+</script>

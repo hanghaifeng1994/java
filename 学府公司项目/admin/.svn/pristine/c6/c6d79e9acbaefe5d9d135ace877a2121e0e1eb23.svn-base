@@ -1,0 +1,195 @@
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">题库选择</label>
+                    <div class="col-md-4">
+                        <div class="col-md-2">
+                            <div class="parentsitelist"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">总分</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="col-md-12 ">
+                <table class="table table-bordered padding-t-10" id="tablecztwo">
+                    <thead>
+                    <tr>
+                        <th class="text-center cuti">题型</th>
+                        <th class="text-center cuti">可出题数量</th>
+                        <th class="text-center cuti">试题数量</th>
+                        <th class="text-center cuti">每题分值</th>
+                        <th class="text-center cuti">题型总分</th>
+                        <th class="text-center cuti">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="addassessissue"></tbody>
+                </table>
+            </div>
+
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class='row' style="padding-top: 40px">
+                    <label class="col-md-4 control-label brokeragetime padding-t-20"></label>
+                    <button class="btn btn-e col-md-2" onclick="addanswer()">增加题型</button>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">题目乱序</label>
+                    <div class="col-md-4">
+                        <div class="sequence"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">选项乱序</label>
+                    <div class="col-md-4">
+                        <div class="option"></div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/html" id="addassessissue_t">
+    {{each data}}
+    <tr class="{{$value.itemTypeId}}">
+        <td class="text-center">
+            {{$value.name}}
+        </td>
+        <td class="text-center">{{$value.queNum}}</td>
+        <td class="text-center">
+            <input type="number" class="form-control" data-type="nub" data-id="{{$value.itemTypeId}}"
+                   oninput="mininput(this)" min="1">
+        </td>
+        <td class="text-center">
+            <input type="number" class="form-control" data-type="point" data-id="{{$value.itemTypeId}}"
+                   oninput="mininput(this)" onblur="blurend(this)" min="1">
+        </td>
+        <td class="text-center" data-id="{{$value.itemTypeId}}"><span>0</span></td>
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.itemTypeId}}"
+               onclick="onedel(this)">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script>
+    (function () {
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+
+        //题库下拉框
+        pagepostdata.payload.page = '';
+        pagepostdata.payload.rows = '';
+        let downdata = utils_admin.setajax('POST', pagepostdata, apidata.testing.testqu), downdatalist = [];
+        downdata.data.forEach((a, index) => {
+            downdatalist.push(a);
+            downdatalist[index].text = downdatalist[index].name;
+            downdatalist[index].id = downdatalist[index].qpId;
+        });
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "选择题库",
+            "id": "",
+            "body": downdatalist,
+            "width": 150,
+            "name": "parentsitelist",
+        });
+        $('.parentsitelist').click(function (a) {
+            pagepostdata.payload.qpId = utils_admin.downid(a, "parentsitelist");
+        });
+
+        //题目乱序
+        window.utils_admin.loadhtml($(".sequence"), '/dropdown.html', {
+            "header": "题目不乱序",
+            "id": "1",
+            "body": [
+                {
+                    "text": "题目不乱序",
+                    "id": "1"
+                },
+                {
+                    "text": "题目乱序",
+                    "id": "2"
+                }
+            ],
+            "width": 140,
+            "name": "sequence",
+        });
+        //选项乱序
+        window.utils_admin.loadhtml($(".option"), '/dropdown.html', {
+            "header": "选项不乱序",
+            "id": "1",
+            "body": [
+                {
+                    "text": "选项不乱序",
+                    "id": "1"
+                },
+                {
+                    "text": "选项乱序",
+                    "id": "2"
+                }
+            ],
+            "width": 140,
+            "name": "option",
+        });
+
+        //题型
+        $('.selectpicker').selectpicker({'selectedText': 'cat'});
+
+        //新增题目
+        function addanswer() {
+            if (pagepostdata.payload.qpId) {
+                let data = utils_admin.setajax('POST', pagepostdata, apidata.testing.queryitemtypes);
+                $("#addassessissue").append(template("addassessissue_t", data));
+            } else {
+                alert("先选择题库")
+            }
+        }
+
+        function mininput(e) {
+            console.log(e.dataset);
+            if (e.dataset.type == "nub") {
+
+            } else {
+
+            }
+        }
+
+        window.addanswer = addanswer;
+        window.mininput = mininput;
+    })(window)
+</script>

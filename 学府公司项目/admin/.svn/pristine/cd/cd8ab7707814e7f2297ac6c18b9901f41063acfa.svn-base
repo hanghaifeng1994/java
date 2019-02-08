@@ -1,0 +1,350 @@
+<div class="card-body">
+    <ul role="tablist" class="nav nav-tabs col-md-12">
+        <li role="presentation" class="nav-item show active col-md-6">
+            <a class="nav-link" id="info-tab" href="javascript:;" data-href="agency" data-toggle="tab">帮助管理</a>
+        </li>
+        <li class="nav-item col-md-6">
+            <a class="nav-link" id="account-tab" href="javascript:;" data-href="company" data-toggle="tab">主站下发</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="agency" class="tab-pane fade show active" role="tabpanel" aria-labelledby="info-tab">
+            <div class="col-md-12 row" style="margin-left: 6px;margin-bottom: 10px">
+                <div class="parentsitelist"></div>
+                <div class="endchild" style="margin-left: 5px"></div>
+            </div>
+            <div class="col-md-12">
+                <div class="card horizontal-form">
+                    <div class="card-body">
+                        <div class="row col-md-12">
+                            <div class="col-md-3 col-sm-6 row">
+                                <label class="col-md-6 control-label">一级栏目</label>
+                                <div class="col-md-6 rylist">
+                                    <div class="dropdowns"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 row" style="margin-left: 10px">
+                                <label class="col-md-6 control-label">审核状态</label>
+                                <div class="col-md-6 rylist">
+                                    <div class="dropdowns"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 row" style="margin-left: 10px">
+                                <label class="col-md-6 control-label">发布状态</label>
+                                <div class="col-md-6 rylist">
+                                    <div class="dropdowns"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="col-md-6 col-sm-6 row">
+                                <ul class=" list-unstyled list-inline antime1 rylist row">
+                                    <li class="fdong brokeragetime timecolor" style="width: 12% ;margin-left:48px">
+                                        发布日期
+                                    </li>
+                                    <li class="" style="width: 36%">
+                                        <input type="text" id="datetimepicker" class="form-control datepicker"
+                                               placeholder="选择日期"/>
+                                    </li>
+                                    <li class="fdong timecolor" style="width:5%;">到</li>
+                                    <li class="" style="width: 36%">
+                                        <input type="text" class="form-control datepicker" placeholder="选择日期"/>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 col-sm-6 row">
+                                <div class="col-md-6 col-sm-6 row " style="margin-left: 10px">
+                                    <label class="col-md-6 control-label">推荐状态</label>
+                                    <div class="col-md-6 rylist">
+                                        <div class="dropdowns"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 row" style="margin-left: 20px">
+                                    <label class="col-md-6 control-label">置顶状态</label>
+                                    <div class="col-md-6 rylist">
+                                        <div class="dropdowns"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="row">
+                                    <label class="col-md-3 control-label" style="text-align: center">&nbsp;&nbsp;标题</label>
+                                    <div class="col-md-7 rylist">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <button style="margin-top: 10px" class="btn btn-wd btn-e">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+                    <a class="btn btn-e btn-wd" href="#/addmessagehelp">添加帮助</a>
+                    <button class="btn btn-e btn-wd">批量删除</button>
+                    <button class="btn btn-e btn-wd">批量推送</button>
+                </div>
+            </div>
+            <div class="container-fluid padding-t-20">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <table class="table table-bordered table-hover" id="tablecz">
+                            <thead>
+                            <tr>
+                                <th><input class="fuxk" name="allcheck" type="checkbox" value="" id="allcheck"
+                                           onclick="selectall()"/></th>
+                                <th class="text-center cuti">标题</th>
+                                <th class="text-center cuti">类型</th>
+                                <th class="text-center cuti">是否推荐/置顶</th>
+                                <th class="text-center cuti">状态</th>
+                                <th class="text-center cuti">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="messagehelp"></tbody>
+                        </table>
+                        <div class="fenye">
+                            <div class="pagination pagination0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="company" class="tab-pane fade show" role="tabpanel" aria-labelledby="account-tab">
+            <div class="col-md-12">
+                <div class="card horizontal-form">
+                    <div class="card-body">
+                        <div class="row col-md-12">
+                            <div class="col-md-6 col-sm-6 row">
+                                <ul class=" list-unstyled list-inline antime1 rylist row">
+                                    <li class="fdong brokeragetime timecolor" style="width: 12% ;margin-left:48px">
+                                        发布日期
+                                    </li>
+                                    <li class="" style="width: 36%">
+                                        <input type="text"  class="form-control datepicker" placeholder="选择日期"/>
+                                    </li>
+                                    <li class="fdong timecolor" style="width:5%;">到</li>
+                                    <li class="" style="width: 36%">
+                                        <input type="text" class="form-control datepicker" placeholder="选择日期"/>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="row">
+                                    <label class="col-md-3 control-label" style="text-align: center">&nbsp;&nbsp;标题</label>
+                                    <div class="col-md-7 rylist">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-6">
+                                <button style="margin-top: 10px" class="btn btn-e">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid padding-t-20">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <table class="table table-bordered table-hover" id="tablecztwo">
+                            <thead>
+                            <tr>
+                                <th class="text-center cuti">标题</th>
+                                <th class="text-center cuti">类型</th>
+                                <th class="text-center cuti">是否推荐/置顶</th>
+                                <th class="text-center cuti">状态</th>
+                                <th class="text-center cuti">操作</th>
+                            </tr>
+                            </thead>
+
+
+                            <tbody id="lordmessagehelp"></tbody>
+
+
+                        </table>
+                        <div class="fenye">
+                            <div class="pagination pagination1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="messagehelp_t">
+    {{each data}}
+    <tr class="{{$value.articleId}}">
+        <td><input class="fuxk" name="choose" type="checkbox" value="{{$value.articleId}}"/>
+        </td>
+        <td class="text-center"> {{$value.title}}</td>
+        <td class="text-center">{{$value.catName}}</td>
+        <td class="text-center">{{$value.weight}}</td>
+        <td class="text-center">{{$value.status}}</td>
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="pubStatus(this)">
+                {{if $value.pubStatus=="0"}}发布
+                {{else}}取消发布
+                {{/if}}</a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="posid(this)">
+                {{if $value.posid=="1"}}取消推荐
+                {{else}}推荐
+                {{/if}}
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="weight(this)">
+                {{if $value.weight!="999"}}置顶
+                {{else}}取消置顶
+                {{/if}}
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="onedel(this)">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+<!--第二个tab表格数据模板区-->
+<script type="text/html" id="lordmessagehelp_t">
+    {{each data}}
+    <tr class="{{$value.articleId}}">
+        <td class="text-center"> {{$value.title}}</td>
+        <td class="text-center">{{$value.catName}}</td>
+        <td class="text-center">{{$value.weight}}</td>
+        <td class="text-center">{{$value.status}}</td>
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="pubStatus(this)">
+                {{if $value.pubStatus=="0"}}发布
+                {{else}}取消发布
+                {{/if}}</a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="posid(this)">
+                {{if $value.posid=="1"}}取消推荐
+                {{else}}推荐
+                {{/if}}
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="weight(this)">
+                {{if $value.weight!="999"}}置顶
+                {{else}}取消置顶
+                {{/if}}
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="onedel(this)">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script>
+
+    (function (window, $) {
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+           var choldnode= $(".tab-content").children();
+           for(let i=0;i<choldnode.length;i++){
+               choldnode[i].style.display="none"
+           }
+           $("#"+this.dataset.href+"")[0].style.display="block";
+        });
+
+        var pagepostdata=utils_admin.clone(apidata.postdata);
+        //列表1  修改查询接口-apidata.news.queryPage
+        let pagedataone = utils_admin.setajax('POST', apidata.postdata, apidata.news.queryPage);
+        utils_admin.queryPage("messagehelp", "messagehelp_t", pagedataone);
+        //分页1
+        new pagination({
+            pagination: $('.pagination0'),//分页挂载的样式名称
+            maxPage: 5, //最大页码数,支持奇数，左右对称
+            startPage: 1,    //默认第一页
+            currentPage: 1,          //当前页码
+            totalPageCount: (pagedataone.totalCount / pagedataone.pageSize) - (pagedataone.totalCount / pagedataone.pageSize) % 1 + 1,  //总页数
+            callback: function (pageNum) {
+                apidata.postdata.payload.page = "" + pageNum + "";
+                //修改查询接口-apidata.news.queryPage
+                utils_admin.queryPage("messagehelp", "messagehelp_t", utils_admin.setajax('POST', apidata.postdata, apidata.news.queryPage));
+            }
+        });
+
+
+        //列表 2 修改查询接口-apidata.news.queryPage
+        let pagedataone2 = utils_admin.setajax('POST', apidata.postdata, apidata.news.queryPage);
+        console.log("data",pagedataone)
+        utils_admin.queryPage("lordmessagehelp", "lordmessagehelp_t", pagedataone2);
+        //分页2
+        new pagination({
+            pagination: $('.pagination1'),//分页挂载的样式名称
+            maxPage: 5, //最大页码数,支持奇数，左右对称
+            startPage: 1,    //默认第一页
+            currentPage: 1,          //当前页码
+            totalPageCount: (pagedataone.totalCount / pagedataone.pageSize) - (pagedataone.totalCount / pagedataone.pageSize) % 1 + 1,  //总页数
+            callback: function (pageNum) {
+                apidata.postdata.payload.page = "" + pageNum + "";
+                //修改查询接口-apidata.news.queryPage
+                utils_admin.queryPage("lordmessagehelp", "lordmessagehelp_t", utils_admin.setajax('POST', apidata.postdata, apidata.news.queryPage));
+            }
+        });
+
+
+
+
+        window.utils_admin.calendar($('.datepicker'));
+        //站点,平台初始化
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "所有平台",
+            "id": null,
+            "body": window.parentSiteList,
+            "width": 120,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": "先选择平台",
+            "id": null,
+            "body": null,
+            "width": 120,
+            "name": "endchild",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+            window.childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchild.push(e)
+                        endchild[index].text = endchild[index].siteName;
+                        endchild[index].id = endchild[index].siteId;
+                    }
+                })
+            });
+            window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+                "header": endchild[0].text,
+                "id": endchild[0].id,
+                "body": endchild,
+                "width": 120,
+                "name": "endchild",
+            });
+        });
+        $(".endchild").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".endchild")[0].id
+            }
+            pagepostdata.payload.siteId = id;
+        });
+
+    })(window, window.$);
+
+</script>

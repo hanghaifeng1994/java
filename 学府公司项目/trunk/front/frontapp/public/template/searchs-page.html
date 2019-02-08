@@ -1,0 +1,210 @@
+<style>
+    .searchs-page {
+        position: relative;
+        padding: 0 10%;
+    }
+
+    .searchs-page .btn {
+        width: 100px
+    }
+
+    .searchs-page .seek {
+        margin: 20px auto 50px;
+        width: 90%;
+        max-width: 500px;
+    }
+
+    .searchs-page .tit {
+        padding: 0 0 20px 10px;
+        border-bottom: 1px solid #ddd;
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+
+    .searchs-page .cate-list {
+        position: absolute;
+        left: -2%;
+        top: 20%;
+        z-index: 9;
+    }
+
+    .searchs-page .cate-list li {
+        text-align: center;
+        width: 130px;
+        height: 50px;
+        line-height: 50px;
+        border: 1px solid #39ABEF;
+        color: #39ABEF;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .searchs-page .cate-list li.active {
+        background-color: #39ABEF;
+        color: #ffffff;
+    }
+
+    .searchs-page .res-list {
+        padding: 0 10%;
+    }
+
+    .searchs-page .res-list li .tag {
+        width: 55px;
+        float: left;
+        color: #fff;
+        display: block;
+        text-align: center;
+    }
+
+    .searchs-page .res-list li .dot {
+        float: left;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        display: block;
+        margin: 10px;
+        background-color: #333;
+    }
+
+    .searchs-page .tag.zx {
+        background-color: #c490bf;
+    }
+
+    .searchs-page .tag.zy {
+        background-color: #7ecef4;
+    }
+
+    .searchs-page .tag.bj {
+        background-color: #7ecef4;
+    }
+
+    .searchs-page .tag.hd {
+        background-color: #cfa972;
+    }
+
+    .searchs-page .tag.xz {
+        background-color: #ea68a2;
+    }
+
+    .searchs-page .tag.cy {
+        background-color: #7ef2a7;
+    }
+
+    .searchs-page .tag.wt {
+        background-color: #f27e89;
+    }
+
+    @media (max-width: 767px) {
+        .searchs-page {
+            padding: 0;
+        }
+        .searchs-page .res-list {
+            padding: 0;
+        }
+        .searchs-page .cate-list {
+            position: static;
+        }
+        .searchs-page .cate-list li {
+            float: left;
+            margin-right: 5px;
+        }
+        .searchs-page .cate-list:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+    }
+</style>
+<div class="searchs-page">
+    <div class="seek">
+        <form action="" method="post">
+            <div class="input-group">
+                <input type="search" placeholder="资讯、课程、活动、小组" class="form-control" value="哈哈">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-warning">搜索</button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="tit">
+        搜索结果：
+    </div>
+    <ul class="cate-list">
+        <li class="active">全部</li>
+        <li class="zx">资讯</li>
+        <li class="zy">资源</li>
+        <li class="bj">班级</li>
+        <li class="hd">活动</li>
+        <li class="xz">学校小组</li>
+        <li class="cy">才艺分享</li>
+        <li class="wt">常见问题</li>
+    </ul>
+    <ul class="res-list">
+        <li class="clearfix mb">
+            <span class="tag">资讯</span>
+            <span class="dot"></span>
+            <a href="">常见问题常见问题常见问题常见问题常见问题</a>
+            <span class="pull-right text-muted">2010/1/7</span>
+        </li>
+        <li class="clearfix mb">
+            <span class="tag">资讯</span>
+            <span class="dot"></span>
+            <a href="">常见问题常见问题常见问题常见问题常见问题</a>
+            <span class="pull-right text-muted">2010/1/7</span>
+        </li>
+        <li class="clearfix mb">
+            <span class="tag">资讯</span>
+            <span class="dot"></span>
+            <a href="">常见问题常见问题常见问题常见问题常见问题</a>
+            <span class="pull-right text-muted">2010/1/7</span>
+        </li>
+        <li class="clearfix mb">
+            <span class="tag">资讯</span>
+            <span class="dot"></span>
+            <a href="">常见问题常见问题常见问题常见问题常见问题</a>
+            <span class="pull-right text-muted">2010/1/7</span>
+        </li>
+        <li class="clearfix mb">
+            <span class="tag">资讯</span>
+            <span class="dot"></span>
+            <a href="">常见问题常见问题常见问题常见问题常见问题</a>
+            <span class="pull-right text-muted">2010/1/7</span>
+        </li>
+        <li class="clearfix mb">
+            <span class="tag">资讯</span>
+            <span class="dot"></span>
+            <a href="">常见问题常见问题常见问题常见问题常见问题</a>
+            <span class="pull-right text-muted">2010/1/7</span>
+        </li>
+        <li class="clearfix mb">
+            <span class="tag">资讯</span>
+            <span class="dot"></span>
+            <a href="">常见问题常见问题常见问题常见问题常见问题</a>
+            <span class="pull-right text-muted">2010/1/7</span>
+        </li>
+        <li class="clearfix mb">
+            <span class="tag">资讯</span>
+            <span class="dot"></span>
+            <a href="">常见问题常见问题常见问题常见问题常见问题</a>
+            <span class="pull-right text-muted">2010/1/7</span>
+        </li>
+        <li class="clearfix mb">
+            <span class="tag">资讯</span>
+            <span class="dot"></span>
+            <a href="">常见问题常见问题常见问题常见问题常见问题</a>
+            <span class="pull-right text-muted">2010/1/7</span>
+        </li>
+    </ul>
+</div>
+<script>
+    (function () {
+        // 模拟 用时请删除
+        var colors = $('.cate-list li').slice(1)
+        var index = 0
+        $('.res-list li').each(function () {
+            if (index >= colors.length) index = 0
+            $(this).find('.tag').addClass(colors.eq(index)[0].className).text(colors.eq(index).text());
+            ++index
+        })
+    })()
+</script>

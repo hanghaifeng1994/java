@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="col-xs-12 col-sm-12 col-md-12 huibja">
+        <div class="dingdanhao">订单号：2132323211</div>
+        <div class="feiyong">订单费用：<span>999</span>元</div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 bkhs">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="peix1">
+                    <div class="ddzt1">▪ 订单状态：<span>待付</span></div>
+                    <div class="ddzt2">▪ 订单类型：<span>个人订单</span></div>
+                    <div class="ddzt2">▪ 订单名称：<span>老年人培训班</span></div>
+                    <div class="ddzt3">▪ 订单费用：<span>99元</span></div>
+                    <div class="ddzt2">▪ 下单时间：<span>2018-07-07 00:10:10</span></div>
+                    <div class="ddzt2">▪ 截止时间：<span>2018-07-07 00:10:10</span></div>
+                    <div class="ddzt4">您的订单还剩余<span>5天12小时35分钟</span>，请尽快完成支付！</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="peix2">
+                    <div id="div1">
+                        <div class="shouhang">
+                            ▪ 选择支付方式：
+                            <a class="aa1 zhifubao" href="javascript:void(0)">  <img src="/img/aa4.jpg" alt=""/></a>
+                            <a class="aa2 biank" href="javascript:void(0)"> <img src="/img/aa5.jpg" alt=""/></a>
+                        </div>
+
+                        <div class="wxzb1">
+                            <a href="">确认支付</a>
+                        </div>
+                        <div class="wxzb2">
+                            <img class="img-responsive center-block" src="/img/aa6.jpg" alt=""/>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(".aa1").click(function(){
+            $(this).removeClass('biank').addClass('zhifubao').siblings('a').removeClass('weixin').addClass('biank');
+            $('.wxzb1').addClass('show').removeClass('hidden').next().removeClass('show').addClass('hidden');
+        });
+        $(".aa2").click(function(){
+            $(this).removeClass('biank').addClass('weixin').siblings('a').removeClass('zhifubao').addClass('biank');
+            $('.wxzb2').addClass('show').removeClass('hidden').prev().removeClass('show').addClass('hidden');
+        });
+    </script>
+
+</div>

@@ -1,0 +1,269 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">证书名称</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">证书介绍</label>
+                    <div class="col-md-10">
+                        <textarea style="resize: none; min-height:200px;width: 100%;border:1px solid #E4E4E4" cols="5"
+                                  rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">证书图片</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="file" name=""/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">报名截止时间</label>
+                    <div class="col-md-4">
+                        <ul class=" list-unstyled list-inline antime1">
+                            <li class="" style="width: 35%">
+                                <input type="text" class="form-control datepicker"
+                                       placeholder="选择日期"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">证书有效期</label>
+                    <div class="col-md-4">
+                        <ul class=" list-unstyled list-inline antime1">
+                            <li class="" style="width: 35%">
+                                <input type="text"  class="form-control datepicker"
+                                       placeholder="选择日期"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">证书类别</label>
+                    <div class="col-md-4">
+                        <div class="dropdowns1 "></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">获取方式</label>
+                    <div class="col-md-4">
+                        <div class="dropdowns1 "></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">发证机构</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-11 padding-t-10 row"
+                 style="margin-left: 32px;background-color: #f7f7f7;padding: 30px">
+                <div class="col-md-4" style="border-right:1px solid #bbb ">
+                    <input type="text" placeholder="输入要添加的课程名称" class="form-control col-md-9">
+                    <button class="btn btn-e" style="margin-top: 32px">搜索</button>
+                </div>
+                <div class="col-md-8" style="font-size: 14px">
+                    <div style="border: 1px dotted  #fff">
+                        <div class="col-md-12 row">
+                            <div class="col-md-9 row">
+                                <div class="col-md-12">
+                                    老年大学
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                添加至必修课
+                            </div>
+                        </div>
+
+                        <div class="row col-md-12">
+                            <div class="col-md-9 row">
+                                <div class="col-md-4">
+                                    <span>主讲人&nbsp;</span><span class="text-danger">王东</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>学分&nbsp;</span><span class="text-danger">5.1</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>类型&nbsp;</span><span class="text-success">精品课</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                添加至必修课
+                            </div>
+                        </div>
+                    </div>
+                    <div style="border: 1px dotted  #fff">
+                        <div class="col-md-12 row">
+                            <div class="col-md-9 row">
+                                <div class="col-md-12">
+                                    老年大学
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                添加至必修课
+                            </div>
+                        </div>
+
+                        <div class="row col-md-12">
+                            <div class="col-md-9 row">
+                                <div class="col-md-4">
+                                    <span>主讲人&nbsp;</span><span class="text-danger">王东</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>学分&nbsp;</span><span class="text-danger">5.1</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>类型&nbsp;</span><span class="text-success">精品课</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                添加至必修课
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-11 padding-t-10 row"
+                 style="margin-left: 32px;background-color: #f7f7f7;font-size: 12px;margin-top: 10px">
+                <div class="col-md-6" style="border-right:1px solid #fff ">
+                  <div class="col-md-12 row">
+                      <div class="text-success">必修课程</div>
+                      <div class="">&nbsp;总 <span class="text-danger">10</span> 学分</div>
+                  </div>
+                    <div class="col-md-12 row" style="margin-top: 10px">
+                        <div>一致性的家庭教育（5.7分）</div>
+                        <div style="color: #fff;font-size: 16px;line-height: 16px">x</div>
+                    </div>
+                </div>
+                <div class="col-md-6" >
+                    <div class="col-md-12 row">
+                       <div class="col-md-7 row">
+                           <div class="text-success">必修课程</div>
+                           <div class="">&nbsp;总 <span class="text-danger">10</span> 学分</div>
+                       </div>
+                        <div class="col-md-5 row">
+                            <div>合格学分≥</div>
+                            <input type="text" class="form-control col-md-5" style="height: 22px;margin: -2px 8px ">
+                        </div>
+                    </div>
+                    <div class="col-md-12 row" style="margin-top: 10px">
+                        <div>一致性的家庭教育（5.7分）</div>
+                        <div style="color: #fff;font-size: 16px;line-height: 16px">x</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">证书归属</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="col-md-4">
+                            <div class="dropdowns1 "></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="dropdowns2 "></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">证书分类</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="dropdowns1 col-md-4 "></div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+            <div class="form-group col-xl-12 col-md-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-fill  btn-e">发布</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function (window, $) {
+        window.utils_admin.calendar($('.datepicker'));
+        window.utils_admin.loadhtml($(".dropdowns"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        })
+        window.utils_admin.loadhtml($(".dropdowns2"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        })
+        window.utils_admin.loadhtml($(".dropdowns1"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        })
+    })(window, window.$)
+    //
+</script>
+<script src="../assets/js/indexfunc.js"></script>

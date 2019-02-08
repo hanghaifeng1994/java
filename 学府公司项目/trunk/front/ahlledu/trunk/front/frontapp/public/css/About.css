@@ -1,0 +1,30 @@
+.bbiaoti{
+    border-bottom: 1px solid #a5a5a5;
+}
+.bbiaoti h3{
+    text-align: center;margin-top: 60px;
+    font-size: 30px;
+}
+.zixun{
+    padding: 10px 0 10px 0;
+    font-size: 18px;
+}
+.neirong{
+    margin-top: 30px;
+}
+.neirong p{
+    text-indent: 17px;
+    line-height: 25px;
+    padding-bottom: 10px;
+}
+.neirong p:last-of-type{
+    margin-bottom: 60px;
+}
+
+
+
+
+
+
+
+

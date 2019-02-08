@@ -1,0 +1,139 @@
+<div style="padding-top: 13px">
+    <div class="col-md-12">
+        <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+            <a class="btn btn-e btn-wd" href="#/muchadd">新增友情链接</a>
+            <button class="btn  btn-f btn-wd" onclick="forbiddenclass(this)">批量禁用</button>
+        </div>
+    </div>
+
+    <div class="container-fluid padding-t-20">
+        <div class="row">
+            <div class="col-md-12 ">
+                <table class="table table-bordered table-hover" id="tablecz">
+                    <thead>
+                    <tr>
+                        <th><input class="fuxk" name="allcheck" type="checkbox" value="" id="allcheck"
+                                   onclick="selectall(this)"/></th>
+                        <th class="text-center cuti">链接名称</th>
+                        <th class="text-center cuti">链接地址</th>
+                        <th class="text-center cuti">排列顺序</th>
+                        <th class="text-center cuti">是否启用</th>
+                        <th class="text-center cuti">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="indexlink"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="indexlink_t">
+    {{each data}}
+    <tr class="{{$value.id}}">
+        <td><input class="fuxk" name="choose" type="checkbox" value="{{$value.id}}"/>
+        </td>
+        <td class="text-center"> {{$value.name}}</td>
+        <td class="text-center"> {{$value.url}}</td>
+        <td class="text-center">{{$value.sort}}</td>
+        <td class="text-center">{{$value.statusDesc}}</td>
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.id}}"
+               onclick="redact(this)">编辑</a>
+            <a href="javascript:void(0);" data-id="{{$value.id}}"
+               onclick="onedel(this)">删除</a>
+            <a href="javascript:void(0);" data-id="{{$value.id}}" data-type="{{$value.status}}"
+               onclick="forbidden(this)">
+                {{if $value.status=="1"}}
+                禁用
+                {{else}}
+                启用
+                {{/if}}
+            </a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script>
+    (function (window, $) {
+        utils_admin.delpostdata("id");
+        localStorage.removeItem("muchaddsiteId");
+        let pagepost = utils_admin.clone(apidata.postdata);
+        let pagepostdata = {
+            "header": pagepost.header,
+            "payload": {
+                "ptId": pagepost.payload.ptId,
+            }
+        };
+        let pagedataone = utils_admin.setajax('POST', pagepostdata, apidata.setting.setLinks);
+        utils_admin.queryPage("indexlink", "indexlink_t", pagedataone);
+
+
+        //全选
+        function selectall(thit) {
+            let checkboxs = document.getElementsByName("choose");
+            if (thit.checked) {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = true;
+                }
+            } else {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = false;
+                }
+            }
+        }
+
+        //编辑
+        function redact(e) {
+            utils_admin.redact("addindexlink", "id", e)
+        }
+
+        //禁用
+        function forbidden(e) {
+            pagepostdata.payload.ids = e.dataset.id;
+            if (e.dataset.type=="0") {
+                utils_admin.setajax('POST', pagepostdata, apidata.setting.enable);
+            } else {
+                utils_admin.setajax('POST', pagepostdata, apidata.setting.disable);
+            }
+            utils_admin.queryPage("indexlink", "indexlink_t", utils_admin.setajax('POST', pagepostdata, apidata.setting.setLinks));
+        }
+        //批量禁用
+        function forbiddenclass(a) {
+            pagepostdata.payload.ids = utils_admin.choosevalue("indexlink");
+            utils_admin.setajax('POST', pagepostdata, apidata.setting.disable);
+            pagepostdata.payload.ids="";
+            utils_admin.queryPage("indexlink", "indexlink_t", utils_admin.setajax('POST', pagepostdata, apidata.setting.setLinks));
+
+        }
+        //删除
+        function onedel(e) {
+            $("#popups").toggle("hidden");
+            pagepostdata.payload.id = e.dataset.id;
+        }
+
+
+
+        $("#popups>.white_content").off('click').on('click', function (a) {
+            if (a.target.nodeName.toLowerCase() == "button") {
+                $("#popups").toggle("hidden")
+            }
+            if (a.target.dataset.id == "1") {
+                utils_admin.setajax('POST', pagepostdata, apidata.setting.deleteById);
+                pagepostdata.payload.ids="";
+                utils_admin.queryPage("indexlink", "indexlink_t", utils_admin.setajax('POST', pagepostdata, apidata.setting.setLinks));
+            }
+            a.stopPropagation();
+        });
+
+
+        window.redact = redact;
+        window.forbidden = forbidden;
+        window.selectall = selectall;
+        window.forbiddenclass = forbiddenclass;
+        window.onedel= onedel ;
+    })(window, window.$);
+</script>

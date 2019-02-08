@@ -1,0 +1,133 @@
+<div class="col-md-12">
+    <div class="treetable"></div>
+</div>
+
+<script>
+    window.utils_admin.loadhtml($('.treetable'), '/treeTable.html', {
+        "headdata":[
+            {}
+        ],
+        "heardbutton": [{
+            "type": "0",
+            "text": "新增一级分类",
+            "method": "",
+        }
+        ],
+        "data": [
+            {
+                "text": "分类名称"
+            },
+            {
+                "text": "编号"
+            },
+            {
+                "text": "分类等级"
+            },
+            {
+                "text": "顺序"
+            },
+            {
+                "text": "操作"
+            }
+        ],
+        "tabledata": [
+            {
+                "id": 2,
+                "text": "11",
+                "nub": "1",
+                "grud": "22",
+                "order": "33",
+                "child": true,
+                "childtext":"childtext",
+                "menu": [
+                    {
+                        "text": "编辑",
+                        "method": "redactclass",
+                    },
+                    {
+                        "text": "启用",
+                        "method": "",
+                    },
+                    {
+                        "text": "删除",
+                        "method": "onedel",
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "text": "11",
+                "nub": "1",
+                "grud": "22",
+                "order": "33",
+                "child": true,
+                "childtext":"childtext",
+                "menu": [
+                    {
+                        "text": "编辑2",
+                        "method": "redactclass",
+                    },
+                    {
+                        "text": "启用",
+                        "method": "",
+                    },
+                    {
+                        "text": "删除",
+                        "method": "onedel",
+                    }
+                ]
+            },
+            {
+                "id": "three",
+                "text": "11",
+                "nub": "1",
+                "grud": "22",
+                "order": "33",
+                "child": true,
+                "childtext":"childtext",
+                "menu": [
+                    {
+                        "text": "编辑3",
+                        "method": "redactclass",
+                    },
+                    {
+                        "text": "启用",
+                        "method": "",
+                    },
+                    {
+                        "text": "删除",
+                        "method": "",
+                    }
+                ]
+            }
+        ],
+        "dropdown": [{
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        }, {
+            "heard": "平台管理员2",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        }
+        ]
+    });
+</script>

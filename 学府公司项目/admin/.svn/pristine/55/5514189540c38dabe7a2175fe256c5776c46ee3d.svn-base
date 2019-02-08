@@ -1,0 +1,319 @@
+<div class="card-body">
+    <div class="col-md-12 row" style="margin-left: 1px;margin-bottom: 10px">
+        <div class="parentsitelist"></div>
+        <div class="endchild" style="margin-left: 5px"></div>
+    </div>
+    <div class="col-md-12">
+        <div class="card horizontal-form">
+            <div class="card-body">
+                <div class="row col-md-12">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="row rylist">
+                            <label class="col-md-4 control-label">账号名称</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="row rylist">
+                            <label class="col-md-3 control-label">姓名</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-sm-6 row">
+                        <label class="col-md-3 control-label">账号状态</label>
+                        <div class="companynewscateone rylist"></div>
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="row rylist">
+                            <label class="col-md-4 control-label">身份证号码</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 row">
+                        <label class="col-md-4 control-label" style="margin-left: -20px">实名状态</label>
+                        <div class="companynewscatetwo rylist"></div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <button style="margin-top: 10px" class="btn btn-wd btn-e" onclick="seek(this)">搜索</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+            <button class="btn btn-f btn-wd" onclick="deleteclass()">批量删除</button>
+        </div>
+    </div>
+    <div class="container-fluid padding-t-20">
+        <div class="row">
+            <div class="col-md-12 ">
+                <table class="table table-bordered table-hover" id="tablecz">
+                    <thead>
+                    <tr>
+                        <th><input class="fuxk" name="allcheck" type="checkbox" value="" id="allcheck"
+                                   onclick="selectall()"/></th>
+                        <th class="text-center cuti">账号名称</th>
+                        <th class="text-center cuti">姓名</th>
+                        <th class="text-center cuti">单位</th>
+                        <th class="text-center cuti">身份证</th>
+                        <th class="text-center cuti">实名认证</th>
+                        <th class="text-center cuti">状态</th>
+                        <th class="text-center cuti">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="userlogin"></tbody>
+
+
+                </table>
+                <div class="fenye">
+                    <div class="pagination pagination0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="userlogin_t">
+    {{each data}}
+    <tr class="{{$value.ptId}}">
+        <td><input class="fuxk" name="choose" type="checkbox" value="{{$value.ptId}}"/>
+        </td>
+        <td class="text-center"> {{$value.ptName}}</td>
+        <td class="text-center">{{$value.ptCode}}</td>
+        <td class="text-center">{{$value.office}}</td>
+        <td class="text-center">{{$value.idcarNo}}</td>
+        <td class="text-center">{{$value.siteName}}</td>
+        <td class="text-center">{{$value.userStatusDesc}}</td>
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.custId}}"
+               onclick="redact(this)">编辑</a>
+            <a href="javascript:void(0);" data-id="{{$value.custId}}"
+               onclick="forbidden(this)">
+                {{if $value.userStatusDesc=="正常"}}
+                禁用
+                {{else}}
+                启用
+                {{/if}}
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.custId}}"
+               onclick="onedel(this)">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script>
+
+    (function (window, $) {
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+        //列表1  修改查询接口-apidata.news.queryPage
+        let pagedataone = utils_admin.setajax('POST', apidata.postdata, apidata.base.staffPtSitesListOne);
+        utils_admin.queryPage("userlogin", "userlogin_t", pagedataone);
+        //分页1
+        new pagination({
+            pagination: $('.pagination0'),//分页挂载的样式名称
+            maxPage: 5, //最大页码数,支持奇数，左右对称
+            startPage: 1,    //默认第一页
+            currentPage: 1,          //当前页码
+            totalPageCount: (pagedataone.totalCount / pagedataone.pageSize) - (pagedataone.totalCount / pagedataone.pageSize) % 1 + 1,  //总页数
+            callback: function (pageNum) {
+                apidata.postdata.payload.page = "" + pageNum + "";
+                utils_admin.queryPage("userlogin", "userlogin_t", utils_admin.setajax('POST', apidata.postdata, apidata.base.staffPtSitesListOne));
+            }
+        });
+
+        //站点,平台初始化
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "所有平台",
+            "id": null,
+            "body": window.parentSiteList,
+            "width": 120,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": "先选择平台",
+            "id": null,
+            "body": null,
+            "width": 120,
+            "name": "endchild",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+            window.childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchild.push(e)
+                        endchild[index].text = endchild[index].siteName;
+                        endchild[index].id = endchild[index].siteId;
+                    }
+                })
+            });
+            window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+                "header": endchild[0].text,
+                "id": endchild[0].id,
+                "body": endchild,
+                "width": 120,
+                "name": "endchild",
+            });
+        });
+        $(".endchild").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".endchild")[0].id
+            }
+            pagepostdata.payload.siteId = id;
+        });
+
+        //主站下发资讯的栏目-不用考虑
+        window.utils_admin.loadhtml($(".companynewscateone"), '/dropdown.html', {
+            "header": "选择账号状态",
+            "id": null,
+            "body": [
+                {
+                    "text": "全部",
+                    "id": "1"
+                },
+                {
+                    "text": "禁用",
+                    "id": "2"
+                },
+                {
+                    "text": "正常",
+                    "id": "3"
+                },
+            ],
+            "width": 140,
+            "name": "companynewscateone",
+        });
+        $(".companynewscateone").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+        })
+        //主站下发资讯的审核状态-不用考虑
+        window.utils_admin.loadhtml($(".companynewscatetwo"), '/dropdown.html', {
+            "header": "选择实名状态",
+            "id": null,
+            "body": [
+                {
+                    "text": "全部",
+                    "id": "1"
+                },
+                {
+                    "text": "实名认证",
+                    "id": "2"
+                },
+                {
+                    "text": "未实名",
+                    "id": "2"
+                },
+                {
+                    "text": "未认证",
+                    "id": "2"
+                }
+            ],
+            "width": 140,
+            "name": "companynewscatetwo",
+        });
+
+        $(".companynewscateone").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+        })
+
+
+        //搜索
+        function seek(e) {
+            let inputdata = $("input[type=text]");
+            pagepostdata.payload.loginName = inputdata[0].value;
+            pagepostdata.payload.custName = inputdata[1].value;
+            pagepostdata.payload.office = inputdata[2].value;
+            utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.queryStaffPage));
+        }
+        //全选
+        function selectall(thit) {
+            let checkboxs = document.getElementsByName("choose");
+            if (thit.checked) {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = true;
+                }
+            } else {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = false;
+                }
+            }
+        }
+        //编辑
+        function redact(e) {
+            utils_admin.redact("addusernumber", "custId", e)
+        }
+        ///删除
+        function onedel(e) {
+            var id = e.dataset.id;
+            pagepostdata.payload.custIds = id;
+            $("#popups").toggle("hidden");
+        }
+
+        //批量删除
+        function deleteclass(a) {
+            $("#popups").toggle("hidden");
+            pagepostdata.payload.custIds = choosevalue("usernumber");
+        }
+
+        $("#popups>.white_content").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "button") {
+                $("#popups").toggle("hidden")
+            }
+            if (a.target.dataset.id) {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.freezeUser);
+                utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.staffPtSitesListOne));
+            }
+        });
+
+        //禁用
+        function forbidden(e) {
+            var id = e.dataset.id;
+            pagepostdata.payload.custIds = id;
+            if ($.trim($(e).text()) == "启用") {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.enableUser);
+            } else {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.freezeUser);
+            }
+            utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.staffPtSitesListOne));
+        }
+
+        window.onedel = onedel;
+        window.deleteclass = deleteclass;
+        window.redact = redact;
+        window.forbidden = forbidden;
+        window.selectall = selectall;
+        window.seek = seek;
+    })(window, window.$);
+
+</script>

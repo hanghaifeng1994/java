@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>主题活动-详情</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/common_front.css">
+    <link rel="stylesheet" href="/css/headfooter.css">
+
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/art-template.js"></script>
+    <script src="/js/api_front.js"></script>
+    <script src="/js/utils_front.js"></script>
+</head>
+
+<body>
+{{each pagedata.rutendatalists}}
+{{include $value.chtml}}
+{{/each}}
+<!--   顶部图片 -->
+<div id="seek_phtml"></div>
+<!-- 导航条 -->
+
+<div id="Navigation-list_phtml"></div>
+
+
+
+<div id="broadcast-block_phtml">
+
+    </div>
+    <div class="container">
+        <div id="activity-details_phtml">
+
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="tag-title clearfix mb">
+                    <span class="active">活动介绍</span>
+                    <span>活动成果</span>
+                    <span>评论</span>
+                </div>
+                <div class="tag-content">
+                    <div id="act-detail-desc-block_phtml">
+
+                    </div>
+                    <div id="activity-state-result-block_phtml" style="display: none">
+
+                    </div>
+                    <div id="activity-state-comments-page_phtml" style="display: none">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div id="activity-state-dyn-block_phtml" class="mb">
+
+                </div>
+                <div id="activity-state-news-rec-block_phtml">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--友情链接-->
+<div id="fintline_phtml"></div>
+<!-- 尾部 -->
+
+<div id="tail_phtml"></div>
+
+    <script>
+        utils.loadPage('activitydetail')
+    </script>
+    <script>
+        $('.tag-title').on('click', 'span:not(.active)', function () {
+            var _this = $(this)
+            _this.closest('.tag-title').find('span.active').removeClass('active')
+            _this.addClass('active')
+            $('.tag-content>div').hide()
+            $('.tag-content>div:eq(' + _this.index() + ')').show()
+        })
+    </script>
+</body>
+
+</html>

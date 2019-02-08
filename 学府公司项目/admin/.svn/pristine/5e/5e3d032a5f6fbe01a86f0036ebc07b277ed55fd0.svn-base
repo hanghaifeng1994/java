@@ -1,0 +1,343 @@
+<div class="card-body">
+    <div class="tab-content">
+        <div class="col-md-12 row" style="margin-left: 6px;margin-bottom: 10px">
+            <div class="parentsitelist"></div>
+            <div class="endchild" style="margin-left: 5px"></div>
+        </div>
+        <div class="col-md-12">
+            <div class="card horizontal-form">
+                <div class="card-body">
+                    <div class="row col-md-12">
+                        <div class="col-md-4 col-sm-6 row">
+                            <label class="col-md-4 control-label">作品编号</label>
+                            <div class="col-md-8 rylist">
+                                <input type="text" placeholder="" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 row">
+                            <label class="col-md-4 control-label">所属活动</label>
+                            <div class="col-md-8 rylist">
+                                <input type="text" placeholder="" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 row">
+                            <label class="col-md-4 control-label">提交人</label>
+                            <div class="col-md-8 rylist">
+                                <input type="text" placeholder="" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 row rylist" >
+                        <div class="col-md-4 col-sm6 row">
+                            <label class="col-md-5 control-label"></label>
+                            <div class="companynewscatetwo"></div>
+                        </div>
+                        <div class="col-md-4 col-sm6 row">
+                            <label class="col-md-5 control-label"></label>
+                            <button style="margin-top: 5px" class="btn btn-wd">搜索</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+                <button class="btn btn-e btn-wd">批量删除</button>
+            </div>
+        </div>
+        <div class="container-fluid padding-t-20">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <table class="table table-bordered table-hover" id="tablecz">
+                        <thead>
+                        <tr>
+                            <th><input class="fuxk" name="allcheck" type="checkbox" value="" id="allcheck"
+                                       onclick="selectall()"/></th>
+                            <th class="text-center cuti">作品编号</th>
+                            <th class="text-center cuti">上传人</th>
+                            <th class="text-center cuti">所属活动</th>
+                            <th class="text-center cuti">上传时间</th>
+                            <th class="text-center cuti">票数</th>
+                            <th class="text-center cuti">专家打分</th>
+                            <th class="text-center cuti">排名</th>
+                            <th class="text-center cuti">状态</th>
+                            <th class="text-center cuti">操作</th>
+
+                        </tr>
+                        </thead>
+                        <tbody id="interactproduct"></tbody>
+
+                    </table>
+                    <div class="fenye">
+                        <div class="pagination pagination0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="posid" style="display: none">
+    <div class="black_overlay"></div>
+    <div class="white_content" style="height:25%;top: 38%;">
+        <p class="col-xl-12">请打分</p>
+        <div class="row text-center">
+            <label class="col-md-2 control-label"></label>
+            <label class="col-md-2 control-label rylist">分数</label>
+            <div class="col-md-5">
+                <input type="text" placeholder="" class="form-control">
+            </div>
+        </div>
+        <div class="newbtn row col-xl-12">
+            <button class="btn btn-danger btn-wd col-md-3 mr-auto ml-auto" data-id="1">确认</button>
+            <button class="btn btn-primary btn-wd col-md-3 mr-auto ml-auto" data-id="0">取消</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="interactproduct_t">
+    {{each data}}
+    <tr class="{{$value.actId}}">
+        <td><input class="fuxk" name="choose" type="checkbox" value="{{$value.actId}}"/>
+        </td>
+        <!--改第一个tab表格抬头对应数据开始-->
+        <td class="text-center"> {{$value.wksCode}}</td>
+        <td class="text-center"> {{$value.wksUserN}}</td>
+        <td class="text-center">
+            {{$value.actAreaId}}
+        </td>
+        <td class="text-center">
+            {{$value.wksUpload}}
+        </td>
+        <td class="text-center">
+            {{$value.wksVoteN}}
+        </td>
+        <td class="text-center">
+            {{$value.mkScore}}
+        </td>
+        <td class="text-center">
+            {{$value.mkScore}}
+        </td>
+
+        <td class="text-center" data-status="{{$value.wksStatus}}">
+            {{if $value.wksStatus==0}}未提交
+            {{else if $value.wksStatus==1}}审核中
+            {{else if $value.wksStatus==2}}审核通过
+            {{else if $value.wksStatus==3}}审核失败
+            {{/if}}
+        </td>
+
+        <!--改第一个tab表格抬头对应数据结束-->
+        <!--单行操作区-根据具体页面选择对应按钮修，不需要的注释-->
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.actId}}"
+               onclick="posid(this)">
+                专家打分
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.actId}}"
+               onclick="redact(this)">
+                查看
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.actId}}"
+               onclick="onedel(this)">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+
+<script>
+    (function (window, $) {
+        var pagepostdata=apidata.postdata;
+        //列表1  修改查询接口-apidata.news.queryPage
+        let pagedataone = utils_admin.setajax('POST', apidata.postdata, apidata.activity.activitylist);
+        console.log("data",pagedataone)
+        utils_admin.queryPage("interactproduct", "interactproduct_t", pagedataone);
+        //分页1
+        new pagination({
+            pagination: $('.pagination0'),//分页挂载的样式名称
+            maxPage: 5, //最大页码数,支持奇数，左右对称
+            startPage: 1,    //默认第一页
+            currentPage: 1,          //当前页码
+            totalPageCount: (pagedataone.totalCount / pagedataone.pageSize) - (pagedataone.totalCount / pagedataone.pageSize) % 1 + 1,  //总页数
+            callback: function (pageNum) {
+                apidata.postdata.payload.page = "" + pageNum + "";
+                //修改查询接口-apidata.news.queryPage
+                utils_admin.queryPage("interactproduct", "interactproduct_t", utils_admin.setajax('POST', apidata.postdata, apidata.activity.activitylist));
+            }
+        });
+        //站点,平台初始化
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "所有平台",
+            "id": null,
+            "body": window.parentSiteList,
+            "width": 120,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": "先选择平台",
+            "id": null,
+            "body": null,
+            "width": 120,
+            "name": "endchild",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+            window.childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchild.push(e)
+                        endchild[index].text = endchild[index].siteName;
+                        endchild[index].id = endchild[index].siteId;
+                    }
+                })
+            });
+            window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+                "header": endchild[0].text,
+                "id": endchild[0].id,
+                "body": endchild,
+                "width": 120,
+                "name": "endchild",
+            });
+        });
+        $(".endchild").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".endchild")[0].id
+            }
+            pagepostdata.payload.siteId = id;
+        });
+
+
+        //主站下发资讯的审核状态-不用考虑
+        window.utils_admin.loadhtml($(".companynewscatetwo"), '/dropdown.html', {
+            "header": "选择状态",
+            "id": null,
+            "body": [
+                {
+                    "text": "全部",
+                    "id": "1"
+                },
+                {
+                    "text": "已审核",
+                    "id": "2"
+                },
+                {
+                    "text": "未审核",
+                    "id": "2"
+                },
+                {
+                    "text": "审核未通过",
+                    "id": "2"
+                }
+            ],
+            "width": 140,
+            "name": "companynewscatetwo",
+        });
+
+        $(".companynewscateone").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+        })
+
+
+
+        //搜索
+        function seek(e) {
+            let inputdata = $("input[type=text]");
+            pagepostdata.payload.loginName = inputdata[0].value;
+            pagepostdata.payload.custName = inputdata[1].value;
+            pagepostdata.payload.office = inputdata[2].value;
+            utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.queryStaffPage));
+        }
+        //全选
+        function selectall(thit) {
+            let checkboxs = document.getElementsByName("choose");
+            if (thit.checked) {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = true;
+                }
+            } else {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = false;
+                }
+            }
+        }
+        //查看
+        function redact(e) {
+            utils_admin.redact("addusernumber", "custId", e)
+        }
+
+        //打分
+        function posid(e) {
+            var id = e.dataset.id;
+            pagepostdata.payload.custIds = id;
+            $("#posid").toggle("hidden");
+        }
+        $("#posid>.white_content").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "button") {
+                $("#posid").toggle("hidden")
+            }
+            if (a.target.dataset.id) {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.freezeUser);
+                utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.staffPtSitesListOne));
+            }
+        });
+
+        ///删除
+        function onedel(e) {
+            var id = e.dataset.id;
+            pagepostdata.payload.custIds = id;
+            $("#popups").toggle("hidden");
+        }
+
+        //批量删除
+        function deleteclass(a) {
+            $("#popups").toggle("hidden");
+            pagepostdata.payload.custIds = choosevalue("usernumber");
+        }
+
+        $("#popups>.white_content").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "button") {
+                $("#popups").toggle("hidden")
+            }
+            if (a.target.dataset.id) {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.freezeUser);
+                utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.staffPtSitesListOne));
+            }
+        });
+
+        //禁用
+        function forbidden(e) {
+            var id = e.dataset.id;
+            pagepostdata.payload.custIds = id;
+            if ($.trim($(e).text()) == "启用") {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.enableUser);
+            } else {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.freezeUser);
+            }
+            utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.staffPtSitesListOne));
+        }
+
+        window.onedel = onedel;
+        window.deleteclass = deleteclass;
+        window.redact = redact;
+        window.forbidden = forbidden;
+        window.selectall = selectall;
+        window.seek = seek;
+        window.posid=posid;
+    })(window, window.$)
+
+</script>

@@ -1,0 +1,290 @@
+.mar40 {
+    margin-top: 40px
+}
+
+.fltaiji {
+    display: flex;
+}
+
+.peixub {
+    font-size:24px;
+    color: #000;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+}
+
+.flbgs {
+    display: flex;
+    border: 1px solid #ebebeb;
+    height: 30px;
+    align-items: center;
+    margin-left: 30px;
+    width: 80px;
+    justify-content: space-around;
+    border-radius: 5px;
+}
+
+.flbgs1 {
+    border-right: 1px solid #ebebeb;
+    width: 35px;
+}
+
+.peixuntime {
+    color: #666;
+    padding-top: 18px;
+}
+
+.peixuntime span {
+    color: #000;
+    padding-right: 4px;
+}
+
+.peixuntimes {
+    color: #8c8c8c;
+    margin-top: 15px;
+    display: flex;
+}
+
+.peixuntimes > div {
+    width: 300px;
+}
+
+.peixuntimes > div span {
+    color: #000;
+    padding-right: 4px;
+}
+
+.peixuntimesrs {
+    color: #8c8c8c;
+    margin-top:24px;
+    display: flex;
+    border-top: 1px solid #e6e6e6;
+    padding-top: 15px;
+}
+
+.peixuntimesrs > div {
+    width: 300px;
+}
+
+.peixun2 {
+    display: block;
+    height: 50px;
+    width: 140px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 24px;
+    background: #dcbd5a;
+    color: #fff;
+    border-radius: 30px;
+    margin-top: 30px;
+}
+
+.huibg {
+    background: #ebebeb;
+}
+
+.huibg li a {
+    color: #000;
+}
+
+.hongchen {
+    text-indent: 2em;
+    padding-top: 15px;
+    color: #666;
+}
+
+.huibjs {
+    height: 42px;
+    line-height: 42px;
+    background: #ebebeb;
+    color: #39abef;
+    padding-left: 15px;
+}
+
+.fodong {
+    height: 350px;
+}
+
+.fodong2 {
+    height: 310px;
+    overflow: hidden;
+}
+
+.fodong2li {
+   display: flex;
+    height: 60px;
+    padding-top: 15px;
+}
+li{
+    list-style:none;
+}
+.banji1{
+    width: 50px;
+    height: 50px;
+}
+.banji1 img{
+    width: 50px;
+    height: 50px;
+}
+.banji2{
+    margin-left: 10px;
+}
+.names{
+    height: 25px;
+    line-height: 25px;
+}
+.times{
+    height: 25px;
+    line-height: 25px;
+}
+.names span{
+    color: #39abef;
+    padding:0 5px
+}
+.chpxb{
+    display: block;
+    width: 100%;
+    height: 250px;
+    position: relative;
+    margin-top: 20px;
+}
+.chpxb1{
+    width: 100%;
+    height: 250px;
+}
+.chpxb2{
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    height: 20px;
+    width: 100%;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    display: none;
+}
+.chpxb3{
+    position: absolute;
+    top: 100px;
+    left: 0px;
+    height: 20px;
+    width: 100%;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    display: none;
+}
+.chpxb4{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    height: 50px;
+    width: 100%;
+    line-height: 50px;
+    color: #000;
+    font-size: 18px;
+    text-align: center;
+    background: rgba(215,220,220,0.8);
+}
+.chpxb:hover .chpxb3{
+    display: block;
+}
+.chpxb:hover .chpxb2{
+    display: block;
+}
+.chpxb:hover .chpxb4{
+    background: rgba(57,171,239,0.8);
+    color: #fff;
+}
+.chahua{
+    margin-bottom: 20px;
+}
+.tongxue{
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+}
+.xtname{
+    padding-left: 10px;
+    font-size: 18px;
+}
+.taijiquan{
+    margin-top: 20px;
+    position: relative;
+    display: block;
+}
+.liulandz{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background:rgba(00,00,00,0.3);
+    display: none;
+}
+.taijiquan:hover .liulandz{
+    display: block;
+}
+.llcs1{
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    color: #fff;
+    text-align: center;
+    margin-top: 50px;
+}
+.llcs2{
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    color: #fff;
+    text-align: center;
+}
+.xiangjie{
+    width: 95%;
+    margin:  0 auto;
+}
+.fljindt{
+
+}
+.jindu{
+    width: 30%;
+    float: left;
+    line-height: 15px;
+    color: #737373;
+}
+.twx{
+    width: 50%;
+    float: left;
+}
+.bfbs{
+    width: 20%;
+    float: left;
+    padding-left: 9px;
+    line-height: 15px;
+}
+.tjq{
+    font-size: 18px;
+    padding: 17px 0 10px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

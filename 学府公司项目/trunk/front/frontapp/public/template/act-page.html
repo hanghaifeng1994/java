@@ -1,0 +1,326 @@
+<style>
+    .act .cate-list {
+        margin-left: -6px;
+        margin-right: -6px;
+    }
+
+    .act .cate-list li {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .act .cate-list li a {
+        transition: all linear .2s;
+        -webkit-transition: all linear .2s;
+        display: block;
+        background-color: #999;
+        color: #fff;
+        text-align: center;
+        line-height: 60px;
+        margin-bottom: 6px;
+    }
+
+    .act .cate-list li a:hover,
+    .act .cate-list li a:focus {
+        text-decoration: none;
+        box-shadow: 0 3px 10px -2px rgba(0, 0, 0, .6);
+    }
+
+    .act .cate-list li.active a {
+        box-shadow: 0 3px 10px -2px rgba(0, 0, 0, .6);
+        transform: scale(1.1) translateY(-5px);
+        -webkit-transform: scale(1.1) translateY(-5px);
+        z-index: 1;
+    }
+
+    .act .city-list li {
+        float: left;
+        margin: 0 2px;
+    }
+
+    .act .tit {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .act .tag-list {
+        float: left;
+    }
+
+    .act .tag-list li {
+        float: left;
+        padding: 0 25px;
+        line-height: 50px;
+        cursor: pointer;
+    }
+
+    .act .tag-list li.active {
+        color: #FFF;
+        background-color: #39ABEF;
+    }
+
+    .act .act-list li {
+        color: #777;
+    }
+
+    .act .act-list .app-cover {
+        min-height: 180px;
+        height: 100%;
+    }
+
+    .act .act-list ul {
+        margin-bottom: 12px;
+    }
+
+    .act .act-list ul.inline li {
+        float: left;
+        margin-right: 40px;
+    }
+</style>
+<div class="act app-mt20">
+    <ul class="cate-list app-mb20 row toggle">
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4 active">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+        <li class="col-sm-2 col-xs-4">
+            <a href="javascript:;">社区教育</a>
+        </li>
+    </ul>
+    <ul class="city-list app-mb20 clearfix">
+        <li>城市：</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+        <li>|</li>
+        <li>
+            <a href="javascript:;">合肥</a>
+        </li>
+    </ul>
+    <div class="tit app-mb20 clearfix">
+        <ul class="clearfix tag-list toggle">
+            <li class="active">进行中的</li>
+            <li>已结束的</li>
+        </ul>
+        <div class="pull-right app-mt20">共有活动
+            <span class="text-primary">23</span>个
+        </div>
+    </div>
+    <div class="act-list">
+        <div class="row">
+            <div class="col-xs-6 col-md-12">
+                <div class="row app-mb20">
+                    <div class="col-md-3">
+                        <div class="app-cover" style="background-image: url('/public/img/4.jpg')"></div>
+                    </div>
+                    <div class="col-md-7">
+                        <h3 class="app-elip">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+                        <ul>
+                            <li>活动时间：2018/06/21-2018/06/22</li>
+                            <li>活动城市：合肥咯</li>
+                            <li>活动类型：宣传类</li>
+                        </ul>
+                        <ul class="clearfix inline">
+                            <li>参加人数：22222</li>
+                            <li>收藏人数：22222</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="" class="btn btn-lg btn-block btn-warning">我要报名</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-12">
+                <div class="row app-mb20">
+                    <div class="col-md-3">
+                        <div class="app-cover" style="background-image: url('/public/img/4.jpg')"></div>
+                    </div>
+                    <div class="col-md-7">
+                        <h3 class="app-elip">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+                        <ul>
+                            <li>活动时间：2018/06/21-2018/06/22</li>
+                            <li>活动城市：合肥咯</li>
+                            <li>活动类型：宣传类</li>
+                        </ul>
+                        <ul class="clearfix inline">
+                            <li>参加人数：22222</li>
+                            <li>收藏人数：22222</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="" class="btn btn-lg btn-block btn-warning">我要报名</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-12">
+                <div class="row app-mb20">
+                    <div class="col-md-3">
+                        <div class="app-cover" style="background-image: url('/public/img/4.jpg')"></div>
+                    </div>
+                    <div class="col-md-7">
+                        <h3 class="app-elip">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+                        <ul>
+                            <li>活动时间：2018/06/21-2018/06/22</li>
+                            <li>活动城市：合肥咯</li>
+                            <li>活动类型：宣传类</li>
+                        </ul>
+                        <ul class="clearfix inline">
+                            <li>参加人数：22222</li>
+                            <li>收藏人数：22222</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="" class="btn btn-lg btn-block btn-warning">我要报名</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-12">
+                <div class="row app-mb20">
+                    <div class="col-md-3">
+                        <div class="app-cover" style="background-image: url('/public/img/4.jpg')"></div>
+                    </div>
+                    <div class="col-md-7">
+                        <h3 class="app-elip">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+                        <ul>
+                            <li>活动时间：2018/06/21-2018/06/22</li>
+                            <li>活动城市：合肥咯</li>
+                            <li>活动类型：宣传类</li>
+                        </ul>
+                        <ul class="clearfix inline">
+                            <li>参加人数：22222</li>
+                            <li>收藏人数：22222</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="" class="btn btn-lg btn-block btn-warning">我要报名</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-12">
+                <div class="row app-mb20">
+                    <div class="col-md-3">
+                        <div class="app-cover" style="background-image: url('/public/img/4.jpg')"></div>
+                    </div>
+                    <div class="col-md-7">
+                        <h3 class="app-elip">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+                        <ul>
+                            <li>活动时间：2018/06/21-2018/06/22</li>
+                            <li>活动城市：合肥咯</li>
+                            <li>活动类型：宣传类</li>
+                        </ul>
+                        <ul class="clearfix inline">
+                            <li>参加人数：22222</li>
+                            <li>收藏人数：22222</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="" class="btn btn-lg btn-block btn-warning">我要报名</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-12">
+                <div class="row app-mb20">
+                    <div class="col-md-3">
+                        <div class="app-cover" style="background-image: url('/public/img/4.jpg')"></div>
+                    </div>
+                    <div class="col-md-7">
+                        <h3 class="app-elip">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+                        <ul>
+                            <li>活动时间：2018/06/21-2018/06/22</li>
+                            <li>活动城市：合肥咯</li>
+                            <li>活动类型：宣传类</li>
+                        </ul>
+                        <ul class="clearfix inline">
+                            <li>参加人数：22222</li>
+                            <li>收藏人数：22222</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="" class="btn btn-lg btn-block btn-warning">我要报名</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+        var colors = ['#D1963E', '#5F85B8', '#C17477', '#009E96', '#C09D69', '#AE5DA1', '#68AB50', '#EB6877']
+        var index = 0
+        $('.cate-list li a').each(function () {
+            if (index >= colors.length) index = 0
+            $(this).css('backgroundColor', colors[index]);
+            ++index
+        })
+        $('.toggle').on('click', 'li:not(.active)', function () {
+            var _this = $(this)
+            _this.closest('.toggle').find('li.active').removeClass('active')
+            _this.addClass('active')
+        })
+    })()
+</script>

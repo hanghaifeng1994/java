@@ -1,0 +1,99 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">审核状态</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="sequence col-md-4 "></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">审核内容</label>
+                    <div class="col-md-10">
+                        <textarea style="resize: none; min-height:200px;width: 100%;border:1px solid #E4E4E4" cols="5"
+                                  rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="btnsumbit()">提交</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="cancle()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function (window,$) {
+        function clone(myObj){
+            if(typeof(myObj) != 'object') return myObj;
+            if(myObj == null) return myObj;
+
+            var myNewObj = new Object();
+
+            for(var i in myObj)
+                myNewObj[i] = clone(myObj[i]);
+
+            return myNewObj;
+        }
+        let pagepostdata=clone(apidata.postdata);
+
+        pagepostdata.payload.objId=pagepostdata.payload.actId;
+        window.utils_admin.loadhtml($(".sequence"), '/dropdown.html', {
+            "header": "请选择",
+            "id": null,
+            "body":[
+                {
+                    "id":"2",
+                    "text":"审核通过"
+                },{
+                    "id":"3",
+                    "text":"审核不通过"
+                }
+            ],
+            "width": 150,
+            "name": "sequence",
+        });
+        $(".sequence").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+            pagepostdata.payload.sequence = id;
+        });
+        //提交
+        function btnsumbit(){
+            var val=$(".sequence").find("input[name=activity]").attr("id");
+            //先判断单选框是否有值
+            if(val==""){
+                alert("请先选择审核状态！");
+                return false;
+            }
+            pagepostdata.payload.serviceType="activity_service";
+           pagepostdata.payload.adContent = $("textarea").val();
+             utils_admin.setajax('POST', pagepostdata, apidata.activity.activityAudit);
+            pagepostdata.payload.actStatus = "";
+            window.location.href = "/admin/views/index.html#/activitygecolumn" ;
+        }
+        //返回上一层
+        function cancle(){
+            pagepostdata.payload.actStatus = "";
+            window.location.href = "/admin/views/index.html#/activitygecolumn" ;
+        }
+        window.btnsumbit=btnsumbit;
+        window.cancle=cancle;
+    })(window,window.$)
+</script>

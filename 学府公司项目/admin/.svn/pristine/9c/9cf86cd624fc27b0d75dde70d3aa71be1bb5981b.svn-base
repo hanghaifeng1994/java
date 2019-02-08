@@ -1,0 +1,89 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">知识点名称</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="填写知识点" class="form-control name">
+                    </div>
+                    <div class="col-md-1 text-danger">*</div>
+                </div>
+                <div class="form-group col-xl-12 padding-t-10">
+                    <div class="row">
+                        <label class="col-md-2 control-label brokeragetime">题库选择</label>
+                        <div class="col-md-10 row rylist">
+                            <div class="sequence col-md-4"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group col-xl-12 padding-t-20 isView">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="savemessageg(this)">保存</button>
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="goback()">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function (window, $) {
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+        //保存数据
+        function savemessageg(e){
+            let inputdata = $(".name").val();
+            let name=$(".name").val();
+            let sequence=$(".sequence").val();
+            if(inputdata==""){
+                alert("请填写知识点名称名称");
+                return false;
+            }
+            pagepostdata.payload.name=name;
+            console.log(pagepostdata.payload);
+            var result= utils_admin.setajax('POST', pagepostdata, apidata.testing.sectionSave);
+            window.location.href = "/admin/views/index.html#/knowledgegerent"
+        }
+        //返回上一页
+        function goback(){
+            window.location.href = "/admin/views/index.html#/knowledgegerent"
+        }
+
+        //回填题库选择
+        var pools = utils_admin.setajax('POST', pagepostdata, apidata.testing.testqu);
+        var poolArr = [];
+        var result = pools.data;
+        result.forEach(function (a, index) {
+            var da = {};
+            da.id = a.qpId;
+            da.text = a.name;
+            poolArr.push(da);
+        })
+        //回填活动分型
+        window.utils_admin.loadhtml($(".sequence"), '/dropdown.html', {
+            "header": "选择题库",
+            "id": null,
+            "body": poolArr,
+            "width": 120,
+            "name": "sequence",
+        });
+
+        $(".sequence").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            }else {
+                id = window.parentSiteList[0].id
+            }
+            pagepostdata.payload.qpId = id;
+        });
+        window.savemessageg = savemessageg;
+        window.goback=goback;
+    })(window, window.$)
+</script>

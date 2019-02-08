@@ -1,0 +1,233 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">所属平台</label>
+                    <div class="col-md-4">
+                        <div class="parentsitelist"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">网站类型</label>
+                    <div class="col-md-4">
+                        <div class="endchild"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">站点名称</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">站点域名</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">站点编码</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">是否启用</label>
+                    <div class="col-md-4">
+                        <div class="dropdowns1 "></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">站点logo图片</label>
+                    <div class="col-md-2">
+                        <span class="btn upload">选择图片<input type="file" class="upload_pic" id="upload1"/></span>
+                        <div class="col-md-2 rylist"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime"></label>
+                    <div id="cvs1" class="imgcanvas"></div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">头部背景图</label>
+                    <div class="col-md-2">
+                        <span class="btn upload">选择图片<input type="file" class="upload_pic" id="uploadtwo"/></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime"></label>
+                    <div id="cvstwo" class="imgcanvas"></div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">站点版权信息</label>
+                    <div class="col-md-6">
+                        <textarea style="resize: none; min-height:200px;width: 100%;border:1px solid #E4E4E4" cols="5"
+                                  rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+            <br/>
+
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="addmessageg()">保存并且添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function (window) {
+        var input1 = window.document.getElementById("upload1");
+        var canvas1 = window.document.getElementById("cvs1");
+        var inputwo = window.document.getElementById("uploadtwo");
+        var canvastwo = window.document.getElementById("cvstwo");
+        let clonedata = utils_admin.clone(apidata.postdata);
+        var pagepostdata = {
+            "header": clonedata.header,
+            "payload": {
+                "ptId": clonedata.payload.ptId
+            }
+        };
+        let muchaddsiteId = localStorage.getItem("muchaddsiteId");
+        let pagedatasetSite = '';
+        if (muchaddsiteId) {
+            pagepostdata.payload.siteId=muchaddsiteId;
+            let inputdata = $("input[type=text]");
+            pagedatasetSite = utils_admin.setajax('POST', pagepostdata, apidata.base.setSite);
+            inputdata[0].value = pagedatasetSite.data.siteName;
+            inputdata[1].value = pagedatasetSite.data.pagedatasetSitesiteDomain;
+            inputdata[2].value = pagedatasetSite.data.siteCode;
+            $("textarea").val(pagedatasetSite.data.pageSiteCopyright);
+            localStorage.removeItem("muchaddsiteId");
+        }
+        //站点,平台初始化
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": pagedatasetSite ? pagedatasetSite.data.ptId : "所有平台",
+            "id": pagedatasetSite ? pagedatasetSite.data.ptId : null,
+            "body": window.parentSiteList,
+            "width": 150,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": pagedatasetSite ? pagedatasetSite.data.siteType == "1" ? "主站" : "字站" : "选择站点类型",
+            "id": pagedatasetSite ? pagedatasetSite.data.siteType : null,
+            "body": [
+                {
+                    "text": "主站",
+                    "id": "1"
+                },
+                {
+                    "text": "子站",
+                    "id": "2"
+                }
+            ],
+            "width": 150,
+            "name": "endchild",
+        });
+        //选平台
+        $(".parentsitelist").click(function (a) {
+            pagepostdata.payload.ptId = utils_admin.downid(a, "parentsitelist")
+        });
+        $(".endchild").click(function (a) {
+            pagepostdata.payload.siteId = utils_admin.downid(a, "endchild");
+        });
+
+
+        //是否启用
+        window.utils_admin.loadhtml($(".dropdowns1"), '/dropdown.html', {
+            "header": "是",
+            "id": "0",
+            "body": [
+                {
+                    "text": "是",
+                    "id": "0"
+                },
+                {
+                    "text": "否",
+                    "id": "1"
+                }
+            ],
+            "width": 150,
+            "name": "dropdowns1"
+        });
+        pagepostdata.payload.able = "0";
+        $(".dropdowns1").click(function (a) {
+            var id = "0";
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".dropdowns1")[0].id
+            }
+            pagepostdata.payload.able = id;
+        });
+
+        //上传图片
+        window.utils_admin.setimg(input1, canvas1, function (setdata) {
+            pagepostdata.payload.photo = "1";
+            pagepostdata.payload.siteLogo = setdata.data.fileId;
+            utils_admin.returnimg(canvas1,setdata.data.fileUrl)
+        }, pagepostdata);
+        window.utils_admin.setimg(inputwo, canvastwo, function (setdata) {
+            pagepostdata.payload.photo = "1";
+            pagepostdata.payload.pageHeadImg = setdata.data.fileId;
+            utils_admin.returnimg(canvastwo,setdata.data.fileUrl)
+        }, pagepostdata);
+
+        function addmessageg() {
+            let inputdata = $("input[type=text]");
+            if (inputdata[0].value == '') {
+                alert("必填项")
+            } else {
+                pagepostdata.payload.siteName = inputdata[0].value;
+                pagepostdata.payload.siteDomain = inputdata[1].value;
+                pagepostdata.payload.siteCode = inputdata[2].value;
+                pagepostdata.payload.pageSiteCopyright = $("textarea").val();
+                if (pagepostdata.payload.photo == 0) {
+                    alert("文件或者图片正在上传")
+                } else {
+                    utils_admin.setajax('POST', pagepostdata, apidata.base.ptsetSite);
+                    //设置主站
+                    if (pagepostdata.payload.Main == "0") {
+                        utils_admin.setajax('POST', pagepostdata, apidata.base.setMainSite)
+                    }
+                    //是否启用
+                    if (pagepostdata.payload.able == "0") {
+                        utils_admin.setajax('POST', pagepostdata, apidata.base.enableSite)
+                    } else {
+                        utils_admin.setajax('POST', pagepostdata, apidata.base.disableSite)
+                    }
+                    window.location.href = '/admin/views/index.html#/muchgerent'
+                }
+            }
+        }
+
+        window.addmessageg = addmessageg;
+    })(window)
+</script>

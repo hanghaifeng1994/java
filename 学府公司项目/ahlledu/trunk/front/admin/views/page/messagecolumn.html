@@ -1,0 +1,228 @@
+<div class="col-md-12">
+    <div class="treetable"></div>
+</div>
+<div id="popups">
+
+</div>
+<script>
+    console.log(utils_admin.data[location.hash.slice(2, location.hash.length)])
+    var pagedata = utils_admin.data[location.hash.slice(2, location.hash.length)].queryPage.data;
+    pagedata.treetable = apidata.urlnews_servicelist.newsCategoryqueryById;
+    var tabledata = [];
+    pagedata.forEach((a, b) => {
+        tabledata.push(a);
+        tabledata[b].id = a.catId;
+        tabledata[b].text = a.catName;
+        tabledata[b].nub = a.catId;
+        tabledata[b].grud = a.catLevel;
+        tabledata[b].order = a.catName;
+        if (!a.parentId) {
+            tabledata[b].child = false
+        } else {
+            tabledata[b].child = true
+        }
+        tabledata[b].menu = [
+            {
+                "text": "编辑",
+                "method": "redactclass",
+            },
+            {
+                "text": "删除",
+                "method": "onedel",
+            }
+        ]
+    });
+    console.log(tabledata)
+    window.utils_admin.loadhtml($('.treetable'), '/treeTable.html', {
+        "heardbutton": [{
+            "type": "0",
+            "text": "批量删除",
+            "method": "",
+        }, {
+            "type": "1",
+            "text": "添加友情链接",
+            "href": "/#add",
+        }
+        ],
+        "datath": [
+            {
+                "text": "信息栏目名称"
+            },
+            {
+                "text": "栏目ID"
+            },
+            {
+                "text": "栏目等级"
+            },
+            {
+                "text": "来自"
+            },
+            {
+                "text": "操作"
+            }
+        ],
+        "tabledata": tabledata,
+        "dropdown": [{
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        }, {
+            "heard": "平台管理员2",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        }
+        ]
+    })
+
+    //
+    //加载弹窗组件
+    function popups(data) {
+        $("#popups").load('./template/popups.html', function (a) {
+            $("#popups").html(window.template.render(a, data));
+            ballblack();
+        })
+    };
+
+    //弹窗显示隐藏
+    function ballblack() {
+        let ballblack = $('#ballblack');
+        if (ballblack.css('display') == 'none') {
+            ballblack.css('display', 'block')
+        } else {
+            ballblack.css('display', 'none')
+        }
+    }
+
+    //批量删除
+    function deleteclass() {
+        let checkboxs = $("input[name=choose]");
+        let data = {
+            "tempid": 'balldeleteclass',
+            "checkdata": [],
+            "body": {
+                "head": "提示",
+                "text": "是否确认删除选中的内容",
+                "yesbt": "确认",
+                "nobt": "取消"
+            }
+        };
+        for (let i = 0; i < checkboxs.length; i++) {
+            if (checkboxs[i].checked) {
+                data.checkdata.push(checkboxs[i].value);
+            }
+        }
+        if (data.checkdata.length) {
+            popups(data);
+        }
+    }
+
+    function balldeleteclass(e) {
+        for (let i = 0; i < e.length; i++) {
+            $("#" + e[i]).remove();
+            ballblack();
+        }
+    }
+
+    //单独删除
+    function onedel(e) {
+        console.log(e.id);
+        let data = {
+            "tempid": 'tableclassone',
+            "checkdata": '',
+            "body": {
+                "head": "提示",
+                "text": "是否确认删除",
+                "yesbt": "确认",
+                "nobt": "取消"
+            }
+        };
+        data.checkdata = e.id;
+        popups(data)
+    }
+
+    function tableclassone(e) {
+        $("#" + e).remove();
+        ballblack();
+    }
+
+    //新增
+    function addclassinf() {
+        let html = `<tr>
+                            <td></td>
+                            <td>
+                            <input type="text">
+</td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td class="text-center caozuo" style="color: #00bbff">
+                                <a onclick="">保存&nbsp;<span>|</span></a><a>取消<span></span></a>
+                            </td>
+                        </tr>`;
+        console.log($('#treeTable>tbody'));
+        $('#treeTable>tbody').append(html)
+    }
+
+    //编辑
+    function redactclass(e) {
+        let id = e.dataset.id;
+        console.log($("#" + id + ""))
+    }
+
+    //启用
+    function start(e) {
+        console.log(e);
+        let id = e.dataset.id;
+    }
+
+    //选择
+    function selectall(thit) {
+        let checkboxs = document.getElementsByName("choose");
+        if (thit.checked) {
+            for (let i = 0; i < checkboxs.length; i++) {
+                let e = checkboxs[i];
+                e.checked = "true";
+            }
+        } else {
+            for (let i = 0; i < checkboxs.length; i++) {
+                let e = checkboxs[i];
+                e.checked = false;
+            }
+        }
+    }
+
+    function selectallbelow(e) {
+        console.log(e)
+    }
+
+    function beforeExpand(treeTable, id) {
+        console.log($('#' + id), id);
+        apidata.postdata.payload.catId = id;
+        let postdata = utils_admin.setajax('POST', apidata.postdata, pagedata.treetable);
+        let html = '';
+        html = "<tr id=" + postdata.data.catId + " pId="+postdata.data.parentId+" hasChild='true'> <td><input class='fuxk' name='choose' type='checkbox' value=" + id + "/></td><td></td><td>xx</td><td>x</td><td>xx</td><td  class='text-center caozuo' style=\"color: #00bbff\"><a>编辑</a><a>删除</a></td></tr>";
+        treeTable.addChilds(html);
+    }
+
+    function onSelect(treeTable, id) {
+        console.log('onSelect:' + id);
+    }
+</script>

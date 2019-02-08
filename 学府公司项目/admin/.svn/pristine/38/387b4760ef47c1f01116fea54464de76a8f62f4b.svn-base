@@ -1,0 +1,256 @@
+<div class="horizontal-form">
+    <div class="card-body">
+        <div class="form-group col-xl-12 padding-t-10">
+            <div class="row">
+                <label class="col-md-2 control-label brokeragetime">账号名称</label>
+                <div class="col-md-4">
+                    <input type="text" placeholder="" class="form-control">
+                </div>
+                <div class="col-md-1 text-danger">*</div>
+            </div>
+        </div>
+        <div class="form-group col-xl-12 padding-t-10">
+            <div class="row">
+                <label class="col-md-2 control-label brokeragetime">密码</label>
+                <div class="col-md-4">
+                    <input type="text" placeholder="" class="form-control">
+                </div>
+                <div class="col-md-1 text-danger">*</div>
+            </div>
+        </div>
+        <div class="form-group col-xl-12 col-md-12 padding-t-10" style="margin-left: 20px">
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <label class="col-md-12">管理平台</label>
+                    <div style="margin-left: 20px;background-color: #F7F7F7;padding: 5px">
+                        <div class="col-md-12 ">
+                            <ul class="ztree" id="ztrees"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <label class="col-md-12">分配角色</label>
+                    <div style="background-color: #F7F7F7;padding: 5px;margin-left: 10px">
+                        <ul id="treeDemotwo" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 col-sm-12 col-md-12 linexian">
+            <h4>非必填</h4>
+        </div>
+        <div class="form-group col-xl-12 padding-t-10">
+            <div class="row">
+                <label class="col-md-2 control-label brokeragetime">用户姓名</label>
+                <div class="col-md-4">
+                    <input type="text" placeholder="" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-xl-12 padding-t-10">
+            <div class="row">
+                <label class="col-md-2 control-label brokeragetime">身份证号码</label>
+                <div class="col-md-4">
+                    <input type="text" placeholder="" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-xl-12 padding-t-10">
+            <div class="row">
+                <label class="col-md-2 control-label brokeragetime">所属单位</label>
+                <div class="col-md-4">
+                    <input type="text" placeholder="" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-xl-12 padding-t-10">
+            <div class="row">
+                <label class="col-md-2 control-label brokeragetime">联系电话</label>
+                <div class="col-md-4">
+                    <input type="text" placeholder="" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-xl-12 padding-t-10">
+            <div class="row">
+                <label class="col-md-2 control-label brokeragetime">电子邮箱</label>
+                <div class="col-md-4">
+                    <input type="text" placeholder="" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-xl-12 padding-t-10">
+            <div class="row">
+                <label class="col-md-2 control-label brokeragetime">QQ号码</label>
+                <div class="col-md-4">
+                    <input type="text" placeholder="" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-xl-12 padding-t-20">
+            <div class="row">
+                <div class="col-xl-3"></div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-fill  btn-e" onclick="addmessageg()">保存并添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    (function (window) {
+        var pagpostdata = apidata.postdata;
+        var roleFormdata = utils_admin.setajax('POST', apidata.postdata, apidata.base.queryStaffPage).data[0];
+        var inputsetdata = $("input[type=text]");
+        inputsetdata[0].value = roleFormdata.loginName;
+        inputsetdata[1].value = '';
+        inputsetdata[2].value = roleFormdata.custName;
+        inputsetdata[3].value = roleFormdata.idcarNo;
+        inputsetdata[4].value = roleFormdata.office;
+        inputsetdata[5].value = roleFormdata.phone;
+        inputsetdata[6].value = roleFormdata.email;
+        inputsetdata[7].value = roleFormdata.qq;
+        //初始化
+        var custrole = utils_admin.setajax('POST', apidata.postdata, apidata.base.custrole).data;
+        var custInfo = utils_admin.setajax('POST', apidata.postdata, apidata.base.custInfo).data;
+        custrole.forEach((e) => {
+            e.id = e.roleId;
+            e.name = e.roleName;
+        });
+        var queryList = utils_admin.setajax('POST', apidata.postdata, apidata.base.setPlatform).data;
+        queryList.forEach((a) => {
+            a.name = a.ptName;
+            a.id = a.ptId;
+            a.pId = a.ptId;
+            a.open = true;
+            a.isParent = true;
+            a.children = a.siteList;
+            a.children.forEach((c) => {
+                c.name = c.siteName;
+                c.id = c.siteId;
+                c.pId = c.ptId;
+            })
+        });
+        var setting = {
+            view: {
+                selectedMulti: false,
+                showLine: false,
+                showIcon: false,
+            },
+            check: {
+                enable: true,
+                chkboxType: {
+                    "Y": "s", "N": "s"
+                }
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            edit: {
+                enable: false
+            },
+            callback: {
+                beforeCheck: true,
+                onCheck: onCheckone
+            }
+        };
+
+        function onCheckone(e, treeId, treeNode) {
+            let treeObj = $.fn.zTree.getZTreeObj("ztrees"),
+                nodes = treeObj.getCheckedNodes(true),
+                v = "";
+            for (let i = 0; i < nodes.length; i++) {
+                v += nodes[i].id + ",";
+                console.log(v);
+                pagpostdata.payload.siteIds = v;
+            }
+        }
+
+        function onCheck(e, treeId, treeNode) {
+            let treeObj = $.fn.zTree.getZTreeObj("treeDemotwo"),
+                nodes = treeObj.getCheckedNodes(true),
+                v = "";
+            for (let i = 0; i < nodes.length; i++) {
+                v += nodes[i].id + ",";
+                pagpostdata.payload.roleIds = v;
+                console.log(v);
+            }
+        };
+        var settingtwo = {
+            view: {
+                selectedMulti: false,
+                showLine: false,
+                showIcon: false,
+                removeHoverDom: removeHoverDom,
+            },
+            check: {
+                enable: true,
+                chkboxType: {
+                    "Y": "s", "N": "s"
+                }
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            edit: {
+                enable: false
+            },
+            callback: {
+                beforeCheck: true,
+                onCheck: onCheck
+            }
+        };
+
+        function addHoverDom(treeId, treeNode) {
+            let sObj = $("#" + treeNode.tId + "_span");
+            if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+            let addStr = "<span  class='text-danger' style='margin-left: 20px' id='addBtn_" + treeNode.tId
+                + "'onfocus='this.blur();'>查看权限</span>";
+            sObj.after(addStr);
+            let btn = $("#addBtn_" + treeNode.tId);
+            if (btn) btn.bind("click", function () {
+                let zTree = $.fn.zTree.getZTreeObj("treeDemotwo")
+                zTree.addNodes(treeNode, {id: (100 + newCount), pId: treeNode.id, name: "new node" + (newCount++)});
+                return false;
+            });
+        }
+
+        function removeHoverDom(treeId, treeNode) {
+            $("#addBtn_" + treeNode.tId).unbind().remove()
+        }
+
+        $(document).ready(function () {
+            $.fn.zTree.init($("#ztrees"), setting, queryList);
+            $.fn.zTree.init($("#treeDemotwo"), settingtwo, custrole);
+        });
+
+        //保存
+        function addmessageg() {
+            let inputdata = $("input[type=text]");
+            if (inputdata[0].value && inputdata[1].value) {
+                pagpostdata.payload.loginName = inputdata[0].value;
+                pagpostdata.payload.password = inputdata[1].value;
+                pagpostdata.payload.custName = inputdata[2].value;
+                pagpostdata.payload.idcarNo = inputdata[3].value;
+                pagpostdata.payload.office = inputdata[4].value;
+                pagpostdata.payload.phone = inputdata[5].value;
+                pagpostdata.payload.email = inputdata[6].value;
+                pagpostdata.payload.qq = inputdata[7].value;
+                utils_admin.setajax('POST', pagpostdata, apidata.base.savecustInfo);
+                utils_admin.setajax('POST', pagpostdata, apidata.base.cust);
+                apidata.postdata.roleId = '';
+                window.location.href = "/admin/views/index.html#/usernumber";
+            } else {
+                alert("必填")
+            }
+        }
+
+        window.addmessageg = addmessageg;
+    })(window)
+</script>

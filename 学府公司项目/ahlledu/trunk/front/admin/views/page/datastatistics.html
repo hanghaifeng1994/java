@@ -1,0 +1,77 @@
+<div style="margin: 15px" class="row col-md-12">
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="col-md-12">
+                <div class="card horizontal-form">
+                    <div class="card-body">
+                        <div class="row col-md-12">
+                            <ul class=" list-unstyled list-inline antime1">
+                                <li class="" style="width: 40%">
+                                    <input type="text"  class="form-control datepicker"
+                                           placeholder="选择日期"/>
+                                </li>
+                                <li class="fdong" style="width:10%;">到</li>
+                                <li class="" style="width: 40%">
+                                    <input type="text" class="form-control datepicker" placeholder="选择日期"/>
+                                </li>
+                            </ul>
+                            <div class="col-md-5 col-sm-6 row" style="padding-top: 4px">
+                                <div class="dropdowns"></div>
+                                <div class="col-md-1"></div>
+                                <div class="dropdowns"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 col-sm-6 row">
+                            <button class="btn btn-e col-md-1">确定</button>
+                            <div class="col-md-1"></div>
+                            <button class="btn btn-e btn-wd col-md-1">导出数据表格</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 row">
+                {{each data}}
+                <div class="col-md-6 col-sm-12">
+                    <div class="container" style="height: 300px"></div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+        window.utils_admin.calendar($('.datepicker'));
+        var datastatistics=utils_admin.data.datastatistics;
+        datastatistics.apply=datastatistics.apply+1;
+        if(datastatistics.apply==2) {
+            window.utils_admin.loadhtml($(".dropdowns"), '/dropdown.html', {
+                "heard": "平台管理员",
+                "body": [
+                    {
+                        "text": "1"
+                    },
+                    {
+                        "text": "2"
+                    },
+                    {
+                        "text": "3"
+                    }
+                ]
+            });
+            for (var i = 0; i < utils_admin.data.datastatistics.data.length; i++) {
+                echarthtml($(".container")[i], utils_admin.data.datastatistics.data[i])
+            }
+            datastatistics.apply=0
+        }
+        function echarthtml(container, configdata) {
+            var myChart = window.echarts.init(container);
+            var config = null;
+            config = configdata;
+            if (config && typeof config === "object") {
+                myChart.setOption(config, true);
+            }
+        }
+    })();
+</script>
+<script src="../assets/js/indexfunc.js"></script>

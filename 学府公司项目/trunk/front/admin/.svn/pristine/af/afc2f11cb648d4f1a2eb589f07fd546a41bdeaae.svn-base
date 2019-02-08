@@ -1,0 +1,368 @@
+<style>
+    .linhei {
+        line-height: 32px;
+    }
+
+    .zifu {
+        line-height: 32px;
+        font-size: 12px;
+        color: #a5a5a5;
+    }
+
+    #img-container {
+
+    }
+
+    #img-container:after {
+        content: '.';
+        display: block;
+        height: 0;
+        visibility: hidden;
+        overflow: hidden;
+        clear: both;
+    }
+
+    .img-item {
+        position: relative;
+        float: left;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        height: 150px;
+        width: 200px;
+        box-sizing: border-box;
+    }
+
+    .img-thumb {
+        border: 1px solid #000;
+    }
+
+    .thumb-icon {
+        width: 100%;
+        height: 100%;
+    }
+
+    .img-up-add {
+        display: table;
+        border: 1px dashed #E0E0E0;
+    }
+
+    .img-add-icon {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 70px;
+        background: #fff;
+    }
+
+    .img-remove {
+        position: absolute;
+        right: -13px;
+        top: -20px;
+        display: block;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #f7333d;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        line-height: 30px;
+        overflow: hidden;
+        background-clip: padding-box;
+    }
+
+    #img-file-input {
+        display: none;
+    }
+
+    .tianjia a {
+        width: 160px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        background: #dcbd5a;
+        color: #fff;
+        display: block;
+        border-radius: 30px;
+    }
+
+    .xuezz {
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .radio-inline {
+        margin-right: 30px;
+    }
+
+    .tijiao a {
+        width: 160px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        background: #dcbd5a;
+        color: #fff;
+        display: block;
+        border-radius: 30px;
+        margin: 0 auto;
+    }
+
+    .tijiao {
+        margin-bottom: 30px;
+        margin-top: 50px;
+    }
+
+    .mar50 {
+        margin-top: 15px;
+    }
+</style>
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">才艺主题</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">才艺分类</label>
+                    <div class="col-md-4">
+                        <div class="dropdowns1 "></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">才艺头像</label>
+                    <div class="col-md-10">
+                        <div class="con4">
+                            <canvas id="cvstwo" width="150" height="150"></canvas>
+                            <span class="btn btn-e upload">上传才艺头像
+                                <input type="file" class="upload_pic" id="uploadtwo"/></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">才艺图片上传</label>
+                    <div class="col-md-10">
+                        <div class="row mar50">
+                            <div id="upload">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">是否推荐</label>
+                    <div class="col-md-1 row rylist">
+                        <input type="radio" style="margin: 6px 9px;" name="comme" class="rylist">
+                        <div>否</div>
+                    </div>
+                    <div class="col-md-1 row rylist">
+                        <input type="radio" name="comme" style="margin: 6px 9px;">
+                        <div>是</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">是否置顶</label>
+                    <div class="col-md-1 row rylist">
+                        <input type="radio" style="margin: 6px 9px;" name="comme1" class="rylist">
+                        <div>否</div>
+                    </div>
+                    <div class="col-md-1 row rylist">
+                        <input type="radio" name="comme1" style="margin: 6px 9px;">
+                        <div>是</div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="form-group col-xl-12 col-md-12 padding-t-20">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime"></label>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-fill  btn-e">预览</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-fill  btn-e">审核通过</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-fill  btn-e">审核不通过</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-fill  btn-e">审核通过并发布</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var options = {
+        path: '/',
+        onSuccess: function (res) {
+            console.log(res);
+        },
+        onFailure: function (res) {
+            console.log(res);
+        }
+    }
+    var upload = tinyImgUpload('#upload', options);
+
+    window.utils_admin.loadhtml($(".dropdowns1"), '/dropdown.html', {
+        "heard": "平台管理员",
+        "body": [
+            {
+                "text": "1"
+            },
+            {
+                "text": "2"
+            },
+            {
+                "text": "3"
+            }
+        ]
+    })
+    function tinyImgUpload(ele, options) {
+        // 判断容器元素合理性并且添加基础元素
+        var eleList = document.querySelectorAll(ele);
+        if(eleList.length == 0){
+            console.log('绑定的元素不存在');
+            return;
+        }else if(eleList.length>1){
+            console.log('请绑定唯一元素');
+            return;
+        }else {
+            eleList[0].innerHTML ='<div id="img-container" >'+
+                '<div class="img-up-add  img-item"> <span class="img-add-icon">+</span> </div>'+
+                '<input type="file" name="files" id="img-file-input" multiple>'+
+                '</div>';
+            var ele = eleList[0].querySelector('#img-container');
+            ele.files = [];   // 当前上传的文件数组
+        }
+
+        // 为添加按钮绑定点击事件，设置选择图片的功能
+        var addBtn = document.querySelector('.img-up-add');
+        addBtn.addEventListener('click',function () {
+            document.querySelector('#img-file-input').value = null;
+            document.querySelector('#img-file-input').click();
+            return false;
+        },false)
+
+        // 预览图片
+        //处理input选择的图片
+        function handleFileSelect(evt) {
+            var files = evt.target.files;
+
+            for(var i=0, f; f=files[i];i++){
+                // 过滤掉非图片类型文件
+                if(!f.type.match('image.*')){
+                    continue;
+                }
+                // 过滤掉重复上传的图片
+                var tip = false;
+                for(var j=0; j<(ele.files).length; j++){
+                    if((ele.files)[j].name == f.name){
+                        tip = true;
+                        break;
+                    }
+                }
+                if(!tip){
+                    // 图片文件绑定到容器元素上
+                    ele.files.push(f);
+
+                    var reader = new FileReader();
+                    reader.onload = (function (theFile) {
+                        return function (e) {
+                            var oDiv = document.createElement('div');
+                            oDiv.className = 'img-thumb img-item';
+                            // 向图片容器里添加元素
+                            oDiv.innerHTML = '<img class="thumb-icon" src="'+e.target.result+'" />'+
+                                '<a href="javscript:;" class="img-remove">x</a>'
+
+                            ele.insertBefore(oDiv, addBtn);
+                        };
+                    })(f);
+
+                    reader.readAsDataURL(f);
+                }
+            }
+        }
+        document.querySelector('#img-file-input').addEventListener('change', handleFileSelect, false);
+
+        // 删除图片
+        function removeImg(evt) {
+            if(evt.target.className.match(/img-remove/)){
+                console.log('3',ele.files);
+                // 获取删除的节点的索引
+                function getIndex(ele){
+
+                    if(ele && ele.nodeType && ele.nodeType == 1) {
+                        var oParent = ele.parentNode;
+                        var oChilds = oParent.children;
+                        for(var i = 0; i < oChilds.length; i++){
+                            if(oChilds[i] == ele)
+                                return i;
+                        }
+                    }else {
+                        return -1;
+                    }
+                }
+                // 根据索引删除指定的文件对象
+                var index = getIndex(evt.target.parentNode);
+                ele.removeChild(evt.target.parentNode);
+                if(index < 0){
+                    return;
+                }else {
+                    ele.files.splice(index, 1);
+                }
+                console.log('4',ele.files);
+            }
+        }
+        ele.addEventListener('click', removeImg, false);
+
+        // 上传图片
+        function uploadImg() {
+            console.log(ele.files);
+
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData();
+
+            for(var i=0, f; f=ele.files[i]; i++){
+                formData.append('files', f);
+            }
+
+            console.log('1',ele.files);
+            console.log('2',formData);
+
+            xhr.onreadystatechange = function (e) {
+                if(xhr.readyState == 4){
+                    if(xhr.status == 200){
+                        options.onSuccess(xhr.responseText);
+                    }else {
+                        options.onFailure(xhr.responseText);
+                    }
+                }
+            }
+
+            xhr.open('POST', options.path, true);
+            xhr.send(formData);
+
+        }
+        return uploadImg;
+    }
+</script>

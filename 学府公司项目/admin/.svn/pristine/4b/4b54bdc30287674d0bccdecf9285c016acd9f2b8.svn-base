@@ -1,0 +1,258 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">活动主题</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">活动介绍</label>
+                    <div class="col-md-10">
+                        <textarea style="resize: none; min-height:200px;width: 100%;border:1px solid #E4E4E4" cols="5"
+                                  rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">活动图片</label>
+                    <div class="col-md-10">
+                        <div class="con4">
+                            <canvas id="cvstwo" width="150" height="150"></canvas>
+                            <span class="btn upload">上传<input type="file" class="upload_pic" id="uploadtwo"/></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">活动类型</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="activity col-md-4 "></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">活动地区</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">活动时间</label>
+                    <div class="col-md-7">
+                        <ul class=" list-unstyled list-inline antime1">
+                            <li class="" style="width: 35%">
+                                <input type="text" id="datetimepicker" class="form-control datepicker"
+                                       placeholder="选择日期"/>
+                            </li>
+
+                            <li class="fdong" style="width:5%;">到</li>
+                            <li class="" style="width: 35%">
+                                <input type="text" class="form-control datepicker" placeholder="选择日期"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">活动归属</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="col-md-4">
+                            <div class="parentsitelist"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="endchild"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">活动分类</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="dropdowns col-md-4 "></div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="addmessageg()">保存并提交</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="savemessageg()">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function (window,$) {
+        var pagepostdata=apidata.postdata;
+        window.utils_admin.calendar($('.datepicker'));
+        window.utils_admin.loadhtml($(".activity"), '/dropdown.html', {
+            "header": "先选择活动类型",
+            "id": null,
+            "body":[
+                {
+                    "id":"1",
+                    "text":"宣传活动"
+                },{
+                    "id":"2",
+                    "text":"评比类活动"
+                }
+            ],
+            "width": 150,
+            "name": "activity",
+        });
+
+        $(".activity").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".activity")[0].id
+            }
+            pagepostdata.payload.actType = id;
+        });
+
+        var childSiteList = [], parentSiteList = [];
+        //取得管理员可管理站点列表即查询员工平台站点列表
+        let siteslist = utils_admin.setajax('POST', pagepostdata,apidata.base.staffPtSitesList);
+        siteslist.data.forEach((a, index) => {
+            parentSiteList.push(a);
+            childSiteList.push(a.siteList);
+            parentSiteList[index].text = parentSiteList[index].ptName
+            parentSiteList[index].id = parentSiteList[index].ptId;
+        });
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "所有平台",
+            "id": null,
+            "body": parentSiteList,
+            "width": 150,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": "先选择平台",
+            "id": null,
+            "body": null,
+            "width": 150,
+            "name": "endchild",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".parentsitelist")[0].id
+            }
+            childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchild.push(e);
+                        endchild[index].text = endchild[index].siteName;
+                        endchild[index].id = endchild[index].siteId;
+                    }
+                })
+            });
+            window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+                "header": endchild[0].text,
+                "id": endchild[0].id,
+                "body": endchild,
+                "width": 150,
+                "name": "endchild",
+            });
+        });
+        $(".endchild").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".endchild")[0].id
+            }
+            pagepostdata.payload.siteId = id;
+        });
+        //栏目分类
+        var newscategoryone = utils_admin.setajax('POST', pagepostdata, apidata.activity.actCategory);
+        var newscategoryonearr = [];
+        newscategoryone.data.forEach((a) => {
+            a.text = a.catName;
+            a.id = a.catId;
+            newscategoryonearr.push(a)
+        });
+        window.utils_admin.loadhtml($(".dropdowns"), '/dropdown.html', {
+            "header": "选择资讯",
+            "id": null,
+            "body": newscategoryonearr,
+            "width": 135,
+            "name": "newscategoryonearr",
+        });
+        $(".dropdowns").click(function (a) {
+            let id = '';
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".dropdowns")[0].id
+            }
+            pagepostdata.payload.catId = id;
+        });
+
+
+        //上传图片
+        var inputwo = window.document.getElementById("uploadtwo");
+        var canvastwo = window.document.getElementById("cvstwo");
+        window.utils_admin.setimg(inputwo, canvastwo, function (setdata) {
+            pagepostdata.payload.photo = setdata.data.fileId
+            pagepostdata.payload.actImgs = setdata.data.fileId
+        });
+
+        //保存
+        function savemessageg() {
+            let inputdata = $("input[type=text]");
+            if (inputdata[0].value == '') {
+                alert("必填项")
+            } else {
+                pagepostdata.payload.actTitle = inputdata[0].value;
+                pagepostdata.payload.actInfo = $("textarea").val();
+                pagepostdata.payload.actContent = inputdata[1].value;
+                pagepostdata.payload.actStartDate = inputdata[2].value;
+                pagepostdata.payload.actEndDate = inputdata[3].value;
+                if (pagepostdata.payload.photo == 0) {
+                    alert("文件或者图片正在上传")
+                } else {
+                    let setdata = utils_admin.setajax('POST', pagepostdata, apidata.activity.actactivity);
+                    pagepostdata.payload.actId = setdata.data.id;
+                    alert("保存成功")
+                }
+            }
+        }
+        //保存并提交
+        function addmessageg() {
+            savemessageg();
+            pagepostdata.payload.actStatus = "1";
+            let getdata = utils_admin.setajax('POST',pagepostdata, apidata.activity.actctivitysub);
+            if (getdata.success == "1") {
+                window.location.href = "/admin/views/index.html#/activitygecolumn"
+            }
+        }
+
+        window.addmessageg=addmessageg;
+        window.savemessageg=savemessageg;
+    })(window,window.$)
+</script>

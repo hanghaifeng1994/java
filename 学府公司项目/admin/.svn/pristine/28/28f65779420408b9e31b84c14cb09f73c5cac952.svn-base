@@ -1,0 +1,225 @@
+<div style="margin: 15px" class="row col-md-12">
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="col-md-12">
+                <div class="card horizontal-form">
+                    <div class="card-body">
+                        <div class="row col-md-12">
+                            <ul class=" list-unstyled list-inline antime1">
+                                <li class="" style="width: 40%">
+                                    <input type="text"  class="form-control datepicker"
+                                           placeholder="选择日期"/>
+                                </li>
+                                <li class="fdong" style="width:10%;">到</li>
+                                <li class="" style="width: 40%">
+                                    <input type="text" class="form-control datepicker" placeholder="选择日期"/>
+                                </li>
+                            </ul>
+                            <div class="col-md-5 col-sm-6 row" style="padding-top: 4px">
+                                <div class="dropdowns"></div>
+                                <div class="col-md-1"></div>
+                                <div class="dropdowns"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 col-sm-6 row">
+                            <button class="btn btn-e col-md-1">确定</button>
+                            <div class="col-md-1"></div>
+                            <button class="btn btn-e btn-wd col-md-1">导出数据表格</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 row">
+                {{each data}}
+                <div class="col-md-6 col-sm-12">
+                    <div class="container" style="height: 300px"></div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+        var datastatistics = [
+            {
+                title: {
+                    text: '资源量统计',
+                    x: 'left'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: '0',
+                    top: '20%',
+                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '35%',
+                        center: ['55%', '50%'],
+                        data: [
+                            {value: 1035, name: '直接访问'},
+                            {value: 310, name: '邮件营销'},
+                            {value: 234, name: '联盟广告'},
+                            {value: 135, name: '视频广告'},
+                            {value: 548, name: '搜索引擎'}
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                title: {
+                    text: '学习次数统计',
+                    x: 'left'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: '0',
+                    top: '20%',
+                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '35%',
+                        center: ['55%', '50%'],
+                        data: [
+                            {value: 335, name: '直接访问'},
+                            {value: 310, name: '邮件营销'},
+                            {value: 234, name: '联盟广告'},
+                            {value: 135, name: '视频广告'},
+                            {value: 1548, name: '搜索引擎'}
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                title: {
+                    text: '用户行为统计',
+                    x: 'left'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: '0',
+                    top: '20%',
+                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '35%',
+                        center: ['55%', '50%'],
+                        data: [
+                            {value: 335, name: '直接访问'},
+                            {value: 310, name: '邮件营销'},
+                            {value: 234, name: '联盟广告'},
+                            {value: 135, name: '视频广告'},
+                            {value: 1548, name: '搜索引擎'}
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                title: {
+                    text: '地区访问量统计',
+                    x: 'left'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: '0',
+                    top: '20%',
+                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '35%',
+                        center: ['55%', '50%'],
+                        data: [
+                            {value: 335, name: '直接访问'},
+                            {value: 310, name: '邮件营销'},
+                            {value: 234, name: '联盟广告'},
+                            {value: 135, name: '视频广告'},
+                            {value: 1548, name: '搜索引擎'}
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            }
+        ];
+        window.utils_admin.calendar($('.datepicker'));
+        window.utils_admin.loadhtml($(".dropdowns"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        });
+        for (var i = 0; i < utils_admin.data.datastatistics.data.length; i++) {
+            echarthtml($(".container")[i], utils_admin.data.datastatistics.data[i])
+        }
+        function echarthtml(container, configdata) {
+            var myChart = window.echarts.init(container);
+            var config = null;
+            config = configdata;
+            if (config && typeof config === "object") {
+                myChart.setOption(config, true);
+            }
+        }
+    })();
+</script>

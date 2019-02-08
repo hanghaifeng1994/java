@@ -1,0 +1,38 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'D:\\ruanjian\\node.js\\node.exe',
+1 verbose cli   'D:\\ruanjian\\node.js\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'start' ]
+2 info using npm@5.6.0
+3 info using node@v8.11.3
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info lifecycle nodeapp@1.0.0~prestart: nodeapp@1.0.0
+6 info lifecycle nodeapp@1.0.0~start: nodeapp@1.0.0
+7 verbose lifecycle nodeapp@1.0.0~start: unsafe-perm in lifecycle true
+8 verbose lifecycle nodeapp@1.0.0~start: PATH: D:\ruanjian\node.js\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;D:\公司开发文件集合\老年大学\终身学习网\trunk\front\frontapp\node_modules\.bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;D:\ruanjian\svn\bin;D:\ruanjian\node.js\;D:Develo\nodej\node_global
+9 verbose lifecycle nodeapp@1.0.0~start: CWD: D:\公司开发文件集合\老年大学\终身学习网\trunk\front\frontapp
+10 silly lifecycle nodeapp@1.0.0~start: Args: [ '/d /s /c', 'node app' ]
+11 silly lifecycle nodeapp@1.0.0~start: Returned: code: 3221225786  signal: null
+12 info lifecycle nodeapp@1.0.0~start: Failed to exec start script
+13 verbose stack Error: nodeapp@1.0.0 start: `node app`
+13 verbose stack Exit status 3221225786
+13 verbose stack     at EventEmitter.<anonymous> (D:\ruanjian\node.js\node_modules\npm\node_modules\npm-lifecycle\index.js:285:16)
+13 verbose stack     at emitTwo (events.js:126:13)
+13 verbose stack     at EventEmitter.emit (events.js:214:7)
+13 verbose stack     at ChildProcess.<anonymous> (D:\ruanjian\node.js\node_modules\npm\node_modules\npm-lifecycle\lib\spawn.js:55:14)
+13 verbose stack     at emitTwo (events.js:126:13)
+13 verbose stack     at ChildProcess.emit (events.js:214:7)
+13 verbose stack     at maybeClose (internal/child_process.js:925:16)
+13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
+14 verbose pkgid nodeapp@1.0.0
+15 verbose cwd D:\公司开发文件集合\老年大学\终身学习网\trunk\front\frontapp
+16 verbose Windows_NT 6.3.9600
+17 verbose argv "D:\\ruanjian\\node.js\\node.exe" "D:\\ruanjian\\node.js\\node_modules\\npm\\bin\\npm-cli.js" "start"
+18 verbose node v8.11.3
+19 verbose npm  v5.6.0
+20 error code ELIFECYCLE
+21 error errno 3221225786
+22 error nodeapp@1.0.0 start: `node app`
+22 error Exit status 3221225786
+23 error Failed at the nodeapp@1.0.0 start script.
+23 error This is probably not a problem with npm. There is likely additional logging output above.
+24 verbose exit [ 3221225786, true ]

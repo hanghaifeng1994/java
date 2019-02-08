@@ -1,0 +1,278 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime"></label>
+                    <div class="col-md-10 row rylist">
+                        <div class="col-md-3">
+                            <div class="parentsitelist "></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="endchild "></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">所属课程</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">作业主题</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">作业内容</label>
+                    <div class="col-md-10">
+                        <textarea style="resize: none; min-height:200px;width: 100%;border:1px solid #E4E4E4" cols="5"
+                                  rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">附件</label>
+                    <div class="col-md-10">
+                            <span id="uploadImg">
+                                <input type="file" id="file" size="1">
+                                <a href="#">上传文件</a>
+                            </span>
+                        <p id="em">未上传</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xl-12 col-md-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">提交截止时间</label>
+                    <div class="col-md-10">
+                        <div class="row clo-md-12">
+                            <div class="col-md-3">
+                                <input type="radio" name="radio" style="margin-top:6px"><span style="margin-left:10px">发布后</span>
+                            </div>
+                            <div class="dropdowns1 "></div>
+                        </div>
+                        <div class="row clo-md-12 padding-t-20">
+                            <div class="col-md-3">
+                                <input type="radio" name="radio" style="margin-top:6px"><span style="margin-left:10px">开始学习后</span>
+                            </div>
+                            <div class="dropdowns2 "></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="addmessageg()">发布</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="savemessageg()">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function (window, $) {
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+        pagepostdata.payload.hwWorkTimeLimit = "0";
+        window.utils_admin.loadhtml($(".dropdowns1"), '/dropdown.html', {
+            "header": "永久",
+            "id": "0",
+            "body": [
+                {
+                    "text": "永久",
+                    "id":"0"
+                },
+                {
+                    "text": "两个月",
+                    "id":"60"
+                },
+                {
+                    "text": "一个月",
+                    "id":"30"
+                },
+                {
+                    "text": "两周",
+                    "id":"14"
+                }
+            ],
+            "width": 150,
+            "name": "dropdowns1",
+        });
+        window.utils_admin.loadhtml($(".dropdowns2"), '/dropdown.html', {
+            "header": "永久",
+            "id": "0",
+            "body": [
+                {
+                    "text": "永久",
+                    "id":"0"
+                },
+                {
+                    "text": "两个月",
+                    "id":"60"
+                },
+                {
+                    "text": "一个月",
+                    "id":"30"
+                },
+                {
+                    "text": "两周",
+                    "id":"14"
+                }
+            ],
+            "width": 150,
+            "name": "dropdowns2",
+        });
+        $(".dropdowns1").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".endchild")[0].id
+            }
+            pagepostdata.payload.hwWorkTimeLimit = id;
+        })
+        $(".dropdowns2").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".endchild")[0].id
+            }
+            pagepostdata.payload.hwWorkTimeLimit = id;
+        });
+
+        //站点,平台初始化
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "所有平台",
+            "id": null,
+            "body": window.parentSiteList,
+            "width": 120,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": "先选择平台",
+            "id": null,
+            "body": null,
+            "width": 120,
+            "name": "endchild",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+            window.childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchild.push(e)
+                        endchild[index].text = endchild[index].siteName;
+                        endchild[index].id = endchild[index].siteId;
+                    }
+                })
+            });
+            window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+                "header": endchild[0].text,
+                "id": endchild[0].id,
+                "body": endchild,
+                "width": 120,
+                "name": "endchild",
+            });
+        });
+        $(".endchild").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".endchild")[0].id
+            }
+            pagepostdata.payload.siteId = id;
+        });
+
+        //上传附件
+        $('#file').on('change', function (e) {
+            var setdataform = e.currentTarget.files[0],
+                name = setdataform.name,
+                type = (setdataform.name.substr(setdataform.name.lastIndexOf("."))).toLowerCase();
+            if (type == ".xls" || type == ".doc" || type == ".xlsx" || type == ".docx" && setdataform.size / 1024 / 1024 < 10) {
+                $('#em').text("正在上传中...");
+                pagepostdata.payload.fileId = 0;
+                var formData = new FormData();
+                formData.append('imgFile', setdataform);
+                $.ajax({
+                    url: apidata.file.file,
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (e) {
+                        if (e.success == "1") {
+                            $('#em').text(e.data.fileName + " 上传成功");
+                            pagepostdata.payload.fileId = e.data.fileId;
+                            pagepostdata.payload.fileName = e.data.fileName;
+                        } else {
+                            $('#em').text("上传失败");
+                        }
+                    },
+                    error: function (e) {
+                        $('#em').text("上传失败");
+                    }
+                })
+            } else {
+                alert("请选择xls,xlsx,doc,docx文件格式,并不能大于10m");
+                return false;
+            }
+        });
+        //保存
+        function savemessageg() {
+            let inputdata = $("input[type=text]");
+            if (inputdata[0].value == '') {
+                alert("必填项")
+            } else {
+                pagepostdata.payload.hwTitle = inputdata[0].value;
+                pagepostdata.payload.copyfrom = inputdata[1].value;
+                pagepostdata.payload.hwContent = $("textarea").val();
+                if (pagepostdata.payload.fileId == 0) {
+                    alert("文件或图片正在上传")
+                } else {
+                    let setdata = utils_admin.setajax('POST', pagepostdata, apidata.homework.save);
+                    pagepostdata.payload.hwId = setdata.data.id;
+                    alert("保存成功")
+                }
+            }
+        }
+
+        //发布
+        function addmessageg() {
+            savemessageg();
+            pagepostdata.payload.hwStatus = "1";
+            let getdata = utils_admin.setajax('POST', pagepostdata, apidata.homework.publish);
+            if (getdata.success == "1") {
+                window.location.href = "/admin/views/index.html#/assesswork"
+            }
+        }
+
+        window.addmessageg = addmessageg;
+        window.savemessageg = savemessageg;
+    })(window, window.$)
+</script>

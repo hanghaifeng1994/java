@@ -1,0 +1,129 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">上传图片</label>
+                    <div class="col-md-2">
+                        <span class="btn upload">选择图片<input type="file" class="upload_pic" id="uploadtwo"/></span>
+                        <div class="col-md-2 rylist">&nbsp;&nbsp;350*1400</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime"></label>
+                    <canvas id="cvstwo" width="150" height="150"></canvas>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">图片链接</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">所属平台</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="col-md-4">
+                            <div class="dropdowns1 "></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="dropdowns2 "></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">是否启用</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="dropdowns col-md-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">显示序号</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <button type="submit" class="btn btn-fill  btn-e">保存并添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function (window,$) {
+        $(function () {
+            //初始化编辑器
+            editor = new wangEditor("txtdiv");
+            editor.create();
+        });
+        var inputwo = window.document.getElementById("uploadtwo");
+        var canvastwo = window.document.getElementById("cvstwo");
+        window.utils_admin.setimg(inputwo, canvastwo);
+        window.utils_admin.loadhtml($(".dropdowns"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        })
+        window.utils_admin.loadhtml($(".dropdowns2"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        })
+        window.utils_admin.loadhtml($(".dropdowns1"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        })
+    })(window,window.$)
+    //
+</script>

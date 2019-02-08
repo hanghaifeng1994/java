@@ -1,0 +1,35 @@
+{{set cdata=pagedata.totalData.courselistblock}}
+<div class="container">
+    <div class="row margintb">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="xinwen">
+                <div class="pull-left xinwen1">课程中心</div>
+                <div class="pull-right"><a href=""><img src="/img/2.jpg" alt=""></a></div>
+                <div class="pull-right hidden-xs">
+                    <ol class="breadcrumb">
+                        <li><a href="#">公民素养</a></li>
+                        <li><a href="#">书画雕刻</a></li>
+                        <li><a href="#">文化体育</a></li>
+                        <li><a href="#">书画雕刻</a></li>
+                        <li><a href="#">书画雕刻</a></li>
+                        <li><a href="#">书画雕刻</a></li>
+                        <li><a href="#">书画雕刻</a></li>
+                        <li><a href="#">书画雕刻</a></li>
+                        <li class="active">书画雕刻</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="xwxq">
+                <div class="row">
+                    {{each cdata.data}}
+                    <div class="col-xs-6 col-sm-3 col-md-3">
+                        <a href=""> <img class="img-responsive center-block img1" src="{{$value.csPhoto}}" alt=""></a>
+                        <h4 class="textys">{{$value.csName}}</h4>
+                        <div class="textys1">学分：{{$value.csStudylength}}</div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

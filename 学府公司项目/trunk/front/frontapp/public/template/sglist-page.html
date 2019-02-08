@@ -1,0 +1,184 @@
+<style>
+    .sglist-page .app-cover {
+        height: 200px;
+    }
+
+    .sglist-page .info li {
+        float: left;
+        margin-right: 10%;
+    }
+
+    .sglist-page .top {
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .sglist-page .inline li {
+        float: left;
+        margin-right: 40px;
+    }
+
+    .sglist-page li {
+        margin-bottom: 20px;
+    }
+
+    .sglist-page li:last-child {
+        margin-bottom: 0;
+    }
+</style>
+<style>
+    .pagination-block {
+        text-align: center;
+        white-space: nowrap;
+        padding: 40px 0;
+    }
+
+    .pagination-block .page-btn {
+        display: inline-block;
+        margin: 0 3px;
+        width: 40px;
+        line-height: 40px;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+    .pagination-block .page-btn.active {
+        color: #fff;
+        background-color: #39ABEF;
+        border-color: #39ABEF;
+    }
+
+    .pagination-block .page-btn:hover,
+    .pagination-block .page-btn:focus {
+        text-decoration: none;
+    }
+</style>
+{{set data=pagedata.totalData.sglistpage}}
+<div class="sglist-page">
+    <div class="tags-title clearfix app-mb20">
+        <a href="javascript:;" class="active">创建时间</a>
+        <a href="javascript:;">参加人数</a>
+        <span class="pull-right text-muted">共有学习小组
+            <span class="text-primary">23</span>个</span>
+    </div>
+    <ul>
+        {{each data.data}}
+        <li class="row">
+            <div class="col-xs-4 col-sm-3">
+                <div class="app-cover" style="background-image: url('/public/pic/5.jpg')"></div>
+            </div>
+            <div class="col-xs-8 col-sm-9">
+                <div class="con">
+                    <div class="top">
+                        <a href="" class="btn btn-warning btn-lg btn-circle pull-right">我要参加</a>
+                        <h4>{{$value.title}}</h4>
+                        <ul class="info clearfix text-muted">
+                            <li>创建时间：{{$value.updateDate}}</li>
+                            <li>分类：娱乐</li>
+                            <li>创建人：张校长</li>
+                        </ul>
+                    </div>
+                    <p>{{$value.articleId}}</p>
+                    <ul class="clearfix inline text-muted">
+                        <li class="data-icon data-icon-bm">参加人数：{{$value.delFlag}}</li>
+                        <li class="data-icon data-icon-sc">收藏人数：22222</li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+    <div class="pagination-block">
+        <a href="" class="page-btn">&lt;&lt;</a>
+        {{set nub=(data.totalCount/8)-(data.totalCount/8)%1}}
+        <% for(var i = 1; i <nub+2; i++){ %>
+        <a href="/old/html/studygrouplist.html?pcode=sglistpage&papi=news.queryPageByCatIds&page={{i}}&rows=8"
+           class="page-btn"> <%= i %></a>
+        <% } %>
+        <a href="" class="page-btn">&gt;&gt;</a>
+    </div>
+</div>
+<script type="text/html" id="">
+    <div class="sglist-page">
+        <div class="tags-title clearfix app-mb20">
+            <a href="javascript:;" class="active">创建时间</a>
+            <a href="javascript:;">参加人数</a>
+            <span class="pull-right text-muted">共有学习小组
+            <span class="text-primary">23</span>个</span>
+        </div>
+        <ul>
+            {{each pagedata.totalData.sglistpage}}
+            <li class="row">
+                <div class="col-xs-4 col-sm-3">
+                    <div class="app-cover" style="background-image: url('/public/pic/5.jpg')"></div>
+                </div>
+                <div class="col-xs-8 col-sm-9">
+                    <div class="con">
+                        <div class="top">
+                            <a href="" class="btn btn-warning btn-lg btn-circle pull-right">我要参加</a>
+                            <h4>{{$value.title}}</h4>
+                            <ul class="info clearfix text-muted">
+                                <li>创建时间：{{$value.updateDate}}</li>
+                                <li>分类：娱乐</li>
+                                <li>创建人：张校长</li>
+                            </ul>
+                        </div>
+                        <p>{{$value.articleId}}</p>
+                        <ul class="clearfix inline text-muted">
+                            <li class="data-icon data-icon-bm">参加人数：{{$value.delFlag}}</li>
+                            <li class="data-icon data-icon-sc">收藏人数：22222</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+        <style>
+            .pagination-block {
+                text-align: center;
+                white-space: nowrap;
+                padding: 40px 0;
+            }
+
+            .pagination-block .page-btn {
+                display: inline-block;
+                margin: 0 3px;
+                width: 40px;
+                line-height: 40px;
+                border: 1px solid #ddd;
+                border-radius: 50%;
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            }
+
+            .pagination-block .page-btn.active {
+                color: #fff;
+                background-color: #39ABEF;
+                border-color: #39ABEF;
+            }
+
+            .pagination-block .page-btn:hover,
+            .pagination-block .page-btn:focus {
+                text-decoration: none;
+            }
+        </style>
+        <div class="pagination-block">
+            <a href="" class="page-btn">&lt;&lt;</a>
+            <a href="" class="page-btn active">1</a>
+            <a href="" class="page-btn">2</a>
+            <a href="" class="page-btn">3</a>
+            <a href="" class="page-btn">4</a>
+            <a href="" class="page-btn">5</a>
+            <a href="" class="page-btn">&gt;&gt;</a>
+        </div>
+    </div>
+</script>
+
+<script>
+    // 分类
+    $('.tags-title a').click(function () {
+        $('.tags-title a').removeClass('active')
+        $(this).addClass('active')
+    })
+</script>

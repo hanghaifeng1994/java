@@ -1,0 +1,277 @@
+<div class="col-md-12">
+    <div class="col-md-12 row" style="padding-top: 10px">
+        <div class="col-md-6 col-xs-12 row">
+            <div class="col-md-4 col-xs-12">
+                <div class="parentsitelist"></div>
+            </div>
+            <div class="col-md-4 col-xs-12" style="margin-left: 50px">
+                <div class="endchild"></div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12 row ">
+            <div class="col-md-12 col-xs-12">
+                <button class="btn btn-e btn-wd" onclick="deleteclass()">新增分类</button>
+                <a class="btn btn-e btn-wd" href="">编辑维度</a>
+            </div>
+        </div>
+    </div>
+    <div class="treetable"></div>
+</div>
+<div id="popups">
+
+</div>
+<script>
+
+    apidata.postdata.payload.siteIds = "1";
+    var pagedata = utils_admin.setajax('POST', apidata.postdata, apidata.resource.cqueryManagePage).data;
+    pagedata.forEach((a, b) => {
+        a.id = a.catId;
+        a.one = a.catName;
+        a.two = a.catId;
+        a.three = a.catLevel;
+        a.four = a.catSort;
+        if (a.parentId) {
+            a.child = false
+        } else {
+            a.child = true
+        }
+        a.menu = [
+            {
+                "text": "编辑",
+                "method": "redactclass",
+            },
+            {
+                "text": "删除",
+                "method": "onedel",
+            },
+            {
+                "text": "进入下级分类",
+                "method": "onedel",
+            }
+        ]
+    });
+    console.log(pagedata);
+    window.utils_admin.loadhtml($('.treetable'), '/treeTable.html', {
+        "datath": [
+            {
+                "text": "分类名称"
+            },
+            {
+                "text": "编号"
+            },
+            {
+                "text": "分类等级"
+            },
+            {
+                "text": "排序"
+            },
+            {
+                "text": "操作"
+            }
+        ],
+        "tabledata": pagedata,
+    });
+
+
+    var childSiteList = [], parentSiteList = [];
+    //取得管理员可管理站点列表即查询员工平台站点列表
+    var siteslist = utils_admin.setajax('POST', apidata.postdata, apidata.resource.cqueryManagePage);
+    siteslist.data.forEach((a, index) => {
+        parentSiteList.push(a);
+        childSiteList.push(a.siteList);
+        parentSiteList[index].text = parentSiteList[index].ptName
+        parentSiteList[index].id = parentSiteList[index].ptId;
+    });
+    console.log($(".parentsitelist"))
+    window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+        "header": "所有平台",
+        "id": null,
+        "body": parentSiteList,
+        "width": 150,
+        "name": "parentsitelist",
+    });
+    window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+        "header": "先选择平台",
+        "id": null,
+        "body": null,
+        "width": 150,
+        "name": "endchild",
+    });
+    //换站点
+    $(".parentsitelist").click(function (a) {
+        let id = '', endchild = [];
+        if (a.target.nodeName.toLowerCase() == "li") {
+            id = a.target.getAttribute("id")
+        } else {
+            id = $(".parentsitelist")[0].id
+        }
+        childSiteList.forEach((a) => {
+            a.forEach((e, index) => {
+                if (e.ptId == id) {
+                    endchild.push(e);
+                    endchild[index].text = endchild[index].siteName;
+                    endchild[index].id = endchild[index].siteId;
+                }
+            })
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": endchild[0].text,
+            "id": endchild[0].id,
+            "body": endchild,
+            "width": 150,
+            "name": "endchild",
+        });
+    });
+    $(".endchild").click(function (a) {
+        if (a.target.nodeName.toLowerCase() == "li") {
+            id = a.target.getAttribute("id")
+        } else {
+            id = $(".endchild")[0].id
+        }
+        apidata.postdata.payload.siteId=id;
+    });
+    //加载弹窗组件
+    function popups(data) {
+        $("#popups").load('./template/popups.html', function (a) {
+            $("#popups").html(window.template.render(a, data));
+            ballblack();
+        })
+    };
+
+    //弹窗显示隐藏
+    function ballblack() {
+        let ballblack = $('#ballblack');
+        if (ballblack.css('display') == 'none') {
+            ballblack.css('display', 'block')
+        } else {
+            ballblack.css('display', 'none')
+        }
+    }
+
+    //批量删除
+    function deleteclass() {
+        let checkboxs = $("input[name=choose]");
+        let data = {
+            "tempid": 'balldeleteclass',
+            "checkdata": [],
+            "body": {
+                "head": "提示",
+                "text": "是否确认删除选中的内容",
+                "yesbt": "确认",
+                "nobt": "取消"
+            }
+        };
+        for (let i = 0; i < checkboxs.length; i++) {
+            if (checkboxs[i].checked) {
+                data.checkdata.push(checkboxs[i].value);
+            }
+        }
+        if (data.checkdata.length) {
+            popups(data);
+        }
+    }
+
+    function balldeleteclass(e) {
+        for (let i = 0; i < e.length; i++) {
+            $("#" + e[i]).remove();
+            ballblack();
+        }
+    }
+
+    //单独删除
+    function onedel(e) {
+        console.log(e.id);
+        let data = {
+            "tempid": 'tableclassone',
+            "checkdata": '',
+            "body": {
+                "head": "提示",
+                "text": "是否确认删除",
+                "yesbt": "确认",
+                "nobt": "取消"
+            }
+        };
+        data.checkdata = e.id;
+        popups(data)
+    }
+
+    function tableclassone(e) {
+        $("#" + e).remove();
+        ballblack();
+    }
+
+    //新增
+    function addclassinf() {
+        let html = `<tr>
+                            <td></td>
+                            <td>
+                            <input type="text">
+</td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td class="text-center caozuo" style="color: #00bbff">
+                                <a onclick="">保存&nbsp;<span>|</span></a><a>取消<span></span></a>
+                            </td>
+                        </tr>`;
+        console.log($('#treeTable>tbody'));
+        $('#treeTable>tbody').append(html)
+    }
+
+    //编辑
+    function redactclass(e) {
+        let id = e.dataset.id;
+        console.log($("#" + id + ""))
+    }
+
+    //启用
+    function start(e) {
+        console.log(e);
+        let id = e.dataset.id;
+    }
+
+    //选择
+    function selectall(thit) {
+        let checkboxs = document.getElementsByName("choose");
+        if (thit.checked) {
+            for (let i = 0; i < checkboxs.length; i++) {
+                let e = checkboxs[i];
+                e.checked = "true";
+            }
+        } else {
+            for (let i = 0; i < checkboxs.length; i++) {
+                let e = checkboxs[i];
+                e.checked = false;
+            }
+        }
+    }
+
+    function selectallbelow(e) {
+        console.log(e)
+    }
+
+    function beforeExpand(treeTable, id) {
+        if ($('.'+id,treeTable).length) { return; }
+        apidata.postdata.payload.catId = id;
+        let postdata = utils_admin.setajax('POST', apidata.postdata, apidata.resource.cqueryManagePage).data;
+        if (postdata) {
+            let html = '';
+            for (var i = 0; i < postdata.length; i++) {
+                postdata[i].childData?postdata[i].childData=true:postdata[i].childData=false;
+                html+="<tr id=" + postdata[i].catId + " pId=" + postdata[i].catId +" hasChild="+postdata[i].childData+">" +
+                    "<td><input class='fuxk' name='choose' type='checkbox' value=" + id + "/></td>"+
+                    "<td>"+postdata[i].catName+"</td>" +
+                    "<td>"+postdata[i].catId+"</td>" +
+                    "<td>"+postdata[i].catLevel+"</td>" +
+                    "<td>"+postdata[i].catName+"</td>" +
+                    "<td  class='text-center caozuo' style='color: #00bbff'>" +
+                    "<a onclick='redactclass(this)' data-id="+postdata[i].catId+">编辑</a>" +
+                    "<a onclick='onedel(this)' data-id="+postdata[i].catId+">删除</a>" +
+                    "<a onclick='onedel(this)' data-id="+postdata[i].catId+">进入下级分类</a>" +
+                    "</td></tr>";
+            }
+            treeTable.addChilds(html);
+        }
+    }
+</script>
+

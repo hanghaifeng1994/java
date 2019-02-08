@@ -1,0 +1,161 @@
+<div>
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="col-md-12">
+                <div class="card horizontal-form">
+                    <div class="card-body">
+                        <div class="row col-md-12">
+                            <div class="col-md-3 col-sm-6">
+                                <div class="dropdowns"></div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <div class="dropdowns"></div>
+                            </div>
+                            <div  class="col-md-4 col-sm-6">
+                                <input type="text" placeholder="课程名称" class="form-control">
+                            </div>
+                            <div class="col-md-2 col-sm-6">
+                                <button  class="btn btn-wd btn-e">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+                    <a class="btn btn-danger btn-wd" href="#addassesswork">发布作业</a>
+                </div>
+            </div>
+            <div class="container-fluid padding-t-20">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <table class="table table-bordered table-hover" id="tablecz">
+                            <thead>
+                            <tr>
+                                <th class="text-center cuti">作业主题</th>
+                                <th class="text-center cuti">发布人</th>
+                                <th class="text-center cuti">发布时间</th>
+                                <th class="text-center cuti">状态</th>
+                                <th class="text-center cuti">订单总数</th>
+                                <th class="text-center cuti">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center">
+                                    {{con.yes}} <span style="padding:0 5px">/</span>{{con.no}}
+                                </td>
+                                <td class="text-center">{{con.shenhe}}</td>
+                                <td class="text-center">{{con.shenhe}}</td>
+                                <td class="text-center">{{con.shenhe}}</td>
+                                <td class="text-center">{{con.shenhe}}</td>
+                                <td class="text-center">{{con.shenhe}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="fenye">
+                            <div class="sxy"><a href="javascript:void(0)">首页</a></div>
+                            <div class="sxy"><a href="javascript:void(0)">上一页</a></div>
+                            <div class="xuhao fyon"><a href="javascript:void(0)">1</a></div>
+                            <div class="xuhao"><a href="javascript:void(0)">2</a></div>
+                            <div class="xuhao">…</div>
+                            <div class="xuhao"><a href="javascript:void(0)">5</a></div>
+                            <div class="sxy"><a href="javascript:void(0)">下一页</a></div>
+                            <div class="sxy"><a href="javascript:void(0)">尾页</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function (window, $) {
+        window.utils_admin.loadhtml($(".dropdowns"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ],
+            "width": 120
+        })
+
+        function selectall() {
+            var checkboxs = document.getElementsByName("choose");
+            for (var i = 0; i < checkboxs.length; i++) {
+                var e = checkboxs[i];
+                e.checked = !e.checked;
+            }
+        }
+
+        //加载弹窗组件
+        function popups(data) {
+            $("#popups").load('./template/popups.html', function (a) {
+                $("#popups").html(window.template.render(a, data));
+                ballblack();
+            })
+        }
+
+        //单独删除
+        function onedel(e) {
+            console.log(e.id);
+            let data = {
+                "tempid": 'tableclassone',
+                "checkdata": '',
+                "body": {
+                    "head": "提示",
+                    "text": "是否确认删除",
+                    "yesbt": "确认",
+                    "nobt": "取消"
+                }
+            };
+            data.checkdata = e.id
+            popups(data)
+        }
+
+        function tableclassone(e) {
+            $("#" + e).remove();
+            ballblack();
+        }
+
+        //批量删除
+        function deleteclass() {
+            let checkboxs = $("input[name=choose]");
+            let data = {
+                "tempid": 'balldeleteclass',
+                "checkdata": [],
+                "body": {
+                    "head": "提示",
+                    "text": "是否确认删除选中的内容",
+                    "yesbt": "确认",
+                    "nobt": "取消"
+                }
+            };
+            for (let i = 0; i < checkboxs.length; i++) {
+                if (checkboxs[i].checked) {
+                    data.checkdata.push(checkboxs[i].value);
+                }
+            }
+            if (data.checkdata.length) {
+                popups(data);
+            }
+        }
+
+        function balldeleteclass(e) {
+            for (let i = 0; i < e.length; i++) {
+                $("#" + e[i]).remove();
+                ballblack();
+            }
+        }
+    })(window, window.$)
+
+</script>
+<script src="../assets/js/indexfunc.js"></script>

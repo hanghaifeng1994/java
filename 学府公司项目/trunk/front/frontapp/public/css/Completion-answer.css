@@ -1,0 +1,31 @@
+.neirong{
+    height: 580px;
+}
+.kaishi{
+    width: 180px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    background: #e0c56e;
+    color: #fff;
+    border-radius: 30px;
+    margin: 150px auto;
+    display: block;
+}
+.gongxi{
+    font-size: 20px;
+    color: #39abef;
+    text-align: center;
+    margin-top: 90px;
+}
+.nindcj{
+    text-align: center;
+    margin-top: 60px;
+}
+.nindcj span{
+    color:#39abef ;
+}
+
+
+
+

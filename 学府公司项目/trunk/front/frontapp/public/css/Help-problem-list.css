@@ -1,0 +1,87 @@
+a:hover{
+    text-decoration:none;
+    color: #39abef;
+}
+.mar30{
+    margin-top: 50px;
+}
+.huibj{
+    height: 50px;
+    line-height: 50px;
+    background: #eee;
+    color: #39abef;
+    font-size: 18px;
+}
+.gmd{
+    color: #a5a5a5;
+    padding-bottom: 20px;
+}
+.shangc{
+    font-size: 18px;
+    padding: 18px 0 20px 0;
+    font-weight: bold;
+}
+.gwy{
+    margin-top:18px;
+}
+.gwy span{
+    color: #a5a5a5;
+    padding:0 5px;
+}
+.gwy a{
+    color: #000;
+}
+.margin-top3 {
+  margin:30px 0;
+}
+.flexc {
+    display: flex;
+    justify-content: center;
+}
+.yuanxia {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #e6e6e6;
+    border-radius: 50%;
+    text-align: center;
+    margin-right: 5px;
+}
+.yuanxiaactive {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #e6e6e6;
+    border-radius: 50%;
+    text-align: center;
+    margin-right: 5px;
+    background: #39abef;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

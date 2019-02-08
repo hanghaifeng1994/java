@@ -1,0 +1,160 @@
+<div class="card-body">
+    <div class="tab-content">
+        <div class="col-md-12 row" style="padding-top: 10px">
+            <div class="col-md-6 col-xs-12 row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="parentsitelist"></div>
+                </div>
+                <div class="col-md-4 col-xs-12" style="margin-left: 50px">
+                    <div class="endchild"></div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12 row ">
+                <div class="col-md-12 col-xs-12">
+                    <button class="btn btn-e btn-wd resultAdd" onclick="resultAdd(this)">新增分类</button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid padding-t-20">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <table class="table table-bordered table-hover" id="tablecz">
+                        <thead>
+                        <th class="text-center cuti">分类名称</th>
+                        <th class="text-center cuti">分类id</th>
+                        <th class="text-center cuti">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="resultgecolumn"></tbody>
+                    </table>
+                    <div class="fenye">
+                        <div class="pagination pagination0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="resultgecolumn_t">
+    {{each data}}
+    <tr class="{{$value.catId}}">
+        <td class="text-center"> {{$value.catName}}</td>
+        <td class="text-center">
+            {{$value.catId}}
+        </td>
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.catId}}"
+               onclick="deleteById(this)">
+                删除
+            </a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+<script>
+    (function (window) {
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+        var pagedata = utils_admin.setajax('POST', pagepostdata, apidata.studygroup.sgpCategoryPage);
+        utils_admin.queryPage("resultgecolumn", "resultgecolumn_t", pagedata);
+        new pagination({
+            pagination: $('.pagination0'),//分页挂载的样式名称
+            maxPage: 5, //最大页码数,支持奇数，左右对称
+            startPage: 1,    //默认第一页
+            currentPage: 1,          //当前页码
+            totalPageCount: (pagedata.totalCount / pagedata.pageSize) - (pagedata.totalCount / pagedata.pageSize) % 1 + 1,  //总页数
+            callback: function (pageNum) {
+                pagepostdata.payload.page = "" + pageNum + "";
+                //修改查询接口-apidata.news.queryPage
+                utils_admin.queryPage("resultgecolumn", "resultgecolumn_t", utils_admin.setajax('POST', pagepostdata, apidata.studygroup.sgpCategoryPage));
+            }
+        });
+
+        //站点,平台初始化
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "请选择平台",
+            "id": null,
+            "body": window.parentSiteList,
+            "width": 120,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": "请选择站点",
+            "id": null,
+            "body": null,
+            "width": 120,
+            "name": "endchild",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+            window.childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchild.push(e)
+                        endchild[index].text = endchild[index].siteName;
+                        endchild[index].id = endchild[index].siteId;
+                    }
+                })
+            });
+            pagepostdata.payload.siteId = endchild[0].id;
+
+            window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+                "header": endchild[0].text,
+                "id": endchild[0].id,
+                "body": endchild,
+                "width": 120,
+                "name": "endchild",
+            });
+        });
+        $(".endchild").click(function (a) {
+            var id = '';
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".endchild input")[0].id
+            }
+            pagepostdata.payload.siteId = id;
+        });
+
+
+        //删除成果
+        function deleteById(e) {
+            var id = $(e).attr("data-id");
+            pagepostdata.payload.catId = id;
+            $("#toolTipbox").toggle("hidden");
+        }
+
+        //批量删除
+        function delBatch(e) {
+            var ids = utils_admin.choosevalue("tablecz");
+            pagepostdata.payload.rstId = ids;
+            $("#toolTipbox").toggle("hidden");
+        }
+
+        //弹窗的确定和取消操作
+        $("#toolTipbox>.white_content").off('click').on('click', function (a) {
+            var index = $(this).attr("data-id");
+            if (index == "1") {
+                utils_admin.setajax('POST', pagepostdata, apidata.studygroup.studygroupCateDelete);
+                utils_admin.queryPage("resultgecolumn", "resultgecolumn_t", utils_admin.setajax('POST', pagepostdata, apidata.studygroup.sgpCategoryPage));
+            }
+            $("#toolTipbox").toggle("hidden");
+            a.stopPropagation();
+        });
+
+        //新增
+        function resultAdd(e) {
+            utils_admin.redact("studygroupcateAdd", "catId", e)
+        }
+
+        window.deleteById = deleteById;
+        window.delBatch = delBatch;
+        window.resultAdd = resultAdd;
+    })(window)
+
+</script>

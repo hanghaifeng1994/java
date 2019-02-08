@@ -1,0 +1,134 @@
+
+<div class="col-xs-9 col-sm-9 col-md-9">
+    <div class="row">
+        <div class="denglutime">
+            上次登录时间：2018年6月27日 14:11:33
+        </div>
+        <div id="Centerdata_tj_html"></div>
+        <script type="text/html" id="Centerdata_tj">
+        <div class="col-xs-6 col-sm-3 col-md-3 xuetimes1">
+            <div class="timesa1">
+                12小时34分钟
+            </div>
+            <div class="timesa2">
+                学习总时长
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 xuetimes2">
+            <div class="timesa1">
+                {{each data}}{{$value.creditNum}}{{/each}}分
+            </div>
+            <div class="timesa2">
+                学分
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 xuetimes3">
+            <div class="timesa1">
+                {{each data}}{{$value.pointsNum}}{{/each}}分
+            </div>
+            <div class="timesa2">
+                积分
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 xuetimes4">
+            <div class="timesa1">
+                11人
+            </div>
+            <div class="timesa2">
+                粉丝
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 xuetimes5">
+            <div class="timesa11">
+                5门
+            </div>
+            <div class="timesa21">
+                课程
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 xuetimes5">
+            <div class="timesa11">
+                5个
+            </div>
+            <div class="timesa21">
+                学习小组
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 xuetimes5">
+            <div class="timesa11">
+                5个
+            </div>
+            <div class="timesa21">
+                活动
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-3 col-md-3 xuetimes5">
+            <div class="timesa11">
+                5个
+            </div>
+            <div class="timesa21">
+                才艺与经验
+            </div>
+        </div>
+        </script>
+
+        <div class="zhanghu">
+            账户管理
+        </div>
+        <div  id="Centerdata_info_thml"></div>
+        <div  id="Centerdata_info_t">
+        <div class="col-xs-12 col-sm-6 col-md-6 flex margin-top3">
+            <div class="yanzheng1">
+                <img src="/img/A.png"/>
+            </div>
+            <div class="yanzheng2">
+                <div class="shouji1">
+                    <a href="">手机验证</a>
+                </div>
+                <div class="shouji2">
+                    用户绑定：18326666666
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 flex margin-top3">
+            <div class="yanzheng1">
+                <img src="/img/B.png"/>
+            </div>
+            <div class="yanzheng2">
+                <div class="shouji1">
+                    <a href="">修改密码</a>
+                </div>
+                <div class="shouji2">
+                    建议定期更改密码以保护账户安全
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 flex margin-top3">
+            <div class="yanzheng1">
+                <img src="/img/C.png"/>
+            </div>
+            <div class="yanzheng2 shiming">
+                <a href="">实名认证</a>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    console.log("sdfds--",apidata.resultbill.queryPageByUser)
+    //请求第xx模板数据
+    var tjdata = utils.getdata("POST", "json", apidata.resultbill.queryPageByUser, JSON.stringify({
+        "header": utils.getHeader(true),
+        "payload": {
+            "custId":utils.getCurrentUser(),
+            "page": "1",
+            "rows": "8"
+        }
+    }));
+    console.log("tjdata--",tjdata)
+    //var html = template('test', data);
+    $("#Centerdata_tj_html").html(window.template.render($("#Centerdata_tj").html(), tjdata))
+
+
+</script>
+

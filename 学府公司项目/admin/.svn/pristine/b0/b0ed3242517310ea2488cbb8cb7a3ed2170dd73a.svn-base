@@ -1,0 +1,102 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime"></label>
+                    <div class="col-md-3">
+                        <input type="text" placeholder="输入要添加的课程搜索名称" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <div class="dropdowns "></div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-fill  btn-success">搜索</button>
+                    </div>
+                </div>
+            </div>
+            <div class="padding-t-20">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <table class="table" id="tablecz">
+                            <tr>
+                                <th class="text-center cuti">老年健康食谱100例</th>
+                                <th class="text-center cuti">主讲人：王东</th>
+                                <th class="text-center cuti"> 学分：5.1</th>
+                                <th class="text-center cuti">类型：精品课</th>
+                                <th class="text-center cuti">添加至班级课程</th>
+                            </tr>
+                        </table>
+                        <div class="fenye">
+                            <div class="sxy"><a href="javascript:void(0)">首页</a></div>
+                            <div class="sxy"><a href="javascript:void(0)">上一页</a></div>
+                            <div class="xuhao fyon"><a href="javascript:void(0)">1</a></div>
+                            <div class="xuhao"><a href="javascript:void(0)">2</a></div>
+                            <div class="xuhao">…</div>
+                            <div class="xuhao"><a href="javascript:void(0)">5</a></div>
+                            <div class="sxy"><a href="javascript:void(0)">下一页</a></div>
+                            <div class="sxy"><a href="javascript:void(0)">尾页</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <button type="submit" class="btn btn-fill  btn-e col-md-2">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function (window, $) {
+        window.utils_admin.loadhtml($(".dropdowns"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        })
+        window.utils_admin.loadhtml($(".dropdowns2"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        })
+        window.utils_admin.loadhtml($(".dropdowns1"), '/dropdown.html', {
+            "heard": "平台管理员",
+            "body": [
+                {
+                    "text": "1"
+                },
+                {
+                    "text": "2"
+                },
+                {
+                    "text": "3"
+                }
+            ]
+        })
+    })(window, window.$)
+    //
+</script>

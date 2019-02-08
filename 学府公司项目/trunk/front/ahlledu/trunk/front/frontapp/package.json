@@ -1,0 +1,31 @@
+{
+  "name": "nodeapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "config": {
+    "port": "3000"
+  },
+  "scripts": {
+    "start": "node app"
+  },
+  "engines": {
+    "node": ">= 4.0.0"
+  },
+  "author": "cld",
+  "devDependencies": {
+    "express": "^4.15.2",
+    "art-template": ">=4.1.0",
+    "querystring": "^0.2.0",
+    "socket.io": "^2.1.1",
+    "amqplib": "^0.5.2",
+    "node-cache": "^4.2.0",
+    "superagent": "^3.8.3",
+    "eventproxy": "^1.0.0",
+    "async": "^2.6.1",
+    "body-parser": "^1.18.3",
+    "morgan": "^1.9.0",
+    "fs": "^0.0.1-security",
+    "file-stream-rotator": "^0.2.1"
+  }
+}

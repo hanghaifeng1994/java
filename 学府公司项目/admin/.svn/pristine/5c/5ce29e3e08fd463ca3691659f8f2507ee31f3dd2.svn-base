@@ -1,0 +1,524 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">课程名称</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">课程介绍</label>
+                    <div class="col-md-10">
+                        <textarea style="resize: none; min-height:200px;width: 100%;border:1px solid #E4E4E4" cols="5"
+                                  rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">课程图片</label>
+                    <div class="col-md-10">
+                        <div class="con4">
+                            <canvas id="cvstwo" width="150" height="150" style="border: 1px solid #E4E4E4;
+    margin: 10px 0 20px 10px;"></canvas>
+                            <span class="btn upload">上传<input type="file" class="upload_pic" id="uploadtwo"/></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">主讲老师</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">指导老师</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="teach col-md-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">课程类型</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="course col-md-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">是否有作业</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="homework col-md-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">课程有效期</label>
+                    <div class="col-md-7">
+                        <ul class=" list-unstyled list-inline antime1">
+                            <li class="" style="width: 35%">
+                                <input type="text" id="datetimepicker" class="form-control datepicker"
+                                       placeholder="选择日期"/>
+                            </li>
+
+                            <li class="fdong" style="width:5%;">到</li>
+                            <li class="" style="width: 35%">
+                                <input type="text" class="form-control datepicker" placeholder="选择日期"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">课程章节</label>
+                    <div class="col-md-10 row">
+                        <div class="col-md-4">
+                            <a id="addParent" href="#" title="增加" onclick="return false;">增加</a>
+                            <a id="edit" href="#" title="编辑" onclick="return false;">编辑名称</a>
+                            <a id="remove" href="#" title="删除" onclick="return false;">删除</a>
+                        </div>
+                        <div class="col-md-8" style="margin-left: 20px;background-color: #F7F7F7;padding: 5px">
+                            <ul id="treeDemo" class="ztree"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">课程归属</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="col-md-4">
+                            <div class="parentsitelist "></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="endchild "></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">资源分类</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="dropdowns col-md-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">教育大类</label>
+                    <div class="col-md-10 row rylist">
+                        <div class="dropdowns col-md-4"></div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="addmessageg()">保存并添加</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e" onclick="savemessageg()">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    (function (window, $) {
+
+
+
+
+
+        var pagepostdata = apidata.postdata;
+        window.utils_admin.calendar($('.datepicker'));
+
+//        //数据回填
+//        var inputdata = $("input[type=text]");
+//        var retunpagedata = utils_admin.setajax('POST', pagepostdata, apidata.course.newsCategoryqueryShowPage).data;
+//        inputdata[0].value = retunpagedata.data.csName;
+//        $("textarea").val(retunpagedata.data.csInfo);
+//        inputdata[1].value = retunpagedata.data.csLecturer;
+//        inputdata[2].value = retunpagedata.data.csCopyrightStartdate;
+//        inputdata[3].value = retunpagedata.data.csCopyrightEnddate;
+//        getBase64(retunpagedata.data.csImgs,"cvstwo")
+
+        var sectiondata = utils_admin.setajax('POST', pagepostdata, apidata.course.newsCategoryqueryShowPage).data;
+
+        var zNodes = [
+            {id: 1, pId: 0, name: "用户管理", isParent: true},
+            {id: 11, pId: 1, name: "角色管理"},
+            {id: 3, pId: 0, name: "父节点3", isParent: true}
+        ];
+        var setting = {
+            view: {
+                showLine: false,
+                showIcon: false,
+                selectedMulti: false,
+            },
+            data: {
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true
+                }
+            },
+            check: {
+                enable: true,
+                chkStyle: "radio",
+                radioType: "all"
+            },
+            callback: {
+                onCheck: onCheck,
+                beforeDrag: beforeDrag,
+                beforeRemove: beforeRemove,
+                beforeRename: beforeRename,
+                onRemove: onRemove
+            }
+        };
+        var log, className = "dark";
+
+        function beforeDrag(treeId, treeNodes) {
+            return false;
+        }
+
+        function onCheck(e, treeId, treeNode) {
+            console.log(treeNode.pId);
+        }
+
+        function beforeRemove(treeId, treeNode) {
+            className = (className === "dark" ? "" : "dark");
+            showLog("[ " + getTime() + " beforeRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+            return confirm("确认删除" + treeNode.name + " 吗？");
+        }
+
+        function onRemove(e, treeId, treeNode) {
+            showLog("[ " + getTime() + " onRemove ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name);
+        }
+
+        function beforeRename(treeId, treeNode, newName) {
+            if (newName.length == 0) {
+                alert("节点名称不能为空.");
+                var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                setTimeout(function () {
+                    zTree.editName(treeNode)
+                }, 10);
+                return false;
+            }
+            return true;
+        }
+
+        function showLog(str) {
+            if (!log) log = $("#log");
+            log.append("<li class='" + className + "'>" + str + "</li>");
+            if (log.children("li").length > 8) {
+                log.get(0).removeChild(log.children("li")[0]);
+            }
+        }
+
+        function getTime() {
+            var now = new Date(),
+                h = now.getHours(),
+                m = now.getMinutes(),
+                s = now.getSeconds(),
+                ms = now.getMilliseconds();
+            return (h + ":" + m + ":" + s + " " + ms);
+        }
+
+        var newCount = 1;
+
+        function add(e) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                nodes = zTree.getCheckedNodes(true),
+                treeNode = nodes[0];
+            if (treeNode) {
+                treeNode = zTree.addNodes(treeNode, {
+                    id: (100 + newCount),
+                    pId: treeNode.id,
+                    isParent: false,
+                    name: "修改名称" + (newCount++)
+                });
+            } else {
+                treeNode = zTree.addNodes(null, {
+                    id: (100 + newCount),
+                    pId: 0,
+                    isParent: true,
+                    name: "修改名称" + (newCount++)
+                });
+            }
+            if (treeNode) {
+                zTree.editName(treeNode[0]);
+            } else {
+
+            }
+        };
+
+        function edit() {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                nodes = zTree.getCheckedNodes(true),
+                treeNode = nodes[0];
+            if (nodes.length == 0) {
+                alert("请先选择一个节点");
+                return;
+            }
+            zTree.editName(treeNode);
+        };
+
+        function remove(e) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                nodes = zTree.getCheckedNodes(true),
+                treeNode = nodes[0];
+            if (nodes.length == 0) {
+                alert("请先选择一个节点");
+                return;
+            }
+            var callbackFlag = $("#callbackTrigger").attr("checked");
+            zTree.removeNode(treeNode, callbackFlag);
+        };
+
+        function clearChildren(e) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                nodes = zTree.getCheckedNodes(true),
+                treeNode = nodes[0];
+            if (nodes.length == 0 || !nodes[0].isParent) {
+                alert("请先选择一个父节点");
+                return;
+            }
+            zTree.removeChildNodes(treeNode);
+        };
+
+        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        $("#addParent").bind("click", {isParent: true}, add);
+        $("#addLeaf").bind("click", {isParent: false}, add);
+        $("#edit").bind("click", edit);
+        $("#remove").bind("click", remove);
+        $("#clearChildren").bind("click", clearChildren);
+
+        var inputwo = window.document.getElementById("uploadtwo");
+        var canvastwo = window.document.getElementById("cvstwo");
+        window.utils_admin.setimg(inputwo, canvastwo);
+        //是否有作业
+        window.utils_admin.loadhtml($(".homework"), '/dropdown.html', {
+            "header": "选择是否作业",
+            "id": "0",
+            "body": [{
+                "text": "是",
+                "id": "0"
+            }, {
+                "text": "否",
+                "id": "1"
+            }
+            ],
+            "width": 135,
+            "name": "homework",
+        });
+        $(".homework").click(function (a) {
+            let id = '';
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".homework")[0].id
+            }
+            pagepostdata.payload.csHomeworkScore = id;
+        });
+
+        //辅导老师
+        var newteach = utils_admin.setajax('POST', pagepostdata, apidata.news.newsCategoryqueryShowPage);
+        var newteacharr = [];
+        newteach.data.forEach((a) => {
+            a.text = a.catName;
+            a.id = a.catId;
+            newteacharr.push(a)
+        });
+        window.utils_admin.loadhtml($(".dropdowns"), '/dropdown.html', {
+            "header": "选择资讯",
+            "id": null,
+            "body": newteacharr,
+            "width": 135,
+            "name": "teach",
+        });
+        $(".teach").click(function (a) {
+            let id = '';
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".teach")[0].id
+            }
+            pagepostdata.payload.catId = id;
+        });
+
+        //课程类型
+        var course = utils_admin.setajax('POST', pagepostdata, apidata.course.queryManagePage);
+        var coursearr = [];
+        course.data.forEach((a) => {
+            a.text = a.catName;
+            a.id = a.catId;
+            coursearr.push(a)
+        });
+        window.utils_admin.loadhtml($(".course"), '/dropdown.html', {
+            "header": "选择课程类型",
+            "id": "0",
+            "body": coursearr,
+            "width": 135,
+            "name": "course",
+        });
+        $(".course").click(function (a) {
+            let id = '';
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".homework")[0].id
+            }
+            pagepostdata.payload.csModel = id;
+        });
+
+        //栏目分类
+        var newscategoryone = utils_admin.setajax('POST', pagepostdata, apidata.news.newsCategoryqueryShowPage);
+        var newscategoryonearr = [];
+        newscategoryone.data.forEach((a) => {
+            a.text = a.catName;
+            a.id = a.catId;
+            newscategoryonearr.push(a)
+        });
+        window.utils_admin.loadhtml($(".dropdowns"), '/dropdown.html', {
+            "header": "选择资讯",
+            "id": null,
+            "body": newscategoryonearr,
+            "width": 135,
+            "name": "newscategoryonearr",
+        });
+        $(".dropdowns").click(function (a) {
+            let id = '';
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".dropdowns")[0].id
+            }
+            pagepostdata.payload.catId = id;
+        });
+        var childSiteList = [], parentSiteList = [];
+        //取得管理员可管理站点列表即查询员工平台站点列表
+        let siteslist = utils_admin.setajax('POST', pagepostdata, apidata.base.staffPtSitesList);
+        siteslist.data.forEach((a, index) => {
+            parentSiteList.push(a);
+            childSiteList.push(a.siteList);
+            parentSiteList[index].text = parentSiteList[index].ptName
+            parentSiteList[index].id = parentSiteList[index].ptId;
+        });
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "所有平台",
+            "id": null,
+            "body": parentSiteList,
+            "width": 150,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": "先选择平台",
+            "id": null,
+            "body": null,
+            "width": 150,
+            "name": "endchild",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".parentsitelist")[0].id
+            }
+            childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchild.push(e);
+                        endchild[index].text = endchild[index].siteName;
+                        endchild[index].id = endchild[index].siteId;
+                    }
+                })
+            });
+            window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+                "header": endchild[0].text,
+                "id": endchild[0].id,
+                "body": endchild,
+                "width": 150,
+                "name": "endchild",
+            });
+        });
+        $(".endchild").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = $(".endchild")[0].id
+            }
+            pagepostdata.payload.siteId = id;
+        });
+
+        //上传图片
+        var inputwo = window.document.getElementById("uploadtwo");
+        var canvastwo = window.document.getElementById("cvstwo");
+        window.utils_admin.setimg(inputwo, canvastwo, function (setdata) {
+            pagepostdata.payload.photo == 1
+            pagepostdata.payload.csPhoto = setdata.data.fileId
+            pagepostdata.payload.csImgs = setdata.data.fileId
+        });
+
+        //保存
+        function savemessageg() {
+            let inputdata = $("input[type=text]");
+            if (inputdata[0].value == '') {
+                alert("必填项")
+            } else {
+                pagepostdata.payload.csName = inputdata[0].value;
+                pagepostdata.payload.csInfo = $("textarea").val();
+                pagepostdata.payload.csLecturer = inputdata[1].value;
+                pagepostdata.payload.csCopyrightStartdate = inputdata[2].value;
+                pagepostdata.payload.csCopyrightEnddate = inputdata[3].value;
+                if (pagepostdata.payload.photo == 0) {
+                    alert("文件或者图片正在上传")
+                } else {
+                    let setdata = utils_admin.setajax('POST', pagepostdata, apidata.course.csrsave);
+                    pagepostdata.payload.actId = setdata.data.id;
+                    alert("成功")
+                }
+            }
+        }
+
+        //保存并提交
+        function addmessageg() {
+            savemessageg();
+            let getdata = utils_admin.setajax('POST', pagepostdata, apidata.course.csrsubmitCheck);
+            if (getdata.success == "1") {
+                window.location.href = "/admin/views/index.html#/course"
+            }
+        }
+
+        window.addmessageg = addmessageg;
+        window.savemessageg = savemessageg;
+    })(window, window.$)
+
+</script>

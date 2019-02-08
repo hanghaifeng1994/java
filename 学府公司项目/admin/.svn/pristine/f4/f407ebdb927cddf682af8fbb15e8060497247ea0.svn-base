@@ -1,0 +1,191 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">题库选择</label>
+                    <div class="col-md-4">
+                        <div class="col-md-2">
+                            <select name="cities" class="selectpicker" data-title="题库选择" data-style=" btn-fill btn-block" data-menu-style="dropdown-blue">
+                                <option value="1">单选题</option>
+                                <option value="2">多选题</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">总分</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 ">
+                <table class="table table-bordered table-hover padding-t-10" id="tablecztwo">
+                    <thead>
+                    <tr>
+                        <th class="text-center cuti">题型</th>
+                        <th class="text-center cuti">可出题数</th>
+                        <th class="text-center cuti">每题分值</th>
+                        <th class="text-center cuti">总分</th>
+                        <th class="text-center cuti">操作</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody id="lordmessagehelp"></tbody>
+
+
+                </table>
+                <div class="fenye">
+                    <div class="pagination pagination1"></div>
+                </div>
+            </div>
+
+            <div class="form-group col-xl-12 padding-t-10" id="test">
+
+            </div>
+
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class='row' style="padding-top: 40px">
+                    <label class="col-md-4 control-label brokeragetime padding-t-20"></label>
+                    <button class="btn btn-e col-md-2" onclick="addanswer()">增加题型</button>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">题目乱序</label>
+                    <div class="col-md-4">
+                        <div class="sequence"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">选项乱序</label>
+                    <div class="col-md-4">
+                        <div class="option"></div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/html" id="test_t">
+    <% for(var i = 1; i < data+1; i++){ %>
+    <tr class="{{$value.articleId}}">
+        <td class="text-center">
+            <select name="cities" class="selectpicker" data-title="单选题" data-style=" btn-fill btn-block" data-menu-style="dropdown-blue">
+                <option value="1">单选题</option>
+                <option value="2">多选题</option>
+            </select>
+        </td>
+        <td class="text-center">{{$value.catName}}</td>
+        <td class="text-center">{{$value.weight}}</td>
+        <td class="text-center">{{$value.status}}</td>
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="onedel(this)">删除</a>
+        </td>
+    </tr>
+    <div class="row padding-t-10 testclass">
+    <div class="col-md-2">
+
+    </div>
+        <label class="col-md-2 control-label brokeragetime">可出题数量 <span>11</span></label>
+        <label class="col-md-2 control-label brokeragetime">出题数量</label>
+        <input type="text" placeholder="" class="form-control col-md-1">
+        <label class="col-md-2 control-label brokeragetime">每题分值</label>
+        <input type="text" placeholder="" class="form-control col-md-1">
+        <label class="col-md-2 control-label brokeragetime">操作</label>
+
+    </div>
+    <% } %>
+</script>
+<script>
+    (function () {
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+
+        //题目乱序
+        window.utils_admin.loadhtml($(".sequence"), '/dropdown.html', {
+            "header": "题目不乱序",
+            "id": "1",
+            "body": [
+                {
+                    "text": "题目不乱序",
+                    "id": "1"
+                },
+                {
+                    "text": "题目乱序",
+                    "id": "2"
+                }
+            ],
+            "width": 140,
+            "name": "sequence",
+        });
+        //选项乱序
+        window.utils_admin.loadhtml($(".option"), '/dropdown.html', {
+            "header": "选项不乱序",
+            "id": "1",
+            "body": [
+                {
+                    "text": "选项不乱序",
+                    "id": "1"
+                },
+                {
+                    "text": "选项乱序",
+                    "id": "2"
+                }
+            ],
+            "width": 140,
+            "name": "option",
+        });
+
+        //初始化第一个题型
+        $("#test").append(template("test_t", {
+            data: 1
+        }));
+        //知识点
+        $('.selectpicker').selectpicker({'selectedText': 'cat'});
+        //题型
+        window.utils_admin.loadhtml($(".choose"), '/dropdown.html', {
+            "name": "choose",
+            "header": "单选题",
+            "id": "1",
+            "width": "130",
+            "body": [
+                {
+                    "text": "单选题",
+                    "id": "1"
+                },
+                {
+                    "text": "多选题",
+                    "id": "2"
+                }
+            ]
+        });
+
+        var html = $("#test").html();
+        //新增题目
+        function addanswer() {
+            $("#test").append(html);
+        }
+
+        window.addanswer = addanswer;
+    })(window)
+</script>

@@ -1,0 +1,132 @@
+<div class="col-md-12">
+    <div class="col-md-12 row" style="padding-top: 10px">
+        <div class="col-md-6 col-xs-12 row ">
+            <div class="col-md-12 col-xs-12">
+                <button class="btn btn-e btn-wd" onclick="add(this)">新增章节</button>
+            </div>
+        </div>
+    </div>
+    <div class="treetable"></div>
+</div>
+<script>
+    (function (window) {
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+        pagepostdata.payload={};
+        pagepostdata.payload.sectionId='0'
+        console.log(pagepostdata)
+        var pagedata = utils_admin.setajax('POST', pagepostdata, apidata.testing.section).data;
+        console.log(pagedata)
+        pagedata.forEach((a, b) => {
+            a.id = a.sectionId;
+            a.one = a.name;
+            a.two = a.qpId? a.qpId:"空";
+            if (a.childData) {
+                a.child = false
+            } else {
+                a.child = true
+            }
+            a.menu = [
+                {
+                    "text": "编辑",
+                    "method": "redactclass",
+                },
+                {
+                    "text": "删除",
+                    "method": "onedel",
+                },
+                {
+                    "text": "新增",
+                    "method": "add",
+                }
+            ]
+        });
+        console.log(pagedata);
+        window.utils_admin.loadhtml($('.treetable'), '/treeTable.html', {
+            "datath": [
+                {
+                    "text": "知识点名称"
+                },
+                {
+                    "text": "所属题库"
+                },
+                {
+                    "text": "操作"
+                }
+            ],
+            "tabledata": pagedata,
+        });
+
+        function selectallbelow(e) {
+            console.log(e)
+        }
+
+        function beforeExpand(treeTable, id) {
+            if ($('.' + id, treeTable).length) {
+                return;
+            }
+            console.log(id)
+            pagepostdata.payload.sectionId = id;
+            let postdata = utils_admin.setajax('POST', pagepostdata, apidata.testing.section).data;
+            if (postdata) {
+                let html = '';
+                for (var i = 0; i < postdata.length; i++) {
+                    postdata[i].childData ? postdata[i].childData = true : postdata[i].childData = false;
+                    html += "<tr id=" + postdata[i].sectionId + " pId=" + postdata[i].parentId + " hasChild=" + postdata[i].childData + ">" +
+                        "<td><input class='fuxk' name='choose' type='checkbox' value=" + id + "/></td>" +
+                        "<td>" + postdata[i].name + "</td>" +
+                        "<td>" + postdata[i].qpId + "</td>" +
+                        "<td  class='text-center caozuo' style='color: #00bbff'>" +
+                        "<a onclick='redactclass(this)' data-id=" + postdata[i].sectionId + ">编辑  </a>" +
+                        "<a onclick='onedel(this)'  data-id=" + postdata[i].sectionId + ">删除</a>" +
+                        "</td></tr>";
+                }
+                treeTable.addChilds(html);
+            }
+            pagepostdata.payload.sectionId="";
+        }
+
+        ///删除
+        function onedel(e) {
+            var secId=$(e).attr("data-id");
+            pagepostdata.payload.sectionId=secId;
+            $("#toolTipbox").toggle("hidden");
+        }
+        //新增章节
+        function add(e){
+            window.apidata.postdata.payload.parentId = "0";
+            window.apidata.postdata.payload.parentIds = "0,";
+            localStorage.setItem("ahll_m_user_postdata", JSON.stringify(window.apidata.postdata));
+            window.location.href = "/admin/views/index.html#/knowledgegerentadd";
+        }
+
+        $(".btnSumbit").click(function (a) {
+            var id= $(this).attr("data-id");
+            if (id=='1') {
+                utils_admin.setajax('POST', pagepostdata, apidata.testing.sectionDelete);
+                window.location.href = "/admin/views/index.html#/knowledgegerent";
+            }
+            $("#toolTipbox").toggle("hidden");
+        });
+
+        //全选
+        function selectall (thit) {
+            let checkboxs = document.getElementsByName("choose");
+            if (thit.checked) {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = true;
+                }
+            } else {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = false;
+                }
+            }
+        }
+        window.selectallbelow=selectallbelow;
+        window.beforeExpand=beforeExpand;
+        window.selectall=selectall;
+        window.onedel =onedel ;
+        window.add=add;
+    })(window)
+</script>

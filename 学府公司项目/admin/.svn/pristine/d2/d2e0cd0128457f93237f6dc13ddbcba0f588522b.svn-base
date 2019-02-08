@@ -1,0 +1,376 @@
+
+
+<div>
+    <div class="card-body">
+        <ul role="tablist" class="nav nav-tabs col-md-12">
+            <li role="presentation" class="nav-item show active col-md-6">
+                <a class="nav-link" id="info-tab" href="#agency" data-toggle="tab">当前站点(子站)</a>
+            </li>
+            <li class="nav-item col-md-6">
+                <a class="nav-link" id="account-tab" href="#company" data-toggle="tab">主站下发</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="agency" class="tab-pane fade show active" role="tabpanel" aria-labelledby="info-tab">
+                <div class="col-md-12 row" style="margin-left: 6px;margin-bottom: 10px">
+                    <div class="dropdowns"></div>
+                    <div class="dropdowns" style="margin-left: 5px"></div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card horizontal-form">
+                        <div class="card-body">
+                            <div class="row col-md-12">
+                                <div class="col-md-4 col-sm-6 row">
+                                    <label class="col-md-4 control-label">经验类别</label>
+                                    <div class="col-md-6 rylist">
+                                        <div class="dropdowns"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <button style="margin-top: 5px" class="btn btn-wd">搜索</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+                        <button class="btn btn-danger btn-wd">批量删除</button>
+                    </div>
+                </div>
+                <div class="container-fluid padding-t-20">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <table class="table table-bordered table-hover" id="tablecz">
+                                <thead>
+                                <tr>
+                                    <th><input class="fuxk" name="allcheck" type="checkbox" value="" id="allcheck"
+                                               onclick="selectall()"/></th>
+                                    <th class="text-center cuti">经验主题</th>
+                                    <th class="text-center cuti">上传时间</th>
+                                    <th class="text-center cuti">上传人</th>
+                                    <th class="text-center cuti">是否推荐</th>
+                                    <th class="text-center cuti">是否置顶</th>
+                                    <th class="text-center cuti">状态</th>
+                                    <th class="text-center cuti">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="queryPage"></tbody>
+                                <tr v-for="(con,index) in tabcon">
+                                    <td><input class="fuxk" name="choose" type="checkbox" value=""/></td>
+                                    <td class="text-center">{{con.diaoyan}}</td>
+                                    <td class="text-center">{{con.news}}</td>
+                                    <td class="text-center">
+                                        {{con.yes}} <span style="padding:0 5px">/</span>{{con.no}}
+                                    </td>
+                                    <td class="text-center">{{con.shenhe}}</td>
+                                    <td class="text-center">{{con.shenhe}}</td>
+                                    <td class="text-center">{{con.shenhe}}</td>
+                                    <td class="text-center caozuo">
+                                        <a href="javascript:void(0);">取消发布</a>
+                                        <a href="javascript:void(0);">推荐</a>
+                                        <a href="javascript:void(0);">置顶</a>
+                                        <a href="javascript:void(0);" onclick="onedel()">删除</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="fenye">
+                                <div class="sxy"><a href="javascript:void(0)">首页</a></div>
+                                <div class="sxy"><a href="javascript:void(0)">上一页</a></div>
+                                <div class="xuhao fyon"><a href="javascript:void(0)">1</a></div>
+                                <div class="xuhao"><a href="javascript:void(0)">2</a></div>
+                                <div class="xuhao">…</div>
+                                <div class="xuhao"><a href="javascript:void(0)">5</a></div>
+                                <div class="sxy"><a href="javascript:void(0)">下一页</a></div>
+                                <div class="sxy"><a href="javascript:void(0)">尾页</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="company" class="tab-pane fade" role="tabpanel" aria-labelledby="account-tab">
+                <div class="col-md-12 row" style="margin-left: 6px;margin-bottom: 10px">
+                    <div class="dropdowns"></div>
+                    <div class="dropdowns" style="margin-left: 5px"></div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card horizontal-form">
+                        <div class="card-body">
+                            <div class="row col-md-12">
+                                <div class="col-md-4 col-sm-6 row">
+                                    <label class="col-md-4 control-label">经验类别</label>
+                                    <div class="col-md-6 rylist">
+                                        <div class="dropdowns"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <button style="margin-top: 5px" class="btn btn-wd">搜索</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+                        <button class="btn btn-danger btn-wd">批量删除</button>
+                    </div>
+                </div>
+                <div class="container-fluid padding-t-20">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <table class="table table-bordered table-hover" id="tablecz">
+                                <thead>
+                                <tr>
+                                    <th><input class="fuxk" name="allcheck" type="checkbox" value="" id="allcheck"
+                                               onclick="selectall()"/></th>
+                                    <th class="text-center cuti">经验主题</th>
+                                    <th class="text-center cuti">上传时间</th>
+                                    <th class="text-center cuti">上传人</th>
+                                    <th class="text-center cuti">是否推荐</th>
+                                    <th class="text-center cuti">是否置顶</th>
+                                    <th class="text-center cuti">状态</th>
+                                    <th class="text-center cuti">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="queryPagetwo"></tbody>
+                                <tr v-for="(con,index) in tabcon">
+                                    <td><input class="fuxk" name="choose" type="checkbox" value=""/></td>
+                                    <td class="text-center">{{con.diaoyan}}</td>
+                                    <td class="text-center">{{con.news}}</td>
+                                    <td class="text-center">
+                                        {{con.yes}} <span style="padding:0 5px">/</span>{{con.no}}
+                                    </td>
+                                    <td class="text-center">{{con.shenhe}}</td>
+                                    <td class="text-center">{{con.shenhe}}</td>
+                                    <td class="text-center">{{con.shenhe}}</td>
+                                    <td class="text-center caozuo">
+                                        <a href="javascript:void(0);">取消发布</a>
+                                        <a href="javascript:void(0);">推荐</a>
+                                        <a href="javascript:void(0);">置顶</a>
+                                        <a href="javascript:void(0);" onclick="onedel()">删除</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="fenye">
+                                <div class="sxy"><a href="javascript:void(0)">首页</a></div>
+                                <div class="sxy"><a href="javascript:void(0)">上一页</a></div>
+                                <div class="xuhao fyon"><a href="javascript:void(0)">1</a></div>
+                                <div class="xuhao"><a href="javascript:void(0)">2</a></div>
+                                <div class="xuhao">…</div>
+                                <div class="xuhao"><a href="javascript:void(0)">5</a></div>
+                                <div class="sxy"><a href="javascript:void(0)">下一页</a></div>
+                                <div class="sxy"><a href="javascript:void(0)">尾页</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="queryPage_t">
+    {{each data}}
+    <tr class="{{$value.abmId}}">
+        <td><input class="fuxk" name="choose" type="checkbox" value="{{$value.abmId}}"/>
+        </td>
+        <!--改第一个tab表格抬头对应数据开始-->
+        <td class="text-center"> {{$value.abmName}}</td>
+        <td class="text-center">{{$value.createDate}}</td>
+        <td class="text-center">{{$value.createBy}}</td>
+        <td class="text-center">{{$value.posid}}</td>
+        <td class="text-center">{{$value.abmWeight}}</td>
+        <td class="text-center" data-status="{{$value.abmStatus}}">
+            {{if $value.abmStatus==0}}未提交
+            {{else if $value.abmStatus==1}}审核中
+            {{else if $value.abmStatus==2}}审核通过
+            {{else if $value.abmStatus==3}}审核失败
+            {{/if}}
+        </td>
+        <!--改第一个tab表格抬头对应数据结束-->
+        <!--单行操作区-根据具体页面选择对应按钮修，不需要的注释-->
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="pubStatus(this)">
+                {{if $value.pubStatus=="0"}}发布
+                {{else}}取消发布
+                {{/if}}</a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="posid(this)">
+                {{if $value.posid=="1"}}置顶
+                {{else}}取消置顶
+                {{/if}}
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="weight(this)">
+                {{if $value.weight!="999"}}推荐
+                {{else}}取消推荐
+                {{/if}}
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="onedel(this)">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script type="text/html" id="queryPagetwo_t">
+    {{each data}}
+    <tr class="{{$value.abmId}}">
+        <td><input class="fuxk" name="choose" type="checkbox" value="{{$value.abmId}}"/>
+        </td>
+        <!--改第一个tab表格抬头对应数据开始-->
+        <td class="text-center"> {{$value.abmName}}</td>
+        <td class="text-center">{{$value.createDate}}</td>
+        <td class="text-center">{{$value.createBy}}</td>
+        <td class="text-center">{{$value.posid}}</td>
+        <td class="text-center">{{$value.abmWeight}}</td>
+        <td class="text-center" data-status="{{$value.abmStatus}}">
+            {{if $value.abmStatus==0}}未提交
+            {{else if $value.abmStatus==1}}审核中
+            {{else if $value.abmStatus==2}}审核通过
+            {{else if $value.abmStatus==3}}审核失败
+            {{/if}}
+        </td>
+        <td class="text-center" data-status="{{$value.pubStatus}}">
+            {{if $value.pubStatus==0}}未发布
+            {{else if $value.pubStatus==1}}发布
+            {{/if}}
+        </td>
+        <!--改第一个tab表格抬头对应数据结束-->
+        <!--单行操作区-根据具体页面选择对应按钮修，不需要的注释-->
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="pubStatus(this)">
+                {{if $value.pubStatus=="0"}}发布
+                {{else}}取消发布
+                {{/if}}</a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="posid(this)">
+                {{if $value.posid=="1"}}置顶
+                {{else}}取消置顶推荐
+                {{/if}}
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="weight(this)">
+                {{if $value.weight!="999"}}推荐
+                {{else}}取消
+                {{/if}}
+            </a>
+            <a href="javascript:void(0);" data-id="{{$value.articleId}}"
+               onclick="onedel(this)">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script>
+    (function (window, $) {
+        //列表1  修改查询接口-apidata.news.queryPage
+        let pagedataone = utils_admin.setajax('POST', apidata.postdata, apidata.news.queryPage);
+        console.log("data",pagedataone)
+        utils_admin.queryPage("queryPage", "queryPage_t", pagedataone);
+        //分页1
+        new pagination({
+            pagination: $('.pagination0'),//分页挂载的样式名称
+            maxPage: 5, //最大页码数,支持奇数，左右对称
+            startPage: 1,    //默认第一页
+            currentPage: 1,          //当前页码
+            totalPageCount: pagedataone.pageSize,  //总页数
+            callback: function (pageNum) {
+                apidata.postdata.payload.page = "" + pageNum + "";
+                //修改查询接口-apidata.news.queryPage
+                utils_admin.queryPage("queryPage", "queryPage_t", utils_admin.setajax('POST', apidata.postdata, apidata.news.queryPage));
+            }
+        });
+
+        //列表2  修改查询接口-apidata.news.queryPage
+        let pagedatatwo= utils_admin.setajax('POST', apidata.postdata, apidata.news.queryPage);
+        console.log("data",pagedataone);
+        utils_admin.queryPage("queryPagetwo", "queryPagetwo_t", pagedatatwo);
+        //分页2
+        new pagination({
+            pagination: $('.pagination0'),//分页挂载的样式名称
+            maxPage: 5, //最大页码数,支持奇数，左右对称
+            startPage: 1,    //默认第一页
+            currentPage: 1,          //当前页码
+            totalPageCount: pagedataone.pageSize,  //总页数
+            callback: function (pageNum) {
+                apidata.postdata.payload.page = "" + pageNum + "";
+                //修改查询接口-apidata.news.queryPage
+                utils_admin.queryPage("queryPage", "queryPage_t", utils_admin.setajax('POST', apidata.postdata, apidata.news.queryPage));
+            }
+        });
+
+
+        function selectall() {
+            var checkboxs = document.getElementsByName("choose");
+            for (var i = 0; i < checkboxs.length; i++) {
+                var e = checkboxs[i];
+                e.checked = !e.checked;
+            }
+        }
+
+        //加载弹窗组件
+        function popups(data) {
+            $("#popups").load('./template/popups.html', function (a) {
+                $("#popups").html(window.template.render(a, data));
+                ballblack();
+            })
+        }
+
+        //单独删除
+        function onedel(e) {
+            console.log(e.id);
+            let data = {
+                "tempid": 'tableclassone',
+                "checkdata": '',
+                "body": {
+                    "head": "提示",
+                    "text": "是否确认删除",
+                    "yesbt": "确认",
+                    "nobt": "取消"
+                }
+            };
+            data.checkdata = e.id
+            popups(data)
+        }
+
+        function tableclassone(e) {
+            $("#" + e).remove();
+            ballblack();
+        }
+
+        //批量删除
+        function deleteclass() {
+            let checkboxs = $("input[name=choose]");
+            let data = {
+                "tempid": 'balldeleteclass',
+                "checkdata": [],
+                "body": {
+                    "head": "提示",
+                    "text": "是否确认删除选中的内容",
+                    "yesbt": "确认",
+                    "nobt": "取消"
+                }
+            };
+            for (let i = 0; i < checkboxs.length; i++) {
+                if (checkboxs[i].checked) {
+                    data.checkdata.push(checkboxs[i].value);
+                }
+            }
+            if (data.checkdata.length) {
+                popups(data);
+            }
+        }
+
+        function balldeleteclass(e) {
+            for (let i = 0; i < e.length; i++) {
+                $("#" + e[i]).remove();
+                ballblack();
+            }
+        }
+    })(window, window.$)
+
+</script>
+<script src="../assets/js/indexfunc.js"></script>

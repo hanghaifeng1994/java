@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>安徽终身教育云平台后台登录</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport'/>
+    <!--     Fonts and icons     -->
+    <link rel="shortcut icon" href="../public/img/32-32.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="../assets/css/awesome.css">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../assets/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet"/>
+    <link rel="stylesheet" href="../assets/css/brokeragemanage.css">
+    <link href="../assets/css/fontsize.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../public/css/common_admin.css">
+    <link rel="stylesheet" href="../public/css/zTreeStyle/metro.css">
+    <link href="../assets/css/wangEditor.css" rel="stylesheet">
+    <style>
+        .black_overlay {
+            display: none;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            -moz-opacity: 0.8;
+            opacity: .50;
+            filter: alpha(opacity=88);
+        }
+        .white_content {
+            display: none;
+            position: absolute;
+            top: 30%;
+            left: 35%;
+            width: 400px;
+            height: 240px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: white;
+            z-index: 1002;
+            overflow: auto;
+        }
+
+        .white_content .newbtn {
+            cursor: pointer;
+            position: absolute;
+            top: 160px;
+            left: 32%;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper wrapper-full-page">
+
+    <div class="full-page  section-image"  data-image="../public/img/full-screen-image-login.jpg" style="background-image: url('../public/img/full-screen-image-login.jpg')">
+        <div class="content">
+            <div class="container">
+                <div class="col-md-4 col-sm-6 ml-auto mr-auto">
+                    <form class="form" method="" action="">
+                        <div class="card card-login card-hidden">
+                            <div class="card-header">
+                                <h3 class="header text-center">安徽终身教育云平台</h3>
+                                <h5 class="header text-center">后台管理登录</h5>
+                            </div>
+                            <div class="card-body ">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label>账号</label>
+                                        <input type="email" placeholder="请输入账号" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="margin-top: 5px">密码</label>
+                                        <input type="password" placeholder="请输入密码" class="form-control">
+                                    </div>
+                                    <div class="form-group row col-12" style="margin-top: 5px">
+                                        <div class="form-check col-8">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" id="remember" type="checkbox" value="">
+                                                <span class="form-check-sign"></span>
+                                                记住我
+                                            </label>
+                                        </div>
+                                        <!-- <div class="">
+                                             <label class="form-check-label">
+                                                 <span class="form-check-sign"></span>
+                                                 忘记密码
+                                             </label>
+                                         </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer ml-auto mr-auto">
+                                <button type="button" class="btn btn-warning btn-wd" onclick="longbtn()">登录</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--登录为空时弹框-->
+<div id="fade" class="black_overlay">
+
+</div>
+<div id="light" class="white_content">
+    <p class="col-xl-12">友情提示：</p>
+    <p class="col-xl-12" style="text-align: center;margin-top: 45px;font-size: 17px">用户名或者密码不能为空！</p>
+    <button class="btn btn-primary btn-wd newbtn" onclick="dd()">确认</button>
+</div>
+
+</body>
+<script src="../assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="../assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="../assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="../assets/js/art-template.js"></script>
+<script src="../assets/js/socket.io.slim.js"></script>
+<script src="../public/js/api_admin.js"></script>
+<script src="../public/js/utils_admin.js"></script>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $('.card').removeClass('card-hidden');
+        }, 1000)
+    });
+
+    function dd() {
+        document.getElementById('light').style.display = 'none';
+        document.getElementById('fade').style.display = 'none'
+    }
+
+    //点击登录
+    function longbtn() {
+        var loginname = $('.form-control')[0].value;
+        var pasword = $('.form-control')[1].value;
+        var formcheckinput = $('#remember');
+        if (!(loginname && pasword)) {
+            document.getElementById('light').style.display = 'block';
+            document.getElementById('fade').style.display = 'block';
+        } else {
+            apidata.postdata.payload.loginName = loginname;
+            apidata.postdata.payload.password = pasword;
+            apidata.postdata.payload.mchtId = "233b1e33148444a49af58f52146c17c4";
+            let resdata = utils_admin.setajax('POST', apidata.postdata, apidata.base.passwordLogin);
+            if (resdata.success == 1) {
+                apidata.postdata.payload.custId=resdata.data.custId;
+                let siteslist = utils_admin.setajax('POST', apidata.postdata, apidata.base.staffPtSitesList);
+                let sitesid='';
+                siteslist.data[0].siteList.forEach((data)=>{
+                    sitesid+=data.siteId+','
+                });
+                sitesid=sitesid+'1';
+                let datares = {
+                    "header":
+                        {
+                            "SESSION_TOKEN": resdata.data.SESSION_TOKEN,
+                            "UUID": resdata.data.SESSION_TOKEN,
+                            "__account_id": resdata.data.custId,
+                            "CLIENT_OS": "O"
+                        },
+                    "payload":
+                        {
+                            "mchtId": resdata.data.mchtId,
+                            "siteId": sitesid,
+                            "mchtSchmId": resdata.data.mchtSchmId,
+                            "custId": resdata.data.custId,
+                            "loginName": resdata.data.loginName,
+                            "openId": resdata.data.openId,
+                            "custType": resdata.data.custType,
+                            "custName": resdata.data.custName,
+                            "siteIds":sitesid,
+                            "sites":sitesid
+                        }
+                };
+                datares = JSON.stringify(datares);
+                let expiresDay = 0;
+                if (formcheckinput.is(':checked')) {
+                    expiresDay =7;
+                }
+                window.utils_admin.setCookie('ahll_m_user',resdata.data.custId, expiresDay);
+                window.utils_admin.setCookie('ahll_m_user_name',resdata.data.custName, expiresDay);
+                localStorage.setItem("ahll_m_user_postdata", datares)
+                window.location.href = './index.html';
+            }
+            else {
+                alert(resdata.message)
+            }
+        }
+    }
+</script>
+</html>

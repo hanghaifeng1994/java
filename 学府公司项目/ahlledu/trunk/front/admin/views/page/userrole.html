@@ -1,0 +1,161 @@
+
+<div style="padding-top:13px">
+    <div class="col-md-12">
+        <div class="card horizontal-form">
+            <div class="card-body ">
+                <div class="row col-md-12">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="row">
+                            <label class="col-md-4 control-label">角色名称</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mr-auto ml-auto">
+                        <button  class="btn btn-wd btn-e">搜索</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+            <a class="btn  btn-wd btn-e" href="#/adduserrole">创建角色</a>
+            <button class="btn  btn-wd btn-f" onclick="deleteclass()">批量删除</button>
+        </div>
+    </div>
+
+    <div class="container-fluid padding-t-20">
+        <div class="row">
+            <div class="col-md-12 ">
+                <table class="table table-bordered table-hover" id="tablecz">
+                    <thead>
+                    <tr>
+                        <th><input class="fuxk" name="allcheck" type="checkbox" value="" id="allcheck" onclick="selectall()"/></th>
+                        <th class="text-center cuti">角色名称</th>
+                        <th class="text-center cuti">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(con,index) in tabcon">
+                        <td><input class="fuxk" name="choose" type="checkbox" value=""/></td>
+                        <td class="text-center">{{con.shenhe}}</td>
+                        <td class="text-center caozuo">
+                            <a href="javascript:void(0);">编辑</a>
+                            <a  href="javascript:void(0);">权限配置</a>
+                            <a href="javascript:void(0);" onclick="onedel()">删除</a>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="fenye">
+                    <div class="sxy"><a href="javascript:void(0)">首页</a></div>
+                    <div class="sxy"><a href="javascript:void(0)">上一页</a></div>
+                    <div class="xuhao fyon"><a href="javascript:void(0)">1</a></div>
+                    <div class="xuhao"><a href="javascript:void(0)">2</a></div>
+                    <div class="xuhao">…</div>
+                    <div class="xuhao"><a href="javascript:void(0)">5</a></div>
+                    <div class="sxy"><a href="javascript:void(0)">下一页</a></div>
+                    <div class="sxy"><a href="javascript:void(0)">尾页</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    ;(function($, window, document, undefined) {
+
+        'use strict';
+
+        var $html = $('html');
+
+        $html.on('click.ui.dropdown', '.js-dropdown', function(e) {
+            e.preventDefault();
+            $(this).toggleClass('is-open');
+        });
+
+        $html.on('click.ui.dropdown', '.js-dropdown [data-dropdown-value]', function(e) {
+            e.preventDefault();
+            var $item = $(this);
+            var $dropdown = $item.parents('.js-dropdown');
+            $dropdown.find('.js-dropdown__input').val($item.data('dropdown-value'));
+            $dropdown.find('.js-dropdown__current').text($item.text());
+        });
+
+        $html.on('click.ui.dropdown', function(e) {
+            var $target = $(e.target);
+            if (!$target.parents().hasClass('js-dropdown')) {
+                $('.js-dropdown').removeClass('is-open');
+            }
+        });
+
+    })(jQuery, window, document);
+</script>
+<script>
+
+    function selectall() {
+        var checkboxs = document.getElementsByName("choose");
+        for (var i = 0; i < checkboxs.length; i++) {
+            var e = checkboxs[i];
+            e.checked = !e.checked;
+        }
+    }
+    //加载弹窗组件
+    function popups(data) {
+        $("#popups").load('./template/popups.html', function (a) {
+            $("#popups").html(window.template.render(a,data));
+            ballblack();
+        })
+    }
+    //单独删除
+    function onedel(e){
+        console.log(e.id);
+        var data = {
+            "tempid":'tableclassone',
+            "checkdata":'',
+            "body": {
+                "head": "提示",
+                "text": "是否确认删除",
+                "yesbt": "确认",
+                "nobt": "取消"
+            }
+        };
+        data.checkdata=e.id
+        popups(data)
+    }
+    function tableclassone(e) {
+        $("#"+e).remove();
+        ballblack();
+    }
+    //批量删除
+    function deleteclass() {
+        var checkboxs = $("input[name=choose]");
+        var data = {
+            "tempid":'balldeleteclass',
+            "checkdata":[],
+            "body": {
+                "head": "提示",
+                "text": "是否确认删除选中的内容",
+                "yesbt": "确认",
+                "nobt": "取消"
+            }
+        };
+        for (let i = 0; i < checkboxs.length; i++) {
+            if (checkboxs[i].checked) {
+                data.checkdata.push(checkboxs[i].value);
+            }
+        }
+        if(data.checkdata.length){
+            popups(data);
+        }
+    }
+    function balldeleteclass(e) {
+        for(let i=0;i<e.length;i++){
+            $("#"+e[i]).remove();
+            ballblack();
+        }
+    }
+</script>

@@ -1,0 +1,768 @@
+[
+  {
+    "ccode": "nav",
+    "cname": "导航",
+    "curl": "http://127.168.0.1:8080/getjson/333",
+    "chtml": "/template/tem_demo.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "navbar",
+    "cname": "导航条",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/navbar.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "allnewblock",
+    "chtml": "/template/allnewblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "avtivityblock",
+    "chtml": "/template/avtivityblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "cueeiculumblock",
+    "chtml": "/template/cueeiculumblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "headblock",
+    "chtml": "/template/headblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "logininfoblock",
+    "chtml": "/template/logininfoblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "navigationblock",
+    "chtml": "/template/navigationblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "registrationblock",
+    "chtml": "/template/registrationblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "seekblock",
+    "chtml": "/template/seekblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "studyblock",
+    "chtml": "/template/studyblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "talentblock",
+    "chtml": "/template/talentblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "footerblock",
+    "chtml": "/template/footerblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "link",
+    "chtml": "/template/link.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "actpage",
+    "chtml": "/template/actpage.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "paginationblock",
+    "chtml": "/template/pagination-block.html",
+    "curl": "urlnews_servicelist,queryPageByCatIds",
+    "param": {
+      "siteId": "1"
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "activitydetails",
+    "chtml": "/template/activitydetails.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "actdetaildescblock",
+    "chtml": "/template/actdetaildescblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "activitystatecommentspage",
+    "chtml": "/template/activitystatecommentspage.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "activitystateresultblock",
+    "chtml": "/template/activitystateresultblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "activitystatedynblock",
+    "chtml": "/template/activitystatedynblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "activitystateblock",
+    "chtml": "/template/activitystatenewsrecblock.html",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "activitystatepage",
+    "chtml": "/template/activitystatezppage.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "searchspage",
+    "chtml": "/template/searchspage.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "sglistpage",
+    "chtml": "/template/sglist-page.html",
+      "curl": "news.queryPageByCatIds",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "sgcreateblock",
+    "chtml": "/template/sgcreateblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "sgdetailbaseblock",
+    "chtml": "/template/sgdetailbaseblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "sgdetaildynblock",
+    "chtml": "/template/sgdetaildynblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "sgnewsrecblock",
+    "chtml": "/template/sgnewsrecblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "sgdetaildescblock",
+    "chtml": "/template/sgdetaildescblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "sgdetailmemspage",
+    "chtml": "/template/sgdetailmemspage.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "sgdetailjypage",
+    "chtml": "/template/sgdetailjypage.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "sgdetailcypage",
+    "chtml": "/template/sgdetailcypage.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "resourcelistpage",
+    "chtml": "/template/resourcelistpage.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "coursedetailchapter",
+    "chtml": "/template/coursedetailchapter.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "resdetailcommentspage",
+    "chtml": "/template/resdetailcommentspage.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "courserecblock",
+    "chtml": "/template/courserecblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "hwdetailsubmitblock",
+    "chtml": "/template/hwdetailsubmitblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "certinfonewrecblock",
+    "chtml": "/template/certinfonewrecblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "certinfodynblock",
+    "chtml": "/template/certinfodynblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "certinfobaseblock",
+    "chtml": "/template/certinfobaseblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "certinfocourselistblock",
+    "chtml": "/template/certinfocourselistblock.html",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "param": {},
+    "debug": "no"
+  },
+  {
+    "ccode": "nav",
+    "cname": "导航",
+    "curl": "http://127.168.0.1:8080/getjson/333",
+    "chtml": "/template/tem_demo.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "navbar",
+    "cname": "导航条",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/navbar.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "temdemo",
+    "cname": "导航条",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/tem_demo.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "setp",
+    "cname": "导航条",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/setp.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "fintline",
+    "cname": "导航条",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/fintline.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "tail",
+    "cname": "导航条",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/tail.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Navigationlist",
+    "cname": "导航条",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Navigation-list.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "seek",
+    "cname": "顶部内容",
+    "curl": "activity_servicelist,aqueryPage",
+    "chtml": "/template/seek.html",
+    "param": {
+      "siteId": "1",
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "aboutus",
+    "cname": "中间内容",
+    "curl": "http://115.159.99.212:8092/homeworkservice/api/wkHomework/queryManagePage.do",
+    "chtml": "/template/aboutus.html",
+    "param": {
+      "header": {
+        "SESSION_TOKEN": "4355844816",
+        "UUID": "4355844816",
+        "CLIENT_OS": "O",
+        "REQ_TIME": "1535089039292"
+      },
+      "payload": {
+        "sites": "1",
+        "hwTitle": "1",
+        "hwStatus": "1",
+        "page": "1",
+        "rows": "1"
+      }
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Applylist",
+    "cname": "中间内容",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Applylist.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Centerdata",
+    "cname": "中间内容",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Centerdata.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Centerformlist",
+    "cname": "中间内容",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Centerformlist.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Centergradelist",
+    "cname": "中间内容",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Centergradelist.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Centermessage",
+    "cname": "中间内容",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Centermessage.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Centerreal",
+    "cname": "中间内容",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Centerreal.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Centerstudylist",
+    "cname": "中间内容",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Centerstudylist.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Helpproblemlist",
+    "cname": "常见问题列表",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Helpproblemlist.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Helpsidelist",
+    "cname": "政策法规列表",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Helpsidelist.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Login",
+    "cname": "登录",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Login.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "payorder",
+    "cname": "支付",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/payorder.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "PersonalCenter",
+    "cname": "个人资料",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/PersonalCenter.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "register",
+    "cname": "注册页面",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/register.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Showbarlist",
+    "cname": "才艺展示",
+    "curl": "http://115.159.99.212:9027/studygroup-service/api/sgpCategory/queryById.do",
+    "chtml": "/template/Showbarlist.html",
+    "param":{
+      "header":
+      {
+        "SESSION_TOKEN":"2605588268",
+        "UUID":"2605588268",
+        "CLIENT_OS":"O",
+        "REQ_TIME":"1535100994367"},
+      "payload":
+      {
+        "catId":"dd519aa34b964e0e945f111ab7f2e08f"}},
+    "debug": "no"
+  },
+  {
+    "ccode": "Show-piece-list",
+    "cname": "才艺展示",
+    "curl": "activity_servicelist,aqueryPage",
+    "chtml": "/template/Show-piece-list.html",
+    "param": {
+      "header": {
+        "SESSION_TOKEN": "4904919188",
+        "UUID": "4904919188",
+        "CLIENT_OS": "O",
+        "REQ_TIME": "1535082495128"
+      },
+      "payload": {}
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Showdetailsimage",
+    "cname": "才艺展示轮播图",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Showdetailsimage.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Showdetailsreview",
+    "cname": "才艺展示评论",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Showdetailsreview.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Applysign",
+    "cname": "报名页",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Applysign.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Abilityupload",
+    "cname": "才艺上传",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Abilityupload.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Applyreferral",
+    "cname": "课程详情",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Applyreferral.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Applyintro",
+    "cname": "课程详情",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Applyintro.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Completionanswer",
+    "cname": "课程详情",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Completionanswer.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "Onlineexamination",
+    "cname": "在线考试",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/Onlineexamination.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "submissionexperience",
+    "cname": "经验提交",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/submissionexperience.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode":"broadcastblock",
+    "cname": "轮播图",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/broadcast-block.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "newslistblock",
+    "cname": "新闻动态",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/newslistblock.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "cousrelistblock",
+    "cname": "课程中心",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/cousrelistblock.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "signuplistblock",
+    "cname": "报名学习",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/signuplistblock.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "studygrouplistblock",
+    "cname": "报名学习",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/studygrouplistblock.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "actlistblock",
+    "cname": "活动",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/actlistblock.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  },
+  {
+    "ccode": "rcqlistblock",
+    "cname": "活动",
+    "curl": "http://127.168.0.1:8080/getjson/222",
+    "chtml": "/template/rcqlistblock.html",
+    "param": {
+      "id": 8,
+      "curPage": 1
+    },
+    "debug": "no"
+  }
+]

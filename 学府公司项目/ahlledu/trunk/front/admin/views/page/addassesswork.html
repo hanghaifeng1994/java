@@ -1,0 +1,95 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime"></label>
+                    <div class="col-md-10 row rylist">
+                        <div class="col-md-4">
+                            <div class="dropdowns1 "></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="dropdowns1 "></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">所属课程</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">作业主题</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">作业内容</label>
+                    <div class="col-md-10">
+                        <textarea style="resize: none; min-height:200px;width: 100%;border:1px solid #E4E4E4" cols="5"
+                                  rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-xl-12 col-md-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">提交截止时间</label>
+                    <div class="col-md-10">
+                       <div class="row clo-md-12">
+                           <div class="col-md-2">
+                               <input type="radio"   name="radio"  style="margin-top:6px"><span style="margin-left:10px">发布后</span>
+                           </div>
+                           <div  class="dropdowns1 "></div>
+                       </div>
+                        <div class="row clo-md-12 padding-t-20">
+                            <div class="col-md-2">
+                                <input type="radio"   name="radio"  style="margin-top:6px"><span style="margin-left:10px">开始学习后</span>
+                            </div>
+                            <div  class="dropdowns1 "></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="form-group col-xl-12 padding-t-20">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e">发布</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-fill  btn-e">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    window.utils_admin.loadhtml($(".dropdowns1"), '/dropdown.html', {
+        "heard": "平台管理员",
+        "body": [
+            {
+                "text": "1"
+            },
+            {
+                "text": "2"
+            },
+            {
+                "text": "3"
+            }
+        ]
+    })
+</script>

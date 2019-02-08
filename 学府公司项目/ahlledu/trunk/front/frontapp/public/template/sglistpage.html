@@ -1,0 +1,231 @@
+<style>
+    .sglist-page .app-cover {
+        height: 200px;
+    }
+
+    .sglist-page .info li {
+        float: left;
+        margin-right: 10%;
+    }
+
+    .sglist-page .top {
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .sglist-page .inline li {
+        float: left;
+        margin-right: 40px;
+    }
+
+    .sglist-page li {
+        margin-bottom: 20px;
+    }
+
+    .sglist-page li:last-child {
+        margin-bottom: 0;
+    }
+
+    .pagination-block {
+        text-align: center;
+        white-space: nowrap;
+        padding: 40px 0;
+    }
+
+    .pagination-block .page-btn {
+        display: inline-block;
+        margin: 0 3px;
+        width: 40px;
+        line-height: 40px;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+    .pagination-block .page-btn.active {
+        color: #fff;
+        background-color: #39ABEF;
+        border-color: #39ABEF;
+    }
+
+    .pagination-block .page-btn:hover,
+    .pagination-block .page-btn:focus {
+        text-decoration: none;
+    }
+</style>
+
+{{set data=pagedata.totalData.sglistpage}}
+<div class="sglist-page">
+    <div class="tags-title clearfix app-mb20">
+        <a href="javascript:;" class="">创建时间</a>
+        <a href="javascript:;" onclick="joinnub()">参加人数</a>
+        <span class="pull-right text-muted">共有学习小组
+            <span class="text-primary">23</span>个</span>
+    </div>
+    <ul>
+        {{each data.data}}
+        <li class="row">
+            <div class="col-xs-4 col-sm-3">
+                <div class="app-cover" style="background-image: url('/public/pic/5.jpg')"></div>
+            </div>
+            <div class="col-xs-8 col-sm-9">
+                <div class="con">
+                    <div class="top">
+                        <a href="" class="btn btn-warning btn-lg btn-circle pull-right">我要参加</a>
+                        <h4>{{$value.title}}</h4>
+                        <ul class="info clearfix text-muted">
+                            <li>创建时间：{{$value.updateDate}}</li>
+                            <li>分类：娱乐</li>
+                            <li>创建人：张校长</li>
+                        </ul>
+                    </div>
+                    <p>{{$value.articleId}}</p>
+                    <ul class="clearfix inline text-muted">
+                        <li class="data-icon data-icon-bm">参加人数：{{$value.delFlag}}</li>
+                        <li class="data-icon data-icon-sc">收藏人数：22222</li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+    <div class="pagination-block">
+        <a href="" class="page-btn">&lt;&lt;</a>
+        {{set nub=(data.totalCount/8)-(data.totalCount/8)%1}}
+        <% for(var i = 1; i
+        <nub+2; i++){ %>
+            <a href="/old/html/studygrouplist.html?pcode=sglistpage&papi=news.queryPageByCatIds&page={{i}}&rows=8"
+               class="page-btn"> <%= i %></a>
+            <% } %>
+            <a href="" class="page-btn">&gt;&gt;</a>
+    </div>
+</div>
+
+<script type="text/html" id="sglistpage_ph">
+    <style>
+        .sglist-page .app-cover {
+            height: 200px;
+        }
+
+        .sglist-page .info li {
+            float: left;
+            margin-right: 10%;
+        }
+
+        .sglist-page .top {
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .sglist-page .inline li {
+            float: left;
+            margin-right: 40px;
+        }
+
+        .sglist-page li {
+            margin-bottom: 20px;
+        }
+
+        .sglist-page li:last-child {
+            margin-bottom: 0;
+        }
+
+        .pagination-block {
+            text-align: center;
+            white-space: nowrap;
+            padding: 40px 0;
+        }
+
+        .pagination-block .page-btn {
+            display: inline-block;
+            margin: 0 3px;
+            width: 40px;
+            line-height: 40px;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        .pagination-block .page-btn.active {
+            color: #fff;
+            background-color: #39ABEF;
+            border-color: #39ABEF;
+        }
+
+        .pagination-block .page-btn:hover,
+        .pagination-block .page-btn:focus {
+            text-decoration: none;
+        }
+    </style>
+
+    <div class="sglist-page">
+        <div class="tags-title clearfix app-mb20">
+            <a href="javascript:;" onclick="jointime(this)">创建时间</a>
+            <a href="javascript:;"  onclick="joinnub(this)">参加人数</a>
+            <span class="pull-right text-muted" >共有学习小组
+            <span class="text-primary">23</span>个</span>
+        </div>
+        <ul>
+            {{each data}}
+            <li class="row">
+                <div class="col-xs-4 col-sm-3">
+                    <div class="app-cover" style="background-image: url('/public/pic/5.jpg')"></div>
+                </div>
+                <div class="col-xs-8 col-sm-9">
+                    <div class="con">
+                        <div class="top">
+                            <a href="" class="btn btn-warning btn-lg btn-circle pull-right">我要参加</a>
+                            <h4>{{$value.title}}</h4>
+                            <ul class="info clearfix text-muted">
+                                <li>创建时间：{{$value.updateDate}}</li>
+                                <li>分类：娱乐</li>
+                                <li>创建人：张校长</li>
+                            </ul>
+                        </div>
+                        <p>{{$value.articleId}}</p>
+                        <ul class="clearfix inline text-muted">
+                            <li class="data-icon data-icon-bm">参加人数：{{$value.delFlag}}</li>
+                            <li class="data-icon data-icon-sc">收藏人数：22222</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+        <div class="pagination-block">
+            <a href="" class="page-btn">&lt;&lt;</a>
+            {{set nub=(totalCount/8)-(totalCount/8)%1}}
+            <% for(var i = 1; i
+            <nub+2; i++){ %>
+            <a href="/old/html/studygrouplist.html?pcode=sglistpage&papi={{papi}}&page={{i}}&rows=8"
+               class="page-btn"> <%= i %></a>
+            <% } %>
+            <a href="" class="page-btn">&gt;&gt;</a>
+        </div>
+    </div>
+</script>
+
+<script>
+    // 分类
+    function joinnub(that) {
+        var sglistpage = $("#sglistpage");
+        window.apidata.postdata.payload.page = "";
+        window.apidata.postdata.payload.rows = "";
+        window.apidata.postdata.header.__account_id = "222";
+        window.utils.getdata("POST", "json", window.apidata.news.queryPage, window.apidata.postdata, function (a) {
+            a.papi='news.queryPage';
+            sglistpage.html(template('sglistpage_ph', a))
+        })
+    }
+
+    function jointime() {
+        var sglistpage = $("#sglistpage");
+        window.apidata.postdata.payload.page = "1"
+        window.utils.getdata("POST", "json", window.apidata.news.queryPageByCatIds, window.apidata.postdata, function (a) {
+            a.papi='news.queryPageByCatIds';
+            sglistpage.html(template('sglistpage_ph', a))
+        })
+    }
+</script>

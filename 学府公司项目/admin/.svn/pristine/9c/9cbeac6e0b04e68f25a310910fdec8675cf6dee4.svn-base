@@ -1,0 +1,310 @@
+<div style="padding-top: 13px">
+    <div class="col-md-12">
+        <div class="card horizontal-form">
+            <div class="card-body ">
+                <div class="row col-md-12">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="row">
+                            <label class="col-md-4 control-label">站点名称</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div class="row">
+                            <label class="col-md-4 control-label">站点域名</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <button  class="btn btn-wd btn-e">搜索</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+            <a class="btn btn-e btn-wd" href="#/muchadd" >创建站点</a>
+            <button class="btn  btn-f btn-wd" onclick="deleteclass()">批量删除</button>
+        </div>
+    </div>
+
+    <div class="container-fluid padding-t-20">
+        <div class="row">
+            <div class="col-md-12 ">
+                <table class="table table-bordered table-hover" id="tablecz">
+                    <thead>
+                    <tr>
+                        <th><input class="fuxk" name="allcheck" type="checkbox" value="" id="allcheck" onclick="selectall()"/></th>
+                        <th class="text-center cuti">站点名称</th>
+                        <th class="text-center cuti">站点域名</th>
+                        <th class="text-center cuti">所属平台</th>
+                        <th class="text-center cuti">站点类型</th>
+                        <th class="text-center cuti">状态</th>
+                        <th class="text-center cuti">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="queryPage"></tbody>
+
+
+                </table>
+                <div class="fenye">
+                    <div class="pagination pagination0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="queryPage_t">
+    {{each data}}
+    <tr class="{{$value.siteId}}">
+        <td><input class="fuxk" name="choose" type="checkbox" value="{{$value.siteId}}"/>
+        </td>
+        <!--改第一个tab表格抬头对应数据开始-->
+        <td class="text-center"> {{$value.siteName}}</td>
+        <td class="text-center"> {{$value.siteDomain}}</td>
+        <td class="text-center">{{$value.ptId}}</td>
+        <td class="text-center">{{$value.siteType}}</td>
+        <td class="text-center">{{$value.statusDesc}}</td>
+        <!--改第一个tab表格抬头对应数据结束-->
+        <!--单行操作区-根据具体页面选择对应按钮修，不需要的注释-->
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);">编辑</a>
+            <a href="javascript:void(0);">禁用</a>
+            <a href="javascript:void(0);" data-id="{{$value.siteId}}"
+               onclick="onedel(this)">删除</a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script>
+    (function (window, $) {
+        //列表1  修改查询接口-apidata.news.queryPage
+        let pagedataone = utils_admin.setajax('POST', apidata.postdata, apidata.base.queryList);
+        console.log("data",pagedataone)
+        utils_admin.queryPage("queryPage", "queryPage_t", pagedataone);
+        //分页1
+        new pagination({
+            pagination: $('.pagination0'),//分页挂载的样式名称
+            maxPage: 5, //最大页码数,支持奇数，左右对称
+            startPage: 1,    //默认第一页
+            currentPage: 1,          //当前页码
+            totalPageCount: pagedataone.pageSize,  //总页数
+            callback: function (pageNum) {
+                apidata.postdata.payload.page = "" + pageNum + "";
+                //修改查询接口-apidata.news.queryPage
+                utils_admin.queryPage("queryPage", "queryPage_t", utils_admin.setajax('POST', apidata.postdata, apidata.base.queryList));
+            }
+        });
+
+
+
+        window.utils_admin.calendar($('.datepicker'));
+        //站点,平台初始化
+        let childSiteList = [], parentSiteList = [];
+        //取得管理员可管理站点列表即查询员工平台站点列表
+        let siteslist = utils_admin.setajax('POST', apidata.postdata, apidata.base.staffPtSitesList);
+        siteslist.data.forEach((a, index) => {
+            parentSiteList.push(a);
+            childSiteList.push(a.siteList);
+            parentSiteList[index].text = parentSiteList[index].ptName
+            parentSiteList[index].id = parentSiteList[index].ptId;
+        });
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "所有平台",
+            "id": null,
+            "body": parentSiteList,
+            "width": 120,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": "先选择平台",
+            "id": null,
+            "body": null,
+            "width": 120,
+            "name": "endchild",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = parentSiteList[0].id
+            }
+            childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchild.push(e)
+                        endchild[index].text = endchild[index].siteName;
+                        endchild[index].id = endchild[index].siteId;
+                    }
+                })
+            });
+            window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+                "header": endchild[0].text,
+                "id": endchild[0].id,
+                "body": endchild,
+                "width": 120,
+                "name": "endchild",
+            });
+        });
+
+
+
+
+        //主站下发资讯的栏目-不用考虑
+        window.utils_admin.loadhtml($(".companynewscateone"), '/dropdown.html', {
+            "heard": "栏目一",
+            "id": null,
+            "body": [
+                {
+                    "text":"置顶",
+                    "id":"1"
+                },
+                {
+                    "text":"未置顶",
+                    "id":"2"
+                },
+            ],
+            "width": 120,
+            "name": "stickstate",
+        });
+        //主站下发资讯的审核状态-不用考虑
+        window.utils_admin.loadhtml($(".companynewscatetwo"), '/dropdown.html', {
+            "heard": "栏目二",
+            "id": null,
+            "body": [
+                {
+                    "text":"置顶",
+                    "id":"1"
+                },
+                {
+                    "text":"未置顶",
+                    "id":"2"
+                },
+            ],
+            "width": 120,
+            "name": "stickstate",
+        });
+        //主站下发资讯的审核状态-不用考虑
+        window.utils_admin.loadhtml($(".all"), '/dropdown.html', {
+            "heard": "全部",
+            "id": "0",
+            "body": [
+                {
+                    "text":"未抓取",
+                    "id":"1"
+                },
+                {
+                    "text":"已抓取",
+                    "id":"2"
+                },
+            ],
+            "width": 120,
+            "name": "stickstate",
+        });
+    })(window, window.$);
+
+
+    ;(function($, window, document, undefined) {
+
+        'use strict';
+
+        var $html = $('html');
+
+        $html.on('click.ui.dropdown', '.js-dropdown', function(e) {
+            e.preventDefault();
+            $(this).toggleClass('is-open');
+        });
+
+        $html.on('click.ui.dropdown', '.js-dropdown [data-dropdown-value]', function(e) {
+            e.preventDefault();
+            var $item = $(this);
+            var $dropdown = $item.parents('.js-dropdown');
+            $dropdown.find('.js-dropdown__input').val($item.data('dropdown-value'));
+            $dropdown.find('.js-dropdown__current').text($item.text());
+        });
+
+        $html.on('click.ui.dropdown', function(e) {
+            var $target = $(e.target);
+            if (!$target.parents().hasClass('js-dropdown')) {
+                $('.js-dropdown').removeClass('is-open');
+            }
+        });
+
+    })(jQuery, window, document);
+
+</script>
+<script>
+
+    function selectall() {
+        var checkboxs = document.getElementsByName("choose");
+        for (var i = 0; i < checkboxs.length; i++) {
+            var e = checkboxs[i];
+            e.checked = !e.checked;
+        }
+    }
+    //加载弹窗组件
+    function popups(data) {
+        $("#popups").load('./template/popups.html', function (a) {
+            $("#popups").html(window.template.render(a,data));
+            ballblack();
+        })
+    }
+    //单独删除
+    function onedel(e){
+        console.log(e.id);
+        var data = {
+            "tempid":'tableclassone',
+            "checkdata":'',
+            "body": {
+                "head": "提示",
+                "text": "是否确认删除",
+                "yesbt": "确认",
+                "nobt": "取消"
+            }
+        };
+        data.checkdata=e.id
+        popups(data)
+    }
+    function tableclassone(e) {
+        $("#"+e).remove();
+        ballblack();
+    }
+    //批量删除
+    function deleteclass() {
+        var checkboxs = $("input[name=choose]");
+        var data = {
+            "tempid":'balldeleteclass',
+            "checkdata":[],
+            "body": {
+                "head": "提示",
+                "text": "是否确认删除选中的内容",
+                "yesbt": "确认",
+                "nobt": "取消"
+            }
+        };
+        for (var i = 0; i < checkboxs.length; i++) {
+            if (checkboxs[i].checked) {
+                data.checkdata.push(checkboxs[i].value);
+            }
+        }
+        if(data.checkdata.length){
+            popups(data);
+        }
+    }
+    function balldeleteclass(e) {
+        for(let i=0;i<e.length;i++){
+            $("#"+e[i]).remove();
+            ballblack();
+        }
+    }
+</script>

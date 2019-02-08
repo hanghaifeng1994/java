@@ -1,0 +1,376 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html,
+body {
+    font-size: 16px;
+    white-space: normal;
+    word-break: break-all;
+    color: #000;
+}
+
+ol,
+ul {
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+
+.bg-primary,
+.dropdown-menu>.active>a,
+.dropdown-menu>.active>a:hover,
+.dropdown-menu>.active>a:focus {
+    background-color: #39ABEF;
+}
+
+a {
+    color: #000;
+}
+
+a:hover,
+a:focus,
+.text-primary,
+.btn-primary .badge,
+.btn-link {
+    color: #39ABEF;
+}
+
+.btn-primary {
+    background-color: #39ABEF;
+    border-color: #32a8ec;
+}
+
+.btn-warning {
+    background-color: #DCBD5A;
+    border-color: #ddbd52;
+}
+
+.btn-warning .badge {
+    color: #DCBD5A;
+}
+
+.progress-bar-warning,
+.label-warning {
+    background-color: #DCBD5A;
+}
+
+.panel-primary {
+    border: 0;
+}
+
+.panel-body {
+    border: 1px solid #ddd;
+    border-top: 0;
+}
+
+.panel-heading {
+    border-radius: 0;
+}
+
+.panel-primary>.panel-heading {
+    background-color: #39ABEF;
+    border-color: #39ABEF;
+}
+
+.panel-primary>.panel-heading+.panel-collapse>.panel-body {
+    border-top-color: #39ABEF;
+}
+
+.panel-primary>.panel-heading .badge {
+    color: #39ABEF;
+}
+
+.panel-primary>.panel-footer+.panel-collapse>.panel-body {
+    border-bottom-color: #39ABEF;
+}
+
+.app-cover {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.app-elip {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.app-mt10 {
+    margin-top: 10px !important;
+}
+
+.app-mt20 {
+    margin-top: 20px !important;
+}
+
+.app-mb10 {
+    margin-bottom: 10px !important;
+}
+
+.app-mb20 {
+    margin-bottom: 20px !important;
+}
+
+.app-overflow {
+    overflow: hidden;
+}
+
+.more {
+    float: right;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.mb {
+    margin-bottom: 40px;
+}
+
+.app-table-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.app-table {
+    display: table;
+    width: 100%;
+}
+
+.more:hover,
+.more:focus {
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-circle {
+    border-radius: 30px;
+    min-width: 120px;
+}
+
+.transition {
+    transition: all linear .2s;
+    -webkit-transition: all linear .2s;
+    -moz-transition: all linear .2s;
+}
+
+.file-btn {
+    overflow: hidden;
+    position: relative;
+}
+
+.file-btn>input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 1;
+}
+
+a.normal:hover,
+a.normal:focus {
+    color: initial;
+    text-decoration: none;
+}
+
+/* 首页 */
+
+.img-news-list .box {
+    display: block;
+}
+
+.img-news-list .box .fot {
+    padding: 0 10px 5px 10px;
+}
+
+.img-news-list .box:hover {
+    outline: 2px solid #ddd;
+    text-decoration: none;
+    color: initial;
+}
+
+.img-news-list .box .app-cover {
+    height: 180px;
+}
+
+.box-control.carousel-control {
+    top: 50%;
+    margin-top: -20px;
+    width: 40px;
+    border-radius: 50%;
+    height: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.box-control.carousel-control.right {
+    background-image: url('/public/img/right-circle-fill.png');
+}
+
+.box-control.carousel-control.left {
+    background-image: url('/public/img/left-circle-fill.png');
+}
+
+.box-control.carousel-control.right:hover {
+    background-image: url('/public/img/right-circle-fill-active.png');
+}
+
+.box-control.carousel-control.left:hover {
+    background-image: url('/public/img/left-circle-fill-active.png');
+}
+
+/* 选项标题 */
+
+.tag-title {
+    background-color: #ebebeb;
+    color: #666;
+    height: 52px;
+}
+
+.tag-title span {
+    float: left;
+    padding: 0 15px;
+    line-height: 52px;
+    margin-right: 5px;
+    display: block;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tag-title span.active {
+    color: #39ABEF;
+    position: relative;
+}
+
+.tag-title span.active:after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-color: #ebebeb;
+    bottom: -7px;
+    left: 50%;
+    margin-left: -9px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    display: block;
+    line-height: 1;
+    position: absolute;
+}
+
+.tags-title {
+    border-bottom: 1px solid #ddd;
+    line-height: 50px;
+}
+
+.tags-title a {
+    float: left;
+    padding: 0 25px;
+    margin-right: 2px;
+}
+
+.tags-title a:hover,
+.tags-title a:focus {
+    text-decoration: none;
+}
+
+.tags-title a.active {
+    background-color: #39ABEF;
+    color: #fff;
+}
+
+.comment-title {
+    border-bottom: 1px solid #ddd;
+    line-height: 2em;
+}
+
+.comment-title span {
+    padding-left: 5px;
+    border-left: 3px solid #39ABEF;
+}
+
+/* 报名收藏 */
+
+.data-icon {
+    padding-left: 30px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    line-height: 30px;
+    background-size: auto 25px;
+}
+
+.data-icon.data-icon-bm {
+    background-image: url('/public/img/icon_bm.png')
+}
+
+.data-icon.data-icon-sc {
+    background-image: url('/public/img/icon_sc.png')
+}
+
+/* 推荐 */
+
+.recommend-box .tag-title {
+    margin-bottom: 20px;
+}
+
+.recommend-box a:hover,
+.recommend-box a:focus {
+    color: initial;
+}
+
+.recommend-box li {
+    margin-bottom: 20px;
+    position: relative;
+    height: 250px;
+}
+
+.recommend-box li .tit {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    height: 45px;
+    line-height: 45px;
+    background-color: rgba(255, 255, 255, .5);
+    padding: 0 10px;
+}
+
+.recommend-box li .bg {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .5);
+    color: #fff;
+    padding: 70px 10px;
+    text-align: center;
+    opacity: 0;
+}
+
+.recommend-box li:hover,
+.recommend-box li:focus {
+    box-shadow: 0 3px 10px -2px rgba(0, 0, 0, .5);
+}
+
+.recommend-box li:hover .bg,
+.recommend-box li:focus .bg {
+    opacity: 1;
+}
+
+.recommend-box li:hover .tit,
+.recommend-box li:focus .tit {
+    background-color: rgba(71, 173, 231, .8);
+    color: #fff;
+}

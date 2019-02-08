@@ -1,0 +1,202 @@
+<div class="col-md-12">
+    <div class="col-md-12 row" style="padding-top: 10px">
+        <div class="col-md-6 col-xs-12 row">
+            <div class="col-md-4 col-xs-12">
+                <div class="parentsitelist"></div>
+            </div>
+            <div class="col-md-4 col-xs-12" style="margin-left: 50px">
+                <div class="endchild"></div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12 row ">
+            <div class="col-md-12 col-xs-12">
+                <button class="btn btn-e" data-id="" onclick="redactclass(this)">新增分类</button>
+                <button class="btn btn-e " onclick="seek(this)">搜索</button>
+                <!--<button class="btn btn-e " onclick="deleteclass(this)">批量删除</button>-->
+            </div>
+        </div>
+    </div>
+    <div class="treetable"></div>
+</div>
+<script>
+    (function (window) {
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+        viewht();
+        function viewht() {
+            pagepostdata.payload.parentId="";
+            var pagedata = utils_admin.setajax('POST', pagepostdata, apidata.news.newsCategoryqueryPage).data;
+            pagedata.forEach((a, b) => {
+                a.id = a.catId ? a.catId : " ";
+                a.one = a.catName ? a.catName : " ";
+                a.two = a.catId ? a.catId : " ";
+                if (a.childData!='1') {
+                    a.child = false
+                } else {
+                    a.child = true
+                }
+                a.menu = [
+                    {
+                        "text": "编辑",
+                        "method": "redactclass",
+                    },
+                    {
+                        "text": a.childData=='1'?"":"删除",
+                        "method":a.childData=='1'? "":"onedel",
+                    },
+                    {
+                        "text": "新增",
+                        "method": "redactclass",
+                    }
+                ]
+            });
+            window.utils_admin.loadhtml($('.treetable'), '/treeTable.html', {
+                "datath": [
+                    {
+                        "text": "信息栏目名称"
+                    },
+                    {
+                        "text": "栏目ID"
+                    },
+                    {
+                        "text": "操作"
+                    }
+                ],
+                "tabledata": pagedata,
+            });
+        }
+
+
+        //站点,平台初始化
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "所有平台",
+            "id": null,
+            "body": window.parentSiteList,
+            "width": 120,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+            "header": "先选择平台",
+            "id": null,
+            "body": null,
+            "width": 120,
+            "name": "endchild",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchild = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+            window.childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchild.push(e)
+                        endchild[index].text = endchild[index].siteName;
+                        endchild[index].id = endchild[index].siteId;
+                    }
+                })
+            });
+            pagepostdata.payload.siteId = endchild[0].id,
+                window.utils_admin.loadhtml($(".endchild"), '/dropdown.html', {
+                    "header": endchild[0].text,
+                    "id": endchild[0].id,
+                    "body": endchild,
+                    "width": 120,
+                    "name": "endchild",
+                });
+        });
+        $(".endchild").click(function (a) {
+            pagepostdata.payload.siteIds = utils_admin.downid(a, "endchild");
+        });
+
+
+        function selectall(e) {
+            console.log(e)
+        }
+
+        function beforeExpand(treeTable, id) {
+            if ($('.' + id, treeTable).length) {
+                return;
+            }
+            pagepostdata.payload.parentId = id;
+            let postdata = utils_admin.setajax('POST', pagepostdata, apidata.news.newsCategoryqueryPage).data;
+            if (postdata) {
+                let html = '';
+                for (var i = 0; i < postdata.length; i++) {
+                    postdata[i].childData=="1" ? postdata[i].childData = true : postdata[i].childData = false;
+                    html += "<tr id=" + postdata[i].catId + " pId=" + postdata[i].parentId + " hasChild=" + postdata[i].childData + ">" +
+                        "<td><input class='fuxk' name='choose' type='checkbox' value=" + id + "/></td>" +
+                        "<td>" + postdata[i].catName + "</td>" +
+                        "<td>" + postdata[i].catId + "</td>" +
+                        "<td  class='text-center caozuo' style='color: #00bbff'>" +
+                        "<a onclick='postdata(this)' data-id=" + postdata[i].catId + ">编辑  </a>" +
+                        "<a onclick='onedel(this)' data-id=" + postdata[i].catId + ">删除  </a>" +
+                        "</td></tr>";
+                }
+                treeTable.addChilds(html);
+            }
+        }
+
+        //搜索
+        function seek() {
+
+        }
+
+        //新增
+        function redactclass(a) {
+            utils_admin.addclass({
+                "id": a.dataset.id,
+                "siteid": pagepostdata.payload.siteId,
+                "paurl": apidata.news.newsCategoryqueryById, //详情api
+                "url": apidata.news.newsCategorysave,    //保存api
+                "parentId":a.dataset.id,        //新增有父id,编辑无有父id
+            })
+        }
+
+        //编辑
+        function postdata(a) {
+            utils_admin.addclass({
+                "id": a.dataset.id,
+                "siteid": pagepostdata.payload.siteId,
+                "paurl": apidata.news.newsCategoryqueryById,
+                "url": apidata.news.newsCategorysave,
+            })
+        }
+
+        //删除
+        function onedel(e) {
+            $("#popups").toggle("hidden");
+            pagepostdata.payload.catId = e.dataset.id;
+        }
+
+        //批量删除
+        function deleteclass(a) {
+            $("#popups").toggle("hidden");
+            console.log(utils_admin.choosevalue("treetable"))
+            pagepostdata.payload.questionId = utils_admin.choosevalue("treetable");
+        }
+
+        $("#popups>.white_content").off('click').on('click', function (a) {
+            if (a.target.nodeName.toLowerCase() == "button") {
+                $("#popups").toggle("hidden")
+            }
+            if (a.target.dataset.id == "1") {
+                utils_admin.setajax('POST', pagepostdata, apidata.news.newsCategorydeleteById);
+                pagepostdata.payload.catId="";
+                console.log(pagepostdata.payload)
+                viewht();
+            }
+            a.stopPropagation();
+        });
+        window.redactclass = redactclass;
+        window.onedel = onedel;
+        window.selectall = selectall;
+        window.beforeExpand = beforeExpand;
+        window.deleteclass = deleteclass;
+        window.postdata = postdata;
+        window.seek = seek;
+        window.viewht = viewht;
+    })(window)
+</script>

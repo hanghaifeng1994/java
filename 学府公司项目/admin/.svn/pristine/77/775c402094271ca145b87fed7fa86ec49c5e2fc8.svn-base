@@ -1,0 +1,107 @@
+<div class="col-md-12">
+    <div class="horizontal-form">
+        <div class="card-body">
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">题库名称</label>
+                    <div class="col-md-4">
+                        <input type="text" placeholder="填写名称" class="form-control">
+                    </div>
+                    <div class="col-md-1 text-danger">*</div>
+                </div>
+            </div>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-2 control-label brokeragetime">题库归属</label>
+                    <div class="col-md-9 row rylist ">
+                        <div class="col-md-3">
+                            <div class="parentsitelist "></div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="endchilds "></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="form-group col-xl-12 padding-t-10">
+                <div class="row">
+                    <label class="col-md-4 control-label brokeragetime"></label>
+                    <button type="submit" class="btn btn-fill  btn-e" onclick="savemessageg()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+    (function (window, $) {
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+        pagepostdata.payload.platformId=pagepostdata.payload.ptId;
+        //站点,平台初始化
+        window.utils_admin.loadhtml($(".parentsitelist"), '/dropdown.html', {
+            "header": "所有平台",
+            "id": null,
+            "body": window.parentSiteList,
+            "width": 120,
+            "name": "parentsitelist",
+        });
+        window.utils_admin.loadhtml($(".endchilds"), '/dropdown.html', {
+            "header": "先选择平台",
+            "id": null,
+            "body": null,
+            "width": 140,
+            "name": "endchilds",
+        });
+        //换站点
+        $(".parentsitelist").click(function (a) {
+            let id = '', endchilds = [];
+            if (a.target.nodeName.toLowerCase() == "li") {
+                id = a.target.getAttribute("id")
+            } else {
+                id = window.parentSiteList[0].id
+            }
+            pagepostdata.payload.platformId=id;
+            pagepostdata.payload.siteId = "";
+            window.childSiteList.forEach((a) => {
+                a.forEach((e, index) => {
+                    if (e.ptId == id) {
+                        endchilds.push(e)
+                        endchilds[index].text = endchilds[index].siteName;
+                        endchilds[index].id = endchilds[index].siteId;
+                    }
+                })
+            });
+            window.utils_admin.loadhtml($(".endchilds"), '/dropdown.html', {
+                "header": "全部",
+                "id": "",
+                "body": endchilds,
+                "width": 140,
+                "name": "endchilds",
+            });
+        });
+        $(".endchilds").click(function (a) {
+            pagepostdata.payload.siteId = utils_admin.downid(a, "endchilds");
+        });
+
+
+        //保存
+        function savemessageg() {
+            let inputdata = $("input");
+            if (inputdata[0].value == '') {
+                alert("必填项")
+            } else {
+                pagepostdata.payload.name = inputdata[0].value;
+                let setdata = utils_admin.setajax('POST', pagepostdata, apidata.testing.testingpool);
+                if (setdata.success == "1") {
+                    alert("新增成功");
+                    window.location.href = "/admin/views/index.html#/questiongerent"
+                }
+            }
+        }
+
+        window.savemessageg = savemessageg;
+    })(window, window.$)
+</script>

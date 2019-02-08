@@ -1,0 +1,33 @@
+{{set cdata=pagedata.totalData.rcqlistblock}}
+<div class="col-xs-12 col-sm-8 col-md-4 margin40">
+    <div class="xinwen">
+        <div class="pull-left xinwen1">才艺风采</div>
+        <div class="pull-right"><a href=""><img src="/img/2.jpg" alt=""></a></div>
+    </div>
+    <div class="xwxq">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="slick">
+                    {{each cdata.data}}
+                    <div class="waibu"><a href=""><img class="img-responsive" src="{{$value.abmPhoto}}" alt=""></a>
+                        <div class="fldis">
+                            <div class="liand1">{{$value.abmName}}</div>
+                            <div class="liand2">作者：{{$value.createBy}}</div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.slick').slick({
+            dots: false,
+
+        });
+    });
+
+</script>

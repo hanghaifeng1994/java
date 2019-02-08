@@ -1,0 +1,155 @@
+
+<div>
+    <div class="col-md-12">
+        <div class="card horizontal-form">
+            <div class="card-body ">
+                <form class="form-horizontal row" id="alllj">
+                    <div class="col-md-3">
+                        <select name="cities" class="selectpicker" data-title="终身学习网站" data-style="btn-default btn-outline" data-menu-style="dropdown-blue">
+                            <option value="id" v-for="(net,index) in netdata1">{{net.lj}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn mind btn-primary btn-wd">添加信息</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn mind btn-success btn-wd ">批量下发</button>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn mind btn-danger btn-wd">批量删除</button>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row rylist">
+                            <label class="col-md-3 control-label">一级栏目:</label>
+                            <div class="col-md-6">
+                                <select name="cities" class="selectpicker" data-title="帮助中心" data-style="btn-default btn-outline" data-menu-style="dropdown-blue">
+                                    <option value="id" v-for="(net,index) in netdata2">{{net.lj}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row rylist">
+                            <label class="col-md-3 control-label">二级栏目:</label>
+                            <div class="col-md-6">
+                                <select name="cities" class="selectpicker" data-title="常见问题" data-style="btn-default btn-outline" data-menu-style="dropdown-blue">
+                                    <option value="id" v-for="(net,index) in netdata3">{{net.lj}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row rylist">
+                            <label class="col-md-3 control-label">发布状态:</label>
+                            <div class="col-md-6">
+                                <select name="cities" class="selectpicker" data-title="未审核" data-style="btn-default btn-outline" data-menu-style="dropdown-blue">
+                                    <option value="id" v-for="(net,index) in netdata4">{{net.lj}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="col-sm-4 col-md-4 col-xl-12">
+                            <ul class=" list-unstyled list-inline antime1 rylist">
+                                <li class="fdong brokeragetime timecolor" style="width:10%;">
+                                    发布日期
+                                </li>
+                                <li class="" style="width: 40%">
+                                    <input type="text" id="datetimepicker" class="form-control datepicker" placeholder="选择日期"/>
+                                </li>
+
+                                <li class="fdong timecolor" style="width:10%;">到</li>
+                                <li class="" style="width: 40%">
+                                    <input type="text" class="form-control datepicker" placeholder="选择日期"/>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class=" col-3">
+                        <div class="row rylist">
+                            <label class="col-md-4 control-label">标题</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="row ">
+                            <button  style="margin-top: 16px" class="btn btn-wd">搜索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+            <button class="btn btn-danger btn-wd">批量删除</button>
+        </div>
+    </div>
+
+    <div class="container-fluid padding-t-20">
+        <div class="row">
+            <div class="col-md-12 ">
+                <table class="table table-bordered table-hover" id="tablecz">
+                    <thead>
+                    <tr>
+                        <th><input class="fuxk" name="allcheck" type="checkbox" value="" id="allcheck" onclick="selectall()"/></th>
+                        <th class="text-center cuti">标题</th>
+                        <th class="text-center cuti">所属栏目</th>
+                        <th class="text-center cuti">是否推荐/置顶</th>
+                        <th class="text-center cuti">状态</th>
+                        <th class="text-center cuti">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(con,index) in tabcon">
+                        <td><input class="fuxk" name="choose" type="checkbox" value=""/></td>
+                        <td class="text-center">{{con.diaoyan}}</td>
+                        <td class="text-center">{{con.news}}</td>
+                        <td class="text-center">
+                            {{con.yes}} <span style="padding:0 5px">/</span>{{con.no}}
+                        </td>
+                        <td class="text-center">{{con.shenhe}}</td>
+                        <td class="text-center caozuo">
+                            <a v-show="con.condition1" href="javascript:void(0);">{{con.sh}}<span>|</span></a>
+                            <a v-show="con.condition2" href="javascript:void(0);">{{con.fb}}<span>|</span></a>
+                            <a v-show="con.condition3" href="javascript:void(0);" >{{con.bj}}<span>|</span></a>
+                            <a v-show="con.condition4" href="javascript:void(0);">{{con.tj}} <span>|</span></a>
+                            <a v-show="con.condition5" href="javascript:void(0);">{{con.zd}} <span>|</span></a>
+                            <a v-show="con.condition6" href="javascript:void(0);">{{con.xf}} <span>|</span></a>
+                            <a href="javascript:void(0);" v-on:click="shanchu(index)">删除</a>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="fenye">
+                    <div class="sxy"><a href="javascript:void(0)">首页</a></div>
+                    <div class="sxy"><a href="javascript:void(0)">上一页</a></div>
+                    <div class="xuhao fyon"><a href="javascript:void(0)">1</a></div>
+                    <div class="xuhao"><a href="javascript:void(0)">2</a></div>
+                    <div class="xuhao">…</div>
+                    <div class="xuhao"><a href="javascript:void(0)">5</a></div>
+                    <div class="sxy"><a href="javascript:void(0)">下一页</a></div>
+                    <div class="sxy"><a href="javascript:void(0)">尾页</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selectall() {
+        var checkboxs = document.getElementsByName("choose");
+        for (var i = 0; i < checkboxs.length; i++) {
+            var e = checkboxs[i];
+            e.checked = !e.checked;
+        }
+    }
+</script>

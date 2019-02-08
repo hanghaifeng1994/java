@@ -1,0 +1,229 @@
+<div class="card-body">
+    <div class="tab-content">
+        <div class="col-md-12">
+            <div class="card horizontal-form">
+                <div class="card-body">
+                    <!--修改搜索条件开始-->
+                    <div class="row col-md-12">
+                        <div class="col-md-4 col-sm-6">
+                            <div class="row rylist">
+                                <label class="col-md-4 control-label">账号名称</label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="row rylist">
+                                <label class="col-md-4 control-label">姓名</label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-5">
+                            <div class="row rylist">
+                                <label class="col-md-4 control-label">单位</label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-md-4 col-sm-5">
+                            <div class="row rylist">
+                                <label class="col-md-4 control-label">角色</label>
+                                <div class="col-md-7">
+                                    <div class="companynewscateone"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <label class="col-md-4 control-label"></label>
+                            <button style="margin-top: 10px" class="btn btn-wd btn-e" onclick="seek()">
+                                搜索
+                            </button>
+                        </div>
+                    </div>
+                    <!--修改搜索条件开始-->
+                </div>
+            </div>
+        </div>
+        <!--批量操作和新增区域-->
+        <div class="col-md-12">
+            <div class="padding-l-10 f-s-17 bod  box-s bod-r-8 padding-t-10">
+                <a class="btn btn-e btn-wd" href="#/addusernumber" style="float:right; margin-right: 10px;">添加管理员</a>
+                <button class="btn btn-f btn-wd" onclick="deleteclass()">批量禁用</button>
+            </div>
+        </div>
+        <!--表格数据区-->
+        <div class="container-fluid padding-t-20">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><input class="fuxk" name="allcheck2" type="checkbox" value="" id="allcheck2"
+                                       onclick="selectall(this)"/></th>
+                            <!--改第一个tab表格抬头开始-->
+                            <th class="text-center cuti">账号名称</th>
+                            <th class="text-center cuti">姓名</th>
+                            <th class="text-center cuti">单位</th>
+                            <th class="text-center cuti">角色</th>
+                            <th class="text-center cuti">状态</th>
+                            <th class="text-center cuti">操作</th>
+                            <!--改第一个tab表格抬头结束-->
+                        </tr>
+                        </thead>
+                        <tbody id="usernumber"></tbody>
+                    </table>
+                    <div class="fenye">
+                        <div class="pagination pagination0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--第一个tab表格数据模板区-->
+<script type="text/html" id="usernumber_t">
+    {{each data}}
+    <tr class="{{$value.custId}}">
+        <td><input class="fuxk" name="choose" type="checkbox" value="{{$value.custId}}"/>
+        </td>
+        <td class="text-center"> {{$value.loginName}}</td>
+        <td class="text-center">{{$value.custName}}</td>
+        <td class="text-center">
+            {{$value.office}}
+        </td>
+        <td class="text-center">
+            &nbsp;
+        </td>
+        <td class="text-center">
+            {{$value.userStatusDesc}}
+        </td>
+        <td class="text-center caozuo">
+            <a href="javascript:void(0);" data-id="{{$value.custId}}" onclick="redact(this)">编辑</a>
+            <a href="javascript:void(0);" data-id="{{$value.custId}}" onclick="forbidden(this)">
+                {{if $value.userStatus=="N"}}
+                禁用
+                {{else}}
+                启用
+                {{/if}}
+            </a>
+        </td>
+    </tr>
+    {{/each}}
+</script>
+
+<script>
+    //初始化
+    (function (window) {
+        localStorage.setItem("custId","");
+        var pagepostdata = utils_admin.clone(apidata.postdata);
+        pagepostdata.payload.loginName='';
+        pagepostdata.payload.custName='';
+        pagepostdata.payload.office='';
+        pagepostdata.payload.roleId='';
+        let pagedataone = utils_admin.setajax('POST', pagepostdata, apidata.base.queryStaffPage);
+        utils_admin.queryPage("usernumber", "usernumber_t", pagedataone);
+        //分页1
+        new pagination({
+            pagination: $('.pagination0'),
+            maxPage: 5,
+            startPage: 1,
+            currentPage: 1,
+            totalPageCount: (pagedataone.totalCount / pagedataone.pageSize) - (pagedataone.totalCount / pagedataone.pageSize) % 1 + 1,  //总页数
+            callback: function (pageNum) {
+                pagepostdata.payload.page = "" + pageNum + "";
+                utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.queryStaffPage));
+            }
+        });
+        //角色列表
+        let companynewscat = utils_admin.setajax('POST', pagepostdata, apidata.base.custrole).data;
+        let companynewscatlist = [];
+        companynewscat.forEach((data, index) => {
+            companynewscatlist.push(data);
+            companynewscatlist[index].text = data.roleName;
+            companynewscatlist[index].id = data.roleId
+        });
+        window.utils_admin.loadhtml($(".companynewscateone"), '/dropdown.html', {
+            "header": "请选择",
+            "id": "null",
+            "body": companynewscatlist,
+            "width": 150,
+            "name": "companynewscateone",
+        });
+
+        $(".companynewscateone").click(function (a) {
+            pagepostdata.payload.roleId = utils_admin.downid(a,"companynewscateone");
+        });
+
+        //全选
+        function selectall(thit) {
+            let checkboxs = document.getElementsByName("choose");
+            if (thit.checked) {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = true;
+                }
+            } else {
+                for (let i = 0; i < checkboxs.length; i++) {
+                    let e = checkboxs[i];
+                    e.checked = false;
+                }
+            }
+        }
+
+        //搜索
+        function seek(e) {
+            let inputdata = $("input[type=text]");
+            pagepostdata.payload.loginName = inputdata[0].value;
+            pagepostdata.payload.custName = inputdata[1].value;
+            pagepostdata.payload.office = inputdata[2].value;
+            utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.queryStaffPage));
+        }
+
+        //编辑
+        function redact(e) {
+            localStorage.setItem("custId","1");
+            utils_admin.redact("addusernumber","custId", e)
+        }
+
+        //禁用
+        function forbidden(e) {
+            var id = e.dataset.id;
+            pagepostdata.payload.custIds = id;
+            if ($.trim($(e).text()) == "启用") {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.enableUser);
+            } else {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.freezeUser);
+            }
+            utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.queryStaffPage));
+        }
+
+
+        //批量禁用
+        function deleteclass(a) {
+            $("#popups").toggle("hidden");
+            pagepostdata.payload.custIds = utils_admin.choosevalue("usernumber");
+        }
+
+        $("#popups>.white_content").click(function (a) {
+            if (a.target.nodeName.toLowerCase() == "button") {
+                $("#popups").toggle("hidden")
+            }
+            if (a.target.dataset.id=="1") {
+                utils_admin.setajax('POST', pagepostdata, apidata.base.freezeUser);
+                utils_admin.queryPage("usernumber", "usernumber_t", utils_admin.setajax('POST', pagepostdata, apidata.base.queryStaffPage));
+            }
+        });
+
+        window.seek = seek;
+        window.selectall = selectall;
+        window.redact = redact;
+        window.forbidden = forbidden;
+        window.deleteclass = deleteclass;
+    })(window);
+</script>

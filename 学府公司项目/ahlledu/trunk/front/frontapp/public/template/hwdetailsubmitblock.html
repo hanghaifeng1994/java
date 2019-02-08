@@ -1,0 +1,106 @@
+<style>
+    .hw-detail-submit-block {
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+
+    .hw-detail-submit-block .blackboard {
+        width: 357px;
+        height: 285px;
+        padding: 15px 40px 100px 40px;
+        color: #ffffff;
+        line-height: 2em;
+        background-image: url('/public/img/zyxq.png');
+        margin: 10px auto 30px auto;
+    }
+
+    .hw-detail-submit-block .file-list .app-cover {
+        height: 80px;
+        position: relative;
+    }
+
+    .hw-detail-submit-block .file-list .app-cover .shut {
+        position: absolute;
+        right: 5px;
+        bottom: 0;
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.5em;
+        line-height: 1;
+    }
+
+    .hw-detail-submit-block .file-btn {
+        height: 80px;
+        background-color: #f0f0f0;
+        text-align: center;
+        line-height: 80px;
+        font-size: 5em;
+        font-weight: normal;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        color: #999;
+    }
+
+    .hw-detail-submit-block .row {
+        padding-bottom: 10px;
+    }
+</style>
+<div class="hw-detail-submit-block">
+    <div class="blackboard app-cover">
+        <h3 class="text-center">作业详情</h3>
+        <ul>
+            <li>发布时间：6月26日</li>
+            <li>作业内容：啊啊啊啊啊啊啊啊啊啊啊啊</li>
+            <li>提交时间：6月2日</li>
+        </ul>
+    </div>
+    <form class="form-horizontal">
+        <div class="form-group app-mb20">
+            <label class="col-sm-3 control-label">作业主题</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" placeholder="作业主题">
+            </div>
+        </div>
+        <div class="form-group app-mb20">
+            <label class="col-sm-3 control-label">作业备注/说明</label>
+            <div class="col-sm-9">
+                <textarea name="" rows="5" class="form-control" placeholder="作业备注/说明"></textarea>
+            </div>
+        </div>
+        <div class="form-group app-mb20">
+            <label class="col-sm-3 control-label">上传图片</label>
+            <div class="col-sm-9">
+                <p class="text-muted">（图片大小不超过2M，建议尺寸320*240）</p>
+                <ul class="file-list row">
+                    <li class="col-md-3 col-xs-6">
+                        <div class="app-cover" style="background-image: url('/public/pic/5.jpg')">
+                            <span class="shut">&times;</span>
+                        </div>
+                    </li>
+                    <li class="col-md-3 col-xs-6">
+                        <div class="app-cover" style="background-image: url('/public/pic/5.jpg')">
+                            <span class="shut">&times;</span>
+                        </div>
+                    </li>
+                    <li class="col-md-3 col-xs-6">
+                        <div class="app-cover" style="background-image: url('/public/pic/5.jpg')">
+                            <span class="shut">&times;</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="row">
+                    <div class="col-md-3 col-xs-6">
+                        <div class="file-btn">
+                            <span>+</span>
+                            <input type="file" name="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group app-mb20">
+            <div class="col-sm-offset-2 col-sm-10 text-center">
+                <button type="submit" class="btn btn-lg btn-warning btn-circle">提交作业</button>
+            </div>
+        </div>
+    </form>
+</div>
