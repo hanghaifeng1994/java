@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgSchmEdtPackageDao">
+
+    <resultMap id="BaseResultMapExt" type="CfgSchmEdtPackageExt">
+        <id property="edtPkgId" column="EDT_PKG_ID" jdbcType="VARCHAR" />
+        <result property="pkgId" column="PKG_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtId" column="SCHM_EDT_ID" jdbcType="VARCHAR" />
+        <result property="edtPkgStatus" column="EDT_PKG_STATUS" jdbcType="CHAR" />
+        <result property="edtPkgType" column="EDT_PKG_TYPE" jdbcType="CHAR" />
+        <result property="edtPkgYearPrice" column="EDT_PKG_YEAR_PRICE" jdbcType="DECIMAL" />
+        <result property="edtPkgMonthPrice" column="EDT_PKG_MONTH_PRICE" jdbcType="DECIMAL" />
+        <result property="mdlId" column="MDL_ID" jdbcType="VARCHAR" />
+
+        <result property="mdlName" column="MDL_NAME" jdbcType="VARCHAR" />
+        <result property="pkgName" column="PKG_NAME" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="queryByCriteriaExt" resultMap="BaseResultMapExt" parameterType="CriteriaQuery">
+        select
+        p.*
+        ,fp.PKG_NAME
+        ,m.MDL_NAME
+        from ${schema.interPlat}.cfg_function_package fp
+        left join ${schema.interPlat}.cfg_schm_edt_package p on p.PKG_ID=fp.PKG_ID
+        INNER JOIN ${schema.interPlat}.cfg_module m on m.MDL_ID=p.MDL_ID
+        <include refid="public.WhereClause4Query" />
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!--查询方案版本对应模块所有功能包-->
+    <!--select
+    p.*
+    ,m.MDL_NAME
+    from ${schema.interPlat}.cfg_function_package p
+    INNER JOIN ${schema.interPlat}.cfg_module m on m.MDL_ID=p.MDL_ID
+    INNER JOIN ${schema.interPlat}.cfg_schm_mdl_rel sm on sm.MDL_ID=p.MDL_ID
+    WHERE sm.SCHM_ID=#{schmEdtId}-->
+    <select id="querySchmEditFuncPkg" resultMap="BaseResultMapExt" parameterType="string">
+        select
+        p.*
+        ,m.MDL_NAME,sm.EDT_PKG_ID,sm.EDT_PKG_TYPE,sm.EDT_PKG_YEAR_PRICE,sm.EDT_PKG_MONTH_PRICE
+        ,sm.EDT_PKG_STATUS
+        from ${schema.interPlat}.cfg_function_package p
+        INNER JOIN ${schema.interPlat}.cfg_module m on m.MDL_ID=p.MDL_ID
+        INNER JOIN ${schema.interPlat}.cfg_schm_edt_package sm on sm.PKG_ID=p.PKG_ID
+        WHERE sm.SCHM_EDT_ID=#{schmEdtId}
+    </select>
+    <!--查询方案版本未选的功能包-->
+    <select id="querySchmEdtUnSelPkg" resultMap="BaseResultMapExt" parameterType="map">
+        select
+        p.*
+        ,m.MDL_NAME
+        from ${schema.interPlat}.cfg_function_package p
+        INNER JOIN ${schema.interPlat}.cfg_module m on m.MDL_ID=p.MDL_ID
+        INNER JOIN ${schema.interPlat}.cfg_schm_mdl_rel sm on sm.MDL_ID=p.MDL_ID
+        WHERE p.PKG_STATUS='1'
+         AND sm.SCHM_ID=#{schmId}
+        AND NOT EXISTS (SELECT 1 FROM ${schema.interPlat}.cfg_schm_edt_package et where et.PKG_ID=p.PKG_ID AND
+          et.SCHM_EDT_ID=#{schmEdtId})
+        ORDER BY sm.SORT
+    </select>
+    <select id="getPkPrice" parameterType="java.util.Map" resultType="java.math.BigDecimal">
+        SELECT
+        <if test="schmEdtPayType==2">
+            ifnull(sum(EDT_PKG_YEAR_PRICE),0) as EDT_PKG_YEAR_PRICE
+        </if>
+        <if test="schmEdtPayType==1">
+            ifnull(sum(EDT_PKG_MONTH_PRICE),0) as EDT_PKG_MONTH_PRICE
+        </if>
+        from ${schema.interPlat}.cfg_schm_edt_package
+        where EDT_PKG_STATUS='1' and SCHM_EDT_ID=#{schmEdtId}
+            AND PKG_ID  IN
+            <foreach item="pkgId" index="index" collection="pkgIds" open="(" separator="," close=")" >
+                #{pkgId}
+            </foreach>
+    </select>
+</mapper>

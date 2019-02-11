@@ -1,0 +1,63 @@
+.cg_body{ width:986px; margin:0 auto;}/*页面宽度*/
+
+/*页面头部开始*/
+.cg_header{}
+.cg_top{background:url(ahimage/cg_top01.jpg); height:38px; text-align:right; padding-top:105px;}/*页面头部---头部图片*/
+.cg_memu{ height:33px; background:url(ahimage/cg_memu00.jpg);}/*导航*/
+.cg_memu ul{}
+.cg_memu ul li{ font-weight:bold; float:left;}
+.cg_memu .onmouse{ background:url(ahimage/cg_memu02.jpg); width:100px; height:33px; line-height:33px; display:block; text-align:center; text-decoration:none; color:#000;}/*导航选中*/
+.cg_memu .nomouse{ background:url(ahimage/cg_memu01.jpg); width:100px; height:33px; line-height:33px; display:block; text-align:center; text-decoration:none; color:#FFF;}/*导航未选中*/
+.cg_bottom{ height:35px; background:url(ahimage/cg_memu03.jpg) top repeat-x;}
+.cg_bottom span{line-height:35px;}
+.cg_bottom img{ vertical-align:middle;}
+/*页面头部结束*/
+
+/*第一栏开始*/
+.cg_onebox{ height:238px; background:url(ahimage/cg_onebg.jpg); margin-bottom:10px;}
+
+.cg_oneboxl{ margin-top:10px;height:220px; width:445px; float:left;}
+.cg_oneboxl_ico{ height:30px; padding-left:25px; color:#000;}
+.cg_oneboxl_ico span{ line-height:30px;}
+.cg_oneboxl01{ float:left; margin-top:10px; margin-left:10px; width:206px; height:170px;}
+.cg_oneboxl02{ float:left; width:205px; margin-left:10px; margin-top:10px;}
+.cg_oneboxl02 h4{ color:#169FC6; border-bottom:1px solid #DDDDDD; padding-bottom:4px; margin-bottom:4px;}
+.cg_oneboxl02 p{ line-height:21px; color:#4E5355;}
+.cg_oneboxl02 span{ text-align:right; display:block; height:30px; line-height:30px;}
+
+.cg_oneboxm{ margin-top:10px;height:220px; width:290px; float:left;}
+.cg_oneboxm_ico{ height:30px; padding-left:25px; color:#000;}
+.cg_oneboxm_ico span{ line-height:30px;}
+.cg_oneboxm_list{ margin:12px auto 0 auto; display:block; width:270px; }
+.cg_oneboxm_list li{ background:url(ahimage/cg_oneboxm_listico.jpg) left no-repeat; height:27px; line-height:27px; border-bottom:1px dotted #6A6565; padding-left:14px;}
+
+.cg_oneboxr{margin-top:10px; height:220px; width:245px;float:right;}
+.cg_oneboxr_ico{ height:30px; padding-left:25px; color:#000;}
+.cg_oneboxr_ico span{line-height:30px;}
+.cgworing_x{ background:url(image/woring.jpg) no-repeat; padding-left:15px; display:block; width:200px; line-height:27px; height:27px; color:#FF0000; margin-left:10px;}
+/*第一栏结束*/
+
+/*广告开始*/
+.cg_banner{ margin-bottom:10px;}
+/*广告结束*/
+
+
+/*联系方式开始*/
+.cg_lx{ height:65px; margin-bottom:10px; background:url(ahimage/cg_cobg.jpg); padding:0 20px 0 60px;}
+.cgtel{float:left; font-family:"微软雅黑"; font-size:15px;background:url(ahimage/cg_tel.jpg) left no-repeat;height:34px; line-height:34px; display:block; margin-right:25px; padding-left:36px; margin-top:15px;}
+.cgdr{float:left; font-family:"微软雅黑"; font-size:15px;background:url(ahimage/cg_02.jpg) left no-repeat;height:34px; line-height:34px;  display:block; margin-right:25px; padding-left:36px; margin-top:15px;}
+.cgmail{float:left; font-family:"微软雅黑"; font-size:15px;background:url(ahimage/cg_mail.jpg) left no-repeat;height:34px;  line-height:34px; display:block; margin-right:25px; padding-left:36px; margin-top:15px;}
+/*联系方式结束*/
+
+/*第四栏开始*/
+.cg_four{ margin-bottom:10px; height:230px;}
+.cg_fourbox{ width:239px; height:230px; background: url(ahimage/cg_fourbg.jpg);float:left;}
+.cg_fourbox_top{ height:32px; line-height:32px; padding-left:35px; font-weight:bold; display:block;}
+.cg_fourbox_top a{ color:#000000; text-decoration:none;}
+
+.cg_fourbox_list01{ margin:10px auto 0 auto; display:block; width:200px; }
+.cg_fourbox_list01 li{ background:url(ahimage/cg_fourbg_list01.jpg); width:190px; height:29px; line-height:29px; line-height:29px; padding-left:10px; display:block; margin-bottom:8px;}
+
+.cg_fourbox_list02{ margin:12px auto 0 auto; display:block; width:225px; }
+.cg_fourbox_list02 li{ background:url(ahimage/cg_fourbg_list02.jpg) left no-repeat; height:27px; line-height:27px; border-bottom:1px dotted #777676; padding-left:20px;}
+/*第四栏结束*/

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="allAreaList" desc="获取全部区域列表">
+	<snd>
+	</snd>
+	<rcv>
+		<field-list name="LIST" desc="区域列表" type="E">
+			<field name="ID" desc="区域ID"/>
+			<field name="NAME" desc="区域名称"/>
+			<field-list name="LIST" desc="省列表" type="E">
+				<field name="ID" desc="省ID"/>
+				<field name="NAME" desc="省名称"/>
+				<field-list name="LIST" desc="市列表" type="E">
+					<field name="ID" desc="市ID"/>
+					<field name="NAME" desc="市名称"/>
+					<field-list name="LIST" desc="区列表" type="E">
+						<field name="ID" desc="区ID"/>
+						<field name="NAME" desc="区名称"/>
+					</field-list>
+				</field-list>
+			</field-list>
+		</field-list>
+	</rcv>
+</trans>

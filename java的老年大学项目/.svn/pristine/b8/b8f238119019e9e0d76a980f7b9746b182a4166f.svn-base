@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="signuped" desc="判断用户是否参加了班级">
+	<snd>
+		<field name="custId" desc="学生id" required="true" />
+		<field name="czId" desc="班级id 多个逗号隔开" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="返回状态列表">
+			<field name="custId" desc="学生id" />
+			<field name="czId" desc="班级id 多个逗号隔开" />
+			<field name="normal" desc="0:未参加，1:已参加" />
+		</field-list>
+	</rcv>
+</trans>

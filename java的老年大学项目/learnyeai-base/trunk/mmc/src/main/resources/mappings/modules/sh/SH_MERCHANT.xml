@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.sh.dao.ShMerchantDao">
+    <resultMap id="BaseResultMap" type="ShMerchant">
+        <id property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+        <result property="mchtName" column="MCHT_NAME" jdbcType="VARCHAR" />
+        <result property="mchtShortname" column="MCHT_SHORTNAME" jdbcType="VARCHAR" />
+        <result property="mchtCode" column="MCHT_CODE" jdbcType="VARCHAR" />
+        <result property="mchtLinkman" column="MCHT_LINKMAN" jdbcType="VARCHAR" />
+        <result property="mchtPhone" column="MCHT_PHONE" jdbcType="VARCHAR" />
+        <result property="mchtTelephone" column="MCHT_TELEPHONE" jdbcType="VARCHAR" />
+        <result property="mchtStatus" column="MCHT_STATUS" jdbcType="CHAR" />
+        <result property="mchtAdress" column="MCHT_ADRESS" jdbcType="VARCHAR" />
+        <result property="mchtIndustry" column="MCHT_INDUSTRY" jdbcType="VARCHAR" />
+        <result property="clientManagerId" column="CLIENT_MANAGER_ID" jdbcType="VARCHAR" />
+        <result property="clientManagerName" column="CLIENT_MANAGER_NAME" jdbcType="VARCHAR" />
+        <result property="mchtAddType" column="MCHT_ADD_TYPE" jdbcType="CHAR" />
+        <result property="mchtLogo" column="MCHT_LOGO" jdbcType="VARCHAR" />
+        <result property="createUserName" column="CREATE_USER_NAME" jdbcType="VARCHAR" />
+        <result property="updateUserName" column="UPDATE_USER_NAME" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="remarks" column="REMARKS" jdbcType="VARCHAR" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        MCHT_ID,MCHT_NAME,MCHT_SHORTNAME,MCHT_CODE,MCHT_LINKMAN,
+        MCHT_PHONE,MCHT_TELEPHONE,MCHT_STATUS,MCHT_ADRESS,MCHT_INDUSTRY,
+        CLIENT_MANAGER_ID,CLIENT_MANAGER_NAME,MCHT_ADD_TYPE,MCHT_LOGO,CREATE_USER_NAME,
+        UPDATE_USER_NAME,CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE,
+        REMARKS,DEL_FLAG
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{mchtId},#{mchtName},#{mchtShortname},#{mchtCode},#{mchtLinkman},
+        #{mchtPhone},#{mchtTelephone},#{mchtStatus},#{mchtAdress},#{mchtIndustry},
+        #{clientManagerId},#{clientManagerName},#{mchtAddType},#{mchtLogo},#{createUserName},
+        #{updateUserName},#{createBy},#{createDate},#{updateBy},#{updateDate},
+        #{remarks},#{delFlag}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.SH_MERCHANT </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            MCHT_ID = #{mchtId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="ShMerchant">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="ShMerchant">
+        update <include refid="TableClause" />
+        <set>
+        MCHT_NAME=#{mchtName},
+        MCHT_SHORTNAME=#{mchtShortname},
+        MCHT_CODE=#{mchtCode},
+        MCHT_LINKMAN=#{mchtLinkman},
+        MCHT_PHONE=#{mchtPhone},
+        MCHT_TELEPHONE=#{mchtTelephone},
+        MCHT_STATUS=#{mchtStatus},
+        MCHT_ADRESS=#{mchtAdress},
+        MCHT_INDUSTRY=#{mchtIndustry},
+        CLIENT_MANAGER_ID=#{clientManagerId},
+        CLIENT_MANAGER_NAME=#{clientManagerName},
+        MCHT_ADD_TYPE=#{mchtAddType},
+        MCHT_LOGO=#{mchtLogo},
+        CREATE_USER_NAME=#{createUserName},
+        UPDATE_USER_NAME=#{updateUserName},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate},
+        UPDATE_BY=#{updateBy},
+        UPDATE_DATE=#{updateDate},
+        REMARKS=#{remarks},
+        DEL_FLAG=#{delFlag}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="ShMerchant">
+            update <include refid="TableClause" />
+            <set>
+                <if test="mchtName!=null">MCHT_NAME=#{mchtName},</if>
+                <if test="mchtShortname!=null">MCHT_SHORTNAME=#{mchtShortname},</if>
+                <if test="mchtCode!=null">MCHT_CODE=#{mchtCode},</if>
+                <if test="mchtLinkman!=null">MCHT_LINKMAN=#{mchtLinkman},</if>
+                <if test="mchtPhone!=null">MCHT_PHONE=#{mchtPhone},</if>
+                <if test="mchtTelephone!=null">MCHT_TELEPHONE=#{mchtTelephone},</if>
+                <if test="mchtStatus!=null">MCHT_STATUS=#{mchtStatus},</if>
+                <if test="mchtAdress!=null">MCHT_ADRESS=#{mchtAdress},</if>
+                <if test="mchtIndustry!=null">MCHT_INDUSTRY=#{mchtIndustry},</if>
+                <if test="clientManagerId!=null">CLIENT_MANAGER_ID=#{clientManagerId},</if>
+                <if test="clientManagerName!=null">CLIENT_MANAGER_NAME=#{clientManagerName},</if>
+                <if test="mchtAddType!=null">MCHT_ADD_TYPE=#{mchtAddType},</if>
+                <if test="mchtLogo!=null">MCHT_LOGO=#{mchtLogo},</if>
+                <if test="createUserName!=null">CREATE_USER_NAME=#{createUserName},</if>
+                <if test="updateUserName!=null">UPDATE_USER_NAME=#{updateUserName},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate},</if>
+                <if test="updateBy!=null">UPDATE_BY=#{updateBy},</if>
+                <if test="updateDate!=null">UPDATE_DATE=#{updateDate},</if>
+                <if test="remarks!=null">REMARKS=#{remarks},</if>
+                <if test="delFlag!=null">DEL_FLAG=#{delFlag}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

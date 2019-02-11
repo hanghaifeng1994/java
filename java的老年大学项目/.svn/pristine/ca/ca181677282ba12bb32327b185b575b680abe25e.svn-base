@@ -1,0 +1,26 @@
+# \u5de5\u7a0b\u8def\u5f84\uff0c\u53ef\u4e3a\u7a7a\uff0c\u9ed8\u8ba4\u5de5\u7a0b\u76ee\u5f55
+projectPath=
+# \u57fa\u672c\u5305\u540d
+basePackageName=com.learnyeai
+# \u6a21\u5757\u540d
+moduleName=testing
+# sql mapper\u914d\u7f6e\u6587\u4ef6\u4f4d\u7f6e
+sqlmapperPath=mybatis.mapper
+# sql mapper db2\u914d\u7f6e\u6587\u4ef6\u4f4d\u7f6e
+sqlmapperDB2Path=META-INF.mybatis.db2.mapping
+# \u4f5c\u8005\u4fe1\u606f
+author=twang
+# \u6570\u636e\u5e93\u540d
+tableSchema=testing
+# \u8868\u540d\u8868\u8fbe\u5f0f\uff0c\u53ef\u4ee5\u7528\u9017\u53f7\u5206\u9694\uff0c\u4e5f\u53ef\u4ee5\u7528'%'\u5339\u914d
+tablePattern=TESTING_STUDENT_TEST
+#TESTING_ANSWER_PAPER_QUESTION,TESTING_ITEM_TYPES,TESTING_PAPER,TESTING_PAPER_QUESTION,TESTING_PAPER_RULE,TESTING_POINT_COVER_SET,TESTING_QUESTION,TESTING_QUESTIONITEM_RULE,TESTING_QUESTION_OPTION,TESTING_QUESTION_POOL,TESTING_QUESTION_SECTION,TESTING_SITE_POOL,TESTING_STUDENT_PAPER,TESTING_STUDENT_TEST,TESTING_TEST
+
+#tablePattern=NEWS_CATEGORY_HIDE
+# \u5b9a\u5236\u751f\u6210\u7684\u6587\u4ef6\uff0cM:sqlmap\u548cmodel\uff0cD:Dao, S:service: C:controller, J:jsp\uff0cR:report.xml, F:FeignClient
+genFileType=M,D,S,C,R
+#genFileType=M,D,S,C,R
+
+#@FeignClient(name = "TESTING-SERVICE")
+client_service_name=TESTING-SERVICE
+client_adminPath=testing

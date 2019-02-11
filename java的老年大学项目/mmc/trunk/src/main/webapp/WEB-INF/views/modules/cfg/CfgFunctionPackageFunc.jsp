@@ -1,0 +1,148 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<html>
+<head>
+	<title>功能包管理</title>
+	<meta name="decorator" content="default"/>
+    <%@include file="/WEB-INF/views/include/treeview.jsp" %>
+	<script type="text/javascript">
+		$(document).ready(function() {
+            initJQueryFormValidator($("#inputForm"),{
+                submitHandler: function(form){
+                    var ids = [], nodes = tree.getCheckedNodes(true);
+                    for(var i=0; i<nodes.length; i++) {
+                        ids.push(nodes[i].id);
+                    }
+                    var  nodes2 = tree2.getCheckedNodes(true);
+                    for(var i=0; i<nodes2.length; i++) {
+                        ids.push(nodes2[i].id);
+                    }
+                    $("#funcIds").val(ids);
+                    loading('正在提交，请稍等...');
+                    form.submit();
+                }
+            });
+
+            var setting = {check:{enable:true,nocheckInherit:true},view:{selectedMulti:false},
+                data:{simpleData:{enable:true}},callback:{beforeClick:function(id, node){
+                    tree.checkNode(node, !node.checked, true, true);
+                    return false;
+                }}};
+
+            // 后管菜单
+            var zNodes=[
+                {
+                    id:"1",
+                    pId:"0",
+                    name:"后管功能"
+                },
+                    <c:forEach items="${funcList}" var="func">
+                <c:if test="${func.funcType==1 || func.funcType==0}">
+                {
+                    id:"${func.funcId}",
+                    pId:"${not empty func.parentId?func.parentId:0}",
+                    name:"${not empty func.parentId?func.funcName:'后管功能列表'}"
+                },
+                </c:if>
+                </c:forEach>
+            ];
+            // 初始化树结构
+            var tree = $.fn.zTree.init($("#mngTree"), setting, zNodes);
+            // 不选择父节点
+            tree.setting.check.chkboxType = { "Y" : "ps", "N" : "s" };
+            // 默认选择节点
+            var ids = "${funcIds}".split(",");
+            for(var i=0; i<ids.length; i++) {
+                var node = tree.getNodeByParam("id", ids[i]);
+                if(!node)
+                    continue;
+                try{tree.checkNode(node, true, false);}catch(e){}
+            }
+            // 默认展开全部节点
+            tree.expandAll(true);
+
+//            小程序接口
+            var zNodes2=[
+                {
+                id:"1",
+                pId:"0",
+                name:"前台功能"
+            },
+                <c:forEach items="${funcList}" var="func">
+                <c:if test="${func.funcType==2 || func.funcType==0}">
+                {
+                    id:"${func.funcId}",
+                    pId:"${not empty func.parentId?func.parentId:0}",
+                    name:"${not empty func.parentId?func.funcName:'前台功能列表'}"
+                },
+                </c:if>
+                </c:forEach>
+            ];
+            // 初始化树结构
+            var tree2 = $.fn.zTree.init($("#appTree"), setting, zNodes2);
+            // 不选择父节点
+            tree2.setting.check.chkboxType = { "Y" : "ps", "N" : "s" };
+            // 默认选择节点
+            var ids2 = "${funcIds}".split(",");
+            for(var i=0; i<ids2.length; i++) {
+                var node = tree2.getNodeByParam("id", ids2[i]);
+                if(!node)
+                    continue;
+                try{tree2.checkNode(node, true, false);}catch(e){}
+            }
+            // 默认展开全部节点
+            tree2.expandAll(true);
+
+		});
+	</script>
+</head>
+<body>
+	<ul class="nav nav-tabs">
+		<li><a href="${ctx}/cfg/CfgFunctionPackage/" onclick="return lasySubmit(bakForm,this.href);">功能包列表</a></li>
+        <li class="active"><a href="javascipt:void()">修改功能</a></li>
+	</ul><br/>
+	<form:form id="inputForm" modelAttribute="entry" action="${ctx}/cfg/CfgFunctionPackage/selFunc" method="post" class="form-search form-horizontal">
+        <sys:message content="${message}"/>
+        <form:hidden path="pkgId"/>
+		${paramCover.unCovered_Inputs}
+        <div class="container-fluid">
+			<div class="row">
+                <div class="control-group span12">
+                    <label class="control-label">功能包名称：</label>
+                    <div class="controls">
+                        ${entry.pkgName}
+                    </div>
+                </div>
+                <div class="control-group span12">
+                    <label class="control-label">模块：</label>
+                    <div class="controls">
+                        ${mdl.mdlName}
+                    </div>
+                </div>
+                <div class="control-group span12">
+                    <label class="control-label">功能包描述：</label>
+                    <div class="controls">
+                        ${entry.pkgDesc}
+                    </div>
+                </div>
+                <div class="control-group span12">
+                    <label class="control-label">功能权限:</label>
+                    <div class="controls">
+                        <div id="mngTree" class="ztree" style="margin-top:3px;float:left;"></div>
+                        <input type="hidden" id="funcIds" name="funcIds"/>
+                        <div id="appTree" class="ztree" style="margin-left:100px;margin-top:3px;float:left;"></div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="form-actions">
+			<shiro:hasPermission name="cfg:CfgFunctionPackage:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		</div>
+	</form:form>
+    <form name="bakForm" method="post">
+		${paramCover.decodeInputs}
+    </form>
+</body>
+</html>

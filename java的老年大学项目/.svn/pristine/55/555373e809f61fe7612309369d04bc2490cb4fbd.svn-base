@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.cert.mapper.CtCertMapper">
+	<select id="queryShowPage" parameterType="CtCert" resultMap="BaseResultMap">
+		SELECT c.CT_ID,c.TP_ID,c.CT_NAME,c.CT_CODE,c.CT_UNIT,
+		c.CT_TP_TEXT,c.CT_TP_IMAGE,c.CREATE_BY,c.CREATE_DATE,c.UPDATE_BY,
+		c.UPDATE_DATE,c.CT_STATUS,c.CT_AUDIT_ID,c.DEL_FLAG,c.SITE_ID,
+		c.MCHT_ID,c.MCHT_SCHM_ID
+		FROM ct_cert c JOIN ct_site_cert_rel r ON c.CT_ID = r.CT_ID
+		WHERE c.DEL_FLAG = '0'
+		<if test="siteIds != null">
+			and r.SITE_ID in
+			<foreach collection="siteIds" index="index" item="item" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="ctName !=null and ctName != ''">
+			and c.CT_NAME like "%"#{ctName}"%"
+		</if>
+		ORDER by c.CREATE_DATE desc
+	</select>
+
+	<select id="queryManagePage" parameterType="CtCert" resultMap="BaseResultMap">
+		SELECT c.*
+		FROM ct_cert c
+		WHERE c.DEL_FLAG = '0'
+		<if test="siteIds != null">
+			and c.SITE_ID in
+			<foreach collection="siteIds" index="index" item="item" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="ctName !=null and ctName != ''">
+			and c.CT_NAME like "%"#{ctName}"%"
+		</if>
+		<if test="ctStatus !=null and ctStatus != ''">
+			and c.CT_STATUS = #{ctStatus,jdbcType=VARCHAR}
+		</if>
+		ORDER by c.CREATE_DATE desc
+	</select>
+
+
+	<select id="queryMainPage" parameterType="CtCert" resultMap="BaseResultMap">
+		SELECT c.CT_ID,c.TP_ID,c.CT_NAME,c.CT_CODE,c.CT_UNIT,
+		c.CT_TP_TEXT,c.CT_TP_IMAGE,c.CREATE_BY,c.CREATE_DATE,c.UPDATE_BY,
+		c.UPDATE_DATE,c.CT_STATUS,c.CT_AUDIT_ID,c.DEL_FLAG,c.SITE_ID,
+		c.MCHT_ID,c.MCHT_SCHM_ID
+		FROM ct_cert c JOIN ct_site_cert_rel r ON c.CT_ID = r.CT_ID
+		WHERE c.DEL_FLAG = '0' and r.CT_CRT_SITE_ID != r.SITE_ID 
+		<if test="siteIds != null">
+			and r.SITE_ID in
+			<foreach collection="siteIds" index="index" item="item" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="ctName !=null and ctName != ''">
+			and c.CT_NAME like "%"#{ctName}"%"
+		</if>
+		<if test="ctStatus !=null and ctStatus != ''">
+			and c.CT_STATUS = #{ctStatus,jdbcType=VARCHAR}
+		</if>
+		ORDER by c.CREATE_DATE desc
+	</select>
+</mapper>

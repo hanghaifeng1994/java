@@ -1,0 +1,24 @@
+package com.learnyeai.common.utils;
+
+import com.learnyeai.learnai.context.ThreadContextUtil;
+import com.learnyeai.learnai.session.Session;
+
+import java.util.Map;
+
+/**
+ * Created by zpz on 2018/5/8.
+ */
+public class WeyeSessUtils {
+    //商户信息
+    public static final String MERCHANT_INFO = "__SESS_MERCHANT_INFO_KEY";
+    //商户方案
+    public static final String MERCHANT_SCHEME_INFO = "__SESS_MERCHANT_SCHEME_INFO_KEY";
+    // 小程序信息
+    public static final String APPLET_INFO = "__SESS_APPLET_INFO_KEY";
+    // 订单当前信息，含有商户选择的版本信息
+    public static final String MERCHANT_ORDER_INFO = "__SESS_MERCHANT_ORDER_INFO_KEY";
+    // 商户订单功能包列表
+    public static final String MERCHANT_ORDER_FUNC_PACKAGE_LIST = "__SESS_MERCHANT_ORDER_FUNC_PACKAGE_LIST_KEY";
+
+
+}

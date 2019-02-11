@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryList" desc="题型列表">
+	<snd>
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="题型列表">
+			<field name="itemTypeId" desc="题型ID" />
+			<field name="name" desc="题型名称" />
+			<field name="itemType" desc="题型code(dx:单选;ms:多选;pd:判断;tk:填空)" />
+			<field name="mchtId" desc="商户id" />
+		</field-list>
+	</rcv>
+</trans>

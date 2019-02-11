@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgFunctionDao">
+    <resultMap id="BaseResultMap" type="CfgFunction">
+        <id property="funcId" column="FUNC_ID" jdbcType="VARCHAR" />
+        <result property="funcName" column="FUNC_NAME" jdbcType="VARCHAR" />
+        <result property="funcType" column="FUNC_TYPE" jdbcType="CHAR" />
+        <result property="funcMngType" column="FUNC_MNG_TYPE" jdbcType="CHAR" />
+        <result property="funcUrl" column="FUNC_URL" jdbcType="VARCHAR" />
+        <result property="funcPermission" column="FUNC_PERMISSION" jdbcType="VARCHAR" />
+        <result property="funcStatus" column="FUNC_STATUS" jdbcType="CHAR" />
+        <result property="funcShowStatus" column="FUNC_SHOW_STATUS" jdbcType="CHAR" />
+        <result property="parentId" column="PARENT_ID" jdbcType="VARCHAR" />
+        <result property="parentIds" column="PARENT_IDS" jdbcType="VARCHAR" />
+        <result property="mdlId" column="MDL_ID" jdbcType="VARCHAR" />
+        <result property="sort" column="SORT" jdbcType="DECIMAL" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        FUNC_ID,FUNC_NAME,FUNC_TYPE,FUNC_MNG_TYPE,FUNC_URL,
+        FUNC_PERMISSION,FUNC_STATUS,FUNC_SHOW_STATUS,PARENT_ID,PARENT_IDS,
+        MDL_ID,SORT,CREATE_BY,CREATE_DATE,UPDATE_BY,
+        UPDATE_DATE,DEL_FLAG
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{funcId},#{funcName},#{funcType},#{funcMngType},#{funcUrl},
+        #{funcPermission},#{funcStatus},#{funcShowStatus},#{parentId},#{parentIds},
+        #{mdlId},#{sort},#{createBy},#{createDate},#{updateBy},
+        #{updateDate},#{delFlag}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.CFG_FUNCTION </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            FUNC_ID = #{funcId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="CfgFunction">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="CfgFunction">
+        update <include refid="TableClause" />
+        <set>
+        FUNC_NAME=#{funcName},
+        FUNC_TYPE=#{funcType},
+        FUNC_MNG_TYPE=#{funcMngType},
+        FUNC_URL=#{funcUrl},
+        FUNC_PERMISSION=#{funcPermission},
+        FUNC_STATUS=#{funcStatus},
+        FUNC_SHOW_STATUS=#{funcShowStatus},
+        PARENT_ID=#{parentId},
+        PARENT_IDS=#{parentIds},
+        MDL_ID=#{mdlId},
+        SORT=#{sort},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate},
+        UPDATE_BY=#{updateBy},
+        UPDATE_DATE=#{updateDate},
+        DEL_FLAG=#{delFlag}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="CfgFunction">
+            update <include refid="TableClause" />
+            <set>
+                <if test="funcName!=null">FUNC_NAME=#{funcName},</if>
+                <if test="funcType!=null">FUNC_TYPE=#{funcType},</if>
+                <if test="funcMngType!=null">FUNC_MNG_TYPE=#{funcMngType},</if>
+                <if test="funcUrl!=null">FUNC_URL=#{funcUrl},</if>
+                <if test="funcPermission!=null">FUNC_PERMISSION=#{funcPermission},</if>
+                <if test="funcStatus!=null">FUNC_STATUS=#{funcStatus},</if>
+                <if test="funcShowStatus!=null">FUNC_SHOW_STATUS=#{funcShowStatus},</if>
+                <if test="parentId!=null">PARENT_ID=#{parentId},</if>
+                <if test="parentIds!=null">PARENT_IDS=#{parentIds},</if>
+                <if test="mdlId!=null">MDL_ID=#{mdlId},</if>
+                <if test="sort!=null">SORT=#{sort},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate},</if>
+                <if test="updateBy!=null">UPDATE_BY=#{updateBy},</if>
+                <if test="updateDate!=null">UPDATE_DATE=#{updateDate},</if>
+                <if test="delFlag!=null">DEL_FLAG=#{delFlag}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

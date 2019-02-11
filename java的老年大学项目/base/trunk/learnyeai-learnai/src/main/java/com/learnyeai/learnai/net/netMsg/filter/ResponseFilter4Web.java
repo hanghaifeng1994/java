@@ -1,0 +1,77 @@
+package com.learnyeai.learnai.net.netMsg.filter;
+
+import com.learnyeai.core.utils.SpringContextUtils;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.learnai.net.*;
+import com.learnyeai.learnai.net.netConf.BuildReportData;
+import com.learnyeai.learnai.net.netConf.MBTransConfBean;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.consts.ReportErrorKey;
+import com.learnyeai.learnai.net.netConf.MBTransItem;
+import com.learnyeai.learnai.net.netConf.NetConst;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import java.util.*;
+
+/**
+ * 响应报文解析器
+ * 
+ * @author yaoym
+ * 
+ * 
+ */
+@Component
+public class ResponseFilter4Web implements IResponseParser {
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	private IReportValParser responseValParser;
+	private IReportValParser getResponseValParser(){
+		if(responseValParser == null){
+			responseValParser = SpringContextUtils.getBean("responseValParser");
+		}
+		if(responseValParser == null){
+			responseValParser = new ResponseValParser(null);
+		}
+		return responseValParser;
+	}
+
+
+	public boolean parserResponseData(IBusinessContext busiContext,
+									  INetConfParser confParser, String transCode) {
+		Map rstMap = busiContext.getParamMap();
+		Map outMap = new HashMap();
+		parserBussisData(transCode, rstMap, outMap, confParser, busiContext);
+		rstMap.clear();
+		rstMap.putAll(outMap);
+		return true;
+	}
+
+	private boolean parserBussisData(String transCode, Map rst, Map out,
+			INetConfParser confParser, IBusinessContext busiContext) {
+		MBTransConfBean conf = confParser.findTransConfById(transCode, NetConst.WEB_XML_PATH);
+		if (null == conf) {
+			throw new AresRuntimeException(ReportErrorKey.net_config_not_definied, transCode);
+		}
+
+		logger.debug("{} response build start..", transCode);// 解析进来的方法
+
+		try{
+			List<MBTransItem> rcv = conf.getRcv();
+			BuildReportData buildReportData = new BuildReportData(false, getResponseValParser());
+			buildReportData.buildData(transCode, rcv, rst, out);
+
+		}catch (Exception e){
+			logger.error("{} response build error", transCode);
+			if(e instanceof AresRuntimeException)
+				throw e;
+			else
+				throw new AresRuntimeException(ReportErrorKey.net_request_build_error, e, transCode);
+		}
+
+		logger.debug("{} response build end..", transCode);
+		return true;
+	}
+
+}

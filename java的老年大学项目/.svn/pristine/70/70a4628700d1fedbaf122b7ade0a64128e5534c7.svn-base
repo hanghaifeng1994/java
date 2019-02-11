@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.activity.mapper.ActActivityMapper">
+    <select id="queryPageByCriteria" parameterType="ActActivity" resultMap="BaseResultMap">
+        SELECT
+          a.*
+        FROM
+          ACT_ACTIVITY a
+          JOIN ACT_CATEGORY_ACTIVITY c
+            ON a.`ACT_ID` = c.`ACT_ID`
+        WHERE del_flag = '0'
+        <if test="actAreaId !=null and actAreaId !=''">
+          AND a.ACT_AREA_ID=#{actAreaId,jdbcType=VARCHAR}
+        </if>
+        <if test="actTitle !=null and actTitle !=''">
+            AND a.ACT_TITLE  LIKE CONCAT('%',#{actTitle},'%')
+        </if>
+        <if test="catId !=null and catId !=''">
+            AND c.cat_id  = #{catId}
+        </if>
+        <if test="actStatus !=null and actStatus !=''">
+          AND a.act_status =#{actStatus}
+        </if>
+        <if test="actPubStatus !=null and actPubStatus !=''">
+            AND a.act_pub_status =#{actPubStatus}
+        </if>
+        <if test="mchtId !=null and mchtId !=''">
+            AND a.MCHT_ID =#{mchtId}
+        </if>
+        <if test="mchtSchmId !=null and mchtSchmId !=''">
+            AND a.MCHT_SCHM_ID =#{mchtSchmId}
+        </if>
+        order by ACT_START_DATE desc
+    </select>
+</mapper>

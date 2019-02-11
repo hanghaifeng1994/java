@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="recommend" desc="班级-新增修改保存">
+    <snd>
+        <field name="czId" desc="id" required="true"/>
+        <field name="posid" desc="推荐位置"/>
+        <field name="flag" desc="标识1批量推荐 2批量取消推荐" required="true"/>
+    </snd>
+    <rcv>
+       <field name="num" desc="操作成功数量"/>
+    </rcv>
+</trans>

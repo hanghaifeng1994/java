@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="分享记录-详情">
+    <snd>
+        <field name="objId" desc="对象id"/>
+        <field name="serviceType" desc="course资源 resource经验 experience小组 group班级 class证书 cert咨讯 news"/>
+        <field name="title" desc="标题"/>
+        <field name="url" desc="链接"/>
+        <field name="shareMode" desc="qq、微信、微博"/>
+    </snd>
+    <rcv>
+
+    </rcv>
+</trans>

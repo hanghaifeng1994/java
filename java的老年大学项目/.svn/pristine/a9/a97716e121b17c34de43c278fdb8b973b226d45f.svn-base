@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="资讯栏目-保存">
+    <snd>
+        <field name="catId" desc="id"/>
+        <field name="catName" desc="名称"/>
+        <field name="catPhoto" desc="封面"/>
+        <field name="catSort" desc="排序"/>
+        <field name="catType" desc="1文章、2链接、3公共(不可以添加子栏目、内容)"/>
+        <field name="catModule" desc="业务模块"/>
+        <field name="catHref" desc="链接地址"/>
+        <field name="catTarget" desc="跳转目标"/>
+        <field name="catDescription" desc="栏目描述"/>
+        <field name="catKeywords" desc="关键字"/>
+        <field name="catInMenu" desc="是否在导航中显示"/>
+        <field name="catInList" desc="是否在分类页中显示"/>
+        <field name="catAllowComment" desc="是否允许评论"/>
+        <field name="catIsAudit" desc="是否需要审核"/>
+        <field name="catLevel" desc="级别"/>
+        <field name="parentId" desc="父id"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+        <field name="status" desc="状态为0时操作成功，1 时栏目下面关联了咨讯不能修改 2系统异常"/>
+    </rcv>
+</trans>

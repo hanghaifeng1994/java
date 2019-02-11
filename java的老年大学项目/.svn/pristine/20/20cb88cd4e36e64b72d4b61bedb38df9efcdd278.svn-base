@@ -1,0 +1,13 @@
+package com.learnyeai.testing.mapper;
+
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyBatisDao;
+import com.learnyeai.testing.model.TestingAnswerPaperQuestion;
+/**
+ * @Description: 答卷的题目答题情况和判分情况
+ * @author twang
+ */
+@MyBatisDao
+public interface TestingAnswerPaperQuestionMapper extends BaseMapper<TestingAnswerPaperQuestion> {
+	public double computeScore(String awId);
+}

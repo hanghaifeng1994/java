@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="用户-启用">
+    <snd>
+        <field name="custIds" desc="用户id" required="true" comment="多个用户id，用逗号分割"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

@@ -1,0 +1,27 @@
+package com.learnyeai.lucene.document;
+
+import org.apache.lucene.document.Document;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * doc转成对象
+ * Created by yuan on 1/8/17.
+ */
+public interface Doc2ObjectMapper {
+    /**
+     * 将多个Document映射成一个对象
+     * @param documents
+     * @return
+     */
+    Object mapDocumentsToObject(List<Map<String, String>> documents);
+
+
+    /**
+     * 将单个Document映射成一个对象
+     * @param document
+     * @return
+     */
+    Object mapDocumentToObject(Map<String, String> document);
+}

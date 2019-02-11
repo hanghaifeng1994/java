@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="活动作品-保存">
+    <snd>
+        <field name="wksId" desc="id"/>
+        <field name="actId" desc="活动id"/>
+        <field name="wksCode" desc="作品编码"/>
+        <field name="wksPhone" desc="封面"/>
+        <field name="wksType" desc="类型"/>
+        <field name="wksFileIds" desc="附件ids"/>
+        <field name="wksFileNa" desc="附件名称"/>
+        <field name="wksUserId" desc="上传人id"/>
+        <field name="wksUserN" desc="上传人名称"/>
+        <field name="wksUpload" desc="上传时间"/>
+        <field name="wksStatus" desc="0未提交、1审核中、2审核通过、3审核失败"/>
+        <field name="wksAuditI" desc="审核id"/>
+        <field name="wksVoteN" desc="投票数"/>
+        <field name="wksAvgSc" desc="平均分"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+        <field name="wksStatus" desc="0操作成功 1已提交不能修改"/>
+    </rcv>
+</trans>

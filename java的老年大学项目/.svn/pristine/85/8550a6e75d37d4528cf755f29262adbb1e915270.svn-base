@@ -1,0 +1,29 @@
+package com.learnyeai.studygroup.util;
+
+import com.learnyeai.base.api.bean.BaseInfoDao;
+import com.learnyeai.base.api.util.CurrentBaseInfoUtil;
+import com.learnyeai.base.api.vo.PtsetSiteVo;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudyGroupUtil {
+    @Autowired
+    private BaseInfoDao baseInfoDao;
+
+    public  List<PtsetSiteVo> GetSiteId(String siteId){
+        List<PtsetSiteVo> list=new ArrayList<>();
+        String  mainSiteId =CurrentBaseInfoUtil.getMainSiteId();
+        PtsetSiteVo vo= baseInfoDao.querySite(siteId);
+        if(mainSiteId.equals(siteId)){
+//            baseInfoDao.querySitesByPt(siteId);
+            //查询平台id
+            String ptId=vo.getPtId();
+            list=  baseInfoDao.querySitesByPt(ptId);
+        }else{
+            list.add(vo);
+        }
+        return list;
+    }
+}

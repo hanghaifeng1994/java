@@ -1,0 +1,160 @@
+package com.learnyeai.testing.service;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.mq.TestingMq;
+import com.learnyeai.rabbitmq.bean.RabbitMetaMessage;
+import com.learnyeai.rabbitmq.sender.RabbitSender;
+import com.learnyeai.testing.mapper.TestingStudentTestMapper;
+import com.learnyeai.testing.model.TestingStudentPaper;
+import com.learnyeai.testing.model.TestingStudentTest;
+import com.learnyeai.testing.model.TestingTest;
+import com.learnyeai.testing.util.TestingUtil;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class TestingStudentTestWyService extends WeyeBaseService<TestingStudentTest> {
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Resource
+	private TestingStudentTestMapper testingStudentTestMapper;
+
+	@Resource
+	private TestingTestWyService testingTestWyService;
+
+	@Resource
+	private TestingStudentPaperWyService testingStudentPaperWyService;
+
+	@Autowired
+	private RabbitSender rabbitSender;
+
+	@Override
+	public BaseMapper<TestingStudentTest> getMapper() {
+		return testingStudentTestMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	public List<TestingStudentTest> queryUserTestings(TestingStudentTest studentTest, String testinginfo) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sorts", "updateDate=0");
+		List<TestingStudentTest> list = super.queryList(studentTest, params);
+		if ("1".equals(testinginfo)) {
+			for (TestingStudentTest st : list) {
+				TestingTest test = testingTestWyService.get(st.getTsId());
+				st.setName(test.getName());
+			}
+		}
+		return list;
+	}
+
+	public MyPage<TestingStudentTest> queryShowPage(TestingStudentTest studentTest, String testinginfo) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sorts", "updateDate=0");
+		MyPage<TestingStudentTest> page = super.queryPage(studentTest, params);
+		if ("1".equals(testinginfo)) {
+			for (TestingStudentTest st : page.getList()) {
+				TestingTest test = testingTestWyService.get(st.getTsId());
+				st.setName(test.getName());
+			}
+		}
+		return page;
+	}
+
+	@Transactional
+	public boolean saveStudentTestScore(TestingStudentPaper studentPaper) throws Exception {
+		String studentUserId = studentPaper.getStudentUserId();
+		String tsId = studentPaper.getTsId();
+		int testNum = studentPaper.getExamNum();
+		TestingStudentTest studentTest = new TestingStudentTest();
+		studentTest.setStudentUserId(studentUserId);
+		studentTest.setTsId(tsId);
+		studentTest = super.queryOne(studentTest);
+		if (studentTest == null) {
+			studentTest = new TestingStudentTest();
+			studentTest.setStudentUserId(studentUserId);
+			studentTest.setTsId(tsId);
+			studentTest.setQualified("0");
+			studentTest.setExcellent("0");
+		}
+		TestingTest test = testingTestWyService.queryById(tsId);
+		double qualifiedScore = test.getQualifiedScore().doubleValue();// 合格分数线
+		double excellent = test.getExcellentScore().doubleValue();// 优秀分数线
+		double score = studentPaper.getScore().doubleValue();
+		if ("0".equals(test.getScoreRule())) {// 取最高份
+			score = testingStudentPaperWyService.queryMaxScore(studentUserId, tsId);
+		} else if ("1".equals(test.getScoreRule())) {// 取平均分
+			double totalScore = testingStudentPaperWyService.querySumScore(studentUserId, tsId);
+			score = new BigDecimal(totalScore / testNum).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
+		studentTest.setScore(new BigDecimal(score));
+		if ("0".equals(studentTest.getExcellent()) && score >= excellent)
+			studentTest.setExcellent("1");
+		if ("0".equals(studentTest.getQualified()) && score >= qualifiedScore) {
+			studentTest.setQualified("1");
+			studentTest.setQualifiedDate(new Date());
+		}
+		studentTest.setTestNum(testNum);
+		super.save(studentTest);
+		logger.info("发送rabbitmq消息队列");
+		// 测验合格发送消息队列
+		TestingMq mq = new TestingMq(studentUserId, tsId, score, testNum, studentTest.getQualifiedDate(),
+				studentTest.getUpdateDate());
+		RabbitMetaMessage msg = TestingUtil.toParseCourseRabbitMetaMessage(mq);
+		rabbitSender.send(msg);
+		msg = TestingUtil.toParseScRabbitMetaMessage(mq);
+		rabbitSender.send(msg);
+		
+		return true;
+	}
+
+	@Override
+	protected Weekend<TestingStudentTest> genSqlExample(TestingStudentTest t, Map params) {
+		Weekend<TestingStudentTest> w = super.genSqlExample(t, params);
+		WeekendCriteria<TestingStudentTest, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getStudentUserId())) {
+			c.andEqualTo(TestingStudentTest::getStudentUserId, t.getStudentUserId());
+		}
+		if (StringUtils.isNotBlank(t.getTsId())) {
+			if (t.getTsId().contains(",")) {
+				c.andIn(TestingStudentTest::getTsId, Arrays.asList(t.getTsId().split(",")));
+			} else {
+				c.andEqualTo(TestingStudentTest::getTsId, t.getTsId());
+			}
+		}
+		if (StringUtils.isNotBlank(t.getQualified())) {
+			c.andEqualTo(TestingStudentTest::getQualified, t.getQualified());
+		}
+		if (StringUtils.isNotBlank(t.getExcellent())) {
+			c.andEqualTo(TestingStudentTest::getExcellent, t.getExcellent());
+		}
+		w.and(c);
+		return w;
+	}
+}

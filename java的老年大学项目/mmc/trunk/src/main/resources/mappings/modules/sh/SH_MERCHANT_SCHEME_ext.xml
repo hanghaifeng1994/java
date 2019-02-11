@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.sh.dao.ShMerchantSchemeDao">
+    <resultMap id="BaseResultMapExt" type="ShMerchantSchemeExt">
+        <id property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+        <result property="mchtSchmExpireDate" column="MCHT_SCHM_EXPIRE_DATE" jdbcType="TIMESTAMP" />
+        <result property="ordId" column="ORD_ID" jdbcType="VARCHAR" />
+        <result property="mchtSchmStatus" column="MCHT_SCHM_STATUS" jdbcType="CHAR" />
+        <result property="mchtSchmPayStatus" column="MCHT_SCHM_PAY_STATUS" jdbcType="CHAR" />
+        <result property="mchtUpgradeStatus" column="MCHT_UPGRADE_STATUS" jdbcType="VARCHAR" />
+        <result property="schmEdtId" column="SCHM_EDT_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtHisId" column="SCHM_EDT_HIS_ID" jdbcType="VARCHAR" />
+        <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+        <result property="createUserName" column="CREATE_USER_NAME" jdbcType="VARCHAR" />
+        <result property="updateUserName" column="UPDATE_USER_NAME" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+
+        <result property="schmEdtName" column="SCHM_EDT_NAME" jdbcType="VARCHAR" />
+        <result property="schmName" column="SCHM_NAME" jdbcType="VARCHAR" />
+        <result property="schmId" column="SCHM_ID" jdbcType="VARCHAR" />
+        <result property="mchtName" column="MCHT_NAME" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="queryByCriteriaExt" resultMap="BaseResultMapExt" parameterType="CriteriaQuery">
+           SELECT
+                cs.SCHM_ID,
+                cs.SCHM_NAME,
+                c.`SCHM_EDT_NAME`,
+                s.*,
+                c.SCHM_EDT_NAME as SCHM_EDT_NAME,
+                m.MCHT_NAME  as MCHT_NAME
+            FROM
+               ${schema.interPlat}.SH_MERCHANT_SCHEME s
+             LEFT JOIN  ${schema.interPlat}.CFG_SCHEME_EDITION c
+                ON s.SCHM_EDT_ID = c.SCHM_EDT_ID
+              LEFT JOIN ${schema.interPlat}.SH_MERCHANT m
+                ON m.MCHT_ID= s.MCHT_ID
+              LEFT JOIN ${schema.interPlat}.CFG_SCHEME cs
+                ON c.SCHM_ID=cs.SCHM_ID
+        <include refid="public.WhereClause4Query" />
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+    <update id="startOrForbiddenUse" parameterType="cn.com.weye.modules.sh.entity.ShMerchantScheme">
+        UPDATE
+        ${schema.interPlat}.sh_merchant_scheme
+        SET
+        <if test="mchtSchmStatus != 1">
+            MCHT_SCHM_STATUS = '1'
+        </if>
+        <if test="mchtSchmStatus != 0">
+            MCHT_SCHM_STATUS = '0'
+        </if>
+        WHERE  MCHT_SCHM_ID = #{mchtSchmId,jdbcType=VARCHAR}
+    </update>
+    <select id="getEditionList" parameterType="java.lang.String" resultType="map">
+        SELECT
+          s.*,
+          c.`SCHM_EDT_NAME`,
+          cs.`SCHM_NAME`
+        FROM
+          ${schema.interPlat}.sh_merchant_scheme s
+           JOIN  ${schema.interPlat}.cfg_scheme_edition c
+            ON s.SCHM_EDT_ID = c.SCHM_EDT_ID
+           JOIN  ${schema.interPlat}.cfg_scheme cs
+            ON cs.`SCHM_ID` = c.`SCHM_ID`
+            where s.SCHM_EDT_ID=#{schmEdtId,jdbcType=VARCHAR}
+    </select>
+</mapper>

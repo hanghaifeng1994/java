@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="班级-新增修改保存">
+	<snd>
+		<field name="czId" desc="id" />
+		<field name="czName" desc="班级名称" />
+		<field name="czPhoto" desc="封面" />
+		<field name="czHours" desc="课时数" />
+		<field name="czStartDate" desc="开始时间" />
+		<field name="czEndDate" desc="结束时间" />
+		<field name="czTime" desc="上课时间" />
+		<field name="czSummary" desc="班级简介" />
+		<field name="czInfo" desc="班级说明" />
+		<field name="areaId" desc="区域id" />
+		<field name="czAdress" desc="地址" />
+		<field name="czTrainingType" desc="培训方式：1线下、2线上" />
+		<field name="czChargeMode" desc="1免费、2打包、3按课" />
+		<field name="czTrainingFee" desc="培训费" />
+		<field name="czMasterTrainerId" desc="培训导师id" />
+		<field name="czMasterTrainer" desc="培训导师名称" />
+		<field name="czSecondaryTrainerId" desc="辅导老师id" />
+		<field name="czSecondaryTrainer" desc="辅导老师名称" />
+		<field name="czCerted" desc="是否是证书班级 1否 2是" />
+		<field name="ctId" desc="证书id" />
+		<field name="studylength" desc="总学时要求" />
+		<field name="mustStudylength" desc="必修改课要求" />
+		<field name="selStudylength" desc="选修课要求" />
+		<field name="examScore" desc="测验成绩要求" />
+		<field name="siteId" desc="站点" />
+		<field name="catId" desc="班级分类" />
+	</snd>
+	<rcv>
+		<field name="id" desc="班级id" />
+	</rcv>
+</trans>

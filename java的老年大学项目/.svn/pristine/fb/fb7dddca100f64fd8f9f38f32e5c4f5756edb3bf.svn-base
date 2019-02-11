@@ -1,0 +1,29 @@
+package com.learnyeai.album.service;
+
+import com.learnyeai.album.model.AbmCategoryPhotoRel;
+import com.learnyeai.album.mapper.AbmCategoryPhotoRelMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class AbmCategoryPhotoRelWyService extends BaseService<AbmCategoryPhotoRel> {
+
+    @Resource
+    private AbmCategoryPhotoRelMapper abmCategoryPhotoRelMapper;
+
+    @Override
+    public BaseMapper<AbmCategoryPhotoRel> getMapper() {
+        return abmCategoryPhotoRelMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

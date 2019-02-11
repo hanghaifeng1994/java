@@ -1,0 +1,103 @@
+package com.learnyeai.interact.web;
+
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.service.ItaInteractionTimesWyService;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.common.support.WeyeBaseService;
+
+import com.learnyeai.interact.model.ItaVote;
+import com.learnyeai.interact.service.ItaVoteWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ItaVoteController extends BaseController<ItaVote> {
+    public static final String BASE_URL = "/ItaVote/";
+
+    @Autowired
+    private ItaVoteWyService itaVoteWyService;
+    @Autowired
+    private ItaInteractionTimesWyService itaInteractionTimesWyService;
+    @Autowired
+    CurrentUserInfoIml currentUserInfoIml;
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+    @Value("${spring.application.name}")
+    private String aplicationName;
+    @Value("${schema.interPlat}")
+    private String interPlat;
+    @Value("${vote_key}")
+    private String voteKey;
+
+    @Override
+    protected WeyeBaseService<ItaVote> getService() {
+        return itaVoteWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String method = CtxHeadUtil.getControllerMethod();
+        ItaVote iv=itaVoteWyService.convert2Bean(ctx.getParamMap());
+        ItaInteractionTimes it=new ItaInteractionTimes();
+        it.setObjId(iv.getObjId());
+        it.setType(iv.getType());
+        //该对象的收藏列表存在数据，将收藏数量拿出和新增的收藏数量相加放入缓存
+        List<ItaInteractionTimes> list= itaInteractionTimesWyService.queryList(it ,new HashMap());
+        int num=0;
+        //加入缓存
+        String cachKey=aplicationName+":"+interPlat;
+        String key=voteKey+","+iv.getObjId()+","+iv.getType();
+        //缓存中存在去缓存中取值，不存在去数据库中取值
+        Integer numstr=0;
+        if(redisTemplate.opsForHash().hasKey(cachKey,key)){
+            numstr  = (Integer)redisTemplate.opsForHash().get(cachKey,key);
+        }else{
+            if(list.size()>0){
+                ItaInteractionTimes i=list.get(0);
+                if(i.getVoteNum()!=null){
+                    num+=i.getVoteNum();
+                }
+            }
+        }
+
+        if(numstr!=null){
+            num+=numstr;
+        }
+        if("save".equals(method)){
+            iv.setVtDate(new Date());
+            iv.setVtUserId(currentUserInfoIml.getId());
+            iv.setVtUserName(currentUserInfoIml.getLoginName());
+            //判断该用户是否已经投过票，已经投了就不能继续投票
+            List<ItaVote> ivList= itaVoteWyService.queryList(iv,new HashMap());
+            Map<String,Object> map=new HashMap<>();
+            int count=0;
+            if(ivList.size()==0){
+                count+=itaVoteWyService.save(iv);
+                num+=count;
+                map.put("status",1);
+            }
+            redisTemplate.opsForHash().put(cachKey,key,num);
+            return MapUtil.newMap("num",count);
+        }
+        if("queryListByObjId".equals(method)){
+           return  itaVoteWyService.queryListByObjId(iv);
+        }
+        return super.execute(ctx);
+    }
+}

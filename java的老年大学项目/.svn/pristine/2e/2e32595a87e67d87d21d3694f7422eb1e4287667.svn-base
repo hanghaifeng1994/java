@@ -1,0 +1,70 @@
+package com.learnyeai.album.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.album.model.AbmPhoto;
+import com.learnyeai.album.service.AbmPhotoWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import com.learnyeai.tools.common.MapUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class AbmPhotoController extends BaseController<AbmPhoto> {
+
+    @Autowired
+    private AbmPhotoWyService abmPhotoWyService;
+
+    @Autowired
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    protected BaseService<AbmPhoto> getService() {
+        return abmPhotoWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        AbmPhoto ap = abmPhotoWyService.convert2Bean(ctx.getParamMap());
+        String method = CtxHeadUtil.getControllerMethod();
+        if("delete".equals(method)){
+              int  num  =   abmPhotoWyService.deleteall(ap);
+              return MapUtil.newMap("num",num);
+        }
+        if("queryPage".equals(method)){
+             String userId=currentUserInfoIml.getId();
+             ap.setCreateBy(userId);
+            MyPage<AbmPhoto> page= abmPhotoWyService.queryPage(ap,new HashMap());
+            return super.rtnPageList4Report(page);
+        }
+        if("save".equals(method)){
+            return abmPhotoWyService.saveData(ap);
+        }
+        if("auditPage".equals(method)){
+            MyPage<AbmPhoto> page= abmPhotoWyService.queryPage(ap,new HashMap());
+            return super.rtnPageList4Report(page);
+        }
+        if("submitAuditBatch".equals(method)){
+           return abmPhotoWyService.abmPhotoWyService(ap);
+        }
+        if("auditBatch".equals(method)){
+            try {
+                return abmPhotoWyService.auditBatch(ctx);
+            } catch (WeyeRabbitException e) {
+                e.printStackTrace();
+            }
+        }
+        return super.execute(ctx);
+    }
+
+}

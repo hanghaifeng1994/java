@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="用户测验表-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="ID"/>
+        <field name="studentUserId" desc="学员"/>
+        <field name="tsId" desc="测验"/>
+        <field name="score" desc="得分"/>
+        <field name="excellent" desc="是否优秀"/>
+        <field name="qualified" desc="是否合格"/>
+        <field name="testNum" desc="测验总次数"/>
+        <field name="qualifiedDate" desc="合格时间"/>
+        <field name="updateDate" desc="更新时间"/>
+    </rcv>
+</trans>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="组卷规则的题型出题规则-详情">
+    <snd>
+        <field name="questionitemRuleId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="questionitemRuleId" desc="id"/>
+        <field name="paperRuleId" desc="所属组卷规则"/>
+        <field name="itemTypeId" desc="题型"/>
+        <field name="orderNum" desc="题型排序"/>
+        <field name="queNum" desc="出题数量"/>
+        <field name="queScore" desc="单题分值"/>
+    </rcv>
+</trans>

@@ -1,0 +1,14 @@
+package com.learnyeai.base.api.client;
+
+import com.learnyeai.base.api.vo.SmsTmplVo;
+import com.learnyeai.core.support.BaseFeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
+
+/**
+ * 短信模板
+ *
+ * @author zhangpz
+ */
+@FeignClient(name = "${BASE-SERVICE}", path="/base/SmsTmpl")
+public interface SmsTmplClient extends BaseFeignClient<SmsTmplVo> {
+}

@@ -1,0 +1,303 @@
+var menus = [
+	// 00基础服务
+	{
+		name : "用户名密码管登录",
+		url : "login/passwordLogin.do",
+		path : "login/passwordLogin",
+		clazz : "PP00"
+	},{
+        name : "验证码登录",
+        url : "login/dynLogin.do",
+        path : "login/dynLogin",
+        clazz : "PP00"
+    },{
+        name : "uuid登录",
+        url : "base/uuidLogin.do",
+        path : "base/uuidLogin",
+        clazz : "PP00"
+    },{
+		name : "小程序登录",
+		url : "login/appletLogin.do",
+		path : "login/appletLogin",
+		clazz : "PP00"
+	},{
+		name:"退出登录",
+		url:"login/quitLogin.do",
+		path:"login/quitLogin",
+		clazz:"PP00"
+	}, {
+        name:"匿名登录获取站点信息",
+        url:"login/anonLogin.do",
+        path:"login/anonLogin",
+        clazz:"PP00"
+    }, {/*
+		name:"用户-忘记密码",
+		url:"common/forgetPassword.do",
+		path:"common/forgetPassword",
+		clazz:"PP00"
+	},{
+		name : "用户-修改密码",
+		url : "setup/cust/updatePassword.do",
+		path : "setup/cust/updatePassword",
+		clazz : "PP00"
+    },{*/
+        name : "客户-注册",
+        url:"common/userRegist.do",
+        path : "common/userRegist",
+        clazz : "PP00"
+	}
+	// 通用PP01-------------------
+	,{
+		name : "短信验证码获取&发送",
+		url : "common/dynCodeSend.do",
+		path : "common/dynCodeSend",
+		clazz : "PP01"
+	}, {
+		name : "短信验证码校验",
+		url : "common/dynCodeCheck.do",
+		path : "common/dynCodeCheck",
+		clazz : "PP01"
+	},{
+		name : "邮箱验证码获取&发送",
+		url : "common/dynCodeEmailSend.do",
+		path : "common/dynCodeEmailSend",
+		clazz : "PP01"
+	}, {
+		name : "邮箱验证码校验",
+		url : "common/dynCodeEmailCheck.do",
+		path : "common/dynCodeEmailCheck",
+		clazz : "PP01"
+	},{
+		name : "获取系统时间",
+		url : "common/sysdate.do",
+		path : "common/sysdate",
+		clazz : "PP01"
+	}
+	// 用户PP02--------------------------------
+	,{
+		name : "员工列表",
+		url : "api/cust/custInfo/queryStaffPage.do",
+		path : "api/cust/custInfo/queryStaffPage",
+		clazz : "PP02"
+	},{
+        name : "员工保存",
+        url : "api/cust/custInfo/saveStaff.do",
+		path : "api/cust/custInfo/saveStaff",
+		clazz : "PP02"
+    },{
+        name : "查询员工平台站点列表",
+        url : "api/cust/staffPtSitesList.do",
+        path : "api/cust/staffPtSitesList",
+        clazz : "PP02"
+    },{
+        name : "查询员工站点角色",
+        url : "api/cust/custInfo/queryStaffSiteRole.do",
+        path : "api/cust/custInfo/queryStaffSiteRole",
+        clazz : "PP02"
+	},{
+        name : "员工站点角色修改",
+        url : "api/cust/custInfo/saveStaffSiteRole.do",
+        path : "api/cust/custInfo/saveStaffSiteRole",
+        clazz : "PP02"
+    },{
+        name : "员工-后管菜单树",
+        url : "api/cust/custInfo/queryUserMngMenuTree.do",
+        path : "api/cust/custInfo/queryUserMngMenuTree",
+        clazz : "PP02"
+    },{/*
+	 name : "员工站点修改",
+	 url : "api/cust/staff/save.do",
+	 path : "api/cust/staff/save",
+	 clazz : "PP02"
+	 },{
+	 name : "员工角色修改",
+	 url : "api/cust/staff/save.do",
+	 path : "api/cust/staff/save",
+	 clazz : "PP02"
+	 },{*/
+		/*
+	 name : "删除",
+	 url : "api/cust/custInfo/deleteById.do",
+	 path : "api/cust/custInfo/deleteById",
+	 clazz : "PP02"
+	 },{*/
+
+
+        name : "客户列表",
+        url : "api/cust/custInfo/queryCustPage.do",
+        path : "api/cust/custInfo/queryCustPage",
+        clazz : "PP02"
+    },{
+        name : "客户保存",
+        url : "api/cust/custInfo/saveCust.do",
+        path : "api/cust/custInfo/saveCust",
+        clazz : "PP02"
+    },{
+
+
+        name : "用户明细",
+        url : "api/cust/custInfo/queryById.do",
+        path : "api/cust/custInfo/queryById",
+        clazz : "PP02"
+    },{
+        name : "用户启用",
+        url : "api/cust/custInfo/enableUser.do",
+        path : "api/cust/custInfo/enableUser",
+        clazz : "PP02"
+    },{
+        name : "用户禁用",
+        url : "api/cust/custInfo/freezeUser.do",
+        path : "api/cust/custInfo/freezeUser",
+        clazz : "PP02"
+    },{
+        name : "重置密码",
+        url : "api/cust/custInfo/resetPassword.do",
+        path : "api/cust/custInfo/resetPassword",
+        clazz : "PP02"
+    /*},{
+	 注册保存和修改
+        name : "用户实名审核",
+        url : "base/uuidLogin.do",
+        path : "base/uuidLogin",
+        clazz : "PP02"*/
+	}
+	// 系统设置PP03--------------------------------
+	,{
+        name : "平台列表",
+        url : "api/ptsetPlatform/queryList.do",
+        path : "api/ptsetPlatform/queryList",
+        clazz : "PP03"
+    },{
+        name : "平台详情",
+        url : "api/ptsetPlatform/queryById.do",
+        path : "api/ptsetPlatform/queryById",
+        clazz : "PP03"
+    },{
+        name : "平台站点列表",
+        url : "api/ptsetPlatform/ptSitesList.do",
+        path : "api/ptsetPlatform/ptSitesList",
+        clazz : "PP03"
+    },{
+        name : "站点列表",
+        url : "api/ptsetSite/queryList.do",
+        path : "api/ptsetSite/queryList",
+        clazz : "PP03"
+    },{
+        name : "站点保存",
+        url : "api/ptsetSite/save.do",
+        path : "api/ptsetSite/save",
+        clazz : "PP03"
+    },{
+        name : "站点详情",
+        url : "api/ptsetSite/queryById.do",
+        path : "api/ptsetSite/queryById",
+        clazz : "PP03"
+    },{
+        name : "站点启用",
+        url : "api/ptsetSite/enableSite.do",
+        path : "api/ptsetSite/enableSite",
+        clazz : "PP03"
+    },{
+        name : "站点禁用",
+        url : "api/ptsetSite/disableSite.do",
+        path : "api/ptsetSite/disableSite",
+        clazz : "PP03"
+    },{
+        name : "站点设主站点",
+        url : "api/ptsetSite/setMainSite.do",
+        path : "api/ptsetSite/setMainSite",
+        clazz : "PP03"
+    },{
+        name : "角色列表",
+        url : "api/custRole/queryPage.do",
+        path : "api/custRole/queryPage",
+        clazz : "PP03"
+    },{
+        name : "保存角色",
+        url : "api/custRole/save.do",
+        path : "api/custRole/save",
+        clazz : "PP03"
+    },{
+        name : "删除角色",
+        url : "api/custRole/deleteByIds.do",
+        path : "api/custRole/deleteByIds",
+        clazz : "PP03"
+    },{
+        name : "角色启用",
+        url : "api/custRole/enable.do",
+        path : "api/custRole/enable",
+        clazz : "PP03"
+    },{
+        name : "角色禁用",
+        url : "api/custRole/disable.do",
+        path : "api/custRole/disable",
+        clazz : "PP03"
+    },{
+        name : "角色-角色信息（包括功能ids）",
+        url : "api/custRole/roleForm.do",
+        path : "api/custRole/roleForm",
+        clazz : "PP03"
+    },{
+        name : "后管功能树",
+        url : "api/cfgFunction/queryMngFuncTree.do",
+        path : "api/cfgFunction/queryMngFuncTree",
+        clazz : "PP03"
+    },{
+        name : "前端功能树",
+        url : "api/cfgFunction/queryFrontFuncTree.do",
+        path : "api/cfgFunction/queryFrontFuncTree",
+        clazz : "PP03"
+	}
+
+	// 后管PP04--------------------------------
+	,{
+		name : "客户-用户检查是否存在",
+		url : "common/user/userCheck.do",
+		path : "common/user/userCheck",
+		clazz : "PP04"
+	}, {
+        name: "客户-重置密码",
+        url: "common/user/userResetPassword.do",
+        path: "common/user/userResetPassword",
+        clazz: "PP04"
+    }
+
+];
+
+
+var tplMenus = [ '{@each menus as item}',
+	'<button class="PP ${item.clazz}" data-url="${item.url}" ',
+	' data-path="${item.path}" data-opType=${item.opType} ',
+	' onclick="loadForm(this)">${item.name}</button>', '{@/each}' ]
+		.join("");
+
+function loadMenus(ftClass,ftCode,ftName) {
+	try {
+		var datas = [];
+		if (ftClass || ftCode || ftName) {
+			for (var i = 0, j = menus.length; i < j; i++) {
+				var menu = menus[i];
+				if(!menu.opType)
+					menu.opType = 0;
+				if (ftName && ftName.length > 0
+						&& menu.name.indexOf(ftName) >= 0) {
+					datas.push(menu);
+				} else if (ftCode && ftCode.length > 0
+						&& menu.url.indexOf(ftCode) >= 0) {
+					datas.push(menu);
+				} else if (ftClass && ftClass.length > 0
+						&& menu.clazz.indexOf(ftClass) >= 0) {
+					datas.push(menu);
+				}
+			}
+		} else {
+			datas = menus;
+		}
+		var html = juicer(tplMenus, {
+			menus : datas
+		});
+		$("#TRAN_AREA").html(html);
+	} catch (e) {
+		alert(e);
+	}
+}

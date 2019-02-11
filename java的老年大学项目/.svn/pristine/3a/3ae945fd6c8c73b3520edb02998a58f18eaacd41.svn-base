@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="memberPage" desc="学习小组-人员列表" isPage="true">
+    <snd>
+        <field name="sgpId" desc="小组id"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="列表" type="E">
+            <field name="custId" desc="用户id"/>
+            <field name="custName" desc="用户名称"/>
+            <field name="shortName" desc=""/>
+            <field name="loginName" desc="登录名称"/>
+            <field name="password" desc="密码"/>
+            <field name="custType" desc="用户类型"/>
+            <field name="userStatus" desc="用户状态"/>
+            <field name="freezeDate" desc=""/>
+            <field name="sign" desc="标记"/>
+            <field name="phone" desc="电话"/>
+            <field name="email" desc="邮箱"/>
+            <field name="sex" desc="性别"/>
+            <field name="birthday" desc="生日"/>
+            <field name="photo" desc="相片"/>
+            <field name="createDate" desc=""/>
+            <field name="openId" desc="openId"/>
+            <field name="unionid" desc=""/>
+            <field name="staffType" desc=""/>
+            <field name="custIsAdmin" desc="是不是管理员"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="mchtId" desc="商户"/>
+            <field name="siteId" desc="站点id"/>
+        </field-list>
+    </rcv>
+</trans>

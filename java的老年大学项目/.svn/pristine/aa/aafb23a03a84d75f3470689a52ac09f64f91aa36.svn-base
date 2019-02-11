@@ -1,0 +1,29 @@
+package com.learnyeai.learnbehavior.service;
+
+import com.learnyeai.learnbehavior.model.StdCustExt;
+import com.learnyeai.learnbehavior.mapper.StdCustExtMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class StdCustExtWyService extends BaseService<StdCustExt> {
+
+    @Resource
+    private StdCustExtMapper stdCustExtMapper;
+
+    @Override
+    public BaseMapper<StdCustExt> getMapper() {
+        return stdCustExtMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

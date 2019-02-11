@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryById" desc="证书模板-详情">
+	<snd>
+		<field name="tpId" desc="证书模板id 多个id用英文逗号隔开" required="true" />
+	</snd>
+	<rcv>
+		<field name="tpId" desc="证书模板id" />
+		<field name="tpName" desc="模板名称" />
+		<field name="tpImageBackground" desc="背景图片" />
+		<field name="tpFixedImage" desc="固定图片" />
+		<field name="tpSubject" desc="模板内容" />
+		<field name="tpStatus" desc="是否启用" />
+		<field name="tpTextOne" desc="文本1" />
+		<field name="tpTextTwo" desc="文本2" />
+		<field name="tpTextThree" desc="文本3" />
+		<field name="tpTextFour" desc="文本4" />
+		<field name="tpTextFive" desc="文本5" />
+		<field name="tpTextSix" desc="文本6" />
+		<field name="tpTextSeven" desc="文本7" />
+		<field name="tpTextEight" desc="文本8" />
+		<field name="tpTextNine" desc="文本9" />
+		<field name="tpTextTen" desc="文本10" />
+		<field name="tpImageOne" desc="图片1" />
+		<field name="tpImageTwo" desc="图片2" />
+		<field name="tpImageThree" desc="图片3" />
+		<field name="tpImageFour" desc="图片4" />
+		<field name="tpImageFive" desc="图片5" />
+		<field name="tpStaticOne" desc="静态文本1" />
+		<field name="tpStaticTwo" desc="静态文本2" />
+		<field name="tpStaticThree" desc="静态文本3" />
+		<field name="delFlag" desc="删除标记" />
+		<field name="siteId" desc="站点" />
+		<field name="mchtId" desc="商户id" />
+		<field name="mchtSchmId" desc="商户方案id" />
+		<field name="createBy" desc="创建人" />
+		<field name="createDate" desc="创建时间" />
+		<field name="updateBy" desc="更新人" />
+		<field name="updateDate" desc="更新时间" />
+	</rcv>
+</trans>

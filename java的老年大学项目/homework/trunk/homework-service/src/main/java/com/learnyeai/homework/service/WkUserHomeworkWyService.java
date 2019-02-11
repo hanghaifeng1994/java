@@ -1,0 +1,277 @@
+package com.learnyeai.homework.service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.homework.mapper.WkUserHomeworkMapper;
+import com.learnyeai.homework.model.WkHomework;
+import com.learnyeai.homework.model.WkHomeworkAttachment;
+import com.learnyeai.homework.model.WkHomeworkMarkHistory;
+import com.learnyeai.homework.model.WkUserHomework;
+import com.learnyeai.homework.util.HomeworkUtil;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.CurrentUserInfoDao;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.mq.HomeworkMq;
+import com.learnyeai.rabbitmq.bean.RabbitMetaMessage;
+import com.learnyeai.rabbitmq.sender.RabbitSender;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import com.learnyeai.tools.common.StringUtils;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class WkUserHomeworkWyService extends WeyeBaseService<WkUserHomework> {
+
+	@Resource
+	private WkUserHomeworkMapper wkUserHomeworkMapper;
+
+	@Resource
+	private WkHomeworkWyService wkHomeworkWyService;
+
+	@Resource
+	private WkHomeworkMarkHistoryWyService wkHomeworkMarkHistoryWyService;
+
+	@Resource
+	private WkHomeworkAttachmentWyService wkHomeworkAttachmentWyService;
+
+	@Autowired
+	private CurrentUserInfoDao currentUserInfoDao;
+
+	@Autowired
+	private RabbitSender rabbitSender;
+
+	@Override
+	public BaseMapper<WkUserHomework> getMapper() {
+		return wkUserHomeworkMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	@Transactional
+	public Map<String, Object> saveOrUpdate(WkUserHomework uh, String fileIds, String fileNames) {
+		Map<String, Object> map = new HashMap();
+		boolean isNew = false;
+		if (StringUtils.isBlank(uh.getUhId())) {
+			isNew = true;
+		}
+		if ("1".equals(uh.getUhStatus())) {
+			uh.setUhSubmitDate(new Date());
+		}
+		super.save(uh);
+		WkHomeworkAttachment atm = null;
+		if(StringUtils.isNotBlank(fileNames)) {
+			String[] fNames = fileNames.split(",");
+			int i = 0;
+			for (String fileId : fileIds.split(",")) {
+				atm = new WkHomeworkAttachment();
+				atm.setFileId(fileId);
+				atm.setFileName(fNames[i++]);
+				atm.setObjId(uh.getUhId());
+				atm.setType(WkHomeworkAttachment.TYPE_UH);
+				atm.setUploadTime(new Date());
+				atm.setDelFlag("0");
+				wkHomeworkAttachmentWyService.save(atm);
+			}
+		}
+		map.put("status", 0);
+		map.put("msg", "保存成功!");
+		return map;
+	}
+
+	@Transactional
+	public Map<String, Object> submit(WkUserHomework uh) {
+		Map<String, Object> map = new HashMap();
+		WkUserHomework obj = super.queryById(uh.getUhId());
+		if (obj == null) {
+			map.put("status", 1);
+			map.put("msg", "保存失败，id不存在!");
+			return map;
+		}
+		obj.setUhSubmitDate(new Date());
+		obj.setUhStatus("1");
+		super.save(obj);
+		map.put("status", "0");
+		return map;
+	}
+
+	@Transactional
+	public Map<String, Object> score(WkUserHomework uh) throws WeyeRabbitException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		uh.setUhScoreDate(new Date());
+		uh.setUhScoreUserId(currentUserInfoDao.getId());// 评分人id
+		super.save(uh);
+		uh = super.queryById(uh.getUhId());
+		// 打分记录，每次查找没有发布的评分记录，没有就新增一条
+		WkHomeworkMarkHistory mh = wkHomeworkMarkHistoryWyService.queryLastUnPublish(uh.getUhId());
+		if (mh == null) {
+			mh = new WkHomeworkMarkHistory();
+			mh.setUhId(uh.getUhId());
+			mh.setUhScoreStatus("0");// 默认未打分
+		}
+		mh.setUhScore(uh.getUhScore());
+		mh.setUhScoreContent(uh.getUhScoreContent());
+		mh.setUhScoreDate(uh.getUhScoreDate());
+		mh.setUhScoreStatus(uh.getUhScoreStatus());
+		if ("1".equals(uh.getUhScoreStatus())) {
+			sendHomeQueueMsg(uh.getCustId(), uh.getHwId(), uh.getUhScore(), new Date());
+		}
+		mh.setUhScoreUserId(uh.getUhScoreUserId());
+		mh.setUhStarNum(uh.getUhStarNum());
+		wkHomeworkMarkHistoryWyService.save(mh);
+		map.put("status", "0");
+		return map;
+	}
+
+	private void sendHomeQueueMsg(String userId, String hwId, double score, Date updateDate)
+			throws WeyeRabbitException {
+		logger.debug("发送用户作业得分到消息队列，去统计课程作业成绩userId={}|hwId={}", userId, hwId);
+		HomeworkMq mq = new HomeworkMq(userId, hwId, score, updateDate);
+		RabbitMetaMessage msg = HomeworkUtil.toParseRabbitMetaMessage(mq);
+		rabbitSender.send(msg);
+	}
+
+	public Object detail(WkUserHomework uh) {
+		WkUserHomework obj = new WkUserHomework();
+		obj.setCustId(uh.getCustId());
+		obj.setHwId(uh.getHwId());
+		obj = super.queryOne(obj);
+		WkHomework wh = wkHomeworkWyService.get(uh.getHwId());
+		if (wh == null)
+			return null;
+		if (obj == null) {// 没有就新增一个
+			obj = new WkUserHomework();
+			obj.setCustId(currentUserInfoDao.getId());
+			obj.setCustName(currentUserInfoDao.getCustName());
+			obj.setHwId(uh.getHwId());
+			obj.setCreateDate(new Date());
+			obj.setMchtId(wh.getMchtId());
+			obj.setMchtSchmId(wh.getMchtSchmId());
+			obj.setSiteId(wh.getSiteId());
+			obj.setUhScoreStatus("0");
+			obj.setUhStatus("0");
+			super.save(obj);
+		}
+		// 作业内容
+		obj.setHwTitle(wh.getHwTitle());
+		obj.setHwContent(wh.getHwContent());
+		// 作业附件
+		List<WkHomeworkAttachment> homeworkAttachments = wkHomeworkAttachmentWyService
+				.queryHomeworkAttachment(obj.getHwId(), WkHomeworkAttachment.TYPE_HW);
+		obj.setHomeworkAttachments(homeworkAttachments);
+		// 用户提交的作业附件
+		List<WkHomeworkAttachment> userHomeworkAttachments = wkHomeworkAttachmentWyService
+				.queryHomeworkAttachment(obj.getUhId(), WkHomeworkAttachment.TYPE_UH);
+		obj.setUserHomeworkAttachments(userHomeworkAttachments);
+		return obj;
+	}
+
+	public List<WkUserHomework> userHomework(WkUserHomework uh) {
+		List<WkUserHomework> list = new ArrayList<WkUserHomework>();
+		WkUserHomework obj = null;
+		for (String hwId : uh.getHwId().split(",")) {
+			obj = new WkUserHomework();
+			obj.setCustId(uh.getCustId());
+			obj.setHwId(hwId);
+			obj = super.queryOne(obj);
+			WkHomework wh = wkHomeworkWyService.get(hwId);
+			if (wh == null)
+				continue;
+			if (obj == null) {// 没有就新增一个 obj = new WkUserHomework();
+				obj.setCustId(uh.getCustId());
+				obj.setCustName(currentUserInfoDao.getCustName());
+				obj.setHwId(hwId);
+				obj.setCreateDate(new Date());
+				obj.setMchtId(wh.getMchtId());
+				obj.setMchtSchmId(wh.getMchtSchmId());
+				obj.setSiteId(wh.getSiteId());
+				obj.setUhScoreStatus("0");
+				obj.setUhStatus("0");
+				super.save(obj);
+			}
+			// 作业内容
+			obj.setHwTitle(wh.getHwTitle());
+			obj.setHwContent(wh.getHwContent());
+			list.add(obj);
+		}
+		return list;
+	}
+
+	/**
+	 * 作业的提交记录
+	 * 
+	 * @param uh
+	 * @return
+	 */
+	@Transactional
+	public MyPage<WkUserHomework> querySumbitPage(WkUserHomework uh) {
+		if (uh != null && uh.getPage() != null && uh.getRows() != null) {
+			PageHelper.startPage(uh.getPage(), uh.getRows());
+		}
+		uh.setUhStatus("1");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sorts", "uhSubmitDate=0");
+		MyPage<WkUserHomework> page = super.queryPage(uh, params);
+		return page;
+	}
+
+	/**
+	 * 用户作业的提交记录
+	 * 
+	 * @param uh
+	 * @return
+	 */
+	@Transactional
+	public List<WkUserHomework> queryUserSubmit(WkUserHomework uh) {
+		uh.setUhStatus("1");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sorts", "uhSubmitDate=1");
+		List<WkUserHomework> list = super.queryList(uh, params);
+		return list;
+	}
+
+	@Override
+	protected Weekend<WkUserHomework> genSqlExample(WkUserHomework t, Map params) {
+		Weekend<WkUserHomework> w = super.genSqlExample(t, params);
+		WeekendCriteria<WkUserHomework, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getCustId())) {
+			c.andEqualTo(WkUserHomework::getCustId, t.getCustId());
+		}
+		if (StringUtils.isNotBlank(t.getHwId())) {
+			c.andEqualTo(WkUserHomework::getHwId, t.getHwId());
+		}
+		if (StringUtils.isNotBlank(t.getUhStatus())) {
+			c.andEqualTo(WkUserHomework::getUhStatus, t.getUhStatus());
+		}
+		if (StringUtils.isNotBlank(t.getCustName())) {
+			c.andEqualTo(WkUserHomework::getCustName, "%" + t.getCustName().trim() + "%");
+		}
+		if (StringUtils.isNotBlank(t.getUhScoreStatus())) {
+			c.andEqualTo(WkUserHomework::getUhScoreStatus, t.getUhScoreStatus());
+		}
+		if (t.getSiteIds() != null) {
+			c.andIn(WkUserHomework::getSiteId, t.getSiteIds());
+		}
+		w.and(c);
+		return w;
+	}
+}

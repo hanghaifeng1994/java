@@ -1,0 +1,178 @@
+package com.learnyeai.learnai.net.netWay.http;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
+import com.learnyeai.learnai.net.INetConnect;
+import com.learnyeai.learnai.net.netConf.NetConst;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.core.config.ConfigUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.tools.common.StringUtils;
+import com.learnyeai.tools.common.XmlUtil;
+
+@Component
+public class NetConnect4Http implements INetConnect {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	private String serverURL = ConfigUtils.getValue("QZ_SERVER_URL");
+	
+	// 并发线程计数
+	private int cnt = 0;
+	
+	// 线程锁
+	private boolean running = false;
+
+	private int LIMIT = ConfigUtils.getValue("LIMIT_INTE_THREADS", 1);;
+		
+	@Override
+	public boolean connect(IBusinessContext ctx, String transCode) {
+		cnt++;
+		if (cnt > LIMIT && running) {
+			// 激活线程锁
+			logger.info("inte.service_busy {}", --cnt);
+			// 抛出异常，服务正忙
+			throw new AresRuntimeException("inte.service_busy");
+		}
+		
+		// 测试请求报文生成
+		long startTime = System.currentTimeMillis();
+		// XML to JSON
+		HttpURLConnection httpConn = null;
+		PrintWriter out = null;
+		BufferedReader in = null;
+		String responseStr = null;
+		String errorMsg = "net.response_is_empty" ;
+
+		String url = StringUtils.message(serverURL,
+				ctx.getParam(NetConst.TRAN_URL, "undefined"));
+		logger.debug("inte url:{}", url);
+		try {
+			cnt++;
+			running = true;
+			
+			URL urlClient = new URL(url);
+			httpConn = (HttpURLConnection) urlClient.openConnection();
+			setHttpConnection(httpConn);
+			showHttpRequestHeaders(httpConn);
+			String xmlStr = (String) ctx.getRequestEntry();
+			logger.info("\n=========request start ===============",transCode);
+			logger.info("request data:{}",XmlUtil.formatXmlStr(xmlStr));
+			logger.info("\n=========request end   ===============");
+			// 获取URLConnection对象对应的输出流
+			out = new PrintWriter(httpConn.getOutputStream());
+			// 发送请求参数
+			out.print(xmlStr);
+			out.flush();
+
+			in = new BufferedReader(new InputStreamReader(
+					httpConn.getInputStream(), NetConst.UTF_8));
+			StringBuffer sb = new StringBuffer();
+			String line;
+			boolean firstLine = true;
+			while ((line = in.readLine()) != null) {
+				if (firstLine) {
+					firstLine = false;
+				} else {
+					sb.append("\n");
+				}
+				sb.append(line);
+			}
+			responseStr = sb.toString();
+			showHttpResponseHeaders(httpConn);
+			ctx.setResponseEntry(responseStr);
+			return true;
+		} catch (MalformedURLException e) {
+			logger.error(serverURL, e);
+			throw new AresRuntimeException("net.connect_error");
+		} catch (IOException e) {
+			logger.error(serverURL, e);
+			throw new AresRuntimeException("net.connect_error");
+		} finally {
+			if (running) {
+				running = false;// 释放线程锁
+			}
+			cnt -= 2;// 减法大于加法，可修正计数错误
+			cnt = Math.max(0, cnt);// 并发线程结束
+			
+			if (out != null) {
+				out.close();
+			}
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+				}
+			}
+			
+			logger.info("\n=========response start===========",transCode);
+			if (StringUtils.isBlank(responseStr)) {
+				logger.info("net.response_is_empty {},{}", transCode,errorMsg);
+				long end = System.currentTimeMillis();
+				logger.info("{} 交易耗时:{} ms", transCode, (end - startTime));
+				logger.info("\n====================response  end=========================");
+				throw new AresRuntimeException(errorMsg);
+			}
+			logger.info(XmlUtil.formatXmlStr(responseStr));
+			long endTime = System.currentTimeMillis();
+			logger.info("{} 交易耗时:{} ms", transCode, (endTime - startTime));
+			logger.info("\n====================response  end=========================");
+		}
+	}
+
+	/**
+	 * 测试请求头
+	 * 
+	 * @param httpConn
+	 */
+	private void showHttpResponseHeaders(HttpURLConnection httpConn) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("response headers:{}", httpConn.getHeaderFields());
+		}
+	}
+
+	/**
+	 * 请求头
+	 * 
+	 * @param httpConn
+	 */
+	private void showHttpRequestHeaders(HttpURLConnection httpConn) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("request headers:{}", httpConn.getRequestProperties());
+		}
+	}
+
+	/**
+	 * 设置请求属性信息
+	 * 
+	 * @param httpConn
+	 * @throws ProtocolException
+	 */
+	private void setHttpConnection(HttpURLConnection httpConn)
+			throws ProtocolException {
+		httpConn.setRequestMethod("POST");
+		httpConn.setConnectTimeout(30000);
+		httpConn.setReadTimeout(10000);
+		httpConn.setRequestProperty("Connection", "keep-alive");
+		httpConn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.8");
+		httpConn.setRequestProperty("Content-Type", "application/xml");
+		httpConn.setRequestProperty("Accept", "application/xml");
+		httpConn.setRequestProperty(
+				"User-Agent",
+				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.803.0 Safari/535.1");
+		httpConn.setDoInput(true);
+		httpConn.setDoOutput(true);
+	}
+
+}

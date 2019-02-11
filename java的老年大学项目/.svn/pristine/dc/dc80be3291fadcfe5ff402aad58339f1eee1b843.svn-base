@@ -1,0 +1,14 @@
+package com.learnyeai.base.api.client;
+
+import com.learnyeai.base.api.vo.CustLgnInfoVo;
+import com.learnyeai.core.support.BaseFeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
+
+/**
+ * 登录信息
+ *
+ * @author zhangpz
+ */
+@FeignClient(name = "${BASE-SERVICE}", path="/base/CustLgnInfo")
+public interface CustLgnInfoClient extends BaseFeignClient<CustLgnInfoVo> {
+}

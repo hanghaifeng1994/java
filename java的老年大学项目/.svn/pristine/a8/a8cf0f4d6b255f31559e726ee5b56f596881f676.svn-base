@@ -1,0 +1,25 @@
+package com.learnyeai.studygroup.web;
+
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.studygroup.model.SgpMember;
+import com.learnyeai.studygroup.service.SgpMemberWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class SgpMemberController extends BaseController<SgpMember> {
+
+    @Autowired
+    private SgpMemberWyService sgpMemberWyService;
+
+    @Override
+    protected BaseService<SgpMember> getService() {
+        return sgpMemberWyService;
+    }
+}

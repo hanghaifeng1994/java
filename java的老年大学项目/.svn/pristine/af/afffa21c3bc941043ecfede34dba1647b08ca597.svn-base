@@ -1,0 +1,22 @@
+package com.learnyeai.base.api.client;
+
+import com.learnyeai.base.api.vo.PtsetSiteVo;
+import com.learnyeai.core.support.BaseFeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
+
+/**
+ * 站点
+ *
+ * @author zhangpz
+ */
+@FeignClient(name = "${BASE-SERVICE-NAME}", path="${BASE-SERVICE-CONTEXT-PATH}/PtsetSite")
+public interface PtsetSiteClient extends BaseFeignClient<PtsetSiteVo> {
+
+    @RequestMapping(value = "/queryByPt/{ptId}", method = RequestMethod.GET)
+    List<PtsetSiteVo> queryByPt(@PathVariable(name = "ptId") String ptId);
+}

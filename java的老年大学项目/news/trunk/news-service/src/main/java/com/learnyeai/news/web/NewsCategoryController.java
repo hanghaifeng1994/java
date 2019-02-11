@@ -1,0 +1,59 @@
+package com.learnyeai.news.web;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.common.support.WeyeBaseService;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.news.model.NewsCategory;
+import com.learnyeai.news.model.NewsSiteCategoryRel;
+import com.learnyeai.news.service.NewsCategoryWyService;
+import com.learnyeai.news.service.NewsSiteCategoryRelWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ *
+ * @author yl
+ */
+@RestController
+@RequestMapping("${adminPath}" + NewsCategoryController.BASE_URL)
+public class NewsCategoryController extends BaseController<NewsCategory> {
+    public static final String BASE_URL = "/NewsCategory/";
+
+    @Autowired
+    private NewsCategoryWyService newsCategoryWyService;
+    @Autowired
+    private NewsSiteCategoryRelWyService newsSiteCategoryRelWyService;
+
+    @Override
+    protected WeyeBaseService<NewsCategory> getService() {
+        return newsCategoryWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String transCode = ctx.getTransCode();
+        String method = CtxHeadUtil.getControllerMethod();
+        NewsCategory nc=newsCategoryWyService.convert2Bean(ctx.getParamMap());
+        if("save".equals(method)){
+            //根据parentId 查询出所有父类id
+            return newsCategoryWyService.saveData(nc);
+        }
+        if("deleteById".equals(method)){
+            return newsCategoryWyService.deleteCat(nc);
+        }
+        if("queryShowPage".equals(method)){
+            if (nc != null) {
+                nc.initPage();
+                PageHelper.startPage(nc.getPage(), nc.getRows());
+            }
+            return newsCategoryWyService.queryShowPage(nc);
+        }
+        if("queryById".equals(method)){
+           return  newsCategoryWyService.queryById(nc.getCatId());
+        }
+        return super.execute(ctx);
+    }
+}

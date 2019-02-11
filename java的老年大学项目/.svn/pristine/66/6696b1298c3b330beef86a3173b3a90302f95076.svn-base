@@ -1,0 +1,12 @@
+package com.learnyeai.activity.mapper;
+
+import com.learnyeai.activity.model.ActSiteActivityRel;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyBatisDao;
+/**
+ * @Description: 站点-活动
+ * @author yl
+ */
+@MyBatisDao
+public interface ActSiteActivityRelMapper extends BaseMapper<ActSiteActivityRel> {
+}

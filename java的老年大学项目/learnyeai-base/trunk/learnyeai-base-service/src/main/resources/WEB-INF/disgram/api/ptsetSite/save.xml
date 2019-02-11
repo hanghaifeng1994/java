@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-详情">
+    <snd>
+        <field name="siteId" desc="id"/>
+        <field name="siteName" desc="名称"/>
+        <field name="siteCode" desc="编码"/>
+        <field name="siteLogo" desc="logo"/>
+        <field name="pageHeadImg" desc="头部图片"/>
+        <field name="pageSiteCopyright" desc="站点版权"/>
+        <field name="siteDomain" desc="域名"/>
+        <field name="areaId" desc="区域"/>
+        <field name="sort" desc="排序"/>
+        <field name="ptId" desc="平台ID"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

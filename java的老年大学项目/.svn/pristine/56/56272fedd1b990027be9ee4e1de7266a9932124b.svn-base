@@ -1,0 +1,449 @@
+package com.learnyeai.course.service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.course.api.service.StdCustLearnResourceApiService;
+import com.learnyeai.course.api.vo.StdCustLearnResourceVo;
+import com.learnyeai.course.mapper.CrsCustLearnCourseMapper;
+import com.learnyeai.course.model.CrsChapter;
+import com.learnyeai.course.model.CrsChapterResourceRel;
+import com.learnyeai.course.model.CrsCourse;
+import com.learnyeai.course.model.CrsCourseTest;
+import com.learnyeai.course.model.CrsCustLearnChapter;
+import com.learnyeai.course.model.CrsCustLearnChapterRes;
+import com.learnyeai.course.model.CrsCustLearnCourse;
+import com.learnyeai.course.util.CourseUtil;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.CurrentUserInfoDao;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.mq.CourseMq;
+import com.learnyeai.rabbitmq.bean.RabbitMetaMessage;
+import com.learnyeai.rabbitmq.sender.RabbitSender;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import com.learnyeai.tools.common.StringUtils;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class CrsCustLearnCourseWyService extends WeyeBaseService<CrsCustLearnCourse> {
+	Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Resource
+	private CrsCustLearnCourseMapper crsCustLearnCourseMapper;
+
+	@Resource
+	private CrsCourseWyService crsCourseWyService;
+
+	@Resource
+	private CrsChapterWyService crsChapterWyService;
+
+	@Resource
+	private CrsCustLearnChapterWyService crsCustLearnChapterWyService;
+
+	@Resource
+	private CrsCustLearnChapterResWyService crsCustLearnChapterResWyService;
+
+	@Resource
+	private CrsChapterResourceRelWyService crsChapterResourceRelWyService;
+
+	@Resource
+	private StdCustLearnResourceApiService stdCustLearnResourceApiService;
+
+	@Resource
+	private CrsCourseTestWyService crsCourseTestWyService;
+
+	@Resource
+	private CurrentUserInfoDao currentUserInfoDao;
+
+	@Autowired
+	private RabbitSender rabbitSender;
+
+	@Override
+	public BaseMapper<CrsCustLearnCourse> getMapper() {
+		return crsCustLearnCourseMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	@Transactional
+	public List<CrsCustLearnCourse> queryUserCoursesApi(String studyUserId, String csIds) {
+		List<CrsCustLearnCourse> list = new ArrayList<CrsCustLearnCourse>();
+		CrsCustLearnCourse clc = new CrsCustLearnCourse();
+		clc.setLcsNormal("1");
+		clc.setStudyUserId(studyUserId);
+		for (String csId : csIds.split(",")) {
+			CrsCourse course = crsCourseWyService.get(csId);
+			if (course == null)
+				continue;
+			clc.setCsId(csId);
+			CrsCustLearnCourse obj = super.queryOne(clc);
+			if (obj == null)
+				continue;
+			obj.setCsName(course.getCsName());
+			list.add(obj);
+		}
+		return list;
+	}
+
+	@Transactional
+	public MyPage<CrsCustLearnCourse> queryMyCoursePage(CrsCustLearnCourse clc) {
+		clc.setLcsNormal("1");
+		clc.setStudyUserId(currentUserInfoDao.getId());
+		MyPage<CrsCustLearnCourse> myPage = super.queryPage(clc, null);
+		for (CrsCustLearnCourse obj : myPage.getList()) {
+			CrsCourse course = crsCourseWyService.get(obj.getCsId());
+			obj.setCsName(course.getCsName());
+		}
+		return myPage;
+	}
+
+	@Transactional
+	public MyPage<CrsCustLearnCourse> queryUserCoursePage(CrsCustLearnCourse clc, String orderType, String courseinfo) {
+		CrsCustLearnCourse learnCourse = new CrsCustLearnCourse();
+		learnCourse.setLcsNormal("1");
+		learnCourse.setStudyUserId(clc.getStudyUserId());
+		learnCourse.setCsId(clc.getCsId());
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		String sorts = "lcsFinished=1";
+		if ("0".equals(orderType)) {// 进度排序
+			sorts = "lcsFinished=1";
+		} else if ("1".equals(orderType)) {// 学习时间排序 倒排
+			sorts = "updateDate=0";
+		} else if ("2".equals(orderType)) {// 选课时间排序 升序
+			sorts = "createDate=1";
+		} else if ("3".equals(orderType)) {// 选课时间排序 倒排
+			sorts = "createDate=0";
+		}
+		params.put("sorts", sorts);
+		MyPage<CrsCustLearnCourse> myPage = super.queryPage(learnCourse, params);
+		if (StringUtils.isNotBlank(courseinfo) && "1".equals(courseinfo)) {// 需要课程信息 n+1
+			for (CrsCustLearnCourse obj : myPage.getList()) {
+				CrsCourse course = crsCourseWyService.get(obj.getCsId());
+				obj.setCsName(course.getCsName());
+			}
+		}
+		return myPage;
+	}
+
+	@Transactional
+	public Map<String, Object> addUserCourse(CrsCustLearnCourse clc) {
+		Map<String, Object> result = new HashMap();
+		String[] uIds = clc.getStudyUserId().split(",");
+		String[] cIds = clc.getCsId().split(",");
+		for (String studyUserId : uIds) {
+			for (String csId : cIds) {
+				CrsCustLearnCourse param = new CrsCustLearnCourse();
+				param.setStudyUserId(studyUserId);
+				param.setCsId(csId);
+				param = super.queryOne(param);
+				if (param == null) {
+					param = new CrsCustLearnCourse();
+					param.setStudyUserId(studyUserId);
+					param.setCsId(csId);
+					param.setLcsStudyFinished("0");
+					param.setLcsHomeworkeFinished("0");
+					param.setLcsExameFinished("0");
+					param.setLcsScoreFinished("0");
+					param.setLcsFinished("0");
+					param.setLcsNormal(clc.getLcsNormal());
+					super.save(param);
+					// 开始新增用户章节
+					CrsChapter chapter = new CrsChapter();
+					chapter.setCsId(csId);
+					List<CrsChapter> chapters = crsChapterWyService.queryList(chapter, null);// 查询课程所有章节
+					for (CrsChapter c : chapters) {
+						CrsCustLearnChapter learnChapter = new CrsCustLearnChapter();
+						learnChapter.setCsId(param.getCsId());
+						learnChapter.setStudyUserId(param.getStudyUserId());
+						learnChapter.setStudyFinished("0");
+						learnChapter.setCptId(c.getCptId());
+						crsCustLearnChapterWyService.save(learnChapter);// 新增用户学习章节
+
+						CrsChapterResourceRel chapterResource = new CrsChapterResourceRel();
+						chapterResource.setCptId(c.getCptId());
+						List<CrsChapterResourceRel> chapterResources = crsChapterResourceRelWyService
+								.queryList(chapterResource, null);// 查询章节下的所有资源
+						for (CrsChapterResourceRel obj : chapterResources) {
+							CrsCustLearnChapterRes res = new CrsCustLearnChapterRes();
+							res.setLcptId(learnChapter.getLcptId());
+							res.setStudyUserId(param.getStudyUserId());
+							res.setResId(obj.getResId());
+							crsCustLearnChapterResWyService.save(res);// 新增用户学习章节资源
+						}
+					}
+				} else {
+					if ("1".equals(clc.getLcsNormal())) {
+						param.setLcsNormal(clc.getLcsNormal());
+						super.save(param);
+					}
+				}
+			}
+		}
+		result.put("status", "0");
+		return result;
+	}
+
+	@Transactional
+	public MyPage<CrsCustLearnCourse> queryUserPage(CrsCustLearnCourse clc) {
+		if (clc != null && clc.getPage() != null && clc.getRows() != null) {
+			PageHelper.startPage(clc.getPage(), clc.getRows());
+		}
+		clc.setLcsNormal("1");
+		List<CrsCustLearnCourse> list = crsCustLearnCourseMapper.queryUserPage(clc);
+		MyPage<CrsCustLearnCourse> page = new MyPage<CrsCustLearnCourse>(list);
+		return page;
+	}
+
+	/**
+	 * 处理消息队列
+	 * 
+	 * @param studyUserId
+	 * @param resId
+	 * @return
+	 * @throws WeyeRabbitException
+	 */
+	@Transactional
+	public Map<String, Object> saveQueueCustLearnCourse(String studyUserId, String csId, String cptId, String resId,
+			Date updateDate) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		CrsCustLearnChapterRes params = new CrsCustLearnChapterRes();
+		params.setStudyUserId(studyUserId);
+		params.setCsId(csId);
+		List<CrsCustLearnChapterRes> objs = crsCustLearnChapterResWyService.queryList(params, null);
+		long studyTime = 0l;// 课程总学习时间
+		for (CrsCustLearnChapterRes obj : objs) {
+			logger.info("调用用户资源接口  resId=" + obj.getResId());
+			StdCustLearnResourceVo vo = stdCustLearnResourceApiService.queryUserResourceApi(studyUserId,
+					obj.getResId());
+			logger.info("调用用户资源接口返回  vo=" + vo);
+			if (vo == null)
+				continue;
+			studyTime += vo.getStudyTime();
+		}
+		logger.info("处理用户资源学习消息  studyTime=" + studyTime);
+		CrsCustLearnCourse learnCourse = new CrsCustLearnCourse();
+		learnCourse.setLcsNormal("1");
+		learnCourse.setStudyUserId(studyUserId);
+		learnCourse.setCsId(csId);
+		learnCourse = super.queryOne(learnCourse);
+		if (learnCourse != null) {
+			learnCourse.setCurCptId(cptId);
+			learnCourse.setLcsStudyTime(studyTime);
+			learnCourse.setUpdateDate(updateDate);
+			if ("0".equals(learnCourse.getLcsStudyFinished())) {
+				CrsCourse course = crsCourseWyService.queryById(learnCourse.getCsId());
+				if ("1".equals(course.getCsStudyneed()) && learnCourse.getLcsStudyTime() > course.getCsStudyTime()) {
+					learnCourse.setLcsStudyFinished("1");// 学习完成
+					boolean finished = finished(learnCourse);
+					if (finished) {
+						learnCourse.setLcsFinished("1");
+						// 发送消息到消息队列，去统计课程总的学习时间
+						CourseMq mq = new CourseMq(learnCourse.getStudyUserId(), learnCourse.getCsId(),
+								learnCourse.getUpdateDate());
+						RabbitMetaMessage msg = CourseUtil.toParseRabbitMetaMessage(mq);
+						rabbitSender.send(msg);
+						logger.info("用户课程学习完成，发送消息给教务服务.");
+					}
+				}
+			}
+			crsCustLearnCourseMapper.updateByPrimaryKeySelective(learnCourse);
+		}
+
+		map.put("status", 1);
+		map.put("msg", "处理成功.");
+		return map;
+	}
+
+	/**
+	 * 处理测验消息队列
+	 * 
+	 * @param studyUserId
+	 * @param csId
+	 * @param cptId
+	 * @param resId
+	 * @param updateDate
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional
+	public Map<String, Object> saveTestingQueueCustLearnCourse(String studyUserId, String tsId, double score,
+			Date updateDate) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		CrsCourseTest params = new CrsCourseTest();
+		params.setTsId(tsId);
+		List<CrsCourseTest> objs = crsCourseTestWyService.queryList(params, null);
+		for (CrsCourseTest ct : objs) {
+			CrsCustLearnCourse learnCourse = new CrsCustLearnCourse();
+			learnCourse.setLcsNormal("1");
+			learnCourse.setStudyUserId(studyUserId);
+			learnCourse.setCsId(ct.getCsId());
+			learnCourse = super.queryOne(learnCourse);
+			if (learnCourse != null) {
+				learnCourse.setLcsExamScore(new BigDecimal(score));
+				learnCourse.setUpdateDate(updateDate);
+				if ("0".equals(learnCourse.getLcsExameFinished())) {
+					CrsCourse course = crsCourseWyService.queryById(learnCourse.getCsId());
+					if ("1".equals(course.getCsExamneed())
+							&& learnCourse.getLcsExamScore().doubleValue() >= course.getCsExamScore().doubleValue()) {
+						learnCourse.setLcsExameFinished("1");// 测验完成
+						boolean finished = finished(learnCourse);
+						if (finished) {
+							learnCourse.setLcsFinished("1");
+							// 发送消息到消息队列，去统计课程总的学习时间
+							CourseMq mq = new CourseMq(learnCourse.getStudyUserId(), learnCourse.getCsId(),
+									learnCourse.getUpdateDate());
+							RabbitMetaMessage msg = CourseUtil.toParseRabbitMetaMessage(mq);
+							rabbitSender.send(msg);
+							logger.info("用户课程完成，发送消息给教务服务.");
+						}
+					}
+				}
+				crsCustLearnCourseMapper.updateByPrimaryKeySelective(learnCourse);
+			}
+		}
+		map.put("status", 1);
+		map.put("msg", "处理成功.");
+		return map;
+	}
+
+	public boolean finished(CrsCustLearnCourse learnCourse) {
+		CrsCourse course = crsCourseWyService.queryById(learnCourse.getCsId());
+		if ("1".equals(course.getCsStudyneed()) && learnCourse.getLcsStudyTime() < course.getCsStudyTime()) {
+			return false;
+		}
+		if ("1".equals(course.getCsHomeworkneed())
+				&& learnCourse.getLcsHomeworkScore().doubleValue() < course.getCsHomeworkScore().doubleValue()) {
+			return false;
+		}
+		if ("1".equals(course.getCsExamneed())
+				&& learnCourse.getLcsExamScore().doubleValue() < course.getCsExamScore().doubleValue()) {
+			return false;
+		}
+		if ("1".equals(course.getCsScoreneed())
+				&& learnCourse.getLcsScore().doubleValue() < course.getCsScore().doubleValue()) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 提供给其它服务调用的，新增用户课程
+	 * 
+	 * @param userIds
+	 * @param csIds
+	 * @return
+	 */
+	@Transactional
+	public boolean saveUserCourseApi(String userIds, String csIds, String siteId, String normal) {
+		List<CrsCustLearnCourse> result = new ArrayList<CrsCustLearnCourse>();
+		String[] uIds = userIds.split(",");
+		String[] cIds = csIds.split(",");
+		for (String studyUserId : uIds) {
+			List<String> resIds = new ArrayList<String>();
+			for (String csId : cIds) {
+				CrsCustLearnCourse param = new CrsCustLearnCourse();
+				param.setStudyUserId(studyUserId);
+				param.setCsId(csId);
+				param = super.queryOne(param);
+				if (param == null) {
+					param = new CrsCustLearnCourse();
+					param.setStudyUserId(studyUserId);
+					param.setCsId(csId);
+					param.setLcsStudyFinished("0");
+					param.setLcsHomeworkeFinished("0");
+					param.setLcsExameFinished("0");
+					param.setLcsScoreFinished("0");
+					param.setLcsFinished("0");
+					param.setLcsNormal(normal);
+					param.setSiteId(siteId);
+					super.save(param);
+					// 开始新增用户章节
+					CrsChapter chapter = new CrsChapter();
+					chapter.setCsId(csId);
+					List<CrsChapter> chapters = crsChapterWyService.queryList(chapter, null);// 查询课程所有章节
+					for (CrsChapter c : chapters) {
+						CrsCustLearnChapter learnChapter = new CrsCustLearnChapter();
+						learnChapter.setCsId(param.getCsId());
+						learnChapter.setStudyUserId(param.getStudyUserId());
+						learnChapter.setStudyFinished("0");
+						learnChapter.setCptId(c.getCptId());
+						learnChapter.setSiteId(siteId);
+						crsCustLearnChapterWyService.save(learnChapter);// 新增用户学习章节
+
+						CrsChapterResourceRel chapterResource = new CrsChapterResourceRel();
+						chapterResource.setCptId(c.getCptId());
+						List<CrsChapterResourceRel> chapterResources = crsChapterResourceRelWyService
+								.queryList(chapterResource, null);// 查询章节下的所有资源
+						for (CrsChapterResourceRel obj : chapterResources) {
+							CrsCustLearnChapterRes res = new CrsCustLearnChapterRes();
+							res.setLcptId(learnChapter.getLcptId());
+							res.setStudyUserId(studyUserId);
+							res.setResId(obj.getResId());
+							res.setCsId(csId);
+							crsCustLearnChapterResWyService.save(res);// 新增用户学习章节资源
+							resIds.add(obj.getResId());
+						}
+					}
+				} else {
+					if ("1".equals(normal)) {
+						param.setLcsNormal(normal);
+						super.save(param);
+					}
+				}
+				result.add(param);
+			}
+			if (resIds != null && resIds.size() > 0) {
+				boolean success = stdCustLearnResourceApiService.saveUserResourceApi(studyUserId,
+						String.join(",", resIds), siteId, 1);
+				System.out.println(studyUserId + " | " + String.join(",", resIds) + " | 保存资源是否成功=" + success);
+			}
+		}
+		return true;
+	}
+
+	@Override
+	protected Weekend<CrsCustLearnCourse> genSqlExample(CrsCustLearnCourse t, Map params) {
+		Weekend<CrsCustLearnCourse> w = super.genSqlExample(t, params);
+		WeekendCriteria<CrsCustLearnCourse, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getLcsNormal())) {
+			c.andEqualTo(CrsCustLearnCourse::getLcsNormal, t.getLcsNormal());
+		}
+		if (StringUtils.isNotBlank(t.getStudyUserId())) {
+			c.andEqualTo(CrsCustLearnCourse::getStudyUserId, t.getStudyUserId());
+		}
+		if (StringUtils.isNotBlank(t.getCsId())) {
+			if (t.getCsId().contains(",")) {
+				c.andIn(CrsCustLearnCourse::getCsId, Arrays.asList(t.getCsId().split(",")));
+			} else {
+				c.andEqualTo(CrsCustLearnCourse::getCsId, t.getCsId());
+			}
+		}
+		w.and(c);
+		return w;
+	}
+}

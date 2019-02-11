@@ -1,0 +1,255 @@
+package com.learnyeai.interact.service;
+
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.core.cache.RedisUtil;
+import com.learnyeai.core.cache.RedisUtilFactory;
+import com.learnyeai.interact.mapper.ItaCustExtMapper;
+import com.learnyeai.interact.model.ItaComment;
+import com.learnyeai.interact.mapper.ItaCommentMapper;
+import com.learnyeai.interact.model.ItaCustExt;
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.learnai.key.KeyFactory;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ItaCommentWyService extends WeyeBaseService<ItaComment> {
+
+    @Resource
+    private ItaCommentMapper itaCommentMapper;
+    @Resource
+    private ItaCustExtWyService itaCustExtWyService;
+    @Resource
+    private ItaCustExtMapper itaCustExtMapper;
+
+    @Override
+    public BaseMapper<ItaComment> getMapper() {
+        return itaCommentMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private CurrentUserInfoIml currentUserInfoIml;
+    @Value("${redisPrefix}")
+    private String cachName;
+
+    @Override
+    protected Weekend genSqlExample(ItaComment t, Map params) {
+        Weekend w=super.genSqlExample(t);
+        WeekendCriteria<ItaComment,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getObjId())){
+            c.andEqualTo(ItaComment::getObjId,t.getObjId());
+        }
+        if(StringUtils.isNotBlank(t.getType())){
+            c.andEqualTo(ItaComment::getType,t.getType());
+        }
+        if(StringUtils.isNotBlank(t.getUserAuth())){
+            c.andEqualTo(ItaComment::getUserAuth,t.getUserAuth());
+        }
+       String siteIds= MapUtil.singleNodeText(params,"siteIds");
+        if(StringUtils.isNotBlank(t.getCreateBy())){
+            c.andEqualTo(ItaComment::getCreateBy,t.getCreateBy());
+        }
+        if(StringUtils.isNotBlank(siteIds)){
+            String[] siteIdArr=siteIds.split(",");
+            c.andIn(ItaComment::getSiteId,Arrays.asList(siteIdArr));
+        }
+       /* if(StringUtils.isNotBlank(t.getsite() )){
+
+        }*/
+        w.and(c);
+        return  w;
+
+    }
+
+    /**
+     * 删除评论
+     * @param itaComment
+     * @return
+     */
+    @Transactional
+    public int deleteData(ItaComment itaComment){
+        String[] cmtIds=(itaComment.getCmtId()).split(",");
+        String userId= currentUserInfoIml.getId();
+        int num =0;
+        String cachCust=cachName+"cust";
+        String cachdel=cachName+"custdel";
+        String cachTmp=cachName+"custtmp";
+        String cachTimes=cachName+"timesPer";
+        String cachTimesdel=cachName+"timesdel";
+        String cachTimesTmp=cachName+"timesTmp";
+        RedisUtil redisCust=RedisUtilFactory.getUtil(cachCust,ItaCustExt.class);
+        RedisUtil redisTmp=RedisUtilFactory.getUtil(cachTmp,ItaCustExt.class);
+        RedisUtil redisDel=RedisUtilFactory.getUtil(cachdel,ItaCustExt.class);
+
+        RedisUtil redisTimes=RedisUtilFactory.getUtil(cachTimes,ItaInteractionTimes.class);
+        RedisUtil redisTimesTmp=RedisUtilFactory.getUtil(cachTimesTmp,ItaInteractionTimes.class);
+        RedisUtil redisTimesDel=RedisUtilFactory.getUtil(cachTimesdel,ItaInteractionTimes.class);
+        for (String cmtId:cmtIds){
+            itaComment=super.queryById(cmtId);
+            Integer starNum=itaComment.getStarNum();
+            if(starNum==null){
+                starNum=0;
+            }
+            int i= super.deleteById(cmtId);
+            String objId=itaComment.getObjId();
+            String type=itaComment.getType();
+           num=i+num;
+           //统计用户数据
+            //查询缓存中是否存在该用户数据
+            boolean flag=redisCust.exists(userId);
+            Integer CommentNum;
+            ItaCustExt  itCach=new ItaCustExt();
+            if(flag){
+                itCach= redisCust.get(userId);
+                CommentNum= itCach.getCommentNum();
+                if(CommentNum==null){
+                    CommentNum=1;
+                }
+                CommentNum = CommentNum-i;
+                redisCust.remove(userId);
+                redisTmp.remove(userId);
+            }else{
+                CommentNum=0;
+            }
+            itCach.setCustId(userId);
+            itCach.setCommentNum(CommentNum);
+            itCach.setMchtId(WeyeThreadContextUtils.getMerchantId());
+            itCach.setMchtSchmId(WeyeThreadContextUtils.getMerchantSchemeId());
+            redisCust.set(userId,itCach);
+            redisDel.set(userId,itCach);
+
+
+            String cachTimesKey=cachName+"timesPer"+type;
+            String cachTimesTmpKey=cachName+"timesTmp"+type;
+            //统计对象数据信息
+            boolean flag2=redisTemplate.opsForHash().hasKey(cachTimesKey,objId);
+            Integer cmtNum;
+            Integer starNumTimes;
+            ItaInteractionTimes times=new ItaInteractionTimes();
+            if(flag2){
+                times=(ItaInteractionTimes) redisTemplate.opsForHash().get(cachTimesKey,objId);
+                cmtNum= times.getCmtNum();
+                starNumTimes=times.getStarNum();
+                if(cmtNum==null){
+                    cmtNum=1;
+                }
+                if(starNumTimes==null){
+                    starNumTimes=1;
+                }
+                cmtNum = cmtNum-i;
+                starNumTimes = starNumTimes-starNum;
+            }else{
+                cmtNum=1;
+                starNumTimes = 0;
+            }
+            String id=KeyFactory.getKeyGenerator("interact" + "ita_interaction_times").genNextKey();
+            times.setObjId(objId);
+            times.setTmId(id);
+            times.setCmtNum(cmtNum);
+            times.setStarNum(starNumTimes);
+            times.setType(type);
+            times.setMchtId(WeyeThreadContextUtils.getMerchantId());
+            times.setMchtSchmId(WeyeThreadContextUtils.getMerchantSchemeId());
+            redisTemplate.opsForHash().put(cachTimesTmpKey,objId,times);
+            redisTemplate.opsForHash().delete(cachTimesKey,objId);
+        }
+        return num;
+    }
+
+    /**
+     * 保存评论
+     * @param it
+     * @return
+     */
+    @Transactional
+    public Map<String ,Object> saveData(ItaComment it){
+        String type=it.getType();
+        String objId=it.getObjId();
+        int count=super.save(it);
+        String userId= currentUserInfoIml.getId();
+        String cachCust=cachName+"cust";
+        String cachTmp=cachName+"custtmp";
+        RedisUtil redisCust=RedisUtilFactory.getUtil(cachCust,ItaCustExt.class);
+        RedisUtil redisTmp=RedisUtilFactory.getUtil(cachTmp,ItaCustExt.class);
+        //查询缓存中是否存在该用户数据
+        boolean flag=redisCust.exists(userId);
+        Integer CommentNum;
+        ItaCustExt  itCach=new ItaCustExt();
+        if(flag){
+            itCach= redisCust.get(userId);
+            CommentNum= itCach.getCommentNum();
+            if(CommentNum==null){
+                CommentNum=0;
+            }
+            CommentNum = CommentNum+count;
+            redisCust.remove(userId);
+            redisTmp.remove(userId);
+        }else{
+            CommentNum=1;
+        }
+        itCach.setCustId(userId);
+        itCach.setCommentNum(CommentNum);
+        itCach.setMchtId(WeyeThreadContextUtils.getMerchantId());
+        itCach.setMchtSchmId(WeyeThreadContextUtils.getMerchantSchemeId());
+        itCach.setCustId(userId);
+        redisCust.set(userId,itCach);
+        redisTmp.set(userId,itCach);
+        //定义对象统计缓存
+        //持久存在缓存
+        String cachTimesKey=cachName+"timesPer"+type;
+//        临时缓存
+        String cachTimesTmpKey=cachName+"timesTmp"+type;
+        //统计对象数据信息
+//        判断缓存中是否存在
+        boolean flag2=redisTemplate.opsForHash().hasKey(cachTimesKey,objId);
+        Integer cmtNum;
+        ItaInteractionTimes times=new ItaInteractionTimes();
+        if(flag2){
+            times=(ItaInteractionTimes) redisTemplate.opsForHash().get(cachTimesKey,objId);
+            cmtNum= times.getCmtNum();
+            if(cmtNum==null){
+                cmtNum=0;
+            }
+            cmtNum = cmtNum+count;
+        }else{
+            cmtNum=1;
+        }
+        String id=KeyFactory.getKeyGenerator("interact" + "ita_interaction_times").genNextKey();
+        times.setObjId(objId);
+        times.setCmtNum(cmtNum);
+        times.setTmId(id);
+        times.setType(type);
+        times.setMchtId(WeyeThreadContextUtils.getMerchantId());
+        times.setMchtSchmId(WeyeThreadContextUtils.getMerchantSchemeId());
+        redisTemplate.opsForHash().put(cachTimesKey,objId,times);
+        redisTemplate.opsForHash().put(cachTimesTmpKey,objId,times);
+        return  MapUtil.newMap("id",it.getCmtId());
+    }
+}

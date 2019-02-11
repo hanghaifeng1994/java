@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="行业方案-详情">
+    <snd>
+        <field name="schmId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="schmId" desc="行业方案id"/>
+        <field name="schmName" desc="行业方案名称"/>
+        <field name="schmPhoto" desc="图片"/>
+        <field name="schmBrief" desc="方案概要"/>
+        <field name="schmDesc" desc="方案描述"/>
+        <field name="schmIndustry" desc="行业"/>
+        <field name="schmImgs" desc="图片集"/>
+        <field name="schmStatus" desc="0未发布、1已发布"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

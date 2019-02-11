@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryResourcePage" desc="学员资源列表" isPage="true">
+	<snd>
+		<field name="studyUserId" desc="学习人id" required="true" />
+		<field name="resName" desc="资源名称" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="客户学习资源列表" >
+			<field name="lresId" desc="id" />
+			<field name="studyUserId" desc="学习人id" />
+			<field name="resId" desc="资源id" />
+			<field name="resName" desc="资源名称" />
+			<field name="studyTime" desc="学习时长" />
+			<field name="studyNum" desc="学习次数" />
+			<field name="studyBreakpoint" desc="学习断点" />
+			<field name="studyFinished" desc="是否完成" />
+			<field name="createDate" desc="创建时间" />
+			<field name="updateDate" desc="更新时间" />
+			<field name="siteId" desc="站点" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+		</field-list>
+	</rcv>
+</trans>

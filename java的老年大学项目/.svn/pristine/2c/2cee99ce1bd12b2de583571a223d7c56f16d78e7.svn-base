@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgFunctionPackageDao">
+    <resultMap id="BaseResultMapExt" type="CfgFunctionPackageExt">
+        <id property="pkgId" column="PKG_ID" jdbcType="VARCHAR" />
+        <result property="pkgName" column="PKG_NAME" jdbcType="VARCHAR" />
+        <result property="pkgDesc" column="PKG_DESC" jdbcType="VARCHAR" />
+        <result property="mdlId" column="MDL_ID" jdbcType="VARCHAR" />
+        <result property="pkgStatus" column="PKG_STATUS" jdbcType="CHAR" />
+        <result property="mdlName" column="MDL_NAME" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <select id="queryByCriteriaExt" resultMap="BaseResultMapExt" parameterType="CriteriaQuery">
+        select
+          p.*
+          ,m.MDL_NAME
+        from ${schema.interPlat}.cfg_function_package p
+          INNER JOIN ${schema.interPlat}.cfg_module m on m.MDL_ID=p.MDL_ID
+        <include refid="public.WhereClause4Query" />
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deletePkgFunc">
+        DELETE from ${schema.interPlat}.CFG_FUNCPKG_FUNC_REL WHERE PKG_ID=#{pkgId}
+    </delete>
+    <insert id="insertPkgFunc">
+        INSERT INTO ${schema.interPlat}.CFG_FUNCPKG_FUNC_REL(PKG_ID, FUNC_ID)
+        <foreach collection="funcIds" item="funcId" separator=" union all ">
+            SELECT #{pkgId}, #{funcId}
+            <if test="dbName != 'mssql'">
+                FROM dual
+            </if>
+        </foreach>
+    </insert>
+    <select id="getPkQueryByOrdId" parameterType="CriteriaQuery" resultMap="BaseResultMapExt">
+        SELECT c.PKG_NAME,c.PKG_ID FROM ${schema.interPlat}.cfg_function_package c
+                JOIN  ${schema.interPlat}.sh_order_package s
+                ON c.`PKG_ID`=s.`EDT_PKG_HIS_ID`
+            <include refid="public.WhereClause4Query" />
+            <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+</mapper>

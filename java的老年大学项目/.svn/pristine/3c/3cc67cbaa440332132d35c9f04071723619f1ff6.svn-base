@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delete" desc="测验-批量删除">
+    <snd>
+        <field name="tsId" desc="多个id用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <filed name="num" desc="删除数量"/>
+    </rcv>
+</trans>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="login" title="登录流程">
+	<!-- 应用内部代码构件（原子服务）组合 -->
+	<actions>
+		<!-- 第一个节点 index=1; 操作类 id=jsonParamInitOp;index可以不设置； -->
+		<!-- ref为在spring中已实例化的beanRefId； -->
+		<action index="1" ref="jsonParamInitOp" title="初始化报文">
+			<!-- 预定义的数据 -->
+			<datas>
+				<!-- 内部变量，统一以_下划线开始 -->
+				<!-- 自定义参数：常量 -->
+				<data key="_cust_param">CustInfoCheck</data>
+				<!-- 将公共数据区的acctNo复制成_acct_no,放置在公共数据区 -->
+				<data key="_acct_no">@param:acctNo</data>
+				<!-- 将会话数据区的userId复制成_userId,放置在公共数据区 -->
+				<data key="_userId">@sess:userId</data>
+			</datas>
+			<!-- mappings 步骤映射 -->
+			<mapping>
+				<!-- 输出分支重定向，缺省1为成功，直接跳转到下一节点；0为退出；其它为异常，退出流程；-->
+				<forward key="next2">4</forward>
+			</mapping>
+		</action>
+		<action index="2" ref="imageCodeCheckOp" title="图形验证码"></action>
+		<action index="3" ref="loadCustInfoByLoginIdOp" title="加载客户信息"></action>
+		<action index="4" ref="loginSessionCreateOp" title="创建用户会话"></action>
+	</actions>
+</config>

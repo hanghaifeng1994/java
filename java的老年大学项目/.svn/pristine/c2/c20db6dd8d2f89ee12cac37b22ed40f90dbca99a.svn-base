@@ -1,0 +1,27 @@
+package com.learnyeai.activity.web;
+
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.activity.model.ActMarking;
+import com.learnyeai.activity.service.ActMarkingWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ActMarkingController extends BaseController<ActMarking> {
+
+    @Autowired
+    private ActMarkingWyService actMarkingWyService;
+
+    @Override
+    protected BaseService<ActMarking> getService() {
+        return actMarkingWyService;
+    }
+
+
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="测验-新增修改保存">
+    <snd>
+        <field name="tsId" desc="ID"/>
+        <field name="name" desc="测验名称"/>
+        <field name="limitDurationed" desc="是否限制测验时间"/>
+        <field name="limitFrequencyed" desc="是否测验限制次数"/>
+        <field name="duration" desc="测验限制分钟"/>
+        <field name="frequency" desc="测验限制提交次数"/>
+        <field name="scoreRule" desc="判分规则类型  0:最高分 1:平均分 2:最后一次分数"/>
+        <field name="displayDecided" desc="是否显示判卷情况"/>
+        <field name="delflag" desc="软删除标识"/>
+        <field name="hasSubject" desc="是否有主观题"/>
+        <field name="excellentScore" desc="优秀线"/>
+        <field name="higherPercent" desc="高等百分比"/>
+        <field name="lowerPercent" desc="低等百分比"/>
+        <field name="mediumPercent" desc="中等百分比"/>
+        <field name="qualifiedScore" desc="合格线"/>
+        <field name="pcDisplayType" desc="PC端题目显示类型（单题/整卷/分题型)"/>
+        <field name="mobileDisplayType" desc="移动端题目显示类型（单体/整卷/分题型)"/>
+        <field name="userType" desc="使用类型（练习/考试)lx/ks"/>
+        <field name="siteId" desc="创建站点id"/>
+    </snd>
+    <rcv>
+       <field name="id" desc="测验id"/>
+    </rcv>
+</trans>

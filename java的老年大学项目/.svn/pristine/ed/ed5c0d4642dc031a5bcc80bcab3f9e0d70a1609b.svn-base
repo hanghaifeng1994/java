@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="updateById" desc="更新最新学习时间">
+    <snd>
+        <field name="rcdId" desc="id"/>
+        <field name="endDate" desc="结束时间"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

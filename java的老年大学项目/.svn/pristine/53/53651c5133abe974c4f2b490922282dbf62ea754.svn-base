@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.sh.dao.ShOrderDao">
+    <resultMap id="BaseResultMap" type="ShOrder">
+        <id property="ordId" column="ORD_ID" jdbcType="VARCHAR" />
+        <result property="ordNum" column="ORD_NUM" jdbcType="VARCHAR" />
+        <result property="schmEdtHisId" column="SCHM_EDT_HIS_ID" jdbcType="VARCHAR" />
+        <result property="edtPrcId" column="EDT_PRC_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtPayType" column="SCHM_EDT_PAY_TYPE" jdbcType="CHAR" />
+        <result property="schmEdtPrice" column="SCHM_EDT_PRICE" jdbcType="DECIMAL" />
+        <result property="schmEdtIncreasePrice" column="SCHM_EDT_INCREASE_PRICE" jdbcType="DECIMAL" />
+        <result property="ordBuyNum" column="ORD_BUY_NUM" jdbcType="DECIMAL" />
+        <result property="serviceStartDate" column="SERVICE_START_DATE" jdbcType="TIMESTAMP" />
+        <result property="serviceEndDate" column="SERVICE_END_DATE" jdbcType="TIMESTAMP" />
+        <result property="ordTotalAmount" column="ORD_TOTAL_AMOUNT" jdbcType="DECIMAL" />
+        <result property="ordPayStatus" column="ORD_PAY_STATUS" jdbcType="CHAR" />
+        <result property="ordDiscountAmount" column="ORD_DISCOUNT_AMOUNT" jdbcType="DECIMAL" />
+        <result property="ordRealAmount" column="ORD_REAL_AMOUNT" jdbcType="DECIMAL" />
+        <result property="actId" column="ACT_ID" jdbcType="VARCHAR" />
+        <result property="ordStatus" column="ORD_STATUS" jdbcType="CHAR" />
+        <result property="ordType" column="ORD_TYPE" jdbcType="CHAR" />
+        <result property="ordOldId" column="ORD_OLD_ID" jdbcType="VARCHAR" />
+        <result property="clientManagerId" column="CLIENT_MANAGER_ID" jdbcType="VARCHAR" />
+        <result property="clientManagerName" column="CLIENT_MANAGER_NAME" jdbcType="VARCHAR" />
+        <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+        <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+        <result property="ordPayType" column="ORD_PAY_TYPE" jdbcType="CHAR" />
+        <result property="ordPayDate" column="ORD_PAY_DATE" jdbcType="TIMESTAMP" />
+        <result property="ordPayUsername" column="ORD_PAY_USERNAME" jdbcType="VARCHAR" />
+        <result property="ordSaleType" column="ORD_SALE_TYPE" jdbcType="CHAR" />
+        <result property="ordCancelDate" column="ORD_CANCEL_DATE" jdbcType="TIMESTAMP" />
+        <result property="ordCancelUsername" column="ORD_CANCEL_USERNAME" jdbcType="VARCHAR" />
+        <result property="ordCancelCause" column="ORD_CANCEL_CAUSE" jdbcType="VARCHAR" />
+        <result property="createUserName" column="CREATE_USER_NAME" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="remarks" column="REMARKS" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        ORD_ID,ORD_NUM,SCHM_EDT_HIS_ID,EDT_PRC_ID,SCHM_EDT_PAY_TYPE,
+        SCHM_EDT_PRICE,SCHM_EDT_INCREASE_PRICE,ORD_BUY_NUM,SERVICE_START_DATE,SERVICE_END_DATE,
+        ORD_TOTAL_AMOUNT,ORD_PAY_STATUS,ORD_DISCOUNT_AMOUNT,ORD_REAL_AMOUNT,ACT_ID,
+        ORD_STATUS,ORD_TYPE,ORD_OLD_ID,CLIENT_MANAGER_ID,CLIENT_MANAGER_NAME,
+        MCHT_SCHM_ID,MCHT_ID,ORD_PAY_TYPE,ORD_PAY_DATE,ORD_PAY_USERNAME,
+        ORD_SALE_TYPE,ORD_CANCEL_DATE,ORD_CANCEL_USERNAME,ORD_CANCEL_CAUSE,CREATE_USER_NAME,
+        CREATE_BY,CREATE_DATE,REMARKS
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{ordId},#{ordNum},#{schmEdtHisId},#{edtPrcId},#{schmEdtPayType},
+        #{schmEdtPrice},#{schmEdtIncreasePrice},#{ordBuyNum},#{serviceStartDate},#{serviceEndDate},
+        #{ordTotalAmount},#{ordPayStatus},#{ordDiscountAmount},#{ordRealAmount},#{actId},
+        #{ordStatus},#{ordType},#{ordOldId},#{clientManagerId},#{clientManagerName},
+        #{mchtSchmId},#{mchtId},#{ordPayType},#{ordPayDate},#{ordPayUsername},
+        #{ordSaleType},#{ordCancelDate},#{ordCancelUsername},#{ordCancelCause},#{createUserName},
+        #{createBy},#{createDate},#{remarks}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.SH_ORDER </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            ORD_ID = #{ordId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="ShOrder">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="ShOrder">
+        update <include refid="TableClause" />
+        <set>
+        ORD_NUM=#{ordNum},
+        SCHM_EDT_HIS_ID=#{schmEdtHisId},
+        EDT_PRC_ID=#{edtPrcId},
+        SCHM_EDT_PAY_TYPE=#{schmEdtPayType},
+        SCHM_EDT_PRICE=#{schmEdtPrice},
+        SCHM_EDT_INCREASE_PRICE=#{schmEdtIncreasePrice},
+        ORD_BUY_NUM=#{ordBuyNum},
+        SERVICE_START_DATE=#{serviceStartDate},
+        SERVICE_END_DATE=#{serviceEndDate},
+        ORD_TOTAL_AMOUNT=#{ordTotalAmount},
+        ORD_PAY_STATUS=#{ordPayStatus},
+        ORD_DISCOUNT_AMOUNT=#{ordDiscountAmount},
+        ORD_REAL_AMOUNT=#{ordRealAmount},
+        ACT_ID=#{actId},
+        ORD_STATUS=#{ordStatus},
+        ORD_TYPE=#{ordType},
+        ORD_OLD_ID=#{ordOldId},
+        CLIENT_MANAGER_ID=#{clientManagerId},
+        CLIENT_MANAGER_NAME=#{clientManagerName},
+        MCHT_SCHM_ID=#{mchtSchmId},
+        MCHT_ID=#{mchtId},
+        ORD_PAY_TYPE=#{ordPayType},
+        ORD_PAY_DATE=#{ordPayDate},
+        ORD_PAY_USERNAME=#{ordPayUsername},
+        ORD_SALE_TYPE=#{ordSaleType},
+        ORD_CANCEL_DATE=#{ordCancelDate},
+        ORD_CANCEL_USERNAME=#{ordCancelUsername},
+        ORD_CANCEL_CAUSE=#{ordCancelCause},
+        CREATE_USER_NAME=#{createUserName},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate},
+        REMARKS=#{remarks}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="ShOrder">
+            update <include refid="TableClause" />
+            <set>
+                <if test="ordNum!=null">ORD_NUM=#{ordNum},</if>
+                <if test="schmEdtHisId!=null">SCHM_EDT_HIS_ID=#{schmEdtHisId},</if>
+                <if test="edtPrcId!=null">EDT_PRC_ID=#{edtPrcId},</if>
+                <if test="schmEdtPayType!=null">SCHM_EDT_PAY_TYPE=#{schmEdtPayType},</if>
+                <if test="schmEdtPrice!=null">SCHM_EDT_PRICE=#{schmEdtPrice},</if>
+                <if test="schmEdtIncreasePrice!=null">SCHM_EDT_INCREASE_PRICE=#{schmEdtIncreasePrice},</if>
+                <if test="ordBuyNum!=null">ORD_BUY_NUM=#{ordBuyNum},</if>
+                <if test="serviceStartDate!=null">SERVICE_START_DATE=#{serviceStartDate},</if>
+                <if test="serviceEndDate!=null">SERVICE_END_DATE=#{serviceEndDate},</if>
+                <if test="ordTotalAmount!=null">ORD_TOTAL_AMOUNT=#{ordTotalAmount},</if>
+                <if test="ordPayStatus!=null">ORD_PAY_STATUS=#{ordPayStatus},</if>
+                <if test="ordDiscountAmount!=null">ORD_DISCOUNT_AMOUNT=#{ordDiscountAmount},</if>
+                <if test="ordRealAmount!=null">ORD_REAL_AMOUNT=#{ordRealAmount},</if>
+                <if test="actId!=null">ACT_ID=#{actId},</if>
+                <if test="ordStatus!=null">ORD_STATUS=#{ordStatus},</if>
+                <if test="ordType!=null">ORD_TYPE=#{ordType},</if>
+                <if test="ordOldId!=null">ORD_OLD_ID=#{ordOldId},</if>
+                <if test="clientManagerId!=null">CLIENT_MANAGER_ID=#{clientManagerId},</if>
+                <if test="clientManagerName!=null">CLIENT_MANAGER_NAME=#{clientManagerName},</if>
+                <if test="mchtSchmId!=null">MCHT_SCHM_ID=#{mchtSchmId},</if>
+                <if test="mchtId!=null">MCHT_ID=#{mchtId},</if>
+                <if test="ordPayType!=null">ORD_PAY_TYPE=#{ordPayType},</if>
+                <if test="ordPayDate!=null">ORD_PAY_DATE=#{ordPayDate},</if>
+                <if test="ordPayUsername!=null">ORD_PAY_USERNAME=#{ordPayUsername},</if>
+                <if test="ordSaleType!=null">ORD_SALE_TYPE=#{ordSaleType},</if>
+                <if test="ordCancelDate!=null">ORD_CANCEL_DATE=#{ordCancelDate},</if>
+                <if test="ordCancelUsername!=null">ORD_CANCEL_USERNAME=#{ordCancelUsername},</if>
+                <if test="ordCancelCause!=null">ORD_CANCEL_CAUSE=#{ordCancelCause},</if>
+                <if test="createUserName!=null">CREATE_USER_NAME=#{createUserName},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate},</if>
+                <if test="remarks!=null">REMARKS=#{remarks}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

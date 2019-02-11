@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="测验-列表查询">
+    <snd>
+        <field name="tsId" desc="id"/>
+        <field name="name" desc="测验名称"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="测验-列表查询" type="E">
+            <field name="tsId" desc="ID"/>
+            <field name="name" desc="测验名称"/>
+            <field name="limitDurationed" desc="是否限制测验时间"/>
+            <field name="limitFrequencyed" desc="是否测验限制次数"/>
+            <field name="duration" desc="测验限制分钟"/>
+            <field name="frequency" desc="测验限制提交次数"/>
+            <field name="scoreRule" desc="判分规则类型  0:最高分 1:平均分 2:最后一次分数"/>
+            <field name="displayDecided" desc="是否显示判卷情况"/>
+            <field name="delflag" desc="软删除标识"/>
+            <field name="hasSubject" desc="是否有主观题"/>
+            <field name="excellentScore" desc="优秀线" type="F" dolt="1"/>
+            <field name="higherPercent" desc="高等百分比" type="F" dolt="1"/>
+            <field name="lowerPercent" desc="低等百分比" type="F" dolt="1"/>
+            <field name="mediumPercent" desc="中等百分比" type="F" dolt="1"/>
+            <field name="qualifiedScore" desc="合格线" type="F" dolt="1"/>
+            <field name="pcDisplayType" desc="PC端题目显示类型（单题single/整卷all/分题型timetype)"/>
+            <field name="mobileDisplayType" desc="移动端题目显示类型（单题single/整卷all/分题型timetype)"/>
+            <field name="userType" desc="使用类型（练习/考试)lx/ks"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+            <field name="siteId" desc="创建站点id"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="platformId" desc="创建平台"/>
+        </field-list>
+
+    </rcv>
+</trans>

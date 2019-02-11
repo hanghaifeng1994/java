@@ -1,0 +1,130 @@
+package com.learnyeai.course.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.common.utils.WeyeCons;
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.core.utils.CtxCommonUtils;
+import com.learnyeai.course.mapper.CrsCustLearnCourseMapper;
+import com.learnyeai.course.model.CrsCourse;
+import com.learnyeai.course.model.CrsCustLearnCourse;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.CurrentUserInfoDao;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.tools.common.BeanUtils;
+import com.learnyeai.tools.common.StringUtils;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class CrsCustLearnCourseWyService extends WeyeBaseService<CrsCustLearnCourse> {
+
+	@Resource
+	private CrsCustLearnCourseMapper crsCustLearnCourseMapper;
+
+	@Resource
+	private CrsCourseWyService crsCourseWyService;
+
+	@Resource
+	private CurrentUserInfoDao currentUserInfoDao;
+
+	@Override
+	public BaseMapper<CrsCustLearnCourse> getMapper() {
+		return crsCustLearnCourseMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	@Transactional
+	public MyPage<CrsCustLearnCourse> queryMyCoursePage(CrsCustLearnCourse clc) {
+		clc.setLcsNormal("1");
+		clc.setStudyUserId(currentUserInfoDao.getId());
+		MyPage<CrsCustLearnCourse> myPage = super.queryPage(clc, null);
+		for (CrsCustLearnCourse obj : myPage.getList()) {
+			CrsCourse course = crsCourseWyService.queryById(obj.getCsId());
+			obj.setCsName(course.getCsName());
+		}
+		return myPage;
+	}
+
+	@Transactional
+	public Map<String, Object> addUserCourse(CrsCustLearnCourse clc) {
+		Map<String, Object> result = new HashMap();
+		String[] userIds = clc.getStudyUserId().split(",");
+		String[] csIds = clc.getCsId().split(",");
+		for (String studyUserId : userIds) {
+			for (String csId : csIds) {
+				CrsCustLearnCourse param = new CrsCustLearnCourse();
+				param.setStudyUserId(studyUserId);
+				param.setCsId(csId);
+				param = super.queryOne(param);
+				if (param == null) {
+					param = new CrsCustLearnCourse();
+					param.setStudyUserId(studyUserId);
+					param.setCsId(csId);
+					param.setLcsStudyFinished("0");
+					param.setLcsHomeworkeFinished("0");
+					param.setLcsExameFinished("0");
+					param.setLcsScoreFinished("0");
+					param.setLcsFinished("0");
+				}
+				param.setLcsNormal(clc.getLcsNormal());
+				super.save(param);
+			}
+		}
+		result.put("status", "0");
+		return result;
+	}
+
+	@Transactional
+	public MyPage<CrsCustLearnCourse> queryUserPage(CrsCustLearnCourse clc) {
+		if (clc != null && clc.getPage() != null && clc.getRows() != null) {
+			PageHelper.startPage(clc.getPage(), clc.getRows());
+		}
+		clc.setLcsNormal("1");
+		// 站点
+		String siteId = WeyeThreadContextUtils.getSiteId();
+		if (StringUtils.isNotBlank(siteId))
+			BeanUtils.setProperty(clc, WeyeCons.BEAN_NAME_SITE_ID, siteId, true);
+		List<CrsCustLearnCourse> list = crsCustLearnCourseMapper.queryUserPage(clc);
+		MyPage<CrsCustLearnCourse> page = new MyPage<CrsCustLearnCourse>(list);
+		return page;
+	}
+
+	@Override
+	protected Weekend<CrsCustLearnCourse> genSqlExample(CrsCustLearnCourse t, Map params) {
+		Weekend<CrsCustLearnCourse> w = super.genSqlExample(t, params);
+		WeekendCriteria<CrsCustLearnCourse, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getLcsNormal())) {
+			c.andEqualTo(CrsCustLearnCourse::getLcsNormal, t.getLcsNormal());
+		}
+		if (StringUtils.isNotBlank(t.getStudyUserId())) {
+			c.andEqualTo(CrsCustLearnCourse::getStudyUserId, t.getStudyUserId());
+		}
+		if (StringUtils.isNotBlank(t.getCsId())) {
+			c.andEqualTo(CrsCustLearnCourse::getCsId, t.getCsId());
+		}
+		w.and(c);
+		w.setOrderByClause("CREATE_DATE desc");
+		return w;
+	}
+}

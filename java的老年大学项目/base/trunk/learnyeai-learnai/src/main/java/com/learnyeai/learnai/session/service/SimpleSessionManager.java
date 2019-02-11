@@ -1,0 +1,142 @@
+package com.learnyeai.learnai.session.service;
+
+import com.learnyeai.core.config.ConfigUtils;
+import com.learnyeai.learnai.consts.ConfigName;
+import com.learnyeai.learnai.session.Session;
+import com.learnyeai.learnai.session.SessionManager;
+import com.learnyeai.learnai.session.dao.SessionDao;
+import com.learnyeai.learnai.session.util.SessionManagerUtils;
+import com.learnyeai.core.utils.SpringContextUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PreDestroy;
+import java.util.Collection;
+
+/**
+ * Session 管理类
+ *
+ * @author 李超（lc3@yitong.com.cn）
+ */
+@Service
+public class SimpleSessionManager implements SessionManager {
+
+    private static Logger logger = LoggerFactory.getLogger(SimpleSessionManager.class);
+    private static SessionDao sessionDao;
+    private boolean enableSessionValidation = true;
+    private static SessionValidationScheduler sessionValidationScheduler;
+    @Autowired
+    private CacheManager cacheManager;
+
+    protected SessionDao getDefaultSessionDao() {
+        if(null != sessionDao) {
+            return sessionDao;
+        }
+        synchronized (SimpleSessionManager.class) {
+            if(null != sessionDao) {
+                return sessionDao;
+            }
+            sessionDao = SpringContextUtils.getBean(SessionDao.class);
+            if(enableSessionValidation) {
+                if(null == sessionValidationScheduler) {
+                    sessionValidationScheduler = new SessionValidationScheduler(
+                            SessionManagerUtils.getDefaultManager());
+                }
+//                int isValidate = ConfigUtils.getValue(ConfigName.SESSION_VALIDATION_ON, ConfigName.SESSION_VALIDATION_ON_DEFVAL);
+                 // 如果缓存是redis，改成quarts定时器，现还没有做 zzzzzzzzzzzz，
+//                if(!(cacheManager instanceof org.springframework.data.redis.cache.RedisCacheManager))
+//                if(isValidate == 1)
+                    sessionValidationScheduler.enableSessionValidation();
+            }
+        }
+        return sessionDao;
+    }
+
+    @Override
+    public SessionDao getSessionDao() {
+        return getDefaultSessionDao();
+    }
+
+    @Override
+    public Session getSession(String id) {
+        Session session = getSessionDao().get(id);
+        if(null != session && session.isExpire()) {
+            return null;
+        }
+        if(null != session) {
+            session.touch();
+        }
+        return session;
+    }
+
+    @Override
+    public Session getOrCreateSession(String id) {
+        Session session = getSessionDao().getOrCreate(id);
+        if(null != session && session.isExpire()) {
+            return null;
+        }
+        if(null != session) {
+            session.touch();
+        }
+        return session;
+    }
+
+    @Override
+    public void validateSessions() {
+        if(logger.isInfoEnabled()) {
+            logger.info("开始验证所有的会话…");
+        }
+        Collection<Session> activeSessions = getSessionDao().getInvalidSessions();
+        int invaliCount = 0;
+        for (Session session : activeSessions) {
+            String id = session.getId();
+            if(logger.isDebugEnabled()) {
+                logger.debug("会话[id:" + id + "]已失效或超时");
+            }
+            session.invalidate();
+            invaliCount++;
+        }
+        if(logger.isInfoEnabled()) {
+            logger.info("会话验证完成，[" + invaliCount + "]个会话被清理");
+        }
+    }
+
+    @Override
+    public void submit(Session session) {
+        if(null == session) {
+            return;
+        }
+        if(session.isExpire()) {
+            return;
+        }
+        // 对于非设备端请求的会话，不进行持久化到数据库
+        /*if(StringUtil.isEmpty(session.getDeviceCode()) && StringUtil.isEmpty(session.getUserId())) {
+            return;
+        }*/
+        if(session.isNew()) {
+            getSessionDao().create(session);
+            session.setIsNew(false);
+        } else if(session.isChange()) {
+            getSessionDao().update(session);
+            session.setIsChange(false);
+        }
+    }
+
+    /*public boolean isEnableSessionValidation() {
+        return enableSessionValidation;
+    }*/
+
+    public void setEnableSessionValidation(boolean enableSessionValidation) {
+        this.enableSessionValidation = enableSessionValidation;
+    }
+
+    @PreDestroy
+    public void destroy() {
+        if(null != sessionValidationScheduler) {
+            sessionValidationScheduler.disableSessionValidation();
+        }
+    }
+}

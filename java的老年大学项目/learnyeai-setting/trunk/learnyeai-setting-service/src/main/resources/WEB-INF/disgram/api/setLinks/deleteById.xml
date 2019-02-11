@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="deleteById" desc="友情链接-删除">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="score" desc="作业评分">
+	<snd>
+		<field name="uhId" desc="用户作业id" required="true"/>
+        <field name="uhScore" desc="得分"/>
+        <field name="uhStarNum" desc="评星"/>
+        <field name="uhScoreContent" desc="评分内容"/>
+        <field name="uhScoreStatus" desc="0:只评分不发布、1:评分并且发布" />
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常," />
+	</rcv>
+</trans>

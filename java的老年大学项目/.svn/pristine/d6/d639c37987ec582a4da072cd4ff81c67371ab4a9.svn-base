@@ -1,0 +1,29 @@
+package com.learnyeai.album.service;
+
+import com.learnyeai.album.model.AbmCategory;
+import com.learnyeai.album.mapper.AbmCategoryMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class AbmCategoryWyService extends WeyeBaseService<AbmCategory> {
+
+    @Resource
+    private AbmCategoryMapper abmCategoryMapper;
+
+    @Override
+    public BaseMapper<AbmCategory> getMapper() {
+        return abmCategoryMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+}

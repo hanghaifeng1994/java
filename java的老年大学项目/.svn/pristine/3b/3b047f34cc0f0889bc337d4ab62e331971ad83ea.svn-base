@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="站点班级分类-列表">
+    <snd>
+        <field name="siteId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="siteId" desc="站点id"/>
+        <field name="catId" desc="班级分类id"/>
+        <field name="showStatus" desc="显示状态"/>
+        <field name="catCrtSiteId" desc="创建站点"/>
+    </rcv>
+</trans>

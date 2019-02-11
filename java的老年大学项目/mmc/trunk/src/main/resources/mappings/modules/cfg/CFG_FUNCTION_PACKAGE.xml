@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgFunctionPackageDao">
+    <resultMap id="BaseResultMap" type="CfgFunctionPackage">
+        <id property="pkgId" column="PKG_ID" jdbcType="VARCHAR" />
+        <result property="pkgName" column="PKG_NAME" jdbcType="VARCHAR" />
+        <result property="pkgDesc" column="PKG_DESC" jdbcType="VARCHAR" />
+        <result property="mdlId" column="MDL_ID" jdbcType="VARCHAR" />
+        <result property="pkgStatus" column="PKG_STATUS" jdbcType="CHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        PKG_ID,PKG_NAME,PKG_DESC,MDL_ID,PKG_STATUS,
+        CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE,DEL_FLAG
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{pkgId},#{pkgName},#{pkgDesc},#{mdlId},#{pkgStatus},
+        #{createBy},#{createDate},#{updateBy},#{updateDate},#{delFlag}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.CFG_FUNCTION_PACKAGE </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            PKG_ID = #{pkgId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="CfgFunctionPackage">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="CfgFunctionPackage">
+        update <include refid="TableClause" />
+        <set>
+        PKG_NAME=#{pkgName},
+        PKG_DESC=#{pkgDesc},
+        MDL_ID=#{mdlId},
+        PKG_STATUS=#{pkgStatus},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate},
+        UPDATE_BY=#{updateBy},
+        UPDATE_DATE=#{updateDate},
+        DEL_FLAG=#{delFlag}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="CfgFunctionPackage">
+            update <include refid="TableClause" />
+            <set>
+                <if test="pkgName!=null">PKG_NAME=#{pkgName},</if>
+                <if test="pkgDesc!=null">PKG_DESC=#{pkgDesc},</if>
+                <if test="mdlId!=null">MDL_ID=#{mdlId},</if>
+                <if test="pkgStatus!=null">PKG_STATUS=#{pkgStatus},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate},</if>
+                <if test="updateBy!=null">UPDATE_BY=#{updateBy},</if>
+                <if test="updateDate!=null">UPDATE_DATE=#{updateDate},</if>
+                <if test="delFlag!=null">DEL_FLAG=#{delFlag}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

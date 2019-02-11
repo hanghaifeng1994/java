@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="课程-详情">
+    <snd>
+        <field name="csId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="csId" desc="id"/>
+        <field name="csName" desc="名称"/>
+        <field name="csSerialNo" desc="课程编号"/>
+        <field name="csTag" desc="标签"/>
+        <field name="csInfo" desc="简介"/>
+        <field name="csPhoto" desc="封面"/>
+        <field name="csImgs" desc="配图"/>
+        <field name="csPoints" desc="积分"/>
+        <field name="csPrice" desc="价格"/>
+        <field name="csStudylength" desc="学分/学时"/>
+        <field name="csLecturer" desc="讲师"/>
+        <field name="csCopyrightStartdate" desc="有效期开始时间"/>
+        <field name="csCopyrightEnddate" desc="有效期结束时间"/>
+        <field name="csTotalTime" desc="总时长"/>
+        <field name="csModel" desc="课程类型1:公需课;2:专业课;3:开放课"/>
+        <field name="csCatstr" desc="分类字符串"/>
+        <field name="csStudyneed" desc="是否要求学习时长"/>
+        <field name="csStudyTime" desc="要求学习时长(分钟)"/>
+        <field name="csHomeworkneed" desc="是否要求作业成绩"/>
+        <field name="csHomeworkScore" desc="要求作业成绩"/>
+        <field name="csExamneed" desc="是否要求测验成绩"/>
+        <field name="csExamScore" desc="要求测验成绩"/>
+        <field name="csScoreneed" desc="是否要求总成绩"/>
+        <field name="csScore" desc="要求总成绩"/>
+        <field name="csPubStatus" desc="0未发布、1已发布"/>
+        <field name="csPubDate" desc="发布时间"/>
+        <field name="csTjStatus" desc="推荐状态"/>
+        <field name="csTjDate" desc="推荐时间"/>
+        <field name="csStatus" desc="状态：0未提交、1审核中、2审核通过、3审核失败、4不需要审核"/>
+        <field name="csAuditId" desc="审核id"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="siteId" desc="站点"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+        <field name="eduCat" desc="教育大类"/>
+    </rcv>
+</trans>

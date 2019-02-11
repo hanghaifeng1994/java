@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="图片组-详情">
+    <snd>
+        <field name="gpId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="gpId" desc="id"/>
+        <field name="gpTitle" desc="标题"/>
+        <field name="gpPhoto" desc="封面"/>
+        <field name="gpImgs" desc="图片路径"/>
+        <field name="gpImgNames" desc="图片名称"/>
+        <field name="gpContent" desc="内容"/>
+        <field name="abmId" desc="相册id"/>
+        <field name="gpAddUsername" desc="客户名称"/>
+        <field name="gpStatus" desc="0未提交、1审核中、2审核通过、3审核失败"/>
+        <field name="auditId" desc="审核id"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="siteId" desc="站点"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

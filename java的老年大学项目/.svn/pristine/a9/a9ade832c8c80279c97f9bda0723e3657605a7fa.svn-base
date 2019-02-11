@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryManagePage" desc="资源-可管理列表" isPage="true">
+	<snd>
+		<field name="siteId" desc="站点id 多个id逗号分开" required="true"/>
+		<field name="resName" desc="资源名称" />
+		<field name="resAuthor" desc="作者" />
+		<field name="resStatus" desc="状态" />
+		<field name="resPubStatus" desc="发布状态  0/1" />
+		<field name="resPubStartDate" desc="发布开始时间" />
+		<field name="resPubEndDate" desc="发布结束时间" />
+		<field name="resCatstr" desc="分类id" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="资源列表">
+			<field name="resId" desc="id" />
+			<field name="resName" desc="名称" />
+			<field name="resCatstr" desc="" />
+			<field name="resLabel" desc="标签" />
+			<field name="resInfo" desc="简介" />
+			<field name="resPhoto" desc="封面" />
+			<field name="resImgs" desc="配图" />
+			<field name="resAuthor" desc="作者" />
+			<field name="resPoints" desc="资源积分" />
+			<field name="fileType" desc="文件类型" />
+			<field name="fileFormat" desc="文件格式" />
+			<field name="fileSize" desc="大小" />
+			<field name="fileTimeLen" desc="时长" />
+			<field name="resStatus" desc="状态：0未提交、1审核中、2审核通过、3审核失败、4不需要审核" />
+			<field name="resPubStatus" desc="发布状态" />
+			<field name="resPubDate" desc="发布时间" />
+			<field name="resAuditId" desc="审核id" />
+			<field name="createBy" desc="创建人" />
+			<field name="createDate" desc="创建时间" />
+			<field name="updateBy" desc="更新人" />
+			<field name="updateDate" desc="更新时间" />
+			<field name="delFlag" desc="删除标记" />
+			<field name="siteId" desc="站点" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+			<field-list name="resFiles" type="E" desc="资源文件列表">
+				<field name="resFielId" desc="id" />
+				<field name="fileName" desc="文件名" />
+				<field name="resId" desc="资源id" />
+				<field name="fileId" desc="文件id" />
+				<field name="fileType" desc="文件类型" />
+				<field name="fileFormat" desc="文件格式" />
+				<field name="fileSize" desc="大小" />
+				<field name="fileSuffix" desc="后缀" />
+				<field name="fileTimeLen" desc="时长" />
+				<field name="downloadNum" desc="下载次数" />
+				<field name="createBy" desc="创建人" />
+				<field name="createDate" desc="创建时间" />
+				<field name="delFlag" desc="删除标记" />
+				<field name="siteId" desc="站点" />
+				<field name="mchtId" desc="商户id" />
+				<field name="mchtSchmId" desc="商户方案id" />
+			</field-list>
+		</field-list>
+	</rcv>
+</trans>

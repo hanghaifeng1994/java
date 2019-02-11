@@ -1,0 +1,160 @@
+package com.learnyeai.interact.service;
+
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.core.cache.RedisUtil;
+import com.learnyeai.core.cache.RedisUtilFactory;
+import com.learnyeai.interact.model.ItaCustExt;
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.model.ItaVote;
+import com.learnyeai.interact.mapper.ItaVoteMapper;
+import com.learnyeai.learnai.key.KeyFactory;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.*;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ItaVoteWyService extends WeyeBaseService<ItaVote> {
+
+    @Resource
+    private ItaVoteMapper itaVoteMapper;
+    @Resource
+    private CurrentUserInfoIml currentUserInfoIml;
+    @Value("${redisPrefix}")
+    private String cachName;
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Override
+    public BaseMapper<ItaVote> getMapper() {
+        return itaVoteMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Override
+    protected Weekend genSqlExample(ItaVote t, Map params) {
+        Weekend w=super.genSqlExample(t,params);
+        WeekendCriteria<ItaVote,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getObjId())){
+            c.andEqualTo(ItaVote::getObjId,t.getObjId());
+        }if(StringUtils.isNotBlank(t.getType())){
+            c.andEqualTo(ItaVote::getType,t.getType());
+        }
+        if(StringUtils.isNotBlank(t.getVtUserId())){
+            c.andEqualTo(ItaVote::getVtUserId,t.getVtUserId());
+        }
+        w.and(c);
+        return w;
+    }
+    public Map<String,Object> queryListByObjId(ItaVote iv){
+        if (iv.getList()!=null){
+            List<ItaVote> list=iv.getList();
+            List<Map<String,Object>> result=new ArrayList<>();
+            Map<String,Object> map=new HashMap();
+            for (ItaVote ita:list){
+                ita.setVtUserId(currentUserInfoIml.getId());
+                map.put("objId",ita.getObjId());
+                map.put("type",ita.getType());
+              List<ItaVote> l=  super.queryList(ita ,new HashMap());
+              if(l.size()>0){
+                  map.put("status","0");
+              }else{
+                  map.put("status","1");
+              }
+                result.add(map);
+            }
+
+            return  MapUtil.newMap("LIST",result);
+        }
+        return null;
+    }
+
+    public Map<String,Object> saveData(ItaVote iv){
+        String userId=currentUserInfoIml.getId();
+        String objId=iv.getObjId();
+        String type=iv.getType();
+        iv.setVtUserId(userId);
+        iv.setVtUserName(currentUserInfoIml.getLoginName());
+        iv.setVtDate(new Date());
+      List<ItaVote> list=  super.queryList(iv,new HashMap());
+      if(list.size()>0){
+          ItaVote vote=list.get(0);
+          if(userId.equals(vote.getVtUserId())){
+              return MapUtil.newMap("msg","已经投票不能重复投票");
+          }
+      }
+      super.save(iv);
+        //统计用户数据
+        String cachCust=cachName+"cust";
+        String cachTmp=cachName+"custtmp";
+        String cachTimes=cachName+"times";
+        String cachTimesTmp=cachName+"timestmp";
+        RedisUtil redisCust=RedisUtilFactory.getUtil(cachCust,ItaCustExt.class);
+        RedisUtil redisCustTmp=RedisUtilFactory.getUtil(cachTmp,ItaCustExt.class);
+        RedisUtil redisTimes=RedisUtilFactory.getUtil(cachTimes,ItaInteractionTimes.class);
+        RedisUtil redisTimesTmp=RedisUtilFactory.getUtil(cachTimesTmp,ItaInteractionTimes.class);
+        //查询缓存中是否存在该用户数据
+        boolean flag=redisCust.exists(userId);
+        ItaCustExt itCach=new ItaCustExt();
+        if(flag){
+            itCach= redisCust.get(userId);
+            redisCust.remove(userId);
+            redisCustTmp.remove(userId);
+        }
+        itCach.setCustId(userId);
+        itCach.setMchtId(WeyeThreadContextUtils.getMerchantId());
+        itCach.setMchtSchmId(WeyeThreadContextUtils.getMerchantSchemeId());
+        redisCust.set(userId,itCach);
+        redisCustTmp.set(userId,itCach);
+
+        //定义对象统计缓存
+        //持久存在缓存
+        String cachTimesKey=cachName+"timesPer"+type;
+//        临时缓存
+        String cachTimesTmpKey=cachName+"timesTmp"+type;
+        //统计对象数据信息
+        boolean flag2=redisTemplate.opsForHash().hasKey(cachTimesKey,objId);
+        Integer voteNumTimes;
+        ItaInteractionTimes times=new ItaInteractionTimes();
+        if(flag2){
+            times=(ItaInteractionTimes) redisTemplate.opsForHash().get(type,objId);
+            voteNumTimes= times.getVoteNum();
+            if(voteNumTimes==null){
+                voteNumTimes=1;
+            }
+            voteNumTimes = voteNumTimes+1;
+        }else{
+            voteNumTimes=1;
+        }
+        String id=KeyFactory.getKeyGenerator("interact" + "ita_interaction_times").genNextKey();
+        times.setObjId(objId);
+        times.setTmId(id);
+        times.setVoteNum(voteNumTimes);
+        times.setType(type);
+        times.setMchtId(WeyeThreadContextUtils.getMerchantId());
+        times.setMchtSchmId(WeyeThreadContextUtils.getMerchantSchemeId());
+        //        将数据存入临时缓存中
+        redisTemplate.opsForHash().put(cachTimesTmpKey,objId,times);
+//        将数据存入持久缓存中
+        redisTemplate.opsForHash().put(cachTimesKey,objId,times);
+      return MapUtil.newMap("msg","操作成功");
+    }
+}

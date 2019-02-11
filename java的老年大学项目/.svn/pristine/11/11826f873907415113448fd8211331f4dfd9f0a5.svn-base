@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点资源关联表-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="ID"/>
+        <field name="siteId" desc="站点"/>
+        <field name="resId" desc="资源id"/>
+        <field name="resAsName" desc="别名"/>
+        <field name="resManageStatus" desc="管理状态"/>
+        <field name="resPubStatus" desc="发布状态"/>
+        <field name="resPubDate" desc="发布时间"/>
+        <field name="resCrtSiteId" desc="创建站点"/>
+    </rcv>
+</trans>

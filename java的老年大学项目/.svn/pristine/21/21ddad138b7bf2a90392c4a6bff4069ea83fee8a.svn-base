@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="sendLowerPage" desc="活动-主站下发列表" isPage="true">
+    <snd>
+        <field name="catSiteId" desc="站点" />
+        <field name="catId" desc="分类id" />
+        <field name="startDate" desc="开始时间" />
+        <field name="endDate" desc="结束时间" />
+        <field name="actTitle" desc="活动标题"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="活动详情列表" type="E">
+            <field name="actId" desc="id"/>
+            <field name="actTitle" desc="活动标题"/>
+            <field name="actInfo" desc="简介"/>
+            <field name="actContent" desc="活动内容"/>
+            <field name="actPhoto" desc="封面"/>
+            <field name="actAreaId" desc="活动区域id"/>
+            <field name="actType" desc="活动类型1宣传活动、2评比类活动"/>
+            <field name="actStartDate" desc="活动开始时间" />
+            <field name="actEndDate" desc="活动结束时间" />
+            <field name="actTutorUserId" desc="指导老师id"/>
+            <field name="actStatus" desc="状态：0未提交、1审核中、2审核通过、3审核失败、4不需要审核"/>
+            <field name="actPubStatus" desc="发布状态"/>
+            <field name="actAuditId" desc="审核id"/>
+            <field name="actSignupNum" desc="报名人数"/>
+            <field name="actImgs" desc="活动图片"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+            <field name="siteId" desc="站点"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+        </field-list>
+    </rcv>
+</trans>

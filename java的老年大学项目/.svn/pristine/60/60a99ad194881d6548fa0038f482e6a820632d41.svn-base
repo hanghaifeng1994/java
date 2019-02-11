@@ -1,0 +1,101 @@
+package com.learnyeai.common.utils;
+
+import com.learnyeai.learnai.context.ThreadContextUtil;
+import com.learnyeai.learnai.session.Session;
+
+import java.util.Map;
+
+/**
+ * Created by zpz on 2018/5/8.
+ */
+public class WeyeSessUtils {
+    //商户信息
+    public static final String MERCHANT_INFO = "__SESS_MERCHANT_INFO_KEY";
+    //商户方案
+    public static final String MERCHANT_SCHEME_INFO = "__SESS_MERCHANT_SCHEME_INFO_KEY";
+    // 小程序信息
+    public static final String APPLET_INFO = "__SESS_APPLET_INFO_KEY";
+    // 订单当前信息，含有商户选择的版本信息
+    public static final String MERCHANT_ORDER_INFO = "__SESS_MERCHANT_ORDER_INFO_KEY";
+    // 商户订单功能包列表
+    public static final String MERCHANT_ORDER_FUNC_PACKAGE_LIST = "__SESS_MERCHANT_ORDER_FUNC_PACKAGE_LIST_KEY";
+
+
+    // 用户登录类型：1客户小程序、2员工程序、3员工后管
+    public static final String LOGIN_TYPE = "__SESS_LOGIN_TYPE";
+
+    /**
+     * 获取当前用户登录类型
+     * @return
+     */
+    public static WeyeCons.LOGIN_TYPE getLoginType() {
+        Session sess = ThreadContextUtil.getSession(false);
+        if(sess == null)
+            return null;
+        Object o = sess.getAttribute(LOGIN_TYPE);
+        return o == null ? null : (WeyeCons.LOGIN_TYPE)o;
+    }
+
+    /**
+     * 获取商户信息
+     * @return
+     */
+    /*public static ShMerchantVo getMerchant(){
+        Session sess = ThreadContextUtil.getSession(false);
+        if(sess == null)
+            return null;
+
+        Object o = sess.getAttribute(MERCHANT_INFO);
+        return o == null ? null : (ShMerchantVo) o;
+    }*/
+
+    /**
+     * 获取商户方案
+     * @return
+     */
+    public static Map getMerchantScheme(){
+        Session sess = ThreadContextUtil.getSession(false);
+        if(sess == null)
+            return null;
+        Object o = sess.getAttribute(MERCHANT_SCHEME_INFO);
+        return o == null ? null : (Map) o;
+    }
+
+    /**
+     * 获取商户小程序信息
+     * @return
+     */
+    public static Map getAppletSetting(){
+        Session sess = ThreadContextUtil.getSession(false);
+        if(sess == null)
+            return null;
+        Object o = sess.getAttribute(APPLET_INFO);
+        return o == null ? null : (Map) o;
+    }
+
+    /**
+     * 获取商户订单
+     * @return
+     */
+    public static Map getShOrder(){
+        Session sess = ThreadContextUtil.getSession(false);
+        if(sess == null)
+            return null;
+        Object o = sess.getAttribute(MERCHANT_ORDER_INFO);
+        return o == null ? null : (Map) o;
+
+    }
+
+    /**
+     * 获取商户订单功能包列表
+     * @return
+     */
+    /*public static List<ShOrderFuncPackage> getShOrderPackageList(){
+        Session sess = ThreadContextUtil.getSession(false);
+        if(sess == null)
+            return null;
+        Object o = sess.getAttribute(MERCHANT_ORDER_FUNC_PACKAGE_LIST);
+        return o == null ? null : (List<ShOrderFuncPackage>) o;
+
+    }*/
+}

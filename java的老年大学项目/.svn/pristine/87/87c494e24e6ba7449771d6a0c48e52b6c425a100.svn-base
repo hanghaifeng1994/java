@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.weye.modules.attach.dao.AttachmentDao">
+
+
+    <resultMap id="BaseResultMap" type="Attachment">
+		<id property="id" column="id" jdbcType="VARCHAR" />
+        <result property="atName" column="at_name" jdbcType="VARCHAR" />
+        <result property="atSuffix" column="at_suffix" jdbcType="VARCHAR" />
+        <result property="atType" column="at_type" jdbcType="CHAR" />
+        <result property="atTime" column="at_time" jdbcType="VARCHAR" />
+        <result property="createBy.id" column="create_by" jdbcType="VARCHAR" />
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP" />
+        <result property="atStatus" column="at_status" jdbcType="CHAR" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+				id AS "id",
+		at_name AS "atName",
+		at_suffix AS "atSuffix",
+		at_type AS "atType",
+		at_time AS "atTime",
+		create_by AS "createBy.id",
+		create_date AS "createDate",
+		at_status AS "atStatus"
+	</sql>
+
+	<sql id="attachmentColumns">
+		a.id AS "id",
+		a.at_name AS "atName",
+		a.at_suffix AS "atSuffix",
+		a.at_type AS "atType",
+		a.at_time AS "atTime",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.at_status AS "atStatus"
+	</sql>
+	
+	<sql id="attachmentJoins">
+	</sql>
+
+	<sql id="TableClause"> ${schema.interPlat}.attachment </sql>
+	<sql id="WhereClause4Id">
+		<where>
+			id=#{id}
+		</where>
+	</sql>
+    
+	<select id="get" resultType="Attachment">
+		SELECT 
+			<include refid="attachmentColumns"/>
+		FROM <include refid="TableClause" /> a
+		<include refid="attachmentJoins"/>
+		WHERE a.id=#{id}
+
+	</select>
+	
+	<select id="findList" resultType="Attachment">
+		SELECT 
+			<include refid="attachmentColumns"/>
+		FROM <include refid="TableClause" /> a
+		<include refid="attachmentJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Attachment">
+		SELECT 
+			<include refid="attachmentColumns"/>
+		FROM <include refid="TableClause" /> a
+		<include refid="attachmentJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO <include refid="TableClause" />(
+			id,
+			at_name,
+			at_suffix,
+			at_type,
+			create_by,
+			create_date,
+			at_status
+		) VALUES (
+			#{id},
+			#{atName},
+			#{atSuffix},
+			#{atType},
+			#{createBy.id},
+			#{createDate},
+			#{atStatus}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE <include refid="TableClause" /> SET
+			at_name = #{atName},
+			at_suffix = #{atSuffix},
+			at_type = #{atType},
+			at_status = #{atStatus}
+		<include refid="WhereClause4Id" />
+	</update>
+
+	<update id="updateByIdSelective">
+		UPDATE <include refid="TableClause" /> SET
+			<if test="atName!=null">
+				at_name = #{atName},
+			</if>
+			<if test="atSuffix!=null">
+				at_suffix = #{atSuffix},
+			</if>
+			<if test="atType!=null">
+				at_type = #{atType},
+			</if>
+			<if test="atStatus!=null">
+				at_status = #{atStatus} </if>
+		<include refid="WhereClause4Id" />
+	</update>
+
+	<update id="delete">
+		DELETE FROM <include refid="TableClause" />
+		<include refid="WhereClause4Id" />
+	</update>
+
+	<select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <select id="deleteByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </select>
+	
+</mapper>

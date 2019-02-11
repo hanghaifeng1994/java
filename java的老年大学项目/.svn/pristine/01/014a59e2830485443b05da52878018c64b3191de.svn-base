@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.dynamics.mapper.DynDynamicsMapper">
+    <resultMap id="BaseResultMap" type="DynDynamics">
+    <id property="dynId" column="DYN_ID" jdbcType="VARCHAR" />
+
+    <result property="content" column="CONTENT" jdbcType="VARCHAR" />
+    <result property="imgs" column="IMGS" jdbcType="VARCHAR" />
+    <result property="type" column="TYPE" jdbcType="VARCHAR" />
+    <result property="objId" column="OBJ_ID" jdbcType="VARCHAR" />
+    <result property="status" column="STATUS" jdbcType="CHAR" />
+    <result property="pubStatus" column="PUB_STATUS" jdbcType="CHAR" />
+    <result property="auditId" column="AUDIT_ID" jdbcType="VARCHAR" />
+    <result property="templateCode" column="TEMPLATE_CODE" jdbcType="VARCHAR" />
+    <result property="orgId" column="ORG_ID" jdbcType="VARCHAR" />
+    <result property="orgName" column="ORG_NAME" jdbcType="VARCHAR" />
+    <result property="rcvUserIds" column="RCV_USER_IDS" jdbcType="VARCHAR" />
+    <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        DYN_ID,CONTENT,IMGS,TYPE,OBJ_ID,
+        STATUS,PUB_STATUS,AUDIT_ID,TEMPLATE_CODE,ORG_ID,
+        ORG_NAME,RCV_USER_IDS,CREATE_BY,CREATE_DATE,UPDATE_BY,
+        UPDATE_DATE,DEL_FLAG,SITE_ID,MCHT_ID,MCHT_SCHM_ID
+    </sql>
+
+
+    <sql id="TableClause"> ${schema.interPlat}.DYN_DYNAMICS </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

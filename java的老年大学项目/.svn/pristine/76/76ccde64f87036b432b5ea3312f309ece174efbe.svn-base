@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="ClzCompreEvalua" desc="班级的综合评价">
+    <snd>
+        <field name="tsIds" desc="测试id多个测试id用英文逗号隔开" required="true"/>
+        <field name="czId" desc="班级id" required="true"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="综合评价列表" type="E">
+            <field name="name" desc="测试名称"/>
+            <field name="avgScore" desc="平均分值"  dolt="1"/>
+        </field-list>
+    </rcv>
+</trans>

@@ -1,0 +1,44 @@
+package com.learnyeai.learnbehavior.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnbehavior.model.StdCustLearnCourse;
+import com.learnyeai.learnbehavior.service.StdCustLearnCourseWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+
+/**
+ *
+ * @author yl
+ */
+@RestController
+@RequestMapping("${adminPath}" + StdCustLearnCourseController.BASE_URL)
+public class StdCustLearnCourseController extends BaseController<StdCustLearnCourse> {
+    public static final String BASE_URL = "/StdCustLearnCourse/";
+
+    @Autowired
+    private StdCustLearnCourseWyService stdCustLearnCourseWyService;
+
+    @Override
+    protected BaseService<StdCustLearnCourse> getService() {
+        return stdCustLearnCourseWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        StdCustLearnCourse sclc =stdCustLearnCourseWyService.convert2Bean(ctx.getParamMap());
+        String transCode = ctx.getTransCode();
+        String method = CtxHeadUtil.getControllerMethod();
+        if("queryPage".equals(method)){
+            MyPage<StdCustLearnCourse> page=stdCustLearnCourseWyService.queryPage(sclc,new HashMap());
+            return super.rtnPageList4Report(page);
+        }
+        return  super.execute(ctx);
+    }
+}

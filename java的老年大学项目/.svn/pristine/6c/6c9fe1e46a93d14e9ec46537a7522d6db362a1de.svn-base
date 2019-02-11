@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="学员-班级-课程-详情">
+    <snd>
+        <field name="uccId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="uccId" desc="学生班级课程id"/>
+        <field name="custId" desc="学生id"/>
+        <field name="czId" desc="班级id"/>
+        <field name="csId" desc="课程id"/>
+        <field name="normal" desc="状态：0报名中、1报名成功"/>
+        <field name="csType" desc="1选修课、2必修课"/>
+        <field name="csStudylength" desc="学时"/>
+        <field name="csAmount" desc="金额"/>
+        <field name="lcsFinished" desc="是否完成"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="finishedDate" desc="完成时间"/>
+        <field name="siteId" desc="站点"/>
+    </rcv>
+</trans>

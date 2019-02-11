@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="审核日志-详情">
+    <snd>
+        <field name="adId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="adId" desc="id"/>
+        <field name="objId" desc="对象id"/>
+        <field name="objLogId" desc="对象日志id"/>
+        <field name="serviceType" desc="业务类型"/>
+        <field name="adStatus" desc="审核状态"/>
+        <field name="adUserId" desc="审核人id"/>
+        <field name="adUserName" desc="审核人名称"/>
+        <field name="adContent" desc="审核意见"/>
+        <field name="adDate" desc="审核日期"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

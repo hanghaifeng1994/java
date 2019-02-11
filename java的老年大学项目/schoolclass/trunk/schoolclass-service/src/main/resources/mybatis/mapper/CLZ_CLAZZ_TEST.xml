@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.schoolclass.mapper.ClzClazzTestMapper">
+    <resultMap id="BaseResultMap" type="ClzClazzTest">
+    <id property="ctId" column="CT_ID" jdbcType="VARCHAR" />
+
+    <result property="czId" column="CZ_ID" jdbcType="VARCHAR" />
+    <result property="tsId" column="TS_ID" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        CT_ID,CZ_ID,TS_ID
+    </sql>
+
+
+    <sql id="TableClause"> ${}.CLZ_CLAZZ_TEST </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

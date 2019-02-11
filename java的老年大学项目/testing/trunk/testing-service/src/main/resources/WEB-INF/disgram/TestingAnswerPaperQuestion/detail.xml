@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="答卷的题目答题情况和判分情况-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="ID"/>
+        <field name="awId" desc="学员答卷id"/>
+        <field name="questionId" desc="实际题目"/>
+        <field name="orderNum" desc="题目排序"/>
+        <field name="itemTypeId" desc="题型"/>
+        <field name="itemIds" desc="答题选项"/>
+        <field name="answerIdValue" desc="选项的id，逗号分隔，                "/>
+        <field name="answerContentValue" desc="答题选项内容"/>
+        <field name="score" desc="本题得分"/>
+        <field name="okStatus" desc="本题答对还是答错（1，对，2错，3半对）"/>
+    </rcv>
+</trans>

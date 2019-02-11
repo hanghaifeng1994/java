@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans desc="商户门店-列表">
+    <snd>
+        <field name="MCHT_ID" desc="商户id" required="true"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="商户门店-列表" type="E">
+            <field name="STORE_ID" desc="门店id"/>
+            <field name="STORE_NAME" desc="门店名称"/>
+            <field name="STORE_ADRESS" desc="地址"/>
+            <field name="STORE_PHOTO" desc="图片" valType="res"/>
+            <field name="STORE_IMGS" desc="图片展示" valType="res"/>
+            <field name="STORE_LINKMAN" desc="负责人"/>
+            <field name="STORE_PHONE" desc="电话"/>
+            <field name="STORE_INFO" desc="门店介绍"/>
+            <field name="MCHT_SCHM_ID" desc="商户方案ID"/>
+            <field name="MCHT_ID" desc="商户id"/>
+        </field-list>
+
+    </rcv>
+</trans>

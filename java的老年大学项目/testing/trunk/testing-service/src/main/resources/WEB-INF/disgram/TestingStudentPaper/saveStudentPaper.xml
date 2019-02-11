@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="saveStudentPaper" desc="交卷">
+	<snd>
+		<field name="paperNo" desc="考生ID+测验id+考试次数" required="true"/>
+	</snd>
+	<rcv>
+		<field name="status" desc="状态为0时操作成功，1 操作异常" />
+		<field name="msg" desc="提示信息" />
+	</rcv>
+</trans>

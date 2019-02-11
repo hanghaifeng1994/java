@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="code2penId" desc="小程序code转openid，报文头必须传UUID、APP_ID">
+    <snd>
+        <!--<field name="jsCode" desc="小程序登录获取的code" required="true"/>-->
+    </snd>
+    <rcv>
+        <field name="OPEN_ID" desc="openid"/>
+    </rcv>
+</trans>

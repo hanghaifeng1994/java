@@ -1,0 +1,97 @@
+package com.learnyeai.news.web;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.news.model.NewsArticle;
+import com.learnyeai.news.model.NewsNewsSiteRel;
+import com.learnyeai.news.service.NewsArticleWyService;
+import com.learnyeai.news.service.NewsNewsSiteRelWyService;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class NewsArticleController extends BaseController<NewsArticle> {
+
+    @Autowired
+    private NewsArticleWyService newsArticleWyService;
+    @Autowired
+    private NewsNewsSiteRelWyService newsNewsSiteRelWyService;
+
+    @Override
+    protected BaseService<NewsArticle> getService() {
+        return newsArticleWyService;
+    }
+
+//    queryPageByCriteria
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        NewsArticle na=newsArticleWyService.convert2Bean(ctx.getParamMap());
+        String method = CtxHeadUtil.getControllerMethod();
+        if("queryPage".equals(method)){
+            return  newsArticleWyService.queryPageExt(na);
+        }
+        if("save".equals(method)){
+            return newsArticleWyService.saveDate(na);
+        }
+        if("delete".equals(method)){
+            return newsArticleWyService.deleteBatch(na);
+        }
+         if (method.equals("queryById")) {
+            NewsArticle newsArticle=  newsArticleWyService.queryById(na.getArticleId());
+            return newsArticle;
+        }
+        if("subAudit".equals(method)){
+            super.save(ctx);
+        }
+        if("audit".equals(method)){
+            try {
+                newsArticleWyService.audit(ctx);
+            } catch (WeyeRabbitException e) {
+                e.printStackTrace();
+            }
+        }
+        if("publish".equals(method)){
+          return   newsArticleWyService.publishBatch(na);
+        }
+        if("recommend".equals(method)){
+            return  newsArticleWyService.recommend(na);
+        }
+        if("queryTopPage".equals(method)){
+            if (na != null) {
+                na.initPage();
+                PageHelper.startPage(na.getPage(), na.getRows());
+            }
+            na.setWeight(999);
+            return newsArticleWyService.queryPageExt(na);
+        }
+        if("top".equals(method)){
+            newsArticleWyService.top(na);
+        }
+        if("queryPageByCatIds".equals(method)){
+         return    newsArticleWyService.queryPageByCriteria(na);
+        }
+        if("queryPageByIds".equals(method)){
+            return  newsArticleWyService.queryPageExt(na);
+        }
+        if("lowerSendPage".equals(method)){
+            if (na != null) {
+                na.initPage();
+                PageHelper.startPage(na.getPage(), na.getRows());
+            }
+            return  newsArticleWyService.lowerSendList(na);
+        }
+        return super.execute(ctx);
+    }
+}

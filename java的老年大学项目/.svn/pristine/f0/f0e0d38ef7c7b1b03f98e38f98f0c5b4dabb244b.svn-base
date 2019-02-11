@@ -1,0 +1,101 @@
+
+索引服务老年教育-资源中心
+
+
+资源
+1.课程 2.资源3.证书
+	查询：
+		res_big_type资源大类(老年教育、社区教育)
+		cs_name分类，搜索同一个字段，多个分类空格分开
+		res_type资源类型，证书、课程、资源
+		course_type课程类型：公开、精品
+		site_id站点，多个站点id
+		cert_site_id证书站点
+		trn_site_id培训站点
+	字段
+		id、标题title、图片photo、发布时间pub_date、学习积分、学习人数
+		
+
+
+1.课程 2.资源3.证书  4新闻 5.班级 6活动 7小组 8.才艺 9经验
+
+---------课程
+
+SELECT a.*,b.cert_site_id,b.trn_site_id
+FROM(
+SELECT 
+group_concat(ca.CAT_NAME) cs_name,
+'老年' res_big_type,
+'课程' res_type,
+CASE WHEN c.CS_MODEL=1 then '精品' ELSE '公开'  END course_type,
+group_concat(csr.SITE_ID) site_id,
+c.CS_ID id,
+c.CS_NAME title,
+c.CS_PHOTO photo,
+c.UPDATE_DATE pub_date,
+c.CS_POINTS study_point
+from crs_course c
+,crs_catalog_course_rel r
+, crs_catalog ca
+,crs_site_course_rel csr
+where r.CS_ID=c.CS_ID
+and ca.CAT_ID=r.CAT_ID
+and csr.CS_ID=c.CS_ID
+and c.CS_STATUS='2'
+and c.CS_PUB_STATUS='1'
+GROUP BY c.CS_ID,c.CS_NAME,c.CS_PHOTO,c.UPDATE_DATE,c.CS_POINTS
+) a
+LEFT JOIN(SELECT cc.CS_ID
+,group_concat(case when cz.CZ_CERTED='1' then csc.SITE_ID else '' end) cert_site_id
+,group_concat(case when cz.CZ_CERTED<>'1' then csc.SITE_ID else '' end) trn_site_id
+from clz_clazz cz
+,clz_clazz_course cc
+,clz_site_clazz csc
+WHERE cc.CZ_ID=cz.CZ_ID
+and csc.CZ_ID=cz.CZ_ID
+and cz.CZ_STATUS='2'
+and cz.CZ_PUB_STATUS='1'
+GROUP BY cc.CS_ID) b on a.id=b.CS_ID
+
+
+-----------证书
+SELECT group_concat(ca.CAT_NAME) cs_name
+,'证书' res_type
+,group_concat(sc.SITE_ID) site_id
+,cz.CZ_ID id
+,cz.CZ_NAME title
+,cz.CZ_PHOTO photo
+,cz.UPDATE_DATE pub_date
+from clz_clazz cz
+,clz_site_clazz sc
+,clz_category_clzz_rell ccr
+,clz_category ca
+WHERE sc.CZ_ID=cz.CZ_ID
+and ccr.CZ_ID=cz.CZ_ID
+and ccr.CAT_ID=ca.CAT_ID
+and cz.CZ_STATUS='2'
+and cz.CZ_PUB_STATUS='1'
+and cz.CZ_CERTED='1'
+GROUP BY cz.CZ_ID,cz.CZ_NAME,cz.CZ_PHOTO,cz.UPDATE_DATE
+
+------------资源
+
+SELECT 
+'老年' res_big_type
+,group_concat(ca.CAT_NAME) cs_name
+,'资源' res_type
+,group_concat(sr.SITE_ID) site_id
+,r.RES_ID ID
+,r.RES_NAME title
+,r.RES_PHOTO photo
+,r.UPDATE_DATE pub_date
+from res_resource r
+,res_category_resource_rel rr
+,res_category ca
+,res_site_resource_rel sr
+WHERE rr.RES_ID=r.RES_ID
+and ca.CAT_ID=rr.CAT_ID
+and sr.RES_ID=r.RES_ID
+and r.RES_STATUS='2'
+and r.RES_PUB_STATUS='1'
+GROUP BY r.RES_ID,r.RES_NAME,r.RES_PHOTO,r.UPDATE_DATE

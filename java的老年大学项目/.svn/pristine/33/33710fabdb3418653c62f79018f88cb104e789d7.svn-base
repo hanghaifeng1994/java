@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="topQuery" desc="topN查询，多条件查询时:为查询字段、查询参数的map，多字段查询固定为：{fields:[field1,field2..],param:xx}">
+    <snd>
+        <field name="indexName" desc="索引名称" required="true"/>
+        <field name="topN" desc="查询多少条" required="true"/>
+        <field name="sorts" desc="排序" comment="多个字段排序用逗号分割"/>
+        <field name="sortTypes" desc="排序类型" comment="与sorts一一对应:SCORE DOC STRING INT DOUBLE LONG STRING_VAL"/>
+
+        <field name="queryType" desc="查询类型" comment="1多条件查询、2多字段查询" required="true"/>
+        <field name="queryParams" desc="请求参数，json格式。"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="用户-列表" type="E">
+            <field name="custId" desc="用户id"/>
+            <field name="custName" desc="姓名"/>
+            <field name="shortName" desc="用户昵称"/>
+            <field name="loginName" desc="登录名"/>
+            <field name="sign" desc="个性签名"/>
+            <field name="phone" desc="手机号"/>
+            <field name="email" desc="邮箱"/>
+            <field name="sex" desc="性别"/>
+            <field name="birthday" desc="用户生日"/>
+            <field name="photo" desc="头像"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="staffType" desc="员工类型由各方案定义"/>
+            <field name="custIsAdmin" desc="员工用户时，管理员标识：0否、1是"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="siteId" desc="站点"/>
+        </field-list>
+
+    </rcv>
+</trans>

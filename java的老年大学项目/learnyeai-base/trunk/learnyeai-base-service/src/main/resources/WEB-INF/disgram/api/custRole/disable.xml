@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="角色-禁用">
+    <snd>
+        <field name="roleIds" desc="角色id" required="true" comment="多个id用逗号分割"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

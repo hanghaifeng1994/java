@@ -1,0 +1,194 @@
+package com.learnyeai.testing.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.testing.mapper.TestingPaperRuleMapper;
+import com.learnyeai.testing.model.TestingPaper;
+import com.learnyeai.testing.model.TestingPaperQuestion;
+import com.learnyeai.testing.model.TestingPaperRule;
+import com.learnyeai.testing.model.TestingQuestion;
+import com.learnyeai.testing.model.TestingQuestionitemRule;
+import com.learnyeai.testing.model.TestingTest;
+import com.learnyeai.tools.common.BeanHelper;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class TestingPaperRuleWyService extends WeyeBaseService<TestingPaperRule> {
+
+	@Resource
+	private TestingPaperRuleMapper testingPaperRuleMapper;
+
+	@Resource
+	private TestingTestWyService testingTestWyService;
+
+	@Autowired
+	private TestingQuestionitemRuleWyService testingQuestionitemRuleWyService;
+
+	@Autowired
+	private TestingQuestionWyService testingQuestionWyService;
+
+	@Autowired
+	private TestingPaperWyService testingPaperWyService;
+
+	@Autowired
+	private TestingPaperQuestionWyService testingPaperQuestionWyService;
+
+	@Override
+	public BaseMapper<TestingPaperRule> getMapper() {
+		return testingPaperRuleMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return true;
+	}
+
+	/**
+	 * status0操作成功 1操作失败
+	 * 
+	 * @param param
+	 * @return
+	 */
+	@Transactional
+	public Map<String, Object> saveOrUpdate(TestingPaperRule param) {
+		Map<String, Object> map = new HashMap();
+		TestingPaperRule testingPaperRule = null;
+		if (StringUtils.isBlank(param.getPaperRuleId())) {
+			param.getTsId();
+			if (StringUtils.isBlank(param.getTsId()) || StringUtils.isBlank(param.getQpId())) {
+				map.put("status", 1);
+				map.put("msg", "新增测验规则时，测验id和题库id不能为空!");
+				return map;
+			}
+			TestingTest test = testingTestWyService.queryById(param.getTsId());
+			if (test == null) {
+				map.put("status", 1);
+				map.put("msg", "测验不存在!");
+				return map;
+			}
+			testingPaperRule = testingPaperRuleMapper.queryUnUsedOne(param.getTsId());
+			if (testingPaperRule == null) {
+				testingPaperRule = new TestingPaperRule();
+				testingPaperRule.setIsNewversion("0");
+				testingPaperRule.setSiteId(test.getSiteId());
+				testingPaperRule.setMchtId(test.getMchtId());
+				testingPaperRule.setMchtSchmId(test.getMchtSchmId());
+				testingPaperRule.setPlatformId(test.getPlatformId());
+				Integer version = testingPaperRuleMapper.queryMaxVersion(param.getTsId());
+				testingPaperRule.setVersion(version == null ? 1 : version + 1);
+			}
+			BeanHelper.copy(param, testingPaperRule);
+		} else {
+			testingPaperRule = super.queryById(param.getPaperRuleId());
+			if ("1".equals(testingPaperRule.getIsNewversion())) {
+				map.put("status", 1);
+				map.put("msg", "已组卷的规则不能再编辑!");
+				return map;
+			}
+			BeanHelper.copy(param, testingPaperRule);
+		}
+		super.save(testingPaperRule);
+		map.put("status", 0);
+		map.put("msg", "保存成功!");
+		map.put("id", testingPaperRule.getPaperRuleId());
+		return map;
+	}
+
+	/**
+	 * status0操作成功 1操作失败
+	 * 
+	 * @param param
+	 * @return
+	 */
+	@Transactional
+	public Map<String, Object> saveGenPaper(TestingPaperRule param) throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		TestingPaperRule testingPaperRule = super.queryById(param.getPaperRuleId());
+		int paperNum = testingPaperRule.getQueNum();// 出卷数量
+		if (param.getQueNum() != null)
+			paperNum = param.getQueNum();
+		if (testingPaperRule.getPaperVersion() != null && !"1".equals(testingPaperRule.getIsNewversion())) {
+			map.put("status", 1);
+			map.put("msg", "当前组卷规则不能再组卷了，请用最新的组卷规则组卷!");
+			return map;
+		}
+		testingPaperRule.getQpId();
+		TestingQuestionitemRule obj = new TestingQuestionitemRule();
+		obj.setPaperRuleId(param.getPaperRuleId());
+		List<TestingQuestionitemRule> itemRules = testingQuestionitemRuleWyService.queryManageList(obj);
+		if (itemRules == null || itemRules.size() < 1) {
+			map.put("status", 1);
+			map.put("msg", "请设置好题型出题规则，再组卷!");
+			return map;
+		}
+		double totalScore = 0d;
+		for (TestingQuestionitemRule itemRule : itemRules) {
+			totalScore += itemRule.getQueScore().doubleValue() * itemRule.getQueNum();
+		}
+		if (testingPaperRule.getTotalScore().doubleValue() != totalScore) {
+			map.put("status", 1);
+			map.put("msg", "组卷规则的总分和题型出题规则的总分不符，请重新设置!");
+			return map;
+		}
+		boolean success = testingPaperWyService.saveGenPaper(testingPaperRule, itemRules, paperNum);
+		if(!success) {
+			map.put("status", 1);
+			map.put("msg", "组卷异常!");
+			return map;
+		}
+		
+		// 组卷后更新组卷状态
+		testingPaperRuleMapper.updateNewVersion(testingPaperRule.getTsId());
+		testingPaperRule.setIsNewversion("1");
+		testingPaperRule.setPaperVersion(testingPaperRule.getVersion());
+		super.save(testingPaperRule);
+		map.put("status", 0);
+		map.put("msg", "组卷成功!");
+		return map;
+	}
+
+	@Transactional
+	public MyPage<TestingPaperRule> queryManagePage(TestingPaperRule obj) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sorts", "version=0");
+		MyPage<TestingPaperRule> page = super.queryPage(obj, params);
+		return page;
+	}
+	
+	@Override
+	protected Weekend<TestingPaperRule> genSqlExample(TestingPaperRule t, Map params) {
+		Weekend<TestingPaperRule> w = super.genSqlExample(t, params);
+		WeekendCriteria<TestingPaperRule, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getPlatformId())) {
+			c.andEqualTo(TestingPaperRule::getPlatformId, t.getPlatformId());
+		}
+		if (StringUtils.isNotBlank(t.getTsId())) {
+			c.andEqualTo(TestingPaperRule::getTsId, t.getTsId());
+		}
+		if (StringUtils.isNotBlank(t.getIsNewversion())) {
+			c.andEqualTo(TestingPaperRule::getIsNewversion, t.getIsNewversion());
+		}
+		w.and(c);
+		return w;
+	}
+
+}

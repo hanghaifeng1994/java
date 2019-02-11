@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="资源-平台资源大类-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="id"/>
+        <field name="ptresCsId" desc="平台资源大类id"/>
+        <field name="resId" desc="资源id"/>
+    </rcv>
+</trans>

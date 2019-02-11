@@ -1,0 +1,105 @@
+package com.learnyeai.base.action.login;
+
+import com.learnyeai.base.api.util.BaseCons;
+import com.learnyeai.base.api.util.BaseReportErrorKey;
+import com.learnyeai.base.api.vo.CustInfoVo;
+import com.learnyeai.base.model.CustInfo;
+import com.learnyeai.base.service.CustInfoWyService;
+import com.learnyeai.core.IBusinessContext;
+import com.learnyeai.core.consts.ConfigEnum;
+import com.learnyeai.core.consts.ConsTools;
+import com.learnyeai.core.exception.BusinessException;
+import com.learnyeai.core.flow.IAresSerivce;
+import com.learnyeai.core.utils.CtxCommonUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Date;
+
+/**
+ * 用户检查：用户是否存在、用户状态是否正常
+ *      管理员检查，如果是员工类型，必须是管理
+ *      检查方式：根据用户名检查,输入 LOGIN_NAME、MCHT_ID、CUST_TYPE(可为空)
+ *          客户id检查，CUST_ID
+ *          小程序openid，OPENID
+ *        注：如果MCHT_ID存在，检查是否和用户表中的商户id一致
+ * 输出：CUST_ID、CUST_TYPE、MCHT_ID、MCHT_SCHM_ID
+ */
+@Service
+public class LoginCheckOp implements IAresSerivce {
+
+    @Resource
+    private CustInfoWyService userService;
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+    public int execute(IBusinessContext ctx) {
+        // 参数
+        String mchtId = ctx.getParam(CustInfoVo.CF.mchtId);
+        String loginName = ctx.getParam(CustInfoVo.CF.loginName);
+        String custType = ctx.getParam(CustInfoVo.CF.custType);
+        String openId = ctx.getParam(CtxCommonUtils.OPEN_ID);
+
+        String custId = ctx.getParam(CustInfoVo.CF.custId);
+
+        CustInfo userInfo = null;
+        if(StringUtils.isNotBlank(custId)){
+            userInfo = userService.queryById(custId);
+        } else if(CtxCommonUtils.getClientOs() == ConfigEnum.CLIENT_OS.WA && StringUtils.isNotBlank(openId)){
+            // 如果是小程序登录，opendid查询
+            userInfo = userService.queryByOpenId(openId);
+        }else {
+            // 商户必须存在
+            userInfo = this.userService.queryByLoginName(loginName, mchtId, custType);
+        }
+        if (userInfo == null) {
+            throw new BusinessException(BaseReportErrorKey.login_UserNotFound, "用户不存在");
+        }
+        // 如果商户id、方案版本id不存在，根据用户设置，如果存在检查是否和用户的商户id一致
+        if(StringUtils.isNotBlank(mchtId)){
+            ctx.setParam(CustInfoVo.CF.mchtId, userInfo.getMchtId());
+            ctx.setParam(CustInfoVo.CF.mchtSchmId, userInfo.getMchtSchmId());
+        }else {
+            if(StringUtils.isNotBlank(mchtId) && !mchtId.equals(userInfo.getMchtId())){
+                throw new BusinessException(BaseReportErrorKey.login_UserNotFound, "用户不存在");
+            }
+        }
+
+
+        BaseCons.CUST_INFO_STATUS usersStatus = null;
+        try{
+            usersStatus = ConsTools.getCons(BaseCons.CUST_INFO_STATUS.class, userInfo.getUserStatus());
+        }catch (Exception e){
+            usersStatus = BaseCons.CUST_INFO_STATUS.N;
+        }
+        finally {
+        }
+
+
+        //N: 正常  D: 普通冻结  C: 注销  E:人工冻结
+        // 如果注销、或人工冻结，不允许登录
+        if(usersStatus == BaseCons.CUST_INFO_STATUS.C){
+            throw new BusinessException(BaseReportErrorKey.login_UseCancel, "用户已被注销");
+        }else if(usersStatus == BaseCons.CUST_INFO_STATUS.E){
+            throw new BusinessException(BaseReportErrorKey.login_UserDisable, "用户已禁用");
+        }else if(usersStatus == BaseCons.CUST_INFO_STATUS.D){
+            //判断冻结时间是否超过两分钟
+            long curTime = new Date().getTime();
+            long frozon = userInfo.getFreezeDate().getTime();
+            if((curTime - frozon) > 180000){
+                this.userService.enableUser(userInfo.getCustId());
+            }
+            else {
+                throw new BusinessException(BaseReportErrorKey.login_UserFrozon);
+            }
+        }
+        ctx.setParam(CustInfoVo.CF.custId, userInfo.getCustId());
+        ctx.getParamMap().put(LoginCons.CUST_INFO_KEY, userInfo);
+        ctx.setParam(CustInfoVo.CF.custType, userInfo.getCustType());
+//        String mchtSchmId = MapUtil.getMapValue(userInfo, ShMerchantScheme.TF.mchtSchmId, null);
+//        ctx.setParam(ShMerchantScheme.TF.mchtSchmId, mchtSchmId);
+//        ctx.getParamMap().put(dbUserKey,userInfo);
+        return NEXT;
+    }
+}

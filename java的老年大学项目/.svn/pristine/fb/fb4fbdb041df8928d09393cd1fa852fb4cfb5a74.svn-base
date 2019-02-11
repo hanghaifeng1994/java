@@ -1,0 +1,192 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.api.util.BaseCons;
+import com.learnyeai.base.mapper.PtsetPlatformMapper;
+import com.learnyeai.base.model.PtsetPlatform;
+import com.learnyeai.base.model.PtsetSite;
+import com.learnyeai.base.mapper.PtsetSiteMapper;
+import com.learnyeai.base.utils.BaseReportErrorKey;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.consts.PtCons;
+import com.learnyeai.learnai.consts.ReportErrorKey;
+import com.learnyeai.learnai.support.BaseMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author zhangpz
+ */
+@CacheConfig(cacheNames = BaseCons.CACHE_SITE)
+@Service
+public class PtsetSiteWyService extends WeyeBaseService<PtsetSite> {
+
+    @Resource
+    private PtsetSiteMapper ptsetSiteMapper;
+    @Autowired
+    private PtsetPlatformMapper ptsetPlatformMapper;
+
+
+    @Override
+    public BaseMapper<PtsetSite> getMapper() {
+        return ptsetSiteMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    @Override
+    protected Weekend genSqlExample(PtsetSite ptsetSite, Map params) {
+        Weekend weekend = super.genSqlExample(ptsetSite, params);
+        WeekendCriteria<PtsetSite, Object> c = weekend.createCriteriaAddOn();
+        weekend.and(c);
+
+        if(StringUtils.isNotBlank(ptsetSite.getSiteDomain())){
+            c.andEqualTo(PtsetSite::getSiteDomain, ptsetSite.getSiteDomain());
+        }
+        if(StringUtils.isNotBlank(ptsetSite.getPtId())){
+            c.andEqualTo(PtsetSite::getPtId, ptsetSite.getPtId());
+        }
+
+        if(StringUtils.isNotBlank(ptsetSite.getStatus())){
+            c.andEqualTo(PtsetSite::getStatus, ptsetSite.getStatus());
+        }
+
+        return weekend;
+    }
+
+//    @CacheEvict(key = "#ptsetSite.siteId")
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#ptsetSite.siteId", condition = "#ptsetSite.siteId != null "),
+                    @CacheEvict(cacheNames = BaseCons.CACHE_PT_SITES, allEntries = true)
+            }
+    )
+    @Override
+    public int save(PtsetSite ptsetSite) {
+        return super.save(ptsetSite);
+    }
+
+    @Cacheable
+    @Override
+    public PtsetSite queryById(Object id) {
+        return super.queryById(id);
+    }
+
+//    @CacheEvict(key = "#ptsetSite.siteId")
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#ptsetSite.siteId"),
+                    @CacheEvict(cacheNames = BaseCons.CACHE_PT_SITES, allEntries = true)
+            }
+    )
+    @Override
+    public int delete(PtsetSite ptsetSite) {
+        return super.delete(ptsetSite);
+    }
+
+
+    @Caching(
+            evict = {
+                    @CacheEvict,
+                    @CacheEvict(cacheNames = BaseCons.CACHE_PT_SITES, allEntries = true)
+            }
+    )
+    @Override
+    public int deleteById(Object id) {
+        return super.deleteById(id);
+    }
+
+
+    /**
+     * 查询平台下的站点
+     * @param ptId
+     * @return
+     */
+    @Cacheable(cacheNames = BaseCons.CACHE_PT_SITES, key = "#ptId")
+    public List<PtsetSite> queryByPt(String ptId){
+        PtsetSite pp = new PtsetSite();
+        pp.setPtId(ptId);
+        return super.queryList(pp, null);
+    }
+
+    /**
+     * 设置主站点
+     * @param siteId
+     */
+    @Caching(
+            evict = {
+                    @CacheEvict,
+                    @CacheEvict(cacheNames = BaseCons.CACHE_PT_SITES, allEntries = true)
+            }
+    )
+    @Transactional
+    public void setMainSite(String siteId){
+        PtsetSite siteEntity = queryById(siteId);
+        if(null == siteEntity) {
+            throw new ArithmeticException(ReportErrorKey.common_parameter_wrong);
+        }
+
+        PtsetSite site = new PtsetSite();
+        site.setSiteType(BaseCons.PTSET_SITE_TYPE.SS.getVal());
+        // 更新所有站点为子站点
+        Weekend<PtsetSite> weekend = Weekend.of(this.getEntityClass());
+        WeekendCriteria<PtsetSite, Object> criteria = weekend.weekendCriteria();
+        criteria.andEqualTo(PtsetSite::getPtId, siteEntity.getPtId());
+        ptsetSiteMapper.updateByExampleSelective(site, weekend);
+        // 设置为主站点
+        site = new PtsetSite();
+        site.setSiteId(siteId);
+        site.setSiteType(BaseCons.PTSET_SITE_TYPE.MS.getVal());
+        ptsetSiteMapper.updateByPrimaryKeySelective(site);
+
+        PtsetPlatform platform = new PtsetPlatform();
+        platform.setPtId(siteEntity.getPtId());
+        platform.setSiteId(siteId);
+        ptsetPlatformMapper.updateByPrimaryKeySelective(platform);
+    }
+
+    // 启用禁用
+
+    @Caching(
+            evict = {
+                    @CacheEvict(allEntries = true),
+                    @CacheEvict(cacheNames = BaseCons.CACHE_PT_SITES, allEntries = true)
+            }
+    )
+    @Transactional
+    public void enable(String[] siteIds, boolean enabled){
+        String val = enabled ? PtCons.ENABLE_DISABLE.E.getVal() : PtCons.ENABLE_DISABLE.D.getVal();
+        PtsetSite site = new PtsetSite();
+        site.setStatus(val);
+        for(String id : siteIds){
+            if(StringUtils.isBlank(id))
+                continue;
+            site.setSiteId(id);
+            getMapper().updateByPrimaryKeySelective(site);
+        }
+    }
+    public List<PtsetSite> queryByDomain(String siteDomain){
+        Weekend<PtsetSite> weekend = genSqlExample(null);
+        WeekendCriteria<PtsetSite, Object> c = weekend.createCriteriaAddOn();
+        weekend.and(c);
+
+        c.andLike(PtsetSite::getSiteDomain, siteDomain);
+
+        return ptsetSiteMapper.selectByExample(weekend);
+    }
+}

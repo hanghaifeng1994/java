@@ -1,0 +1,12 @@
+package com.learnyeai.album.mapper;
+
+import com.learnyeai.album.model.AbmAlbum;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyBatisDao;
+/**
+ * @Description: 相册
+ * @author yl
+ */
+@MyBatisDao
+public interface AbmAlbumMapper extends BaseMapper<AbmAlbum> {
+}

@@ -1,0 +1,62 @@
+package com.learnyeai.activity.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.activity.model.ActActivity;
+import com.learnyeai.activity.service.ActActivityWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.mq.AuditlogMq;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import com.learnyeai.tools.common.MapUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ActActivityController extends BaseController<ActActivity> {
+
+    @Autowired
+    private ActActivityWyService actActivityWyService;
+
+    @Override
+    protected BaseService<ActActivity> getService() {
+        return actActivityWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String method = CtxHeadUtil.getControllerMethod();
+        ActActivity ac= actActivityWyService.convert2Bean(ctx.getParamMap());
+        if("save".equals(method)){
+           return   actActivityWyService.saveData(ac);
+        }
+        if("delete".equals(method)){
+            return  actActivityWyService.deleteData(ac);
+        }
+        if("queryById".equals(method)){
+            return actActivityWyService.queryById(ac);
+        }
+        if("queryPageByCriteria".equals(method)){
+            return actActivityWyService.queryPageByCriteria(ac);
+        }
+        if("sumbitAudit".equals(method)){
+            return  actActivityWyService.sumbitAudit(ac);
+        }
+        if("audit".equals(method)){
+            try {
+                return actActivityWyService.audit(ctx);
+            } catch (WeyeRabbitException e) {
+                e.printStackTrace();
+            }
+        }
+        if("publish".equals(method)){
+          int num =  actActivityWyService.publish(ac);
+          return MapUtil.newMap("num",num);
+        }
+        return super.execute(ctx);
+    }
+}

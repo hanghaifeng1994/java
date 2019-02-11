@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.schoolclass.mapper.ClzClazzCourseMapper">
+    <resultMap id="BaseResultMap" type="ClzClazzCourse">
+    <id property="ccId" column="CC_ID" jdbcType="VARCHAR" />
+
+    <result property="czId" column="CZ_ID" jdbcType="VARCHAR" />
+    <result property="csId" column="CS_ID" jdbcType="VARCHAR" />
+    <result property="csType" column="CS_TYPE" jdbcType="DECIMAL" />
+    <result property="csStudylength" column="CS_STUDYLENGTH" jdbcType="DECIMAL" />
+    <result property="csAmount" column="CS_AMOUNT" jdbcType="DECIMAL" />
+    <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        CC_ID,CZ_ID,CS_ID,CS_TYPE,CS_STUDYLENGTH,
+        CS_AMOUNT,DEL_FLAG,SITE_ID
+    </sql>
+
+
+    <sql id="TableClause"> ${}.CLZ_CLAZZ_COURSE </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

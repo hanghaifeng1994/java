@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="作业保存修改">
+	<snd>
+		<field name="uhId" desc="用户作业id" required="true"/>
+		<field name="uhContent" desc="内容" required="true"/>
+		<field name="uhStatus" desc="0不提交、1直接提交" />
+		<field name="fileId" desc="附件id 多个逗号隔开"/>
+        <field name="fileName" desc="附件名称  多个逗号隔开"/>
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常" />
+	</rcv>
+</trans>

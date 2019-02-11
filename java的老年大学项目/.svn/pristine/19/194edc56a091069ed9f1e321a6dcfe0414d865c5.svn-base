@@ -1,0 +1,105 @@
+package com.learnyeai.interact.service;
+
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.interact.mapper.ItaCustExtMapper;
+import com.learnyeai.interact.model.ItaCollection;
+import com.learnyeai.interact.mapper.ItaCollectionMapper;
+import com.learnyeai.interact.model.ItaCustExt;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ItaCollectionWyService extends WeyeBaseService<ItaCollection> {
+
+    @Resource
+    private ItaCollectionMapper itaCollectionMapper;
+    @Resource
+    CurrentUserInfoIml currentUserInfoIml;
+    @Resource
+    private ItaCustExtWyService itaCustExtWyService;
+    @Resource
+    private ItaCustExtMapper itaCustExtMapper;
+
+    @Override
+    public BaseMapper<ItaCollection> getMapper() {
+        return itaCollectionMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Override
+    protected Weekend genSqlExample(ItaCollection t, Map params) {
+//        String userId=(String)params.get("userId");
+        Weekend w= super.genSqlExample(t,params);
+        WeekendCriteria<ItaCollection,Object> c= w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getCreateBy())){
+            c.andEqualTo(ItaCollection::getCreateBy,t.getCreateBy());
+        }
+        w.and(c);
+        w.setOrderByClause("CREATE_DATE desc");
+        return w;
+    }
+
+    public List<ItaCollection> listPage(IBusinessContext ctx){
+       ItaCollection itaCollection=   super.convert2Bean(ctx.getParamMap());
+       itaCollection.setCreateBy(currentUserInfoIml.getId());
+        List<ItaCollection> list= super.queryList(itaCollection,new HashMap());
+        MyPage<ItaCollection> page=new MyPage(list);
+        return  rtnPageList4Report(page);
+    }
+    public static List rtnPageList4Report(MyPage page) {
+        if (page.getTotal() > -1L) {
+            ThreadContext.put("totalCount", page.getTotal());
+        }
+
+        return page.getList();
+    }
+    @Transactional
+    public int deleteData(ItaCollection ic){
+        String[] cltIds=(ic.getCltId()).split(",");
+        int num =0;
+        for (String cltId:cltIds){
+            num +=super.deleteById(cltId);
+        }
+        ItaCustExt ice=itaCustExtWyService.queryById(ic.getCreateBy());
+        if(ice !=null){
+            Integer commentNum =ice.getCommentNum();
+            ice.setCommentNum(commentNum-num);
+            itaCustExtWyService.save(ice);
+        }
+        return num;
+    }
+    public int saveData(ItaCollection ic){
+      int count =  super.save(ic);
+        ItaCustExt ice=itaCustExtWyService.queryById(ic.getCreateBy());
+        if(ice !=null){
+            Integer commentNum =ice.getCommentNum();
+            ice.setCommentNum(commentNum+count);
+            itaCustExtWyService.save(ice);
+        }else{
+            ItaCustExt ita=new ItaCustExt();
+            ita.setCustId(ic.getCreateBy());
+            ita.setCommentNum(count);
+            itaCustExtMapper.insertSelective(ita);
+        }
+      return count;
+    }
+}

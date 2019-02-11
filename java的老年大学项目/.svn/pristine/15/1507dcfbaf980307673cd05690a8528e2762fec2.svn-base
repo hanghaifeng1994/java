@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryShowPage" desc="课程分类-可查看列表,下发的不能编辑的">
+	<snd>
+		<field name="parentId" desc="父id" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="课程分类列表">
+			<field name="catId" desc="id" />
+			<field name="catName" desc="分类名称" />
+			<field name="catSort" desc="排序" />
+			<field name="catLevel" desc="级别" />
+			<field name="parentId" desc="父id" />
+			<field name="parentIds" desc="所有父ids" />
+			<field name="createBy" desc="创建人" />
+			<field name="createDate" desc="创建时间" />
+			<field name="updateBy" desc="更新人" />
+			<field name="updateDate" desc="更新时间" />
+			<field name="delFlag" desc="删除标记" />
+			<field name="siteId" desc="站点id" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+		</field-list>
+	</rcv>
+</trans>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="积分规则-详情">
+    <snd>
+        <field name="prlId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="prlId" desc="ID"/>
+        <field name="url" desc="url"/>
+        <field name="pointsNum" desc="积分"/>
+        <field name="serviceType" desc="业务类型"/>
+        <field name="remark" desc="备注"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

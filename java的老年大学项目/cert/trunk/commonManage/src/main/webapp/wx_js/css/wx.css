@@ -1,0 +1,33 @@
+.dr-wrapper{
+	margin-top: 54px;
+}
+.navbar-inverse{ 
+	box-shadow:0 2px 3px rgba(0, 0, 0, 0.5), 0 -2px 2px 2px rgba(0, 0, 0, 0.2) inset;
+}
+
+.navbar-inverse {
+    background-color: #2C2C2C;
+	background-image: -moz-linear-gradient(center top , #333333, #222222);background-repeat: repeat-x;box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5), 0 -2px 2px 2px rgba(0, 0, 0, 0.2) inset;
+    border-color: #222;
+    border-bottom: 4px solid #E36902;  
+}
+.navbar-inverse .navbar-brand{
+	background: url(wx-images/logo.png) left center no-repeat;
+	padding-left: 55px;
+	margin-left: 20px;
+	padding-right: 0;
+}
+.navbar-inverse .title{
+	color: #fff;
+	font-size: 18px;
+	padding: 12px 50px 0 0;
+	float: left;
+}
+.navbar-inverse .title .small_circle{
+	background:#C2C2C2;
+    border-radius: 10px;
+    display: inline-block;
+    height: 8px;
+    margin: 0 10px;
+    width: 8px;
+}

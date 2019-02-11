@@ -1,0 +1,44 @@
+package com.learnyeai.studygroup.service;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.studygroup.model.SgpStudyGroup;
+import com.learnyeai.studygroup.model.SgpStudyGroupTalent;
+import com.learnyeai.studygroup.mapper.SgpStudyGroupTalentMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+
+import javax.annotation.Resource;
+import java.util.Date;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class SgpStudyGroupTalentWyService extends WeyeBaseService<SgpStudyGroupTalent> {
+    @Resource
+    private  CurrentUserInfoIml currentUserInfoIml;
+
+    @Resource
+    private SgpStudyGroupTalentMapper sgpStudyGroupTalentMapper;
+
+    @Override
+    public BaseMapper<SgpStudyGroupTalent> getMapper() {
+        return sgpStudyGroupTalentMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+
+
+    public void saveData(IBusinessContext ctx){
+        SgpStudyGroupTalent ssgt= super.convert2Bean(ctx.getParamMap());
+        sgpStudyGroupTalentMapper.insertSelective(ssgt);
+
+    }
+}

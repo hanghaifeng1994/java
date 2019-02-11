@@ -1,0 +1,91 @@
+package com.learnyeai.resource.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+
+/**
+ * 站点-资源分类
+ *
+ * @author twang
+ */
+public class ResSiteCategoryRelVo extends BaseVo {
+
+    /**
+    * id
+    */
+    private String id;
+
+    /**
+     * 站点id
+     */
+    private String siteId;
+    /**
+     * 创建站点
+     */
+    private String catCrtSiteId;
+    /**
+     * 资源分类id
+     */
+    private String catId;
+    /**
+     * 显示状态
+     */
+    private Boolean showStatus;
+    /**
+     * 排序
+     */
+    private Integer catSort;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+    public String getCatCrtSiteId() {
+        return catCrtSiteId;
+    }
+
+    public void setCatCrtSiteId(String catCrtSiteId) {
+        this.catCrtSiteId = catCrtSiteId;
+    }
+    public String getCatId() {
+        return catId;
+    }
+
+    public void setCatId(String catId) {
+        this.catId = catId;
+    }
+    public Boolean getShowStatus() {
+        return showStatus;
+    }
+
+    public void setShowStatus(Boolean showStatus) {
+        this.showStatus = showStatus;
+    }
+    public Integer getCatSort() {
+        return catSort;
+    }
+
+    public void setCatSort(Integer catSort) {
+        this.catSort = catSort;
+    }
+
+    public static class TF {
+        public static String id = "id";  // id
+        public static String siteId = "siteId";  // 站点id
+        public static String catCrtSiteId = "catCrtSiteId";  // 创建站点
+        public static String catId = "catId";  // 资源分类id
+        public static String showStatus = "showStatus";  // 显示状态
+        public static String catSort = "catSort";  // 排序
+
+    }
+
+}

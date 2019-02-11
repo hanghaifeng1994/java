@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="题库-新增修改保存">
+    <snd>
+        <field name="qpId" desc="ID"/>
+        <field name="name" desc="题库名称"/>
+        <field name="siteId" desc="创建站点id" />
+        <field name="platformId" desc="创建平台id" />
+    </snd>
+    <rcv>
+        <field name="id" desc="题库id"/>
+    </rcv>
+</trans>

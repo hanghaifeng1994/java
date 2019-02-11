@@ -1,0 +1,61 @@
+package com.learnyeai.resource.web.api;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.learnyeai.learnai.support.ApiBaseController;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.resource.model.ResResource;
+import com.learnyeai.resource.model.StdCustLearnResource;
+import com.learnyeai.resource.service.ResResourceWyService;
+import com.learnyeai.resource.service.StdCustLearnResourceWyService;
+
+/**
+ *
+ * @author twang
+ */
+@RestController
+@RequestMapping("${adminPath}" + StdCustLearnResourceAction.BASE_URL)
+public class StdCustLearnResourceAction extends ApiBaseController<StdCustLearnResource> {
+	public static final String BASE_URL = "/StdCustLearnResource/";
+
+	@Autowired
+	private StdCustLearnResourceWyService stdCustLearnResourceWyService;
+	
+	@Autowired
+	private ResResourceWyService resResourceWyService;
+
+	@Override
+	protected BaseService<StdCustLearnResource> getBaseService() {
+		return stdCustLearnResourceWyService;
+	}
+
+	@Override
+	public String getBaseUrl() {
+		return BASE_URL;
+	}
+
+	@RequestMapping(value = "/saveUserResourceApi", method = RequestMethod.GET)
+	public boolean saveUserResourceApi(String userIds, String resIds, String siteId, int source) {
+		return stdCustLearnResourceWyService.saveUserResourceApi(userIds, resIds, siteId, source);
+	}
+
+	@RequestMapping(value = "/queryUserResourceApi", method = RequestMethod.GET)
+	public StdCustLearnResource queryUserResourceApi(String userId, String resId) {
+		return stdCustLearnResourceWyService.queryUserResourceApi(userId, resId);
+	}
+
+	@RequestMapping(value = "/queryUserResourcesApi", method = RequestMethod.GET)
+	public List<StdCustLearnResource> queryUserResourcesApi(String userId, String resIds) {
+		return stdCustLearnResourceWyService.queryUserResourcesApi(userId, resIds);
+	}
+	
+	@RequestMapping(value = "/queryResourceApi", method = RequestMethod.GET)
+	public ResResource queryResourceApi(String resId) {
+		return resResourceWyService.get(resId);
+	}
+}

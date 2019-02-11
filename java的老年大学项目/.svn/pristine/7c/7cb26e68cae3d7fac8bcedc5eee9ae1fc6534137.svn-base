@@ -1,0 +1,97 @@
+package com.learnyeai.activity.service;
+
+import com.learnyeai.activity.model.ActActivityWorks;
+import com.learnyeai.activity.mapper.ActActivityWorksMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.learnyeai.tools.common.StringUtils;
+import tk.mybatis.mapper.weekend.Weekend;
+import com.learnyeai.activity.model.ActActivityWorks;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+
+
+import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActActivityWorksWyService extends BaseService<ActActivityWorks> {
+
+    @Resource
+    private ActActivityWorksMapper actActivityWorksMapper;
+
+    @Resource
+    private  CurrentUserInfoIml currentUserInfoIml;
+    @Override
+    public BaseMapper<ActActivityWorks> getMapper() {
+        return actActivityWorksMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+
+
+@Override
+protected Weekend genSqlExample(ActActivityWorks a,Map params){
+    Weekend<ActActivityWorks> weekend = super.genSqlExample(a,params);
+    WeekendCriteria<ActActivityWorks,Object> c = weekend.weekendCriteria();
+    if(StringUtils.isNotBlank(a.getWksStatus())){
+        c.andEqualTo(ActActivityWorks::getWksStatus,a.getWksStatus());
+    }
+    if(StringUtils.isNotBlank(a.getActId())){
+        c.andEqualTo(ActActivityWorks::getActId,a.getActId());
+    }
+    weekend.and(c);
+    weekend.setOrderByClause("WKS_VOTE_NUM desc");
+    return weekend;
+}
+
+
+    @Transactional
+    public Map<String,Object> deleteall(ActActivityWorks wks){
+        String[] wksIds = (wks.getWksId()).split(",");
+        int num = 0;
+        for (String id:wksIds){
+            num += super.deleteById(id);
+        }
+        logger.info("批量删除了"+num+"条数据");
+        return MapUtil.newMap("num",num);
+    }
+
+
+    public Map<String,Object> saveData(ActActivityWorks wks){
+        Map<String,Object> map = new HashMap<>();
+        String userId=currentUserInfoIml.getId();
+        wks.setWksUserId(userId);
+        String userName=currentUserInfoIml.getLoginName();
+        wks.setWksUserName(userName);
+        wks.setWksUploadDate(new Date());
+        if(StringUtils.isNotBlank(wks.getActId())){
+            ActActivityWorks works = super.queryById(wks.getActId());
+            String actId = works.getWksStatus();
+            if("1".equals(actId)||"2".equals(actId)){
+                map.put("status",1);
+                return map;
+            }
+        }else{
+            wks.setWksStatus("0");
+        }
+        super.save(wks);
+        map.put("status",0);
+        return map;
+    }
+
+
+}

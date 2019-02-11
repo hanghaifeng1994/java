@@ -1,0 +1,94 @@
+package com.learnyeai.interact.service;
+
+import com.learnyeai.interact.model.ItaCollection;
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.mapper.ItaInteractionTimesMapper;
+import com.learnyeai.interact.model.ItaInteractionTimesExt;
+import com.learnyeai.interact.model.ItaLiked;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ItaInteractionTimesWyService extends BaseService<ItaInteractionTimes> {
+
+    @Resource
+    private ItaInteractionTimesMapper itaInteractionTimesMapper;
+    @Autowired
+    private ItaCollectionWyService itaCollectionWyService;
+
+    @Autowired
+    private ItaLikedWyService itaLikedWyService;
+    @Resource
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    public BaseMapper<ItaInteractionTimes> getMapper() {
+        return itaInteractionTimesMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Override
+    protected Weekend genSqlExample(ItaInteractionTimes t, Map params) {
+        Weekend w=  super.genSqlExample(t,null);
+        Weekend week=new Weekend(this.getEntityClass());
+        WeekendCriteria<ItaInteractionTimes,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getObjId())){
+            c.andEqualTo(ItaInteractionTimes::getObjId,t.getObjId());
+        }
+        if(StringUtils.isNotBlank(t.getType())){
+            c.andEqualTo(ItaInteractionTimes::getType,t.getType());
+        }
+        if(t.getList()!=null){
+            List<ItaInteractionTimes> list=t.getList();
+            for (ItaInteractionTimes i:list){
+                WeekendCriteria<ItaInteractionTimes,Object> criteria=week.weekendCriteria();
+                criteria.andEqualTo(ItaInteractionTimes::getObjId,i.getObjId());
+                criteria.andEqualTo(ItaInteractionTimes::getType,i.getType());
+                w.or(criteria);
+            }
+        }
+        w.and(c);
+        return w;
+    }
+    public ItaInteractionTimesExt queryByObjIdExt(ItaInteractionTimes itaInteractionTimes){
+        ItaInteractionTimesExt ita=new ItaInteractionTimesExt();
+        String objId=itaInteractionTimes.getObjId();
+        String userId=currentUserInfoIml.getId();
+        ItaLiked liked=new ItaLiked();
+        liked.setObjId(objId);
+        liked.setCreateBy(userId);
+        ItaCollection collection=new ItaCollection();
+        collection.setCreateBy(userId);
+        collection.setObjId(objId);
+        List<ItaLiked> likeds=itaLikedWyService.queryList(liked,new HashMap());
+        List<ItaCollection> collections=itaCollectionWyService.queryList(collection,new HashMap());
+        if(collections.size()>0){
+            ita.setIsCollStatus("1");
+        }else{
+            ita.setIsCollStatus("0");
+        }
+        if(likeds.size()>0){
+            ita.setIsLikeStatus("1");
+            ita.setIsLikeStatus("0");
+        }
+        return ita;
+    }
+
+}

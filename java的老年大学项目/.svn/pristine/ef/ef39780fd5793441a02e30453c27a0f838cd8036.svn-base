@@ -1,0 +1,183 @@
+package com.learnyeai.lucene;
+
+import com.learnyeai.lucene.build.DBUtil;
+import com.learnyeai.lucene.build.IndexBuilder;
+import com.learnyeai.lucene.build.IndexColumn;
+import com.learnyeai.lucene.document.DocumentCreator;
+import com.learnyeai.lucene.document.impl.CommonDocumentCreator;
+import com.learnyeai.tools.common.BeanMapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.util.*;
+
+/**
+ * 重建索引
+ * Created by zpz on 2018/9/10.
+ */
+public class Main {
+    private static Properties prop;
+    private static Logger logger = LoggerFactory.getLogger(Math.class);
+    /**
+     * 第一个参数为配置文件路径
+     * @param args
+     */
+    public static void main(String args[]){
+        Assert.isTrue(args.length > 0, "第一个参数为配置文件路径，请检查参数");
+        try {
+            iniProp(args[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // 读取配置文件
+        String driverClassName = prop.getProperty("driverClassName");
+        try {
+            Class.forName(driverClassName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+        List<IndexConfig> confList = parse();
+        for (IndexConfig it : confList){
+
+            IndexBuilder indexBuilder = new IndexBuilder(it.getIndexName());
+            DBUtil dbUtil = new DBUtil(it.getUrl(), it.getUser(), it.getPassword());
+
+            indexBuilder.setIndexDirUrl(it.getIndexDirUrl());
+            indexBuilder.setSql(it.getSql());
+            indexBuilder.setDbUtil(dbUtil);
+
+            // 解析字段
+            List<IndexColumn> colList = null;
+            try{
+                colList = parseColumn(it.getColumns());
+            }catch (Exception e){
+                logger.error("解析索引{}字段出错", it.getIndexName());
+            }
+            DocumentCreator documentCreator = new CommonDocumentCreator();
+            try{
+                if(it.getDocumentCreatorClassName() != null) {
+                    Class cs = Class.forName(it.getDocumentCreatorClassName());
+                    cs.getConstructor();
+                    Object o = cs.newInstance();
+                    if (o instanceof DocumentCreator) {
+                        indexBuilder.setDocumentCreator((DocumentCreator)o);
+                    }else {
+                        logger.warn("documentCreatorClassName配置的{}, 不是DocumentCreator子类", it.getDocumentCreatorClassName());
+                    }
+                }
+            }catch (Exception e){
+                logger.error("documentCreatorClassName 配置的类不存在{}", it.getDocumentCreatorClassName());
+            }
+            documentCreator.setIndexColumn(colList);
+            indexBuilder.setDocumentCreator(documentCreator);
+
+            try {
+                IndexWriterConfig.OpenMode openMode = IndexWriterConfig.OpenMode.CREATE_OR_APPEND;
+                if("1".equals(it.getCreateIndexMode())){
+                    openMode = IndexWriterConfig.OpenMode.CREATE;
+                }
+
+                indexBuilder.start(openMode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void iniProp(String propFilePath) throws IOException {
+        FileSystemResource resource = new FileSystemResource(propFilePath);
+        prop = PropertiesLoaderUtils.loadProperties(resource);
+    }
+    private static List<IndexConfig> parse(){
+        List<IndexConfig> list = new ArrayList<>();
+        String confArr[] = prop.getProperty("inndexConfigs").split(",");
+        for(String conf : confArr){
+            if(StringUtils.isBlank(conf))
+                continue;
+            Map<String, String> map = keyStartWith(conf);
+            IndexConfig config = new IndexConfig();
+            try {
+                config = (IndexConfig)BeanMapUtils.convertMap(IndexConfig.class, map);
+            } catch (Exception e) {
+                logger.error("解析配置出错："+conf, e);
+                e.printStackTrace();
+                continue;
+            }
+            list.add(config);
+        }
+        return list;
+    }
+    public static Map<String, String> keyStartWith(String prefix) {
+        Assert.isTrue(prefix != null);
+        prefix = prefix + ".";
+        int prefixLen = prefix.length();
+        Map<String, String> pp = new HashMap<>();
+
+        for (Object key : prop.keySet()) {
+            if(!(key instanceof String)) {
+                continue;
+            }
+
+            if(null == prefix || ((String) key).startsWith(prefix)) {
+                pp.put(((String) key).substring(prefixLen), prop.getProperty(key.toString()));
+            }
+        }
+        return pp;
+    }
+
+    /**
+     * 字段名&字段类型_排序
+     * @param columns
+     * @return
+     */
+    private static List<IndexColumn> parseColumn(String columns){
+        List<IndexColumn> rstList = new ArrayList<>();
+        if(StringUtils.isBlank(columns)){
+            return rstList;
+        }
+        // CUST_NAME&4_1,CREATE_DATE&4_1
+        String[] columnArr = columns.split(",");
+        for(String col : columnArr){
+            if(StringUtils.isBlank(col)){
+                continue;
+            }
+            String[] arr = col.split("&");
+            if(arr.length <= 1){ // 只有字段名
+                continue;
+            }
+            String fieldName = arr[0];
+            if(StringUtils.isBlank(fieldName)){ // 没有字段名
+                continue;
+            }
+            // 字段类型_排序
+            int fieldType = -1;
+            boolean sort = false;
+            String typeSort = arr[1];
+            if(StringUtils.isNotBlank(typeSort)) {
+                arr = typeSort.split("_");
+                fieldType = Integer.parseInt(arr[0]);
+
+                if (arr.length > 1) {
+                    sort = "1".equals(arr[1]);
+                }
+            }
+            fieldName = com.learnyeai.tools.common.StringUtils.toCamelCase(fieldName);
+            IndexColumn indexColumn = new IndexColumn();
+            indexColumn.setFieldName(fieldName);
+            indexColumn.setFieldType(fieldType);
+            indexColumn.setSort(sort);
+            rstList.add(indexColumn);
+        }
+        return rstList;
+    }
+
+}

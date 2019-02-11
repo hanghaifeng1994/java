@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="证书模板-新增/编辑">
+	<snd>
+		<field name="siteId" desc="站点"/>
+		<field name="tpId" desc="证书模板id" />
+		<field name="tpName" desc="模板名称" />
+		<field name="tpImageBackground" desc="背景图片" />
+		<field name="tpFixedImage" desc="固定图片" />
+		<field name="tpSubject" desc="模板内容" />
+		<field name="tpTextOne" desc="文本1" />
+		<field name="tpTextTwo" desc="文本2" />
+		<field name="tpTextThree" desc="文本3" />
+		<field name="tpTextFour" desc="文本4" />
+		<field name="tpTextFive" desc="文本5" />
+		<field name="tpTextSix" desc="文本6" />
+		<field name="tpTextSeven" desc="文本7" />
+		<field name="tpTextEight" desc="文本8" />
+		<field name="tpTextNine" desc="文本9" />
+		<field name="tpTextTen" desc="文本10" />
+		<field name="tpImageOne" desc="图片1" />
+		<field name="tpImageTwo" desc="图片2" />
+		<field name="tpImageThree" desc="图片3" />
+		<field name="tpImageFour" desc="图片4" />
+		<field name="tpImageFive" desc="图片5" />
+		<field name="tpStaticOne" desc="静态文本1" />
+		<field name="tpStaticTwo" desc="静态文本2" />
+		<field name="tpStaticThree" desc="静态文本3" />
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常" />
+	</rcv>
+</trans>

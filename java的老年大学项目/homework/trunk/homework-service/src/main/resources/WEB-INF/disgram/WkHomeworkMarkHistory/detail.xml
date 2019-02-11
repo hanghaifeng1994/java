@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="作业批阅记录-详情">
+    <snd>
+        <field name="mhId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="mhId" desc="id"/>
+        <field name="uhId" desc="用户作业id"/>
+        <field name="uhStarNum" desc="评星"/>
+        <field name="uhScore" desc="得分"/>
+        <field name="uhScoreStatus" desc="0未评分、1已评分"/>
+        <field name="uhScoreDate" desc="评分时间"/>
+        <field name="uhScoreUserId" desc="评分人id"/>
+        <field name="uhScoreContent" desc="评分内容"/>
+    </rcv>
+</trans>

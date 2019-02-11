@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryCustInfoListByPerm" desc="用户根据权限查询用户">
+    <snd>
+        <field name="perm" desc="权限"/>
+
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="客户-列表" type="E">
+            <field name="custId" desc="用户id"/>
+            <field name="custName" desc="姓名"/>
+            <field name="shortName" desc="用户昵称"/>
+            <field name="loginName" desc="登录名"/>
+            <field name="userStatus" desc="用户状态" comment="N: 正常 D: 普通冻结 C: 注销 E:人工冻结"/>
+            <field name="userStatusDesc" xpath="userStatus" type="cons" dictType="CUST_INFO_STATUS"  desc="用户状态描述"/>
+            <!--<field name="sign" desc="个性签名"/>-->
+            <!--<field name="phone" desc="手机号"/>-->
+            <!--<field name="email" desc="邮箱"/>-->
+            <!--<field name="qq" desc="qq"/>-->
+            <!--<field name="office" desc="所属单位"/>-->
+            <!--<field name="idcarNo" desc="身份证号码"/>-->
+            <field name="sex" desc="性别"/>
+            <!--<field name="birthday" desc="用户生日"/>-->
+            <field name="photo" desc="头像" type="res"/>
+
+            <!--<field name="mchtSchmId" desc="商户方案id"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="siteId" desc="站点"/>-->
+        </field-list>
+
+    </rcv>
+</trans>

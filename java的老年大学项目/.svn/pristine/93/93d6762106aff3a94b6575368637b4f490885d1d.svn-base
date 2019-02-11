@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="getSiteAbout" desc="关于-获取根据站点">
+    <snd>
+    </snd>
+    <rcv>
+        <field name="id" desc="id"/>
+        <field name="title" desc="标题"/>
+        <field name="content" desc="内容"/>
+    </rcv>
+</trans>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="学习小组分类分类-保存">
+    <snd>
+        <field name="catId" desc="id"/>
+        <field name="catName" desc="分类名"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="栏目id"/>
+    </rcv>
+</trans>

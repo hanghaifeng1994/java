@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryManagePage" desc="用户证书-可管理列表" isPage="true">
+	<snd>
+		<field name="sites" desc="站点id 多个id逗号分开" required="true" />
+		<field name="ctId" desc="证书id" />
+		<field name="ucIdcard" desc="身份证号码" />
+		<field name="ucName" desc="姓名" />
+		<field name="ucUnit" desc="单位" />
+		<field name="ucProgram" desc="项目" />
+		<field name="ucYear" desc="年度" />
+		<field name="ucCertName" desc="证书名称" />
+		<field name="ucCertNo" desc="证书编号" />
+		<field name="ucPubStatus" desc="发布状态" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="作业列表">
+			<field name="ucId" desc="用户证书id" />
+			<field name="ucUserId" desc="报名用户id" />
+			<field name="ctId" desc="证书id" />
+			<field name="ucIdcard" desc="身份证" />
+			<field name="ucName" desc="姓名" />
+			<field name="ucUnit" desc="单位" />
+			<field name="ucProgram" desc="项目" />
+			<field name="ucYear" desc="年度" />
+			<field name="ucScore" desc="学时/学分" />
+			<field name="ucCertName" desc="证书名称" />
+			<field name="ucCertNo" desc="证书编号" />
+			<field name="ucGenTime" desc="生成证书时间" />
+			<field name="ucPubStatus" desc="发布状态" />
+			<field name="ucPubDate" desc="发布时间" />
+			<field name="siteId" desc="站点" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+		</field-list>
+	</rcv>
+</trans>

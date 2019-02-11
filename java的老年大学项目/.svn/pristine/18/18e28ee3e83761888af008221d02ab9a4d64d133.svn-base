@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="商户-详情">
+    <snd>
+        <field name="mchtId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtName" desc="商户名称"/>
+        <field name="mchtShortname" desc="商户shortname"/>
+        <field name="mchtCode" desc="商户编码"/>
+        <field name="mchtLinkman" desc="联系人"/>
+        <field name="mchtPhone" desc="手机号"/>
+        <field name="mchtTelephone" desc="座机"/>
+        <field name="mchtStatus" desc="0禁用、1启用"/>
+        <field name="mchtAdress" desc="地址"/>
+        <field name="mchtIndustry" desc="行业"/>
+        <field name="clientManagerId" desc="客户经理id"/>
+        <field name="clientManagerName" desc="客户经理名称"/>
+        <field name="mchtAddType" desc="1线上、2线下"/>
+        <field name="mchtLogo" desc="logo"/>
+        <field name="createUserName" desc="创建人名称"/>
+        <field name="updateUserName" desc="更新人名称"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="remarks" desc="备注"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="transPrev" title="交易前公共处理">
+	<actions>
+		<!-- <action ref="busiCheckOp" title="功能权限检查"></action>
+		<action ref="custCheckOp" title="客户有效性检查"></action>
+		<action ref="clientIpCheckOp" title="客户端IP限制-不要轻意打开"></action>
+		<action ref="userForbidCheckOp" title="黑名单用户检查"></action>
+		<action ref="userFixedCheckOp" title="白名单用户检查"></action> -->
+		<!--<action ref="reqReplayCheckOp" title="报文请求防重放校验"></action>
+		<action ref="reqRepeatCheckOp" title="报文请求重复提交校验"></action>
+		<action ref="mainSeqCreateOp" title="服务主流水生成"></action>-->
+	</actions>
+</config>

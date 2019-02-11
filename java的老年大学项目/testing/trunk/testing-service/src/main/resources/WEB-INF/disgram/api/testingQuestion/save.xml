@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="题目-新增修改保存">
+    <snd>
+        <field name="questionId" desc="ID"/>
+        <field name="twoSectionId" desc="第二级章节（冗余）"/>
+        <field name="oneSectionId" desc="第一级章节（冗余）"/>
+        <field name="threeSectionId" desc="第三级章节（冗余）"/>
+        <field name="stemContent" desc="题干内容"/>
+        <field name="answerDesc" desc="答案描述"/>
+        <field name="sectionId" desc="所在章节 新增时必填" />
+        <field name="qpId" desc="所属题库"/>
+        <field name="itemTypeId" desc="题型 dx 单选题ms 多选题 pd 判断题tk 填空题"/>
+        <!--<field name="newversion" desc="每个唯一代码的题目只能有个一条记录此值为true 0false 1true"/>-->
+        <field name="disabled" desc="是否禁用"/>
+        <field-list name="questionOptions" desc="选项" type="E">
+            <field name="optionContent" desc="题支内容"/>
+            <field name="answer" desc="是否答案0否 1 是"/>
+            <field name="orderNum" desc="序号"/>
+        </field-list>
+    </snd>
+    <rcv>
+        <field name="id" desc="题目id"/>
+    </rcv>
+</trans>

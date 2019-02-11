@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="管理员可管理的相册分类列表查询" isPage="true">
+    <snd>
+        <field name="siteIds" desc="id多个id用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" type="E" desc="可管理列表">
+            <field name="catId" desc="id"/>
+            <field name="catName" desc="分类名"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+            <field name="siteId" desc="站点"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="ptName" desc="平台名称" xpath="siteId"  type="ptName"/>
+            <field name="ptId" desc="平台id" xpath="siteId"  type="ptId"/>
+            <field name="siteName" desc="站点名称" xpath="siteId"  type="site"/>
+            <field name="updateByName" desc="更新人名称" xpath="updateBy" type="user"/>
+            <field name="createByName" desc="创建人名称" xpath="createBy" type="user"/>
+        </field-list>
+    </rcv>
+</trans>

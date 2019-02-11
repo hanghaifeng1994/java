@@ -1,0 +1,117 @@
+package com.learnyeai.interact.service;
+
+import com.learnyeai.interact.mapper.ItaCustExtMapper;
+import com.learnyeai.interact.model.ItaComment;
+import com.learnyeai.interact.mapper.ItaCommentMapper;
+import com.learnyeai.interact.model.ItaCustExt;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ItaCommentWyService extends WeyeBaseService<ItaComment> {
+
+    @Resource
+    private ItaCommentMapper itaCommentMapper;
+    @Resource
+    private ItaCustExtWyService itaCustExtWyService;
+    @Resource
+    private ItaCustExtMapper itaCustExtMapper;
+
+    @Override
+    public BaseMapper<ItaComment> getMapper() {
+        return itaCommentMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    protected Weekend genSqlExample(ItaComment t, Map params) {
+        Weekend w=super.genSqlExample(t);
+        WeekendCriteria<ItaComment,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getObjId())){
+            c.andEqualTo(ItaComment::getObjId,t.getObjId());
+        }
+        if(StringUtils.isNotBlank(t.getType())){
+            c.andEqualTo(ItaComment::getType,t.getType());
+        }
+        if(StringUtils.isNotBlank(t.getCreateBy())){
+            c.andEqualTo(ItaComment::getCreateBy,t.getCreateBy());
+        }
+       /* if(StringUtils.isNotBlank(t.getsite() )){
+
+        }*/
+        w.and(c);
+        w.setOrderByClause("CMT_DATE desc");
+        return  w;
+
+    }
+    @Transactional
+    public int deleteData(ItaComment itaComment){
+        String[] cmtIds=(itaComment.getCmtId()).split(",");
+        int num =0;
+        String userId= currentUserInfoIml.getId();
+        //查询用户统计表中是否存在数据
+        ItaCustExt ice=itaCustExtWyService.queryById(userId);
+//        存在去更新表中数据，不存在新增
+        try{
+            for (String cmtId:cmtIds) {
+                num+=super.deleteById(cmtId);
+            }
+            if(ice !=null){
+                Integer commentNum =ice.getCommentNum();
+                ice.setCommentNum(commentNum-num);
+                itaCustExtWyService.save(ice);
+            }
+        }catch (Exception e){
+            e.getMessage();
+            e.printStackTrace();
+        }
+        return  num;
+    }
+    @Transactional
+    public int saveData(String cachKey ,String key,int num ,ItaComment itaComment){
+        int count=super.save(itaComment);
+        num+=count;
+        String userId= currentUserInfoIml.getId();
+        //查询用户统计表中是否存在数据
+        ItaCustExt ice=itaCustExtWyService.queryById(userId);
+//        存在去更新表中数据，不存在新增
+        if(ice !=null){
+            Integer commentNum =ice.getCommentNum();
+            ice.setCommentNum(commentNum+count);
+            itaCustExtWyService.save(ice);
+        }else{
+            ItaCustExt ita=new ItaCustExt();
+            ita.setCustId(userId);
+            ita.setCommentNum(count);
+            itaCustExtMapper.insertSelective(ita);
+        }
+        redisTemplate.opsForHash().put(cachKey,key,num);
+        return  num;
+    }
+}

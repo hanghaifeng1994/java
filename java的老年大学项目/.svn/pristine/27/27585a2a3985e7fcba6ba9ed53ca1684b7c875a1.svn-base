@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="submitCheck" desc="证书-批量修改审核状态">
+	<snd>
+		<field name="ctId" desc="课程id 多个id用英文逗号隔开" required="true" />
+	</snd>
+	<rcv>
+		<field name="status" desc="状态 0:成功，1:失败" />
+	</rcv>
+</trans>

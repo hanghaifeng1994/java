@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="图片分类-图片关联表-详情">
+    <snd>
+        <field name="catId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="catId" desc="分类id"/>
+        <field name="phId" desc="图片id"/>
+    </rcv>
+</trans>

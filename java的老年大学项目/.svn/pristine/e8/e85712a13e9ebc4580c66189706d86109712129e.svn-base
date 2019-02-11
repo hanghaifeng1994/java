@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="forgetPassword" desc="忘记密码（完成）">
+    <snd>
+        <field name="LOGIN_NAME" desc="账号（手机号）" required="true" />
+        <field name="DYN_CODE" desc="手机验证码" required="true"/>
+        <field name="NEW_PWD" desc="新密码" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

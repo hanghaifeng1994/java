@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-启用">
+    <snd>
+        <field name="siteId" desc="站点id" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

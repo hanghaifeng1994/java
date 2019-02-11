@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.base.mapper.CfgFunctionMapper">
+    <resultMap id="BaseResultMap" type="CfgFunction">
+    <id property="funcId" column="FUNC_ID" jdbcType="VARCHAR" />
+
+    <result property="funcName" column="FUNC_NAME" jdbcType="VARCHAR" />
+    <result property="funcType" column="FUNC_TYPE" jdbcType="CHAR" />
+    <result property="funcMngType" column="FUNC_MNG_TYPE" jdbcType="CHAR" />
+    <result property="funcUrl" column="FUNC_URL" jdbcType="VARCHAR" />
+    <result property="funcPermission" column="FUNC_PERMISSION" jdbcType="VARCHAR" />
+    <result property="funcStatus" column="FUNC_STATUS" jdbcType="CHAR" />
+    <result property="funcShowStatus" column="FUNC_SHOW_STATUS" jdbcType="CHAR" />
+    <result property="parentId" column="PARENT_ID" jdbcType="VARCHAR" />
+    <result property="parentIds" column="PARENT_IDS" jdbcType="VARCHAR" />
+    <result property="mdlId" column="MDL_ID" jdbcType="VARCHAR" />
+    <result property="sort" column="SORT" jdbcType="DECIMAL" />
+    <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        FUNC_ID,FUNC_NAME,FUNC_TYPE,FUNC_MNG_TYPE,FUNC_URL,
+        FUNC_PERMISSION,FUNC_STATUS,FUNC_SHOW_STATUS,PARENT_ID,PARENT_IDS,
+        MDL_ID,SORT,CREATE_BY,CREATE_DATE,UPDATE_BY,
+        UPDATE_DATE,DEL_FLAG
+    </sql>
+
+
+    <sql id="TableClause"> ${schema.interPlat}.CFG_FUNCTION </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

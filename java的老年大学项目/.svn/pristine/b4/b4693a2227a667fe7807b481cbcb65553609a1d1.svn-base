@@ -1,0 +1,154 @@
+package com.learnyeai.activity.service;
+
+import com.learnyeai.activity.mapper.ActCategoryActivityMapper;
+import com.learnyeai.activity.mapper.ActSiteActivityRelMapper;
+import com.learnyeai.activity.model.*;
+import com.learnyeai.activity.mapper.ActActivityMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActActivityWyService extends BaseService<ActActivity> {
+
+    @Resource
+    private ActActivityMapper actActivityMapper;
+    @Resource
+    private ActActivityWorksWyService actActivityWorksWyService;
+    @Resource
+    private ActCategoryActivityWyService actCategoryActivityWyService;
+    @Resource
+    private ActResultsWyService actResultsWyService;
+    @Resource
+    private  ActActivityMemerWyService actActivityMemerWyService;
+    @Resource
+    private ActCategoryActivityMapper actCategoryActivityMapper;
+    @Resource
+    private ActSiteActivityRelMapper actSiteActivityRelMapper;
+
+    @Override
+    public BaseMapper<ActActivity> getMapper() {
+        return actActivityMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    /**
+     * 0表示删除成功 1表示存在活动作品不能删除 2存在活动分类3存在活动成员 4存在活动成果
+     * @param ac
+     * @return
+     */
+    public Map<String,Object> saveData(ActActivity ac){
+        Map<String,Object> map=new HashMap<>();
+        boolean flag=false;
+        //有id为修改，没有id 为新增
+        if(StringUtils.isNotBlank(ac.getActId())){
+          map=operate(map,ac.getActId());
+           if(map.containsKey("status")){
+               return map;
+           }
+           flag=true;
+        }
+        super.save(ac);
+        ActCategoryActivity aca=new ActCategoryActivity();
+        aca.setActId(ac.getActId());
+        aca.setCatId(ac.getCatId());
+        if(flag){
+            actCategoryActivityMapper.insert(aca);
+        }
+        //新增后需要在站点活动关联表中加数据
+        ActSiteActivityRel acrel=new ActSiteActivityRel();
+        acrel.setActId(ac.getActId());
+        acrel.setSiteId(ac.getSiteId());
+        acrel.setSiteId(ac.getActId());
+        acrel.setActManageStatus("1");
+        acrel.setActPubStatus("0");
+        acrel.setActCrtSiteId(ac.getSiteId());
+        map.put("status","0");
+        actSiteActivityRelMapper.insertSelective(acrel);
+        return map;
+    }
+
+    /**
+     * 批量删除
+     * @param ac
+     * @return
+     */
+    @Transactional
+    public Map<String,Object> deleteData(ActActivity ac){
+        String[] arr=(ac.getActId()).split(",");
+        Map<String,Object> result=new HashMap<>();
+        int count= 0;
+        for (String id:arr){
+            Map<String,Object> map=new HashMap<>();
+            map=  operate(map,id);
+            //活动不关联其他数据可以删除
+            if(!(map.containsKey("status"))){
+                ActActivity actActivity=super.queryById(id) ;
+                //删除活动
+                count+= super.deleteById(id);
+                //删除活动站点关联表
+                actSiteActivityRelMapper.deleteBySiteIdAndActId(actActivity);
+            }
+
+        }
+        result.put("num",count);
+        return  result;
+    }
+
+    /**
+     * 如果存在关联数据返回状态
+     * @param map
+     * @param actId
+     * @return
+     */
+    public Map<String,Object>  operate(Map<String,Object> map,String actId){
+        //修改时判断该活动下有没有活动作品有活动作品不给出
+        ActActivityWorks aw=new ActActivityWorks();
+        aw.setActId(actId);
+        //存在活动作品不给删除
+        List<ActActivityWorks> list=  actActivityWorksWyService.queryList(aw,new HashMap());
+        if(list.size()>0){
+            map.put("status","1");
+            return map;
+        }
+        //存在活动分类关联数据
+        ActCategoryActivity aca=new ActCategoryActivity();
+        aca.setActId(actId);
+        List<ActCategoryActivity> acalist=  actCategoryActivityWyService.queryList(aca,new HashMap());
+        if(list.size()>0){
+            map.put("status","2");
+            return map;
+        }
+        //存在活动成员
+        ActActivityMemer aam=new ActActivityMemer();
+        aam.setActId(actId);
+        List<ActActivityMemer> aamlist=  actActivityMemerWyService.queryList(aam,new HashMap());
+        if(aamlist.size()>0){
+            map.put("status","3");
+            return map;
+        }
+        //存在活动成果
+        ActResults ar=new ActResults();
+        ar.setActId(actId);
+        List<ActResults> arlist=  actResultsWyService.queryList(ar,new HashMap());
+        if(arlist.size()>0){
+            map.put("status","4");
+            return map;
+        }
+        return map;
+    }
+}

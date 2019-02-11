@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="商户方案功能包-详情">
+    <snd>
+        <field name="mspId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="mspId" desc="id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+        <field name="pkgId" desc="功能包id"/>
+        <field name="edtPkgHisId" desc="版本功能包历史id"/>
+    </rcv>
+</trans>

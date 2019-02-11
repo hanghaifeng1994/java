@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="ID"/>
+        <field name="cgItem" desc="配置项目"/>
+        <field name="cgValue" desc="配置值"/>
+    </rcv>
+</trans>

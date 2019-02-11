@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="bindPhone" desc="客户-绑定手机号">
+    <snd>
+        <field name="PHONE" desc="手机号" required="true" />
+        <field name="DYN_CODE" desc="手机验证码" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

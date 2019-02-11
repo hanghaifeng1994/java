@@ -1,0 +1,161 @@
+server:
+    port: 9030
+
+eureka:
+    instance:
+        prefer-ip-address: true
+    client:
+        registerWithEureka: true
+        fetchRegistry: true
+learnai:
+    gateway:
+        loginurls:
+        - /base/login/passwordLogin.do
+
+AUTH-SERVICE: AUTH-SERVICE
+
+spring:
+  profiles:
+    active: dev,redisdev
+  application:
+    name: lifelong-zuul
+
+  jmx:
+    enabled: false
+  cloud:
+    gateway:
+      default-filters:
+#      - PrefixPath=/httpbin
+#      - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+
+      routes:
+      # =====================================
+      # to run server
+      # $ wscat --listen 9000
+      # to run client
+      # $ wscat --connect ws://localhost:8080/echo
+      - id: websocket_test
+        uri: ws://localhost:9000
+        order: 9000
+        predicates:
+        - Path=/echo
+      # =====================================
+      - id: BASE-SERVICE
+        uri: lb://BASE-SERVICE
+        order: 10000
+        predicates:
+        - Path=/base/**
+        filters:
+        - StripPrefix=1
+        #- RewritePath=/base/(?<segment>.*), /$\{segment}
+        - PrefixPath=/base-service
+
+      - id: AUTH-SERVICE
+        uri: lb://AUTH-SERVICE
+        order: 10000
+        predicates:
+        - Path=/auth/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/auth-service
+
+      - id: ACTIVITY-SERVICE
+        uri: lb://ACTIVITY-SERVICE
+        order: 10000
+        predicates:
+        - Path=/activity/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/activity-service
+
+      - id: ALBUM-SERVICE
+        uri: lb://ALBUM-SERVICE
+        order: 10000
+        predicates:
+        - Path=/album/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/album-service
+
+      - id: AUDIT-SERVICE
+        uri: lb://AUDIT-SERVICE
+        order: 10000
+        predicates:
+        - Path=/audit/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/audit-service
+
+      - id: COURSE-SERVICE
+        uri: lb://COURSE-SERVICE
+        order: 10000
+        predicates:
+        - Path=/course/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/course-service
+
+      - id: DYNAMICS-SERVICE
+        uri: lb://DYNAMICS-SERVICE
+        order: 10000
+        predicates:
+        - Path=/dynamics/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/dynamics-service
+
+      - id: HOMEWORK-SERVICE
+        uri: lb://HOMEWORK-SERVICE
+        order: 10000
+        predicates:
+        - Path=/homework/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/homework-service
+
+      - id: INTERACT-SERVICE
+        uri: lb://INTERACT-SERVICE
+        order: 10000
+        predicates:
+        - Path=/interact/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/interact-service
+
+      - id: NEWS-SERVICE
+        uri: lb://NEWS-SERVICE
+        order: 10000
+        predicates:
+        - Path=/news/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/news-service
+
+      - id: RESOURCE-SERVICE
+        uri: lb://RESOURCE-SERVICE
+        order: 10000
+        predicates:
+        - Path=/resource/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/resource-service
+
+      - id: STUDYGROUP-SERVICE
+        uri: lb://STUDYGROUP-SERVICE
+        order: 10000
+        predicates:
+        - Path=/studygroup/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/studygroup-service
+
+#logging:
+#  config:classpath: logback-test-spring.xml
+# level:
+#   org.springframework.cloud.gateway: TRACE
+#   org.springframework.http.server.reactive: DEBUG
+#   org.springframework.web.reactive: DEBUG
+#   reactor.ipc.netty: DEBUG
+
+jwt:
+  jwt-secret-key: ofaffadfev1234567--090swctewst

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="分享记录-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="id"/>
+        <field name="objId" desc="对象id"/>
+        <field name="serviceType" desc="业务类型"/>
+        <field name="title" desc="标题"/>
+        <field name="url" desc="链接"/>
+        <field name="shareMode" desc="qq、微信、微博"/>
+        <field name="shareDate" desc="分享时间"/>
+        <field name="custId" desc="分享人id"/>
+        <field name="custName" desc="分享人名称"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

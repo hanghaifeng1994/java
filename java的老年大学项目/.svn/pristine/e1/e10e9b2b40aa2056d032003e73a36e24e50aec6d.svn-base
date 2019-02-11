@@ -1,0 +1,50 @@
+package com.learnyeai.learnbehavior.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.learnbehavior.model.StdCustLearnChapter;
+import com.learnyeai.learnbehavior.model.StdCustLearnCourse;
+import com.learnyeai.learnbehavior.service.StdCustLearnChapterWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+
+/**
+ *
+ * @author yl
+ */
+@RestController
+@RequestMapping("${adminPath}" + StdCustLearnChapterController.BASE_URL)
+public class StdCustLearnChapterController extends BaseController<StdCustLearnChapter> {
+    public static final String BASE_URL = "/StdCustLearnChapter/";
+
+    @Autowired
+    private StdCustLearnChapterWyService stdCustLearnChapterWyService;
+    @Autowired
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    protected BaseService<StdCustLearnChapter> getService() {
+        return stdCustLearnChapterWyService;
+    }
+
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        StdCustLearnChapter sclc =stdCustLearnChapterWyService.convert2Bean(ctx.getParamMap());
+        String transCode = ctx.getTransCode();
+        String method = CtxHeadUtil.getControllerMethod();
+        if("queryPage".equals(method)){
+            sclc.setStudyUserId(currentUserInfoIml.getId());
+            MyPage<StdCustLearnChapter> page=stdCustLearnChapterWyService.queryPage(sclc,new HashMap());
+            return super.rtnPageList4Report(page);
+        }
+        return  super.execute(ctx);
+    }
+}

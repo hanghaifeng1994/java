@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="login" title="登录流程">
+    <actions>
+        <action ref="wxLoginCheckOp" title="用户检查"></action>
+ 		<action ref="loginSessionCreateOp" title="创建用户会话"></action>
+    </actions>
+</config>

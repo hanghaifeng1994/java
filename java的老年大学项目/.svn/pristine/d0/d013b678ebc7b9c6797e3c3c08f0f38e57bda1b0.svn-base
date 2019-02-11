@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="小组经验-详情">
+    <snd>
+        <field name="sgpId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="sgpId" desc="小组id"/>
+        <field name="epcId" desc="经验id"/>
+        <field name="createDate" desc="创建时间"/>
+    </rcv>
+</trans>

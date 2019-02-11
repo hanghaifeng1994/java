@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-相册-详情">
+    <snd>
+        <field name="siteId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="siteId" desc="站点id"/>
+        <field name="abmId" desc="相册id"/>
+        <field name="abmAsName" desc="别名"/>
+        <field name="abmManageStatus" desc="管理状态"/>
+        <field name="abmPubStatus" desc="发布状态"/>
+        <field name="abmPubDate" desc="发布时间"/>
+        <field name="abmWeight" desc="权重"/>
+        <field name="abmCrtSiteId" desc="创建站点"/>
+    </rcv>
+</trans>

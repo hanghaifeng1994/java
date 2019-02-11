@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="学习小组-新增">
+    <snd>
+        <field name="sgpId" desc="id"/>
+        <field name="sgpName" desc="小组名称"/>
+        <field name="sgpInfo" desc="简介"/>
+        <field name="sgpContent" desc="小组介绍"/>
+        <field name="sgpPhoto" desc="封面"/>
+        <field name="sgpQq" desc="qq群"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+
+    </rcv>
+</trans>

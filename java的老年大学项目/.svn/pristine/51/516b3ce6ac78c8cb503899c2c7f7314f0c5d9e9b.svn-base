@@ -1,0 +1,81 @@
+/**
+ *
+ */
+package com.learnyeai.learnai.sso.impl;
+
+import com.learnyeai.core.config.ConfigUtils;
+import com.learnyeai.learnai.consts.SessR;
+import com.learnyeai.learnai.listener.OnLineSessions;
+import com.learnyeai.learnai.sso.ReceiveManagerListener;
+import com.learnyeai.learnai.sso.IReceiveService;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Map;
+
+/**
+ * @ClassName: SSOService
+ * @Description: 单用户登陆
+ * @author: mingyi.li（mylee0523@gmail.com）
+ * @date: 2015年3月12日 上午10:01:24
+ *
+ */
+@Service
+public class SSOService implements IReceiveService {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+    public final static String SSO_TYPE_UDP = "UDP";
+
+    private String ssoType = SSO_TYPE_UDP;
+
+    /**
+     * 注册单用户登陆
+     */
+    public static final String SUBS_TYPE_SSO = "SSO";
+
+    @PostConstruct
+    public void init() {
+        this.ssoType = ConfigUtils.getValue("SSO_TYPE");
+        if (StringUtils.isEmpty(this.ssoType))
+            this.ssoType = SSO_TYPE_UDP;
+        //如果配置为UDP广播方式，注册topic
+        if (SSO_TYPE_UDP.equals(this.ssoType))
+            ReceiveManagerListener.registerListener(SUBS_TYPE_SSO, this);
+    }
+
+    @Override
+    public void receive(Object object) {
+        //获取请求参数
+        Map map = (Map) object;
+        // 集群环境下单点登录
+        if (!getLocalIP().equals(map.get("HOST")) && SessR.APP_ID.equals(map.get("APP_ID"))) {
+            // 用户已在其他服务器登录，踢出当前服务器中的该用户会话
+            String userId = String.valueOf(map.get("USER_ID"));
+            logger.info("current user [" + userId + "] Logged out");
+            //单点登录
+            OnLineSessions.getInstance().signLoginSessionCtl(userId);
+        }
+    }
+
+    /**
+     * 获取本地IP地址
+     *
+     * @return
+     * @Title: getLocalIP
+     */
+    public String getLocalIP() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            logger.error("Un known Host Exception:" + e);
+        }
+        return "";
+    }
+
+}

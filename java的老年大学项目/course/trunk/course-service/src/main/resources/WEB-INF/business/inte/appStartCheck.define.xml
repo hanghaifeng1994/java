@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="appStartCheck" title="app登录检查流程">
+    <actions>
+        <action ref="loginInfoGetOp" title="获取登录信息"></action>
+        <action ref="loginInfoSaveOp" title="保存登录信息"></action>
+        <action ref="loginSessionCreateOp" title="创建用户会话"></action>
+        <!--<action ref="sessionAnsyOp" title="单点登录检查"></action>-->
+        <!--商户-->
+        <action ref="weye_SessionAddMerchantInfoOp" title="向session中添加商户、商户版本、程序信息"></action>
+    </actions>
+</config>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="每种题型，在不同知识点出题分别情况-详情">
+    <snd>
+        <field name="pcsId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="pcsId" desc="ID"/>
+        <field name="name" desc="名称"/>
+        <field name="queNum" desc="出题数量"/>
+        <field name="sectionId" desc="可空，但是此时题库id必须有值，并且每个题型规则设置记录必须默认有一个题库id有值，题目章节为空的记录，如果有章节id不为空的记录，那么必须删除这个唯一的题库id不为空，章节目录为空的题型出题记录。即此二者不能同时存在。"/>
+        <field name="qpId" desc="题库"/>
+        <field name="questionitemRuleId" desc="所属题型规则"/>
+    </rcv>
+</trans>

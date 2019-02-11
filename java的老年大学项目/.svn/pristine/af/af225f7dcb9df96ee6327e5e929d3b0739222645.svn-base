@@ -1,0 +1,53 @@
+package com.learnyeai.audit.api.service;
+
+import com.learnyeai.audit.api.client.AdtAuditLogClient;
+import com.learnyeai.audit.api.vo.AdtAuditLogVo;
+import com.learnyeai.core.support.BaseFeignClient;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.apache.commons.collections.map.HashedMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class AdtAuditLogService extends BaseService<AdtAuditLogVo> {
+   /* @Autowired
+    private AdtAuditLogClient adtAuditLogClient;*/
+
+    /*@Override
+    public BaseFeignClient<AdtAuditLogVo> getFeignClient() {
+        return adtAuditLogClient;
+    }
+
+    @Override
+    public Object getId(Map params) {
+        String idKey = "adId";
+        if(params.containsKey(idKey)){
+        return params.get(idKey);
+        }
+        return null;
+    }*/
+
+    /**
+     * 根据条件查询出所有审核列表的id
+     * @param
+     * @return
+     */
+/*    public Map<String,Object> queryPageByIds(IBusinessContext ctx){
+        Map<String,Object> result=new HashedMap();
+       String asIds= adtAuditLogClient.queryPageByIds(ctx.getParamMap());
+        result.put("adIds",asIds);
+        return  result;
+    }*/
+
+    @Override
+    public BaseMapper<AdtAuditLogVo> getMapper() {
+        return null;
+    }
+}

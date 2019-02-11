@@ -1,0 +1,26 @@
+package com.learnyeai.lucene.document.impl;
+
+import com.learnyeai.lucene.document.BuildQuery;
+import com.learnyeai.lucene.utils.LuceneUtils;
+import com.learnyeai.tools.common.JsonMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by zpz on 2018/9/10.
+ */
+public class CommonBuildQuery implements BuildQuery {
+    @Override
+    public Query buildQuery(String params) throws ParseException {
+        Map pp = JsonMapper.jsonToMap(params);
+        return LuceneUtils.getMulitConditionQuery(pp);
+    }
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="sumbitAudit" desc="相册-批量提交审核">
+    <snd>
+        <field name="abmId" desc="id多个id用英文逗号隔开"/>
+        <field name="abmStatus" desc="相册状态"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="提交数据量"/>
+    </rcv>
+</trans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="batchAddStudent" desc="批量添加学员，不添加课程">
+	<snd>
+		<field name="czId" desc="班级id" required="true" />
+		<field name="ids" desc="学员id" comment="多个id,用逗号分割" required="true" />
+	</snd>
+	<rcv>
+		<field name="newAddNum" desc="新加入的人数"/>
+	</rcv>
+</trans>

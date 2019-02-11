@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryByPage" desc="员工-详情">
+    <snd>
+        <!--<field name="custId" desc="id"/>-->
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="用户-列表" type="E">
+            <field name="custId" desc="用户id"/>
+            <field name="custName" desc="姓名"/>
+            <field name="shortName" desc="用户昵称"/>
+            <field name="loginName" desc="登录名"/>
+            <field name="sign" desc="个性签名"/>
+            <field name="phone" desc="手机号"/>
+            <field name="email" desc="邮箱"/>
+            <field name="sex" desc="性别"/>
+            <field name="birthday" desc="用户生日"/>
+            <field name="photo" desc="头像"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="staffType" desc="员工类型由各方案定义"/>
+            <field name="custIsAdmin" desc="员工用户时，管理员标识：0否、1是"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="siteId" desc="站点"/>
+        </field-list>
+
+    </rcv>
+</trans>

@@ -1,0 +1,29 @@
+package com.learnyeai.trainmanage.service;
+
+import com.learnyeai.trainmanage.model.ClzCategory;
+import com.learnyeai.trainmanage.mapper.ClzCategoryMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ClzCategoryWyService extends WeyeBaseService<ClzCategory> {
+
+    @Resource
+    private ClzCategoryMapper clzCategoryMapper;
+
+    @Override
+    public BaseMapper<ClzCategory> getMapper() {
+        return clzCategoryMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+}

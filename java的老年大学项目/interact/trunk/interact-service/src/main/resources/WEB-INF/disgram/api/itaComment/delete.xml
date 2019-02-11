@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delete" desc="评论-批量删除">
+    <snd>
+        <field name="cmtId" desc="id多个id用因为逗号隔开"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="删除的评论数量"/>
+    </rcv>
+</trans>

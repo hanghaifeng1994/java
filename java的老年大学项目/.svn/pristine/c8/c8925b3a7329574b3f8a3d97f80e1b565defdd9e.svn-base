@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="活动成果-保存">
+    <snd>
+        <field name="rstId" desc="id"/>
+        <field name="actId" desc="活动id" required="true"/>
+        <field name="rstTitle" desc="标题"/>
+        <field name="rstContent" desc="内容"/>
+        <field name="rstPhoto" desc="封面"/>
+        <field name="rstFileIds" desc="附件ids"/>
+        <field name="rstFileNames" desc="附件名称"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

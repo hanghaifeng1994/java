@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="班级分类-班级关联表-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="ID"/>
+        <field name="catId" desc="分类id"/>
+        <field name="czId" desc="班级id"/>
+    </rcv>
+</trans>

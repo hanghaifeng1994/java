@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgSchemeEditionPriceDao">
+    <resultMap id="BaseResultMapExt" type="cn.com.weye.modules.cfg.entity.CfgSchemeEditionPrice">
+        <id property="edtPrcId" column="EDT_PRC_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtId" column="SCHM_EDT_ID" jdbcType="VARCHAR" />
+        <result property="edtPrcName" column="EDT_PRC_NAME" jdbcType="VARCHAR" />
+        <result property="edtPrcYearPrice" column="EDT_PRC_YEAR_PRICE" jdbcType="DECIMAL" />
+        <result property="edtPrcMonthPrice" column="EDT_PRC_MONTH_PRICE" jdbcType="DECIMAL" />
+        <result property="edtPrcStoreNum" column="EDT_PRC_STORE_NUM" jdbcType="DECIMAL" />
+        <result property="edtPrcStatus" column="EDT_PRC_STATUS" jdbcType="CHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    </resultMap>
+    <select id="queryPriceListById" resultMap="BaseResultMapExt" parameterType="java.lang.String">
+        select p.* from ${schema.interPlat}.CFG_SCHEME_EDITION_PRICE p
+        where p.SCHM_EDT_ID=#{schmEdtId,jdbcType=VARCHAR} and p.del_flag='0'
+    </select>
+    <!--查询每个版本下的启用数量-->
+    <select id="getIsUsing" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(1) from ${schema.interPlat}.CFG_SCHEME_EDITION_PRICE p
+        where p.del_flag='0' AND   p.SCHM_EDT_ID=#{schmEdtId,jdbcType=VARCHAR} and p.EDT_PRC_STATUS='1'
+    </select>
+    <update id="forbidden"  parameterType="java.util.HashMap">
+        UPDATE   ${schema.interPlat}.CFG_SCHEME_EDITION_PRICE   SET
+        EDT_PRC_STATUS='0'
+      where EDT_PRC_ID=#{edtPrcId,jdbcType=VARCHAR}
+    </update>
+    <update id="startUse"  parameterType="java.util.HashMap">
+        UPDATE   ${schema.interPlat}.CFG_SCHEME_EDITION_PRICE SET
+       EDT_PRC_STATUS='1'
+        where EDT_PRC_ID=#{edtPrcId,jdbcType=VARCHAR}
+    </update>
+    <select id="getEdtPrice" parameterType="java.util.HashMap" resultType="java.math.BigDecimal">
+        select
+            <if test="schmEdtPayType==2">
+                ifnull(sum(EDT_PRC_YEAR_PRICE),0) as EDT_PRC_YEAR_PRICE
+            </if>
+            <if test="schmEdtPayType==1">
+                ifnull(sum(EDT_PRC_MONTH_PRICE),0) as EDT_PRC_MONTH_PRICE
+            </if>
+         from ${schema.interPlat}.CFG_SCHEME_EDITION_PRICE
+        where EDT_PRC_STATUS='1' AND SCHM_EDT_ID=#{schmEdtId,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="quitLogin" desc="登录-退出登录">
+    <snd>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

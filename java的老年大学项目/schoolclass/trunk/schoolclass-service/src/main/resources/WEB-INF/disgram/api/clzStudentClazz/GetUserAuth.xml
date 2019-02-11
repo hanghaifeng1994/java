@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="GetUserAuth" desc="获取班级身份">
+	<snd>
+		<field name="custId" desc="学生id" />
+		<field name="czId" desc="班级id" />
+	</snd>
+	<rcv>
+		<field name="userAuth" desc="身份1专家2学员"/>
+		<field name="msg" desc="提示"/>
+	</rcv>
+</trans>

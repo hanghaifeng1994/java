@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgSchemeEditionHisDao">
+    <select id="queryByHisId" resultType="java.util.HashMap" parameterType="cn.com.weye.modules.sh.entity.ShMerchantScheme">
+                SELECT
+                  p.EDT_PRC_ID as edtPrcId,
+                  e.SCHM_EDT_HIS_ID as schmEdtHisId
+                FROM
+                  ${schema.interPlat}.CFG_SCHEME_EDITION e
+                  LEFT JOIN ${schema.interPlat}.CFG_SCHEME_EDITION_PRICE p
+                    ON e.SCHM_EDT_ID = p.SCHM_EDT_ID
+                WHERE p.EDT_PRC_STATUS = '1'
+                  AND e.SCHM_EDT_ID=#{schmEdtId,jdbcType=VARCHAR}
+    </select>
+</mapper>

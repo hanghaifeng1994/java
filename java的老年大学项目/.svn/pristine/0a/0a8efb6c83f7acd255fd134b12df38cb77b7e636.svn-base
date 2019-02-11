@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryAreas" desc="公共-获取省市区县列表">
+    <snd>
+        <field name="ID" desc="区域ID" required="true"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="列表" type="E">
+            <field name="ID" desc="区域ID"/>
+            <field name="PARENT_ID" desc="父区域ID"/>
+            <field name="PARENT_IDS" desc="所有的父区域IDS"/>
+            <field name="NAME" desc="区域名字"/>
+            <field name="CODE" desc="区域编码"/>
+            <field name="TYPE" desc="类型" comment="1：国家 2：省份、直辖市 3：地市 4：区县"/>
+        </field-list>
+    </rcv>
+</trans>

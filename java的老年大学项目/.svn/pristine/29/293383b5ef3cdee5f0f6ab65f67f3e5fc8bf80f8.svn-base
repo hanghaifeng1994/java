@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="对象的点赞-列表" isPage="true">
+    <snd>
+        <field name="objId" desc="对象id" required="true"/>
+        <field name="type" desc="对象类型course资源 resource经验 experience小组 group班级 class证书 cert咨讯 news"/>
+    </snd>
+    <rcv>
+       <field-list name="LIST" desc="对象的点赞列表" type="E">
+           <field name="lkId" desc="点赞id"/>
+           <field name="objId" desc="对象id"/>
+           <field name="type" desc="对象类型"/>
+           <field name="theUserId" desc="被点赞人id"/>
+           <field name="lkUserName" desc="点赞人名称"/>
+           <field name="createBy" desc="创建人"/>
+           <field name="mchtId" desc="商户id"/>
+           <field name="mchtSchmId" desc="商户方案id"/>
+           <field name="createByName" desc="创建人名称" xpath="createBy" type="user"/>
+       </field-list>
+    </rcv>
+</trans>

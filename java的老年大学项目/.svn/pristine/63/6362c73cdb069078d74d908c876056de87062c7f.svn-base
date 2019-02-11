@@ -1,0 +1,190 @@
+package com.learnyeai.resource.service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.core.cache.RedisUtil;
+import com.learnyeai.core.cache.RedisUtilFactory;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.mq.ResourceMq;
+import com.learnyeai.rabbitmq.bean.RabbitMetaMessage;
+import com.learnyeai.rabbitmq.sender.RabbitSender;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import com.learnyeai.resource.mapper.StdCustLearnRecordMapper;
+import com.learnyeai.resource.model.StdConfig;
+import com.learnyeai.resource.model.StdCustLearnRecord;
+import com.learnyeai.resource.model.StdCustLearnResource;
+import com.learnyeai.resource.util.ResourceUtil;
+import com.learnyeai.tools.common.DateHelper;
+import com.learnyeai.tools.common.StringUtils;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class StdCustLearnRecordWyService extends WeyeBaseService<StdCustLearnRecord> {
+	Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Resource
+	private StdCustLearnRecordMapper stdCustLearnRecordMapper;
+
+	@Resource
+	private StdCustLearnRecordCatchService stdCustLearnRecordCatchService;
+
+	@Resource
+	private StdCustLearnResourceCatchService stdCustLearnResourceCatchService;
+
+	@Resource
+	private StdCustLearnResourceWyService stdCustLearnResourceWyService;
+
+	@Resource
+	private StdConfigWyService stdConfigWyService;
+
+	@Autowired
+	private RabbitSender rabbitSender;
+
+	@Override
+	public BaseMapper<StdCustLearnRecord> getMapper() {
+		return stdCustLearnRecordMapper;
+	}
+
+	@Value("${learnrecord.maxTime}")
+	private long maxTime;//学习最大间隔时间
+	
+	@Value("${learnrecord.expiredTime}")
+	private long expiredTime;//学习记录过期时间
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	/**
+	 * status0操作成功 1操作失败
+	 * 
+	 * @param cc
+	 * @return
+	 */
+	@Transactional
+	public Map<String, Object> learnSave(StdCustLearnRecord learnRecord) {
+		Map<String, Object> map = new HashMap();
+		// 用户资源记录key
+		String key = learnRecord.getStudyUserId() + "_" + learnRecord.getResId();
+		// 从缓存内查
+		StdCustLearnRecord obj = stdCustLearnRecordCatchService.queryRecord(key);
+		Long studyTime = learnRecord.getStudyTime() == null ? 60l : learnRecord.getStudyTime();
+		Date endDate = new Date();
+		if (obj == null || endDate.getTime() - obj.getEndDate().getTime() > maxTime * 60 * 1000) {
+			obj = new StdCustLearnRecord();
+			obj.setStudyUserId(learnRecord.getStudyUserId());
+			obj.setCsId(learnRecord.getCsId());
+			obj.setCptId(learnRecord.getCptId());
+			obj.setResId(learnRecord.getResId());
+			obj.setStudyTime(studyTime);
+			obj.setStartDate(new Date(endDate.getTime() - studyTime * 1000));
+		} else {
+			obj.setStudyTime(obj.getStudyTime() + studyTime);
+		}
+		if (learnRecord.getStudyBreakpoint() != null) {
+			obj.setStudyBreakpoint(learnRecord.getStudyBreakpoint());
+		}
+		obj.setEndDate(endDate);
+		super.save(obj);
+		stdCustLearnRecordCatchService.saveRecord(key, obj);// 更新缓存
+		// 更新用户资源缓存。。。
+		StdCustLearnResource learnResource = stdCustLearnResourceWyService
+				.queryUserResource(learnRecord.getStudyUserId(), learnRecord.getResId());
+		learnResource.setStudyTime(learnResource.getStudyTime() + studyTime);
+		learnResource.setUpdateDate(endDate);
+		learnResource.setStudyBreakpoint(obj.getStudyBreakpoint());
+		stdCustLearnResourceCatchService.saveUserResource(key, learnResource);
+		map.put("status", 0);
+		return map;
+	}
+
+	@Override
+	protected Weekend<StdCustLearnRecord> genSqlExample(StdCustLearnRecord t, Map params) {
+		Weekend<StdCustLearnRecord> w = super.genSqlExample(t, params);
+		WeekendCriteria<StdCustLearnRecord, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getStudyUserId())) {
+			c.andEqualTo(StdCustLearnRecord::getStudyUserId, t.getStudyUserId());
+		}
+		if (StringUtils.isNotBlank(t.getResId())) {
+			c.andEqualTo(StdCustLearnRecord::getResId, t.getResId());
+		}
+		if (StringUtils.isNotBlank(t.getCsId())) {
+			c.andEqualTo(StdCustLearnRecord::getCsId, t.getCsId());
+		}
+		if (StringUtils.isNotBlank(t.getCptId())) {
+			c.andEqualTo(StdCustLearnRecord::getCptId, t.getCptId());
+		}
+		w.and(c);
+		return w;
+	}
+
+	public void synRedisToDb() throws WeyeRabbitException {
+		long time = expiredTime * 60 * 1000;// 超时时间
+		int success = 0, error = 0;
+		logger.debug("synRedisToDb=>开始将用户资源学习时间从缓存同步到数据库");
+		RedisUtil redis = RedisUtilFactory.getUtil("resource_resourceLearnRecord", StdCustLearnRecord.class);
+		List<StdCustLearnRecord> list = redis.getAll();
+		StdConfig config = stdConfigWyService.queryByItem("resourceCallbackTime");
+		Date lastUpdateTime = DateHelper.parseDate(config.getCgValue(), "yyyyMMddHHmmssSSS");
+		Date maxTime = lastUpdateTime;
+		//Set<StdCustLearnResource> learnResources = new HashSet<StdCustLearnResource>();
+		for (StdCustLearnRecord obj : list) {
+			// 用户资源记录key
+			String key = obj.getStudyUserId() + "_" + obj.getResId();
+			if (obj.getEndDate().getTime() <= lastUpdateTime.getTime()) {
+				// 超时不再学习，清除缓存 为了不每次都查询
+				if (new Date().getTime() - obj.getEndDate().getTime() > time) {
+					logger.debug("synRedisToDb=>超时不再学习，清除缓存|id=" + key);
+					stdCustLearnRecordCatchService.removeRecord(key);
+				}
+				continue;
+			}
+
+			if (obj.getEndDate().getTime() > maxTime.getTime()) {
+				maxTime = obj.getEndDate();
+			}
+
+			StdCustLearnResource learnResource = stdCustLearnResourceCatchService.queryUserResource(key);
+			if (learnResource == null)
+				continue;
+			int result = stdCustLearnResourceWyService.updateBySelect(learnResource);
+			if (result == 0) {
+				logger.debug("synRedisToDb=>保存到数据库错误|id=" + key);
+				error++;
+				continue;
+			}
+			// 发送消息到消息队列，去统计课程总的学习时间
+			logger.debug("发送消息到消息队列，去统计课程总的学习时间 key={}",key);
+			ResourceMq mq = new ResourceMq(learnResource.getStudyUserId(), learnResource.getResId(),
+					learnResource.getStudyTime(), learnResource.getUpdateDate());
+			RabbitMetaMessage msg = ResourceUtil.toParseRabbitMetaMessage(mq);
+			rabbitSender.send(msg);
+			success++;
+		}
+		config.setCgValue(DateFormatUtils.format(maxTime, "yyyyMMddHHmmssSSS"));
+		stdConfigWyService.updateBySelect(config);
+		logger.debug("synRedisToDb=>结束将用户资源学习时间从缓存同步到数据库，同步成功数量=" + success + "|失败数量=" + error);
+	}
+
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="班级分类-新增">
+    <snd>
+        <field name="catId" desc="id"/>
+        <field name="catName" desc="分类名称"/>
+        <field name="catLevel" desc="级别"/>
+        <field name="parentId" desc="父id不需要传值"/>
+        <field name="parentIds" desc="父ids第一级不需要传值"/>
+        <field name="siteId" desc="站点"/>
+        <field name="catCerted" desc="是否证书班级0否1是" required="true"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="栏目id"/>
+    </rcv>
+</trans>

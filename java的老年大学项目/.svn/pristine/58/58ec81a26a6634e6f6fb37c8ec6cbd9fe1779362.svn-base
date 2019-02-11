@@ -1,0 +1,26 @@
+package com.learnyeai.mq;
+
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class ResourceRabbitConfig {
+	@Bean
+	public Queue resourceQueue() {
+		return new Queue(ResourceConstans.RESOURCE_QUEUE);
+	}
+
+	@Bean
+	public TopicExchange resourceExchange() {
+		return new TopicExchange(ResourceConstans.RESOURCE_EXCHANGE);
+	}
+
+	@Bean
+	public Binding bindingExchangeResource() {
+		return BindingBuilder.bind(resourceQueue()).to(resourceExchange()).with(ResourceConstans.RESOURCE_KEY);
+	}
+}

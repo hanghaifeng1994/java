@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryShowPage" isPage="true" desc="资讯栏目-可查看列表" page="true">
+    <snd>
+        <field name="siteId" desc="多个站点用英文逗号隔开"/>
+    </snd>
+    <rcv>
+       <field-list  name="LIST" type="E" desc="资讯栏目列表" >
+           <field name="catId" desc="id"/>
+           <field name="catName" desc="名称"/>
+           <field name="catPhoto" desc="封面"/>
+           <field name="catSort" desc="排序"/>
+           <field name="catType" desc="1文章、2链接、3公共(不可以添加子栏目、内容)"/>
+           <field name="catModule" desc="业务模块"/>
+           <field name="catHref" desc="链接地址"/>
+           <field name="catTarget" desc="跳转目标"/>
+           <field name="catDescription" desc="栏目描述"/>
+           <field name="catKeywords" desc="关键字"/>
+           <field name="catInMenu" desc="是否在导航中显示"/>
+           <field name="catInList" desc="是否在分类页中显示"/>
+           <field name="catAllowComment" desc="是否允许评论"/>
+           <field name="catIsAudit" desc="是否需要审核"/>
+           <field name="catLevel" desc="级别"/>
+           <field name="parentId" desc="父id"/>
+           <field name="parentIds" desc="所有父id"/>
+           <field name="createBy" desc="创建人"/>
+           <field name="createDate" desc="创建时间"/>
+           <field name="updateBy" desc="更新人"/>
+           <field name="updateDate" desc="更新时间"/>
+           <field name="delFlag" desc="删除标记"/>
+           <field name="siteId" desc="站点"/>
+           <field name="mchtId" desc="商户id"/>
+           <field name="mchtSchmId" desc="商户方案id"/>
+       </field-list>
+    </rcv>
+</trans>

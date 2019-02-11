@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.schoolclass.mapper.ClzUserClazzCourseMapper">
+	<select id="sumStudylength" resultType="java.lang.Double">
+		SELECT SUM(CS_STUDYLENGTH) FROM CLZ_USER_CLAZZ_COURSE 
+		WHERE CUST_ID = #{custId,jdbcType=VARCHAR}
+		AND CZ_ID= #{czId,jdbcType=VARCHAR}
+		AND LCS_FINISHED = "1" AND NORMAL = "1"
+	</select>
+</mapper>

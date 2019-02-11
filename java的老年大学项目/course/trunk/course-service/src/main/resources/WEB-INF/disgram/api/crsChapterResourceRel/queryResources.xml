@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryResources" desc="章节资源-列表">
+	<snd>
+		<field name="cptId" desc="章节id" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="章节资源列表">
+			<field name="id" desc="ID" />
+			<field name="cptId" desc="章节id" />
+			<field name="resId" desc="资源id" />
+			<field name="resName" desc="名称" />
+			<field name="fileTimeLen" desc="时长" />
+			<field name="resType" desc="资源类型0:pc 1:手机" />
+			<field name="fileType" desc="文件类型" />
+		</field-list>
+	</rcv>
+</trans>

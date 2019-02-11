@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgSchemeEditionHisDao">
+    <resultMap id="BaseResultMap" type="CfgSchemeEditionHis">
+        <id property="schmEdtHisId" column="SCHM_EDT_HIS_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtHisStatus" column="SCHM_EDT_HIS_STATUS" jdbcType="CHAR" />
+        <result property="schmEdtHisRemark" column="SCHM_EDT_HIS_REMARK" jdbcType="VARCHAR" />
+        <result property="schmEdtModStatus" column="SCHM_EDT_MOD_STATUS" jdbcType="CHAR" />
+        <result property="schmEdtId" column="SCHM_EDT_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtName" column="SCHM_EDT_NAME" jdbcType="VARCHAR" />
+        <result property="schmEdtDesc" column="SCHM_EDT_DESC" jdbcType="VARCHAR" />
+        <result property="schmEdtPhoto" column="SCHM_EDT_PHOTO" jdbcType="VARCHAR" />
+        <result property="schmEdtGrade" column="SCHM_EDT_GRADE" jdbcType="DECIMAL" />
+        <result property="schmId" column="SCHM_ID" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        SCHM_EDT_HIS_ID,SCHM_EDT_HIS_STATUS,SCHM_EDT_HIS_REMARK,SCHM_EDT_MOD_STATUS,SCHM_EDT_ID,
+        SCHM_EDT_NAME,SCHM_EDT_DESC,SCHM_EDT_PHOTO,SCHM_EDT_GRADE,SCHM_ID,
+        CREATE_BY,CREATE_DATE
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{schmEdtHisId},#{schmEdtHisStatus},#{schmEdtHisRemark},#{schmEdtModStatus},#{schmEdtId},
+        #{schmEdtName},#{schmEdtDesc},#{schmEdtPhoto},#{schmEdtGrade},#{schmId},
+        #{createBy},#{createDate}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.CFG_SCHEME_EDITION_HIS </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            SCHM_EDT_HIS_ID = #{schmEdtHisId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="CfgSchemeEditionHis">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="CfgSchemeEditionHis">
+        update <include refid="TableClause" />
+        <set>
+        SCHM_EDT_HIS_STATUS=#{schmEdtHisStatus},
+        SCHM_EDT_HIS_REMARK=#{schmEdtHisRemark},
+        SCHM_EDT_MOD_STATUS=#{schmEdtModStatus},
+        SCHM_EDT_ID=#{schmEdtId},
+        SCHM_EDT_NAME=#{schmEdtName},
+        SCHM_EDT_DESC=#{schmEdtDesc},
+        SCHM_EDT_PHOTO=#{schmEdtPhoto},
+        SCHM_EDT_GRADE=#{schmEdtGrade},
+        SCHM_ID=#{schmId},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="CfgSchemeEditionHis">
+            update <include refid="TableClause" />
+            <set>
+                <if test="schmEdtHisStatus!=null">SCHM_EDT_HIS_STATUS=#{schmEdtHisStatus},</if>
+                <if test="schmEdtHisRemark!=null">SCHM_EDT_HIS_REMARK=#{schmEdtHisRemark},</if>
+                <if test="schmEdtModStatus!=null">SCHM_EDT_MOD_STATUS=#{schmEdtModStatus},</if>
+                <if test="schmEdtId!=null">SCHM_EDT_ID=#{schmEdtId},</if>
+                <if test="schmEdtName!=null">SCHM_EDT_NAME=#{schmEdtName},</if>
+                <if test="schmEdtDesc!=null">SCHM_EDT_DESC=#{schmEdtDesc},</if>
+                <if test="schmEdtPhoto!=null">SCHM_EDT_PHOTO=#{schmEdtPhoto},</if>
+                <if test="schmEdtGrade!=null">SCHM_EDT_GRADE=#{schmEdtGrade},</if>
+                <if test="schmId!=null">SCHM_ID=#{schmId},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

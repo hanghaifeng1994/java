@@ -1,0 +1,135 @@
+package com.learnyeai.activity.service;
+
+import com.learnyeai.activity.model.ActResults;
+import com.learnyeai.activity.mapper.ActResultsMapper;
+import com.learnyeai.base.api.util.CurrentBaseInfoUtil;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.mq.AuditlogMq;
+import com.learnyeai.mq.ParseRabbitMsg;
+import com.learnyeai.rabbitmq.bean.RabbitMetaMessage;
+import com.learnyeai.rabbitmq.sender.RabbitSender;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import com.learnyeai.tools.common.BeanMapUtils;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActResultsWyService extends WeyeBaseService<ActResults> {
+
+    @Resource
+    private ActResultsMapper actResultsMapper;
+    @Resource
+    private CurrentUserInfoIml currentUserInfoIml;
+    @Autowired
+    private RabbitSender rabbitSender;
+    @Override
+    public BaseMapper<ActResults> getMapper() {
+        return actResultsMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+    @Override
+    protected Weekend genSqlExample(ActResults t, Map params) {
+        Weekend<ActResults> w = super.genSqlExample(t,params);
+        WeekendCriteria<ActResults,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getActId())){
+            c.andEqualTo(ActResults::getActId,t.getActId());
+        }
+        String mainSiteId=  CurrentBaseInfoUtil.getMainSiteId();
+        if(StringUtils.isNotBlank(t.getRstStatus())){
+            c.andEqualTo(ActResults::getRstStatus,t.getRstStatus());
+        }
+
+        if(StringUtils.isNotBlank(t.getRstId())){
+            c.andEqualTo(ActResults::getRstId,t.getRstId());
+        }
+
+        w.and(c);
+        return  w;
+
+    }
+
+    @Transactional
+    public Map<String,Object> deleteBatch(ActResults t){
+        String[] ids=(t.getRstId()).split(",");
+        int num=0;
+        for(String id:ids){
+            num+=super.deleteById(id);
+        }
+        return MapUtil.newMap("num",num);
+    }
+    @Transactional
+    public Map<String,Object> sumbitAudit(ActResults ar){
+        String[] resIds=(ar.getRstId()).split(",");
+        ActResults actResults = new ActResults();
+        String userId=currentUserInfoIml.getId();
+        String userName=currentUserInfoIml.getLoginName();
+        int num =0;
+        for (String resId:resIds){
+            actResults.setRstUserId(userId);
+            actResults.setRstUserName(userName);
+            actResults.setRstStatus(ar.getRstStatus());
+            actResults.setRstId(resId);
+            num +=  super.save(actResults);
+        }
+        return  MapUtil.newMap("num",num);
+    }
+
+    public Map<String,Object> audit(IBusinessContext ctx) throws WeyeRabbitException {
+        ActResults ar=new ActResults();
+        //新建实体对象
+        AuditlogMq auditlogMq= toParseAuditLog(ctx);
+        String[] actIds=(auditlogMq.getObjId()).split(",");
+        int num =0;
+        ar.setRstStatus(auditlogMq.getStatus());
+        for(String actId:actIds){
+            ar.setRstId(actId);
+            //活动表中保存
+            num+=  super.save(ar);
+            auditlogMq.setObjId(ar.getRstId());
+            RabbitMetaMessage msg=ParseRabbitMsg.toParseRabbitMetaMessage(auditlogMq);
+            rabbitSender.send(msg);
+        }
+        return  MapUtil.newMap("num",num);
+    }
+
+    /**
+     * 将入参转为审核日志对象
+     */
+    public AuditlogMq toParseAuditLog(IBusinessContext ctx){
+        try {
+            AuditlogMq a= (AuditlogMq)BeanMapUtils.convertMap(AuditlogMq.class, ctx.getParamMap());
+            return a;
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
+}

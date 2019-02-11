@@ -1,0 +1,29 @@
+package com.learnyeai.activity.service;
+
+import com.learnyeai.activity.model.ActSiteCategoryRel;
+import com.learnyeai.activity.mapper.ActSiteCategoryRelMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActSiteCategoryRelWyService extends BaseService<ActSiteCategoryRel> {
+
+    @Resource
+    private ActSiteCategoryRelMapper actSiteCategoryRelMapper;
+
+    @Override
+    public BaseMapper<ActSiteCategoryRel> getMapper() {
+        return actSiteCategoryRelMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

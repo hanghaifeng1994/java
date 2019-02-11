@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-栏目的隐藏-详情">
+    <snd>
+        <field name="siteId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="siteId" desc="站点id"/>
+        <field name="catId" desc="栏目id"/>
+    </rcv>
+</trans>

@@ -1,0 +1,158 @@
+package com.learnyeai.studygroup.service;
+
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.learnai.context.CtxReportUtil;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.studygroup.model.SgpMember;
+import com.learnyeai.studygroup.mapper.SgpMemberMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.studygroup.model.SgpStudyGroup;
+import com.learnyeai.studygroup.model.SgpStudyGroupExperience;
+import com.learnyeai.studygroup.model.SgpStudyGroupTalent;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import javax.swing.*;
+import java.util.*;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class SgpMemberWyService extends WeyeBaseService<SgpMember> {
+
+    @Resource
+    private SgpMemberMapper sgpMemberMapper;
+    @Resource
+    private SgpStudyGroupWyService sgpStudyGroupWyService;
+    @Resource
+    private CurrentUserInfoIml currentUserInfoIml;
+    @Resource
+    private SgpStudyGroupTalentWyService sgpStudyGroupTalentWyService;
+    @Resource
+    private SgpStudyGroupExperienceWyService sgpStudyGroupExperienceWyService;
+    @Override
+    public BaseMapper<SgpMember> getMapper() {
+        return sgpMemberMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Override
+    protected Weekend<SgpMember> genSqlExample(SgpMember t, Map params) {
+        Weekend w=super.genSqlExample(t,params);
+       WeekendCriteria<SgpMember,Object> c= w.weekendCriteria();
+       if(StringUtils.isNotBlank(t.getCustId())){
+           c.andEqualTo(SgpMember::getCustId,t.getCustId());
+       }
+        if(StringUtils.isNotBlank(t.getSgpId())){
+            c.andEqualTo(SgpMember::getSgpId,t.getSgpId());
+        }
+       w.and(c);
+       w.setOrderByClause("CREATE_DATE desc");
+       return w;
+    }
+
+    @Transactional
+    public void saveDate(IBusinessContext ctx){
+        SgpMember sm= super.convert2Bean(ctx.getParamMap());
+        String sgpId=sm.getSgpId();
+        SgpStudyGroup sg=sgpStudyGroupWyService.queryById(sgpId);
+        Integer num=sg.getSgpUserNum();
+        if(num==null){
+            num=0;
+        }
+        sm.setCreateDate(new Date());
+        num += sgpMemberMapper.insertSelective(sm);
+        //加入小组后修改小组人数
+        sg.setSgpUserNum(num);
+        sgpStudyGroupWyService.save(sg);
+    }
+
+    public Map<String,Object> queryPageForMember(IBusinessContext ctx){
+        SgpMember sm= super.convert2Bean( ctx.getParamMap());
+        MyPage<SgpMember> page= super.queryPage(sm,new HashMap());
+        List<SgpMember> list=page.getList();
+        String custId="";
+        for(SgpMember s:list){
+          custId+= s.getCustId()+",";
+        }
+        return MapUtil.newMap("custId",custId);
+    }
+
+    /**
+     * 是否加入小组status =1 已加入
+     * @param ctx
+     * @return
+     */
+    public List<SgpMember> isJoin(IBusinessContext ctx){
+        Map<String,Object> map=ctx.getParamMap();
+        List<SgpMember> result=new ArrayList<>();
+        if(map!=null){
+            List<Map<String,Object>> list= (List<Map<String, Object>>) map.get("list");
+            for (Map<String,Object> param:list){
+                List<SgpMember> sms=  super.queryList(null,param);
+                if(sms.size()>0){
+                    SgpMember sm=sms.get(0);
+                    sm.setStatus("1");
+                    result.add(sm);
+                }
+            }
+        }
+        return result;
+    }
+    public List<SgpMember> myQueryPage(IBusinessContext ctx){
+        SgpMember sm= super.convert2Bean(ctx.getParamMap());
+        String userId= currentUserInfoIml.getId();
+        sm.setCustId(userId);
+        MyPage page=super.queryPage(sm,new HashMap());
+        List<SgpMember> sms=page.getList();
+        List<SgpStudyGroup> list=new ArrayList<>();
+        for (SgpMember s:sms){
+            String sgpId=s.getSgpId();
+            SgpStudyGroup ssg= sgpStudyGroupWyService.queryById(sgpId);
+            list.add(ssg);
+        }
+        list=setTanExp(list,ctx);
+        page.setList(list);
+       return rtnPageList4Report(page) ;
+    }
+    public static List rtnPageList4Report(MyPage page) {
+        if (page.getTotal() > -1L) {
+            Map extData = CtxReportUtil.getListExtResultMap();
+            extData.put("totalCount", page.getTotal());
+            extData.put("pageNo", page.getPageNo());
+            extData.put("pageSize", page.getPageSize());
+        }
+
+        return page.getList();
+    }
+
+    public List<SgpStudyGroup> setTanExp(List<SgpStudyGroup> list,IBusinessContext ctx){
+        SgpStudyGroupTalent talent=new SgpStudyGroupTalent();
+        SgpStudyGroupExperience Experience=new SgpStudyGroupExperience();
+        for (SgpStudyGroup s:list){
+            String sgpId=s.getSgpId();
+            talent.setSgpId(sgpId);
+            Experience.setSgpId(sgpId);
+            //查询才艺数量
+            List<SgpStudyGroupTalent> talents =sgpStudyGroupTalentWyService.queryList(talent ,ctx.getParamMap());
+            //查询经验数量
+            List<SgpStudyGroupExperience> experiences =sgpStudyGroupExperienceWyService.queryList(Experience,ctx.getParamMap());
+            s.setTalentNum(talents.size());
+            s.setExperienceNum(experiences.size());
+        }
+        return list;
+
+    }
+}

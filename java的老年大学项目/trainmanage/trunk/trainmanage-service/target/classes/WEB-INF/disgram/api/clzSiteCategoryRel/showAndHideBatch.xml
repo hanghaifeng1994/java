@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="showAndHideBatch" desc="班级分类-批量显示隐藏">
+    <snd>
+        <fieldl-list name="list" desc="显示隐藏列表" type="E">
+            <field name="siteId" desc="id" required="true"/>
+            <field name="catId" desc="班级分类id"/>
+            <field name="showStatus" desc="显示状态0不显示，1显示"/>
+        </fieldl-list>
+    </snd>
+    <rcv>
+        <field name="num" desc="批量提交显示隐藏数量"/>
+    </rcv>
+</trans>

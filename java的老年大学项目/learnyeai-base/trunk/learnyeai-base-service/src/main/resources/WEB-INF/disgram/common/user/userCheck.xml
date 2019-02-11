@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="userCheck" desc="用户-检查">
+    <snd>
+        <field name="loginName" desc="登录名" required="true"/>
+        <field name="custName" desc="姓名"/>
+        <field name="idcarNo" desc="身份证号码"/>
+    </snd>
+    <rcv>
+        <field name="userStatus" desc="用户状态" comment="N: 正常 D: 普通冻结 C: 注销 E:人工冻结"/>
+        <field name="userStatusDesc" xpath="userStatus" type="cons" dictType="CUST_INFO_STATUS"  desc="用户状态描述"/>
+    </rcv>
+</trans>

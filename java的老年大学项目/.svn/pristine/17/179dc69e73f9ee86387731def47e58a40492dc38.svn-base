@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="学员某个卷子的对应记录-详情">
+    <snd>
+        <field name="awId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="awId" desc="ID"/>
+        <field name="paperNo" desc="答卷号(考生ID+测验id+试卷Id+考试次数)"/>
+        <field name="createTime" desc="创建时间"/>
+        <field name="status" desc="TIMEOUT = 1;//超时 一天未提交 超时         int EXAMING = 2;//考试中       SUCCESS = 3;	//成功提交"/>
+        <field name="score" desc="得分"/>
+        <field name="studentName" desc="考生姓名"/>
+        <field name="studentUserId" desc="考试用户id"/>
+        <field name="submitTime" desc="交卷时间"/>
+        <field name="examSecs" desc="考试用时(秒)"/>
+        <field name="paperRuleId" desc="对应组卷规则（冗余）"/>
+        <field name="paperId" desc="对应试卷"/>
+        <field name="tsId" desc="使用哪个测验"/>
+        <field name="examNum" desc="第几次测验"/>
+        <field name="kgScore" desc="客观题成绩" type="F" dolt="1" />
+        <field name="zgScore" desc="主观题成绩" type="F" dolt="1" />
+        <field name="startTime" desc="测验开始时间"/>
+        <field name="endTime" desc="测验结束时间"/>
+        <field name="hasSubject" desc="是否有主观题"/>
+    </rcv>
+</trans>

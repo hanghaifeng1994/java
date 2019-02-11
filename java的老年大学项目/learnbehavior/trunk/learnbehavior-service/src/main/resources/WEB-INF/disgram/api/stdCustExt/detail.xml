@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="学习行为用户扩展-详情">
+    <snd>
+        <field name="custId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="custId" desc="用户id"/>
+        <field name="studyTime" desc="学习时长"/>
+        <field name="studyNum" desc="学习次数"/>
+        <field name="curCourseId" desc="当前课程id"/>
+        <field name="curChapterId" desc="当前章节id"/>
+        <field name="curResourceId" desc="当前资源id"/>
+        <field name="studyBreakpoint" desc="学习断点"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="siteId" desc="站点"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

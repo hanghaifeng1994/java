@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="方案版本功能包-详情">
+    <snd>
+        <field name="edtPkgId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="edtPkgId" desc="方案版本功能包id"/>
+        <field name="pkgId" desc="功能包id"/>
+        <field name="schmEdtId" desc="方案版本id"/>
+        <field name="edtPkgStatus" desc="0禁用、1启用"/>
+        <field name="edtPkgType" desc="1基础、2增值"/>
+        <field name="edtPkgYearPrice" desc="年价格"/>
+        <field name="edtPkgMonthPrice" desc="月价格"/>
+        <field name="mdlId" desc="模块id"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+    </rcv>
+</trans>

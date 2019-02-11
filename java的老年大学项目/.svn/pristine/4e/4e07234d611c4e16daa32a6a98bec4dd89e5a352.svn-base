@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.activity.mapper.ActSiteActivityRelMapper">
+    <resultMap id="BaseResultMapExt" type="ActActivityExt">
+        <id property="actId" column="ACT_ID" jdbcType="VARCHAR" />
+
+        <result property="actTitle" column="ACT_TITLE" jdbcType="VARCHAR" />
+        <result property="actInfo" column="ACT_INFO" jdbcType="VARCHAR" />
+        <result property="actContent" column="ACT_CONTENT" jdbcType="VARCHAR" />
+        <result property="actPhoto" column="ACT_PHOTO" jdbcType="VARCHAR" />
+        <result property="actAreaId" column="ACT_AREA_ID" jdbcType="VARCHAR" />
+        <result property="actType" column="ACT_TYPE" jdbcType="VARCHAR" />
+        <result property="actStartDate" column="ACT_START_DATE" jdbcType="TIMESTAMP" />
+        <result property="actEndDate" column="ACT_END_DATE" jdbcType="TIMESTAMP" />
+        <result property="actTutorUserId" column="ACT_TUTOR_USER_ID" jdbcType="VARCHAR" />
+        <result property="actStatus" column="ACT_STATUS" jdbcType="CHAR" />
+        <result property="actPubStatus" column="ACT_PUB_STATUS" jdbcType="CHAR" />
+        <result property="actAuditId" column="ACT_AUDIT_ID" jdbcType="VARCHAR" />
+        <result property="actSignupNum" column="ACT_SIGNUP_NUM" jdbcType="INTEGER" />
+        <result property="actImgs" column="ACT_IMGS" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+        <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+        <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+        <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+        <result property="sendSiteId" column="sendSiteId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteBySiteIdAndActId" parameterType="ActActivity">
+        DELETE
+        FROM
+          act_site_activity_rel
+        WHERE site_id = #{siteId}
+          AND act_id =#{actId}
+    </delete>
+    <update id="updateBySelective" parameterType="ActCategoryActivity" >
+        update act_site_activity_rel
+        <set >
+            <if test="actAsName != null" >
+                ACT_AS_NAME = #{actAsName,jdbcType=VARCHAR},
+            </if>
+            <if test="actManageStatus != null" >
+                ACT_MANAGE_STATUS = #{actManageStatus,jdbcType=CHAR},
+            </if>
+            <if test="actPubStatus != null" >
+                ACT_PUB_STATUS = #{actPubStatus,jdbcType=CHAR},
+            </if>
+            <if test="actPubDate != null" >
+                ACT_PUB_DATE = #{actPubDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actCrtSiteId != null" >
+                ACT_CRT_SITE_ID = #{actCrtSiteId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where SITE_ID = #{siteId,jdbcType=VARCHAR}
+        and ACT_ID = #{actId,jdbcType=VARCHAR}
+    </update>
+    <!--查询所有下发列表-->
+    <select id="lowerSendPage" parameterType="ActActivity" resultMap="BaseResultMapExt">
+        SELECT
+        a.*,r.site_id as sendSiteId
+        FROM
+         act_activity a
+          JOIN  act_site_activity_rel r
+          ON r.`ACT_ID`=a.`ACT_ID`
+        WHERE r.site_id != r.ACT_CRT_SITE_ID
+          AND r.ACT_MANAGE_STATUS = '0'
+          AND a.`DEL_FLAG`='0'
+          <foreach collection="siteIds" item="item" open="and r.ACT_CRT_SITE_ID in (" separator="," close=")">
+            '${item}'
+          </foreach>
+          <if test="mchtId !=null and mchtId !=''">
+              AND a.mcht_id=#{mchtId,jdbcType=VARCHAR}
+          </if>
+          <if test="mchtSchmId !=null and mchtSchmId !=''">
+                AND a.mcht_schm_id=#{mchtSchmId,jdbcType=VARCHAR}
+          </if>
+    </select>
+</mapper>

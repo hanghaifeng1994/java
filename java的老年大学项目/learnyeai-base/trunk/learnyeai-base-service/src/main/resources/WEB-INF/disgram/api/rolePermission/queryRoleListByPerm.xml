@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryRoleListByPerm" desc="角色-根据权限查询角色列表">
+    <snd>
+        <field name="perm" desc="权限" required="true"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="列表" type="E">
+            <field name="roleId" desc="ID"/>
+            <field name="roleName" desc="角色名称"/>
+            <field name="roleEname" desc="角色英文名称" required="true"/>
+            <!--<field name="userable" desc="0否、1是"/>-->
+            <!--<field name="userableDesc" type="cons" xpath="userable" dictType="ENABLE_DISABLE" desc="是否可用"/>-->
+        </field-list>
+    </rcv>
+</trans>

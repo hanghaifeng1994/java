@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/task    http://www.springframework.org/schema/task/spring-task-3.0.xsd
+       ">
+	<task:annotation-driven />
+	<!--//删除收藏数据-->
+	<bean id="deleteJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- durability 表示任务完成之后是否依然保留到数据库，默认false -->
+		<property name="durability" value="true" />
+		<property name="requestsRecovery" value="true" />
+		<property name="jobClass">
+			<value>
+				com.learnyeai.quartz.DetailQuartzJobBean
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="targetObject" value="CollectIntInfoTask" />
+				<entry key="targetMethod" value="deleteInteractData" />
+				<!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+				<!--
+                可以在job类上注解实现，并发，jobdata持久化
+                @PersistJobDataAfterExecution
+                @DisallowConcurrentExecution
+                -->
+				<entry key="concurrent" value="false" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="delJobTrigger"
+		  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="deleteJobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>0/10 * * * * ?</value><!--每10秒钟执行一次 -->
+		</property>
+	</bean>
+	<!--新增收藏-->
+	<bean id="addJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- durability 表示任务完成之后是否依然保留到数据库，默认false -->
+		<property name="durability" value="true" />
+		<property name="requestsRecovery" value="true" />
+		<property name="jobClass">
+			<value>
+				com.learnyeai.quartz.DetailQuartzJobBean
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="targetObject" value="CollectIntInfoTask" />
+				<entry key="targetMethod" value="saveInteractData" />
+				<!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+				<!--
+                可以在job类上注解实现，并发，jobdata持久化
+                @PersistJobDataAfterExecution
+                @DisallowConcurrentExecution
+                -->
+				<entry key="concurrent" value="false" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="saveJobTrigger"
+		  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="addJobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>0/10 * * * * ?</value><!--每5分钟钟执行一次 -->
+		</property>
+	</bean>
+
+
+	<bean id="saveJobDetail2" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- durability 表示任务完成之后是否依然保留到数据库，默认false -->
+		<property name="durability" value="true" />
+		<property name="requestsRecovery" value="true" />
+		<property name="jobClass">
+			<value>
+				com.learnyeai.quartz.DetailQuartzJobBean
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="targetObject" value="IsLikedIntInfoTask" />
+				<entry key="targetMethod" value="saveLikeData" />
+				<!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+				<!--
+                可以在job类上注解实现，并发，jobdata持久化
+                @PersistJobDataAfterExecution
+                @DisallowConcurrentExecution
+                -->
+				<entry key="concurrent" value="false" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="saveJobTrigger2"
+		  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="saveJobDetail2" />
+		</property>
+		<property name="cronExpression">
+			<value>0/10 * * * * ?</value><!--每10秒钟执行一次 -->
+		</property>
+	</bean>
+	<!--处理用户数据统计任务-->
+	<bean id="saveCustJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- durability 表示任务完成之后是否依然保留到数据库，默认false -->
+		<property name="durability" value="true" />
+		<property name="requestsRecovery" value="true" />
+		<property name="jobClass">
+			<value>
+				com.learnyeai.quartz.DetailQuartzJobBean
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="targetObject" value="dataSynchronTask" />
+				<entry key="targetMethod" value="saveCustData" />
+				<!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+				<!--
+                可以在job类上注解实现，并发，jobdata持久化
+                @PersistJobDataAfterExecution
+                @DisallowConcurrentExecution
+                -->
+				<entry key="concurrent" value="false" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="saveCustJobTrigger"
+		  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="saveCustJobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>0/10 * * * * ?</value><!--每10秒钟执行一次 -->
+		</property>
+	</bean>
+
+	<!--处理对象数据统计任务-->
+	<bean id="saveCustJobDetail2" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- durability 表示任务完成之后是否依然保留到数据库，默认false -->
+		<property name="durability" value="true" />
+		<property name="requestsRecovery" value="true" />
+		<property name="jobClass">
+			<value>
+				com.learnyeai.quartz.DetailQuartzJobBean
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="targetObject" value="dataSynchronTask" />
+				<entry key="targetMethod" value="saveTimesData" />
+				<!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+				<!--
+                可以在job类上注解实现，并发，jobdata持久化
+                @PersistJobDataAfterExecution
+                @DisallowConcurrentExecution
+                -->
+				<entry key="concurrent" value="false" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="saveCustJobTrigger2"
+		  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="saveCustJobDetail2" />
+		</property>
+		<property name="cronExpression">
+			<value>0/10 * * * * ?</value><!--每10秒钟执行一次 -->
+		</property>
+	</bean>
+
+</beans>

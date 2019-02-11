@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgSchmEdtPackageDao">
+    <resultMap id="BaseResultMap" type="CfgSchmEdtPackage">
+        <id property="edtPkgId" column="EDT_PKG_ID" jdbcType="VARCHAR" />
+        <result property="pkgId" column="PKG_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtId" column="SCHM_EDT_ID" jdbcType="VARCHAR" />
+        <result property="edtPkgStatus" column="EDT_PKG_STATUS" jdbcType="CHAR" />
+        <result property="edtPkgType" column="EDT_PKG_TYPE" jdbcType="CHAR" />
+        <result property="edtPkgYearPrice" column="EDT_PKG_YEAR_PRICE" jdbcType="DECIMAL" />
+        <result property="edtPkgMonthPrice" column="EDT_PKG_MONTH_PRICE" jdbcType="DECIMAL" />
+        <result property="mdlId" column="MDL_ID" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        EDT_PKG_ID,PKG_ID,SCHM_EDT_ID,EDT_PKG_STATUS,EDT_PKG_TYPE,
+        EDT_PKG_YEAR_PRICE,EDT_PKG_MONTH_PRICE,MDL_ID,CREATE_BY,CREATE_DATE,
+        UPDATE_BY,UPDATE_DATE
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{edtPkgId},#{pkgId},#{schmEdtId},#{edtPkgStatus},#{edtPkgType},
+        #{edtPkgYearPrice},#{edtPkgMonthPrice},#{mdlId},#{createBy},#{createDate},
+        #{updateBy},#{updateDate}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.CFG_SCHM_EDT_PACKAGE </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            EDT_PKG_ID = #{edtPkgId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="CfgSchmEdtPackage">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="CfgSchmEdtPackage">
+        update <include refid="TableClause" />
+        <set>
+        PKG_ID=#{pkgId},
+        SCHM_EDT_ID=#{schmEdtId},
+        EDT_PKG_STATUS=#{edtPkgStatus},
+        EDT_PKG_TYPE=#{edtPkgType},
+        EDT_PKG_YEAR_PRICE=#{edtPkgYearPrice},
+        EDT_PKG_MONTH_PRICE=#{edtPkgMonthPrice},
+        MDL_ID=#{mdlId},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate},
+        UPDATE_BY=#{updateBy},
+        UPDATE_DATE=#{updateDate}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="CfgSchmEdtPackage">
+            update <include refid="TableClause" />
+            <set>
+                <if test="pkgId!=null">PKG_ID=#{pkgId},</if>
+                <if test="schmEdtId!=null">SCHM_EDT_ID=#{schmEdtId},</if>
+                <if test="edtPkgStatus!=null">EDT_PKG_STATUS=#{edtPkgStatus},</if>
+                <if test="edtPkgType!=null">EDT_PKG_TYPE=#{edtPkgType},</if>
+                <if test="edtPkgYearPrice!=null">EDT_PKG_YEAR_PRICE=#{edtPkgYearPrice},</if>
+                <if test="edtPkgMonthPrice!=null">EDT_PKG_MONTH_PRICE=#{edtPkgMonthPrice},</if>
+                <if test="mdlId!=null">MDL_ID=#{mdlId},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate},</if>
+                <if test="updateBy!=null">UPDATE_BY=#{updateBy},</if>
+                <if test="updateDate!=null">UPDATE_DATE=#{updateDate}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

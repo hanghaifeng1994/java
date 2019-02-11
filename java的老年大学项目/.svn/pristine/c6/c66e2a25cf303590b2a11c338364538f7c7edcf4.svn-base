@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="考题选项类-详情">
+    <snd>
+        <field name="itemId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="itemId" desc="ID"/>
+        <field name="questionId" desc="所属题目"/>
+        <field name="optionContent" desc="题支内容"/>
+        <field name="answer" desc="是否答案"/>
+        <field name="orderNum" desc="序号"/>
+    </rcv>
+</trans>

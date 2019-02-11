@@ -1,0 +1,73 @@
+package com.learnyeai.resource.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.resource.model.ResResource;
+import com.learnyeai.resource.service.ResResourceWyService;
+import com.learnyeai.resource.util.ResourceUtil;
+
+/**
+ *
+ * @author twang
+ */
+@RestController
+@RequestMapping("${adminPath}" + ResResourceController.BASE_URL)
+public class ResResourceController extends BaseController<ResResource> {
+	public static final String BASE_URL = "/ResResource/";
+
+	@Autowired
+	private ResResourceWyService resResourceWyService;
+
+	@Override
+	protected BaseService<ResResource> getService() {
+		return resResourceWyService;
+	}
+
+	@Override
+	public Object execute(IBusinessContext ctx) {
+		String method = CtxHeadUtil.getControllerMethod();
+		ResResource rr = resResourceWyService.convert2Bean(ctx.getParamMap());
+		rr.setSiteIds(ResourceUtil.convertSiteIds((String)ctx.getParamMap().get("sites")));
+		if ("save".equals(method)) {
+			return resResourceWyService.saveOrUpdate(rr);
+		}
+		if ("deleteById".equals(method)) {
+			return resResourceWyService.deleteRes(rr);
+		}
+
+		if ("queryManagePage".equals(method)) {
+			return rtnPageList4Report(resResourceWyService.queryManagePage(rr));
+		}
+
+		if ("queryShowPage".equals(method)) {
+			return rtnPageList4Report(resResourceWyService.queryShowPage(rr));
+		}
+
+		if ("queryMainPage".equals(method)) {// 主站下发的列表
+			return rtnPageList4Report(resResourceWyService.queryMainPage(rr));
+		}
+
+		if ("detail".equals(method)) {
+			return resResourceWyService.detail(rr.getResId());
+		}
+
+		if ("queryById".equals(method)) {
+			return resResourceWyService.queryById(rr.getResId());
+		}
+
+		if ("publish".equals(method)) {
+			return resResourceWyService.publish(rr);
+		}
+
+		if ("check".equals(method)) {
+			return resResourceWyService.check(rr);
+		}
+		return super.execute(ctx);
+	}
+}

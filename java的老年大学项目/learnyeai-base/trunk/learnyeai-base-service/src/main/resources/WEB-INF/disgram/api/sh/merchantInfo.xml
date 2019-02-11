@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="merchantInfo" desc="商户小程序-商户信息">
+    <snd>
+    </snd>
+    <rcv>
+        <field name="MCHT_ID" desc="商户id"/>
+        <field name="MCHT_NAME" desc="商户名称"/>
+        <field name="MCHT_SHORTNAME" desc="商户shortname"/>
+        <field name="MCHT_LINKMAN" desc="联系人"/>
+        <field name="MCHT_PHONE" desc="手机号"/>
+        <field name="MCHT_TELEPHONE" desc="座机"/>
+        <field name="MCHT_ADRESS" desc="地址"/>
+        <field name="MCHT_LOGO" desc="logo"/>
+        <field name="PUBLIC_NUM_NAME" desc="公众号名称"/>
+    </rcv>
+</trans>

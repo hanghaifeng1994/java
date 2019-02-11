@@ -1,0 +1,72 @@
+package com.learnyeai.album.web;
+
+import com.learnyeai.base.api.util.SiteUtils;
+import com.learnyeai.base.api.vo.PtsetSiteVo;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.album.model.AbmAlbum;
+import com.learnyeai.album.service.AbmAlbumWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class AbmAlbumController extends BaseController<AbmAlbum> {
+
+    @Autowired
+    private AbmAlbumWyService abmAlbumWyService;
+
+    @Override
+    protected BaseService<AbmAlbum> getService() {
+        return abmAlbumWyService;
+    }
+
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String method = CtxHeadUtil.getControllerMethod();
+        if("sendLowerPage".equals(method)){
+            return abmAlbumWyService.sendLowerPage(ctx);
+        }
+        if("queryPage".equals(method)){
+            return abmAlbumWyService.queryPageExt(ctx);
+        }
+        if("queryPageUse".equals(method)){
+            return abmAlbumWyService.queryPageUse(ctx);
+        }
+        if("save".equals(method)){
+            return abmAlbumWyService.saveData(ctx);
+        }
+        if("delete".equals(method)){
+            return abmAlbumWyService.delBatch(ctx);
+        }
+        if("queryById".equals(method)){
+            return abmAlbumWyService.queryByIdMsg(ctx);
+        }
+        if("sumbitAudit".equals(method)){
+            return  abmAlbumWyService.sumbitAudit(ctx);
+        }
+        if("audit".equals(method)){
+            try {
+                return abmAlbumWyService.audit(ctx);
+            } catch (WeyeRabbitException e) {
+                e.printStackTrace();
+            }
+        }
+        if("myQueryPage".equals(method)){
+          return   abmAlbumWyService.myQueryPage(ctx);
+        }
+        if("recommend".equals(method)){
+            return abmAlbumWyService.recommend(ctx);
+        }
+        return super.execute(ctx);
+    }
+}

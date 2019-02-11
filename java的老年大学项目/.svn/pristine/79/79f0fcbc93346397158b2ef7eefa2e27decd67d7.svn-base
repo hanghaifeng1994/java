@@ -1,0 +1,116 @@
+package com.learnyeai.resource.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+import java.util.Date;
+
+/**
+ * 
+ *
+ * @author twang
+ */
+public class ResUserResourceRecordVo extends BaseVo {
+
+    /**
+    * 
+    */
+    private String id;
+
+    /**
+     * 
+     */
+    private String userResourceId;
+    /**
+     * 
+     */
+    private Integer studyTime;
+    /**
+     * 
+     */
+    private Integer appStudyTime;
+    /**
+     * 
+     */
+    private String studyDay;
+    /**
+     * 
+     */
+    private Integer hour;
+    /**
+     * 
+     */
+    private Date startLearningDate;
+    /**
+     * 
+     */
+    private Date endLearningDate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getUserResourceId() {
+        return userResourceId;
+    }
+
+    public void setUserResourceId(String userResourceId) {
+        this.userResourceId = userResourceId;
+    }
+    public Integer getStudyTime() {
+        return studyTime;
+    }
+
+    public void setStudyTime(Integer studyTime) {
+        this.studyTime = studyTime;
+    }
+    public Integer getAppStudyTime() {
+        return appStudyTime;
+    }
+
+    public void setAppStudyTime(Integer appStudyTime) {
+        this.appStudyTime = appStudyTime;
+    }
+    public String getStudyDay() {
+        return studyDay;
+    }
+
+    public void setStudyDay(String studyDay) {
+        this.studyDay = studyDay;
+    }
+    public Integer getHour() {
+        return hour;
+    }
+
+    public void setHour(Integer hour) {
+        this.hour = hour;
+    }
+    public Date getStartLearningDate() {
+        return startLearningDate;
+    }
+
+    public void setStartLearningDate(Date startLearningDate) {
+        this.startLearningDate = startLearningDate;
+    }
+    public Date getEndLearningDate() {
+        return endLearningDate;
+    }
+
+    public void setEndLearningDate(Date endLearningDate) {
+        this.endLearningDate = endLearningDate;
+    }
+
+    public static class TF {
+        public static String id = "id";  // 
+        public static String userResourceId = "userResourceId";  // 
+        public static String studyTime = "studyTime";  // 
+        public static String appStudyTime = "appStudyTime";  // 
+        public static String studyDay = "studyDay";  // 
+        public static String hour = "hour";  // 
+        public static String startLearningDate = "startLearningDate";  // 
+        public static String endLearningDate = "endLearningDate";  // 
+
+    }
+
+}

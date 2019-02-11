@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="joinTeam" desc="小组成员-详情">
+    <snd>
+        <field name="sgpId" desc="小组id" required="true"/>
+        <field name="custId" desc="客户id" required="true"/>
+    </snd>
+    <rcv>
+
+    </rcv>
+</trans>

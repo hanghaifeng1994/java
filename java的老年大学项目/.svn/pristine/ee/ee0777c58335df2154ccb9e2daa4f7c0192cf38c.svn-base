@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="章节资源-详情">
+	<snd>
+		<field name="id" desc="id" />
+	</snd>
+	<rcv>
+		<field name="id" desc="ID" />
+		<field name="cptId" desc="章节id" />
+		<field name="resId" desc="资源id" />
+		<field name="resType" desc="资源类型0:pc 1:手机" />
+		<field name="fileType" desc="文件类型" />
+	</rcv>
+</trans>

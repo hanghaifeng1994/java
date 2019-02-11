@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="insert" desc="上报审核-新增">
+    <snd>
+        <field name="rpTitle" desc="标题"/>
+        <field name="objId" desc="对象id"/>
+        <field name="serviceType" desc="业务类型"/>
+        <field name="detailUrl" desc="详情url"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

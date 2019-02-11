@@ -1,0 +1,12 @@
+package com.learnyeai.learnbehavior.mapper;
+
+import com.learnyeai.learnbehavior.model.StdCustLearnRecord;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyBatisDao;
+/**
+ * @Description: 客户学习记录
+ * @author yl
+ */
+@MyBatisDao
+public interface StdCustLearnRecordMapper extends BaseMapper<StdCustLearnRecord> {
+}

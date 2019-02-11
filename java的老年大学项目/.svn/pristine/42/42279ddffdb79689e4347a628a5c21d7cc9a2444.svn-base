@@ -1,0 +1,18 @@
+package com.learnyeai.course.mq;
+
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
+
+import com.learnyeai.mq.ResourceMq;
+
+@Component
+@RabbitListener(queues="resource.queue")
+public class ResourceLearnReceiver {
+
+    @RabbitHandler
+    public void process(ResourceMq obj) {
+        System.out.println("topicMessageReceiver  : ");
+    }
+
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="isSignUp" desc="活动-人员是否报名">
+    <snd>
+        <field name="list" desc="列表" type="E">
+            <field name="actId" desc="活动id"/>
+            <field name="custId" desc="用户id"/>
+        </field>
+    </snd>
+    <rcv>
+        <field name="LIST" desc="活动是否参加列表" type="E">
+            <field name="actId" desc="活动id"/>
+            <field name="custId" desc="用户id"/>
+            <field name="status" desc="状态 0否 1是"/>
+        </field>
+    </rcv>
+</trans>

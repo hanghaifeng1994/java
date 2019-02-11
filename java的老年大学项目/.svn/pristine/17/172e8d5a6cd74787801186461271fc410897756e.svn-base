@@ -1,0 +1,33 @@
+package com.learnyeai.common.utils;
+
+import com.learnyeai.core.consts.ICons;
+
+/**
+ * Created by zpz on 2018/5/8.
+ */
+public class WeyeCons {
+    /**
+     * 登录类型
+     */
+    public enum LOGIN_TYPE implements ICons {
+        STAFF("1", "员工"), CUST("2"," 客户"), STAFF_MNG("3", "员工后管")
+        ;
+
+        LOGIN_TYPE(String val, String label) {
+            this.val = val;
+            this.label = label;
+        }
+
+        private String val;
+        private String label;
+        @Override
+        public String getLabel() {
+            return label;
+        }
+
+        @Override
+        public String getVal() {
+            return val;
+        }
+    }
+}

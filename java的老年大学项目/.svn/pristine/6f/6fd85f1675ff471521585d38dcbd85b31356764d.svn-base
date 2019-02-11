@@ -1,0 +1,47 @@
+package com.learnyeai.learnai.support;
+
+import com.learnyeai.learnai.consts.SessR;
+import com.learnyeai.learnai.context.ThreadContextUtil;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
+/**
+ * Created by zpz on 2016/4/28.
+ */
+public class CurrentUserHelp{
+    public static String getId() {
+        String userId = ThreadContextUtil.getSessionRequired().getUserId();
+        return userId;
+    }
+
+    public static String getLoginName() {
+        Object userName = ThreadContextUtil.getSessionRequired().getAttribute(SessR.CUST_LGN);
+        return userName==null?"":userName.toString();
+    }
+
+    public static String getPhone() {
+        Object phone = ThreadContextUtil.getSessionRequired().getAttribute(SessR.MOBILE_NO);
+        return phone==null?"":phone.toString();
+    }
+
+    public static String getCustName() {
+        Object custName = ThreadContextUtil.getSessionRequired().getAttribute(SessR.CUST_NAME);
+        return custName==null?"":custName.toString();
+    }
+
+    public static String getCustType() {
+        Object custType = ThreadContextUtil.getSessionRequired().getAttribute(SessR.CUST_TYPE);
+        return custType==null?"":custType.toString();
+    }
+
+    public static String getSex() {
+        Object sex = ThreadContextUtil.getSessionRequired().getAttribute(SessR.CUST_SEX);
+        return sex==null?"":sex.toString();
+    }
+
+    public static Map getUserInfo() {
+        Object o = ThreadContextUtil.getSessionRequired().getAttribute(SessR.USER_INFO);
+        return o == null? null : (Map)o;
+    }
+}

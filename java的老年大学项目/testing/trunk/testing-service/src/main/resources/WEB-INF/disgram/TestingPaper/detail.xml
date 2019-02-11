@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="根据组卷规则的出的测验试卷-详情">
+    <snd>
+        <field name="paperId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="paperId" desc="ID"/>
+        <field name="paperRuleId" desc="所属组卷规则"/>
+        <field name="usered" desc="是否已用"/>
+        <field name="disabled" desc="是否禁用"/>
+        <field name="paperNum" desc="卷号"/>
+    </rcv>
+</trans>

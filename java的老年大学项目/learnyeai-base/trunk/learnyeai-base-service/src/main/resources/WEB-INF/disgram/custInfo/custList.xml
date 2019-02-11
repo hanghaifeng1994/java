@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="custList" desc="客户-客户列表"  isPage="true" >
+    <snd>
+        <field name="KEYWORD" desc="搜索关键字" comment="填写姓名"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="客户-客户组列表" type="E">
+            <field name="GP_ID" desc="分组id"/>
+            <field name="GP_NAME" desc="分组名称"/>
+            <field-list name="CUST_LIST" desc="客户列表" type="E">
+                <field name="CUST_ID" desc="id"/>
+                <field name="CUST_NAME" desc="姓名"/>
+                <field name="PHONE" desc="手机号"/>
+                <field name="EMAIL" desc="邮箱"/>
+            </field-list>
+        <field name="PHOTO" desc="头像"/>
+        </field-list>
+
+    </rcv>
+</trans>

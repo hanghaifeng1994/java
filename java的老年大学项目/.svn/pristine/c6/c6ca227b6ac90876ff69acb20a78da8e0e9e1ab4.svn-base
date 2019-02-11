@@ -1,0 +1,107 @@
+package com.learnyeai.base.bean;
+
+import com.learnyeai.base.api.bean.BaseInfoDao;
+import com.learnyeai.base.api.vo.*;
+import com.learnyeai.base.model.*;
+import com.learnyeai.base.service.*;
+import com.learnyeai.tools.common.BeanHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by zpz on 2018/8/4.
+ */
+@Component
+public class BaseInfoDaoImpl implements BaseInfoDao {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private CustInfoWyService custInfoWyService;
+    @Autowired
+    private CfgSchemeWyService schemeWyService;
+    @Autowired
+    private CfgSchemeEditionWyService schemeEditionWyService;
+    @Autowired
+    private ShMerchantWyService merchantWyService;
+    @Autowired
+    private ShMerchantSchemeWyService merchantSchemeWyService;
+    @Autowired
+    private PtsetPlatformWyService platformWyService;
+    @Autowired
+    private PtsetSiteWyService siteWyService;
+
+    @Override
+    public CustInfoVo queryCustInfo(String s) {
+        CustInfo entity = custInfoWyService.queryById(s);
+        CustInfoVo vo = new CustInfoVo();
+        BeanHelper.copy(entity,vo);
+        return vo;
+    }
+
+    @Override
+    public CfgSchemeVo queryScheme(String s) {
+        CfgScheme entity = schemeWyService.queryById(s);
+        CfgSchemeVo vo = new CfgSchemeVo();
+        BeanHelper.copy(entity,vo);
+        return vo;
+    }
+
+    @Override
+    public CfgSchemeEditionVo querySchemeEdition(String s) {
+        CfgSchemeEdition entity = schemeEditionWyService.queryById(s);
+        CfgSchemeEditionVo vo = new CfgSchemeEditionVo();
+        BeanHelper.copy(entity,vo);
+        return vo;
+    }
+
+    @Override
+    public ShMerchantVo queryMerchant(String s) {
+        ShMerchant entity = merchantWyService.queryById(s);
+        ShMerchantVo vo = new ShMerchantVo();
+        BeanHelper.copy(entity,vo);
+        return vo;
+    }
+
+    @Override
+    public ShMerchantSchemeVo queryMerchantScheme(String s) {
+
+        ShMerchantScheme entity = merchantSchemeWyService.queryById(s);
+        ShMerchantSchemeVo vo = new ShMerchantSchemeVo();
+        BeanHelper.copy(entity,vo);
+        return vo;
+    }
+
+    @Override
+    public PtsetPlatformVo queryPlatform(String s) {
+        PtsetPlatform entity = platformWyService.queryById(s);
+        PtsetPlatformVo vo = new PtsetPlatformVo();
+        BeanHelper.copy(entity,vo);
+        return vo;
+    }
+
+    @Override
+    public PtsetSiteVo querySite(String s) {
+
+        PtsetSite entity = siteWyService.queryById(s);
+        PtsetSiteVo vo = new PtsetSiteVo();
+        BeanHelper.copy(entity,vo);
+        return vo;
+    }
+
+    @Override
+    public List<PtsetSiteVo> querySitesByPt(String s) {
+        List<PtsetSite> entitys = siteWyService.queryByPt(s);
+        ArrayList<PtsetSiteVo> vos = new ArrayList<PtsetSiteVo>();
+        entitys.forEach((o)->{
+            PtsetSiteVo vo = new PtsetSiteVo();
+            BeanHelper.copy(o,vo);
+            vos.add(vo);
+        });
+        return vos;
+    }
+}

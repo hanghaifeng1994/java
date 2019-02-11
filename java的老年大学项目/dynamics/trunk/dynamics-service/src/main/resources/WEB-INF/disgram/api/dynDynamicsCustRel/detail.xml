@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="动态人员关联表-详情">
+    <snd>
+        <field name="rcvUserId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="rcvUserId" desc="接收人id"/>
+        <field name="dynId" desc="动态id"/>
+    </rcv>
+</trans>

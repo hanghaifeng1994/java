@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.resource.mapper.StdCustLearnResourceMapper">
+    <resultMap id="BaseResultMap" type="StdCustLearnResource">
+    <id property="lresId" column="LRES_ID" jdbcType="VARCHAR" />
+
+    <result property="studyUserId" column="STUDY_USER_ID" jdbcType="VARCHAR" />
+    <result property="resId" column="RES_ID" jdbcType="VARCHAR" />
+    <result property="source" column="SOURCE" jdbcType="DECIMAL" />
+    <result property="studyTime" column="STUDY_TIME" jdbcType="DECIMAL" />
+    <result property="studyNum" column="STUDY_NUM" jdbcType="DECIMAL" />
+    <result property="studyBreakpoint" column="STUDY_BREAKPOINT" jdbcType="DECIMAL" />
+    <result property="studyFinished" column="STUDY_FINISHED" jdbcType="CHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        LRES_ID,STUDY_USER_ID,RES_ID,SOURCE,STUDY_TIME,
+        STUDY_NUM,STUDY_BREAKPOINT,STUDY_FINISHED,CREATE_DATE,UPDATE_DATE,
+        SITE_ID,MCHT_ID,MCHT_SCHM_ID
+    </sql>
+
+
+    <sql id="TableClause"> ${}.STD_CUST_LEARN_RESOURCE </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryByCzScIdAndCustId" desc="学员签到-详情">
+    <snd>
+        <field name="custId" desc="学员id"/>
+        <field name="czScId" desc="日程id"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="" type="E">
+            <field name="date" desc="日期"/>
+            <field-list name="info" desc="info" type="E">
+                <field name="czSignId" desc="班级日程id"/>
+                <field name="czScId" desc="班级日程id"/>
+                <field name="scName" desc="日程名称"/>
+                <field name="timeParse" desc="时间"/>
+                <field name="scTearcher" desc="辅导老师id"/>
+                <field name="scTearcherName" desc="辅导老师名称" xpath="scTearcher" type="user"/>
+                <field name="scRealStartDate" desc="签到时间"/>
+                <field name="scRealEndDate" desc="签退时间"/>
+                <field name="status" desc="0未签到1已签到2已签退"/>
+                <field name="custName" desc="学员名称"  xpath="custId" type="user"/>
+            </field-list>
+        </field-list>
+    </rcv>
+</trans>

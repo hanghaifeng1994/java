@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="小组经验-保存">
+    <snd>
+        <field name="sgpId" desc="小组id"/>
+        <field name="epcId" desc="经验id"/>
+    </snd>
+    <rcv>
+
+    </rcv>
+</trans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="submitAuditBatch" desc="图片组-批量提交审核">
+    <snd>
+        <field name="phId" desc="id"/>
+        <field name="phStatus" desc="1审核中、2审核通过 (批量提交时所有的审核状态必须为一样)"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="提交了多少数据"/>
+    </rcv>
+</trans>

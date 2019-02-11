@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryByObjIdExt" desc="互动次数+点赞+收藏-详情">
+    <snd>
+        <field name="objId" desc="对象id"/>
+    </snd>
+    <rcv>
+        <field name="tmId" desc="id"/>
+        <field name="objId" desc="对象id"/>
+        <field name="type" desc="类型"/>
+        <field name="lkNum" desc="点赞数"/>
+        <field name="cmtNum" desc="评论数"/>
+        <field name="favNum" desc="收藏数"/>
+        <field name="browseNum" desc="浏览数"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+        <field name="isLikeStatus" desc="是否点赞"/>
+        <field name="isCollStatus" desc="是否收藏"/>
+    </rcv>
+</trans>

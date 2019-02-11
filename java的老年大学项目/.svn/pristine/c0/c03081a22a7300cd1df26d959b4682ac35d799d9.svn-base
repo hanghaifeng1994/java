@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="活动作品打分-保存">
+    <snd>
+        <field name="mkId" desc="ID"/>
+        <field name="wksId" desc="作品id" required="true"/>
+        <field name="mkScore" desc="打分"/>
+    </snd>
+    <rcv>
+
+    </rcv>
+</trans>

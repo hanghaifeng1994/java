@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.resource.mapper.ResResourceMapper">
+	<select id="queryShowPage" parameterType="ResResource"
+		resultMap="BaseResultMap">
+		SELECT c.RES_ID,r.RES_AS_NAME as
+		RES_NAME,c.RES_LABEL,c.RES_INFO,c.RES_PHOTO,
+		c.RES_IMGS,c.RES_AUTHOR,c.RES_POINTS,c.FILE_TYPE,c.FILE_FORMAT,
+		c.FILE_SIZE,c.FILE_TIME_LEN,c.RES_STATUS,r.RES_PUB_STATUS,r.RES_PUB_DATE,
+		c.RES_AUDIT_ID,c.CREATE_BY,c.CREATE_DATE,c.UPDATE_BY,c.UPDATE_DATE,
+		c.DEL_FLAG,c.SITE_ID,c.MCHT_ID,c.MCHT_SCHM_ID
+		FROM res_resource c
+		JOIN res_site_resource_rel r ON c.RES_ID = r.RES_ID
+		WHERE c.DEL_FLAG = '0'
+		<if test="siteId !=null and siteId!=''">
+			and r.SITE_ID = #{siteId,jdbcType=VARCHAR}
+		</if>
+		<if test="resName !=null and resName!=''">
+			and r.RES_AS_NAME like "%"#{resName}"%"
+		</if>
+		<if test="resAuthor !=null and resAuthor!=''">
+			and c.RES_AUTHOR like "%"#{resAuthor}"%"
+		</if>
+		<if test="resCatstr !=null and resCatstr != ''">
+			and c.RES_CATSTR like "%"#{resCatstr}"%"
+		</if>
+		<if test="resStatus !=null and resStatus != ''">
+			and c.RES_STATUS = #{resStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="resPubStatus !=null and resPubStatus != ''">
+			and r.RES_PUB_STATUS = #{resPubStatus,jdbcType=VARCHAR}
+		</if>
+		ORDER by r.RES_PUB_DATE desc
+	</select>
+
+	<select id="queryManagePage" parameterType="ResResource"
+		resultMap="BaseResultMap">
+		SELECT c.RES_ID,r.RES_AS_NAME as
+		RES_NAME,c.RES_LABEL,c.RES_INFO,c.RES_PHOTO,
+		c.RES_IMGS,c.RES_AUTHOR,c.RES_POINTS,c.FILE_TYPE,c.FILE_FORMAT,
+		c.FILE_SIZE,c.FILE_TIME_LEN,c.RES_STATUS,r.RES_PUB_STATUS,r.RES_PUB_DATE,
+		c.RES_AUDIT_ID,c.CREATE_BY,c.CREATE_DATE,c.UPDATE_BY,c.UPDATE_DATE,
+		c.DEL_FLAG,c.SITE_ID,c.MCHT_ID,c.MCHT_SCHM_ID
+		FROM res_resource c
+		JOIN res_site_resource_rel r ON c.RES_ID = r.RES_ID
+		WHERE c.DEL_FLAG = '0'
+		<if test="siteId !=null and siteId!=''">
+			and r.SITE_ID=#{siteId,jdbcType=VARCHAR}
+			and r.RES_CRT_SITE_ID=#{siteId,jdbcType=VARCHAR}
+		</if>
+		<if test="resName !=null and resName!=''">
+			and r.RES_AS_NAME like "%"#{resName}"%"
+		</if>
+		<if test="resAuthor !=null and resAuthor!=''">
+			and c.RES_AUTHOR like "%"#{resAuthor}"%"
+		</if>
+		<if test="resCatstr !=null and resCatstr != ''">
+			and c.RES_CATSTR like "%"#{resCatstr}"%"
+		</if>
+		<if test="resStatus !=null and resStatus != ''">
+			and c.RES_STATUS = #{resStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="resPubStatus !=null and resPubStatus != ''">
+			and r.RES_PUB_STATUS = #{resPubStatus,jdbcType=VARCHAR}
+		</if>
+		ORDER by r.RES_PUB_DATE desc
+	</select>
+	
+	
+	<select id="queryMainPage" parameterType="ResResource"
+		resultMap="BaseResultMap">
+		SELECT c.RES_ID,r.RES_AS_NAME as
+		RES_NAME,c.RES_LABEL,c.RES_INFO,c.RES_PHOTO,
+		c.RES_IMGS,c.RES_AUTHOR,c.RES_POINTS,c.FILE_TYPE,c.FILE_FORMAT,
+		c.FILE_SIZE,c.FILE_TIME_LEN,c.RES_STATUS,r.RES_PUB_STATUS,r.RES_PUB_DATE,
+		c.RES_AUDIT_ID,c.CREATE_BY,c.CREATE_DATE,c.UPDATE_BY,c.UPDATE_DATE,
+		c.DEL_FLAG,c.SITE_ID,c.MCHT_ID,c.MCHT_SCHM_ID
+		FROM res_resource c
+		JOIN res_site_resource_rel r ON c.RES_ID = r.RES_ID
+		WHERE c.DEL_FLAG = '0'
+		<if test="siteId !=null and siteId!=''">
+			and r.SITE_ID=#{siteId,jdbcType=VARCHAR}
+			and r.RES_CRT_SITE_ID != r.SITE_ID
+		</if>
+		<if test="resName !=null and resName!=''">
+			and r.RES_AS_NAME like "%"#{resName}"%"
+		</if>
+		<if test="resAuthor !=null and resAuthor!=''">
+			and c.RES_AUTHOR like "%"#{resAuthor}"%"
+		</if>
+		<if test="resCatstr !=null and resCatstr != ''">
+			and c.RES_CATSTR like "%"#{resCatstr}"%"
+		</if>
+		<if test="resStatus !=null and resStatus != ''">
+			and c.RES_STATUS = #{resStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="resPubStatus !=null and resPubStatus != ''">
+			and r.RES_PUB_STATUS = #{resPubStatus,jdbcType=VARCHAR}
+		</if>
+		ORDER by r.RES_PUB_DATE desc
+	</select>
+</mapper>

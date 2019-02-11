@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.testing.mapper.TestingStudentPaperMapper">
+    <resultMap id="BaseResultMap" type="TestingStudentPaper">
+    <id property="awId" column="AW_ID" jdbcType="VARCHAR" />
+
+    <result property="paperNo" column="PAPER_NO" jdbcType="VARCHAR" />
+    <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+    <result property="status" column="STATUS" jdbcType="CHAR" />
+    <result property="score" column="SCORE" jdbcType="DECIMAL" />
+    <result property="studentName" column="STUDENT_NAME" jdbcType="VARCHAR" />
+    <result property="studentUserId" column="STUDENT_USER_ID" jdbcType="VARCHAR" />
+    <result property="submitTime" column="SUBMIT_TIME" jdbcType="TIMESTAMP" />
+    <result property="examSecs" column="EXAM_SECS" jdbcType="DECIMAL" />
+    <result property="paperRuleId" column="PAPER_RULE_ID" jdbcType="VARCHAR" />
+    <result property="paperId" column="PAPER_ID" jdbcType="VARCHAR" />
+    <result property="tsId" column="TS_ID" jdbcType="VARCHAR" />
+    <result property="examNum" column="EXAM_NUM" jdbcType="DECIMAL" />
+    <result property="kgScore" column="KG_SCORE" jdbcType="DECIMAL" />
+    <result property="zgScore" column="ZG_SCORE" jdbcType="DECIMAL" />
+    <result property="startTime" column="START_TIME" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME" jdbcType="TIMESTAMP" />
+    <result property="hasSubject" column="HAS_SUBJECT" jdbcType="CHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        AW_ID,PAPER_NO,CREATE_TIME,STATUS,SCORE,
+        STUDENT_NAME,STUDENT_USER_ID,SUBMIT_TIME,EXAM_SECS,PAPER_RULE_ID,
+        PAPER_ID,TS_ID,EXAM_NUM,KG_SCORE,ZG_SCORE,
+        START_TIME,END_TIME,HAS_SUBJECT
+    </sql>
+
+
+    <sql id="TableClause"> ${}.TESTING_STUDENT_PAPER </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

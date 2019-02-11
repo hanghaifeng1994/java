@@ -1,0 +1,47 @@
+#server.port=8861
+#server.servlet.context-path=/base-intfc
+
+# \u8BBE\u7F6E\u6FC0\u6D3B\u7684\u73AF\u5883
+spring.profiles.active=dev
+spring.application.name=rabbitmq-consumer-demo
+
+#eureka server
+eureka.client.registerWithEureka=true
+#eureka.client.fetchRegistry=true
+#eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+
+
+#\u9ED8\u8BA4\u4E3A/**
+#spring.mvc.static-path-pattern=/**
+
+# \u89C6\u56FE\u76F8\u5173
+spring.mvc.view.prefix=/templates/
+spring.mvc.view.suffix=.ftl
+
+spring.freemarker.cache=false
+spring.freemarker.request-context-attribute=request
+
+# mybatis \u914D\u7F6E
+mybatis.type-aliases-package=com.learnyeai.rabbitmq.consumer.demo
+mybatis.mapper-locations=classpath:mybatis/mapper/**/*.xml
+mybatis.configLocation=classpath:/weye-service-base/core-mybatis-config.xml
+
+# \u901A\u7528 Mapper \u914D\u7F6E
+#mapper.mappers=com.learnyeai.core.support.BaseMapper
+mapper.not-empty=false
+mapper.identity=MYSQL
+
+# \u5206\u9875\u63D2\u4EF6\u914D\u7F6E
+pagehelper.helperDialect=mysql
+pagehelper.reasonable=true
+pagehelper.supportMethodsArguments=true
+pagehelper.params=count=countSql
+
+
+#--------------------
+#\u4E3B\u952E\u751F\u6210\u65B9\u5F0F\uFF1Asequence\u3001uuid\uFF0C\u9ED8\u8BA4\u4E3Asequence
+key.generator_type=uuid
+adminPath=/apltdcrt
+
+schema.configPlat=WEYE_MMC2
+schema.interPlat=aplt_decorate

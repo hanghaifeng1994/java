@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="deleteById" desc="资源文件-删除">
+    <snd>
+        <field name="resFielId" desc="资源文件id 多个id用英文逗号隔开" required="true"/>
+    </snd>
+    <rcv>
+        <field name="status" desc="状态 0删除成功，1删除失败" />
+        <field name="num" desc="删除数量"/>
+    </rcv>
+</trans>

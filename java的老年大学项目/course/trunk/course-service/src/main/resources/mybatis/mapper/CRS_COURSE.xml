@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.course.mapper.CrsCourseMapper">
+    <resultMap id="BaseResultMap" type="CrsCourse">
+    <id property="csId" column="CS_ID" jdbcType="VARCHAR" />
+
+    <result property="csName" column="CS_NAME" jdbcType="VARCHAR" />
+    <result property="csSerialNo" column="CS_SERIAL_NO" jdbcType="VARCHAR" />
+    <result property="csTag" column="CS_TAG" jdbcType="VARCHAR" />
+    <result property="csInfo" column="CS_INFO" jdbcType="VARCHAR" />
+    <result property="csPhoto" column="CS_PHOTO" jdbcType="VARCHAR" />
+    <result property="csImgs" column="CS_IMGS" jdbcType="VARCHAR" />
+    <result property="csPoints" column="CS_POINTS" jdbcType="DECIMAL" />
+    <result property="csPrice" column="CS_PRICE" jdbcType="DECIMAL" />
+    <result property="csStudylength" column="CS_STUDYLENGTH" jdbcType="DECIMAL" />
+    <result property="csLecturer" column="CS_LECTURER" jdbcType="VARCHAR" />
+    <result property="csCopyrightStartdate" column="CS_COPYRIGHT_STARTDATE" jdbcType="TIMESTAMP" />
+    <result property="csCopyrightEnddate" column="CS_COPYRIGHT_ENDDATE" jdbcType="TIMESTAMP" />
+    <result property="csTotalTime" column="CS_TOTAL_TIME" jdbcType="DECIMAL" />
+    <result property="csModel" column="CS_MODEL" jdbcType="DECIMAL" />
+    <result property="csCatstr" column="CS_CATSTR" jdbcType="VARCHAR" />
+    <result property="csStudyneed" column="CS_STUDYNEED" jdbcType="CHAR" />
+    <result property="csStudyTime" column="CS_STUDY_TIME" jdbcType="DECIMAL" />
+    <result property="csHomeworkneed" column="CS_HOMEWORKNEED" jdbcType="CHAR" />
+    <result property="csHomeworkScore" column="CS_HOMEWORK_SCORE" jdbcType="DECIMAL" />
+    <result property="csExamneed" column="CS_EXAMNEED" jdbcType="CHAR" />
+    <result property="csExamScore" column="CS_EXAM_SCORE" jdbcType="DECIMAL" />
+    <result property="csScoreneed" column="CS_SCORENEED" jdbcType="CHAR" />
+    <result property="csScore" column="CS_SCORE" jdbcType="DECIMAL" />
+    <result property="csPubStatus" column="CS_PUB_STATUS" jdbcType="CHAR" />
+    <result property="csPubDate" column="CS_PUB_DATE" jdbcType="TIMESTAMP" />
+    <result property="csTjStatus" column="CS_TJ_STATUS" jdbcType="CHAR" />
+    <result property="csTjDate" column="CS_TJ_DATE" jdbcType="TIMESTAMP" />
+    <result property="csStatus" column="CS_STATUS" jdbcType="CHAR" />
+    <result property="csAuditId" column="CS_AUDIT_ID" jdbcType="VARCHAR" />
+    <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+    <result property="eduCat" column="EDU_CAT" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        CS_ID,CS_NAME,CS_SERIAL_NO,CS_TAG,CS_INFO,
+        CS_PHOTO,CS_IMGS,CS_POINTS,CS_PRICE,CS_STUDYLENGTH,
+        CS_LECTURER,CS_COPYRIGHT_STARTDATE,CS_COPYRIGHT_ENDDATE,CS_TOTAL_TIME,CS_MODEL,
+        CS_CATSTR,CS_STUDYNEED,CS_STUDY_TIME,CS_HOMEWORKNEED,CS_HOMEWORK_SCORE,
+        CS_EXAMNEED,CS_EXAM_SCORE,CS_SCORENEED,CS_SCORE,CS_PUB_STATUS,
+        CS_PUB_DATE,CS_TJ_STATUS,CS_TJ_DATE,CS_STATUS,CS_AUDIT_ID,
+        CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE,DEL_FLAG,
+        SITE_ID,MCHT_ID,MCHT_SCHM_ID,EDU_CAT
+    </sql>
+
+
+    <sql id="TableClause"> ${}.CRS_COURSE </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="商户门店-详情">
+    <snd>
+        <field name="storeId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="storeId" desc="门店id"/>
+        <field name="storeName" desc="门店名称"/>
+        <field name="storeCode" desc="门店编码"/>
+        <field name="storeAdress" desc="地址"/>
+        <field name="storePhoto" desc="图片"/>
+        <field name="storeImgs" desc="图片展示"/>
+        <field name="storeLinkman" desc="负责人"/>
+        <field name="storePhone" desc="电话"/>
+        <field name="storeInfo" desc="门店介绍"/>
+        <field name="yLine" desc="经度"/>
+        <field name="xLine" desc="纬度"/>
+        <field name="mchtSchmId" desc="商户方案ID"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

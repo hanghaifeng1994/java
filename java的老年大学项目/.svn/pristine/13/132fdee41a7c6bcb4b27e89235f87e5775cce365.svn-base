@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="投票-新增">
+    <snd>
+        <field name="objId" desc="对像id"/>
+        <field name="type" desc="course资源 resource经验 experience小组 group班级 class证书 cert咨讯 news"/>
+        <field name="vtDate" desc="投票时间"/>
+    </snd>
+    <rcv>
+        <field name="msg" desc="返回说明"/>
+    </rcv>
+</trans>

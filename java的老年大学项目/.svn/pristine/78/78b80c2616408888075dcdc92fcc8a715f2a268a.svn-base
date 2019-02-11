@@ -1,0 +1,183 @@
+package com.learnyeai.learnbehavior.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
+
+/**
+ * 客户学习章节
+ *
+ * @author yl
+ */
+public class StdCustLearnChapter extends BaseEntity {
+
+    /**
+    * id
+    */
+    @Id
+    @Column(name = "LCPT_ID")
+    private String lcptId;
+
+    /**
+     * 课程id
+     */
+    @Column(name = "CS_ID")
+    private String csId;
+    /**
+     * 章节id
+     */
+    @Column(name = "CPT_ID")
+    private String cptId;
+    /**
+     * 学习时长
+     */
+    @Column(name = "STUDY_LEN")
+    private Long studyLen;
+    /**
+     * 学习次数
+     */
+    @Column(name = "STUDY_NUM")
+    private Long studyNum;
+    /**
+     * 当前资源id
+     */
+    @Column(name = "CUR_RES_ID")
+    private String curResId;
+    /**
+     * 学习断点
+     */
+    @Column(name = "STUDY_BREAKPOINT")
+    private Long studyBreakpoint;
+    /**
+     * 学习人id
+     */
+    @Column(name = "STUDY_USER_ID")
+    private String studyUserId;
+    /**
+     * 商户id
+     */
+    @Column(name = "MCHT_ID")
+    private String mchtId;
+    /**
+     * 商户方案id
+     */
+    @Column(name = "MCHT_SCHM_ID")
+    private String mchtSchmId;
+    /**
+     * 创建时间
+     */
+    @Column(name = "CREATE_DATE")
+    private Date createDate;
+    /**
+     * 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
+    private Date updateDate;
+
+    public String getLcptId() {
+        return lcptId;
+    }
+
+    public void setLcptId(String lcptId) {
+        this.lcptId = lcptId;
+    }
+    public String getCsId() {
+        return csId;
+    }
+
+    public void setCsId(String csId) {
+        this.csId = csId;
+    }
+    public String getCptId() {
+        return cptId;
+    }
+
+    public void setCptId(String cptId) {
+        this.cptId = cptId;
+    }
+    public Long getStudyLen() {
+        return studyLen;
+    }
+
+    public void setStudyLen(Long studyLen) {
+        this.studyLen = studyLen;
+    }
+    public Long getStudyNum() {
+        return studyNum;
+    }
+
+    public void setStudyNum(Long studyNum) {
+        this.studyNum = studyNum;
+    }
+    public String getCurResId() {
+        return curResId;
+    }
+
+    public void setCurResId(String curResId) {
+        this.curResId = curResId;
+    }
+    public Long getStudyBreakpoint() {
+        return studyBreakpoint;
+    }
+
+    public void setStudyBreakpoint(Long studyBreakpoint) {
+        this.studyBreakpoint = studyBreakpoint;
+    }
+    public String getStudyUserId() {
+        return studyUserId;
+    }
+
+    public void setStudyUserId(String studyUserId) {
+        this.studyUserId = studyUserId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "STD_CUST_LEARN_CHAPTER";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("schema.interPlat");   // 库名
+
+        public static String lcptId = "LCPT_ID";  // id
+        public static String csId = "CS_ID";  // 课程id
+        public static String cptId = "CPT_ID";  // 章节id
+        public static String studyLen = "STUDY_LEN";  // 学习时长
+        public static String studyNum = "STUDY_NUM";  // 学习次数
+        public static String curResId = "CUR_RES_ID";  // 当前资源id
+        public static String studyBreakpoint = "STUDY_BREAKPOINT";  // 学习断点
+        public static String studyUserId = "STUDY_USER_ID";  // 学习人id
+        public static String mchtId = "MCHT_ID";  // 商户id
+        public static String mchtSchmId = "MCHT_SCHM_ID";  // 商户方案id
+        public static String createDate = "CREATE_DATE";  // 创建时间
+        public static String updateDate = "UPDATE_DATE";  // 更新时间
+
+    }
+}

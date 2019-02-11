@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="appVerUpdate" desc="公共-应用版本更新">
+	<snd>
+		<field name="APP_TYPE" desc="应用类型" required="true" comment="001：个人手机 002：小微银行 003：数字银行 004：直销银行"/>
+		<field name="CLIENT_OS" desc="客户端操作系统" required="true" comment="A：Android I：IOS"/>
+		<field name="CLIENT_VER" desc="客户端当前版本号" required="true" comment="版本格式统一为：1.0.0"/>
+	</snd>
+	<rcv>
+		<field name="IS_NEED_UPD" desc="是否需求更新标识" comment="0:不需更新 1:可选择更新 2:强制更新"/>
+		<field name="VER_DESC" desc="版本描述" />
+		<field name="VER_URL" desc="资源路径" />
+	</rcv>
+</trans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="方案版本-详情">
+    <snd>
+        <field name="schmEdtId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="schmEdtId" desc="方案版本id"/>
+        <field name="schmEdtName" desc="方案版本名称"/>
+        <field name="schmEdtDesc" desc="版本描述"/>
+        <field name="schmEdtPhoto" desc="图片"/>
+        <field name="schmEdtStatus" desc="状态0未发布、1发布，发布后用户可以看见"/>
+        <field name="schmEnableStatus" desc="启用状态 0未启用、1启用，版本是否可用"/>
+        <field name="schmEdtModStatus" desc="编辑状态0未编辑、1修改版本信息、2修改功能包、3版本信息功能包都修改了"/>
+        <field name="schmEdtGrade" desc="版本级别，版本历史级别"/>
+        <field name="schmEdtCode" desc="商户升级信息编码"/>
+        <field name="schmId" desc="方案id"/>
+        <field name="schmEdtHisId" desc="方案版本历史的id"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

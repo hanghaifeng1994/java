@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.schoolclass.mapper.ClzClazzSignMapper">
+    <select id="getPersent" parameterType="ClzClazzSign" resultType="java.util.HashMap">
+        SELECT COUNT(1) num ,persent,level FROM (SELECT
+        CASE WHEN COUNT(1)/#{num}  <![CDATA[<]]> 0.6 THEN '小于60%'
+        WHEN COUNT(1)/#{num} >= 0.6 AND COUNT(1) <![CDATA[<]]> 0.8  THEN '60%·79%'
+        WHEN COUNT(1)/#{num} >= 0.8 AND COUNT(1) <![CDATA[<]]> 0.9  THEN '80%·90%'
+        WHEN COUNT(1)/#{num} >= 0.9 THEN '大于90%'
+        ELSE NULL END persent,
+         CASE WHEN COUNT(1)/#{num}  <![CDATA[<]]> 0.6 THEN 'FI'
+        WHEN COUNT(1)/#{num} >= 0.6 AND COUNT(1) <![CDATA[<]]> 0.8  THEN 'SE'
+        WHEN COUNT(1)/#{num} >= 0.8 AND COUNT(1) <![CDATA[<]]> 0.9  THEN 'TR'
+        WHEN COUNT(1)/#{num} >= 0.9 THEN 'FO'
+        ELSE NULL END level,
+        COUNT(1) AS num,cz_sc_id
+        FROM    clz_clazz_sign where cz_id=#{czId}  GROUP BY cz_sc_id ) t GROUP BY persent
+    </select>
+</mapper>

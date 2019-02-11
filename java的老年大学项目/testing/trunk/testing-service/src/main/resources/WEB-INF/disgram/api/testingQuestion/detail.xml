@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="题目-详情">
+    <snd>
+        <field name="questionId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="questionId" desc="ID"/>
+        <field name="twoSectionId" desc="第二级章节（冗余）"/>
+        <field name="oneSectionId" desc="第一级章节（冗余）"/>
+        <field name="threeSectionId" desc="第三级章节（冗余）"/>
+        <field name="stemContent" desc="题干内容"/>
+        <field name="answerDesc" desc="答案描述"/>
+        <field name="sectionId" desc="所在章节"/>
+        <field name="qpId" desc="所属题库"/>
+        <field name="itemTypeId" desc="题型"/>
+        <field name="onlyCode" desc="用uuid机制初次生成后面不同版本copy保持一直即可"/>
+        <field name="version" desc="题目版本，从1开始"/>
+        <field name="newversion" desc="每个唯一代码的题目只能有个一条记录此值为true"/>
+        <field name="disabled" desc="是否禁用"/>
+        <field name="itemPubStatus" desc="发布状态"/>
+        <field name="itemPubDate" desc="发布时间"/>
+        <field name="itemAuditId" desc="审核id"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+    </rcv>
+</trans>

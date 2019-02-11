@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.learnyeai:auditlog-rabbitmq-mq:1.0.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/learnyeai/auditlog-rabbitmq-mq/1.0.0-SNAPSHOT/auditlog-rabbitmq-mq-1.0.0-20180807.102755-2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/learnyeai/auditlog-rabbitmq-mq/1.0.0-SNAPSHOT/auditlog-rabbitmq-mq-1.0.0-20180807.102755-2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/learnyeai/auditlog-rabbitmq-mq/1.0.0-SNAPSHOT/auditlog-rabbitmq-mq-1.0.0-20180807.102755-2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

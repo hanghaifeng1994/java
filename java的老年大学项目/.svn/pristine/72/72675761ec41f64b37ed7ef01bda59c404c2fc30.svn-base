@@ -1,0 +1,13 @@
+package com.learnyeai.studygroup.mapper;
+
+import com.learnyeai.studygroup.model.SgpStudyGroupExperience;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyBatisDao;
+/**
+ * @Description: 小组经验
+ * @author yl
+ */
+@MyBatisDao
+public interface SgpStudyGroupExperienceMapper extends BaseMapper<SgpStudyGroupExperience> {
+        int deleteByExpId(SgpStudyGroupExperience ssg);
+}

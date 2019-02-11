@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryShowPage" desc="班级课程列表查询" isPage="true">
+	<snd>
+		<field name="czId" desc="班级id" required="true" />
+		<field name="csId" desc="课程id" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="班级课程列表">
+			<field name="ccId" desc="班级课程id" />
+			<field name="czId" desc="班级id" />
+			<field name="csId" desc="课程id" />
+			<field name="csName" desc="课程名称" />
+			<field name="csType" desc="1选修课、2必修课" />
+			<field name="csStudylength" desc="学时" type="F" dolt="1"/>
+			<field name="csAmount" desc="金额" type="F" dolt="1"/>
+			<field name="delFlag" desc="删除标记" />
+			<field name="siteId" desc="站点" />
+		</field-list>
+	</rcv>
+</trans>

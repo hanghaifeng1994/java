@@ -1,0 +1,162 @@
+var menus = [
+    // 00基础服务
+    {
+        name : "新增和修改资源分类保存",
+        url : "api/resCategory/save.do",
+        path : "api/resCategory/save",
+        clazz : "PP00"
+    },{
+        name : "资源分类-批量删除",
+        url : "api/resCategory/deleteById.do",
+        path : "api/resCategory/deleteById",
+        clazz : "PP00"
+    },{
+        name : "资源分类-详情获取",
+        url : "api/resCategory/queryById.do",
+        path : "api/resCategory/queryById",
+        clazz : "PP00"
+    },{
+        name : "资源分类-可管理资源分类列表查询",
+        url : "api/resCategory/queryManagePage.do",
+        path : "api/resCategory/queryManagePage",
+        clazz : "PP00"
+    },{
+        name : "资源分类-可用分类列表查询",
+        url : "api/resCategory/queryShowPage.do",
+        path : "api/resCategory/queryShowPage",
+        clazz : "PP00"
+    },{
+        name : "资源新增和修改保存",
+        url : "api/resResource/save.do",
+        path : "api/resResource/save",
+        clazz : "PP01"
+    },{
+        name : "资源 -批量删除",
+        url : "api/resResource/deleteById.do",
+        path : "api/resResource/deleteById",
+        clazz : "PP01"
+    },{
+        name : "资源-批量发布/取消发布",
+        url : "api/resResource/publish.do",
+        path : "api/resResource/publish",
+        clazz : "PP01"
+    },{
+        name : "资源-批量修改审核状态",
+        url : "api/resResource/check.do",
+        path : "api/resResource/check",
+        clazz : "PP01"
+    },{
+        name : "资源-详情获取/根据资源ids参数资源列表",
+        url : "api/resResource/detail.do",
+        path : "api/resResource/detail",
+        clazz : "PP01"
+    },{
+        name : "资源-可管理列表查询",
+        url : "api/resResource/queryManagePage.do",
+        path : "api/resResource/queryManagePage",
+        clazz : "PP01"
+    },{
+        name : "资源-可用列表查询",
+        url : "api/resResource/queryShowPage.do",
+        path : "api/resResource/queryShowPage",
+        clazz : "PP01"
+    },{
+        name : "资源-主站下发列表查询",
+        url : "api/resResource/queryMainPage.do",
+        path : "api/resResource/queryMainPage",
+        clazz : "PP01"
+    },{
+        name : "资源文件-新增和修改",
+        url : "api/resFile/save.do",
+        path : "api/resFile/save",
+        clazz : "PP01"
+    },{
+        name : "资源文件-批量删除",
+        url : "api/resFile/deleteById.do",
+        path : "api/resFile/deleteById",
+        clazz : "PP01"
+    },{
+        name : "资源文件-详情",
+        url : "api/resFile/detail.do",
+        path : "api/resFile/detail",
+        clazz : "PP01"
+    },{
+        name : "学员学习记录-学员学习时间明细记录列表",
+        url : "api/stdCustLearnRecord/queryPage.do",
+        path : "api/stdCustLearnRecord/queryPage",
+        clazz : "PP02"
+    },{
+        name : "提交记时",
+        url : "api/stdCustLearnRecord/learnSave.do",
+        path : "api/stdCustLearnRecord/learnSave",
+        clazz : "PP02"
+    },{
+        name : "学员学习资源-新增",
+        url : "api/stdCustLearnResource/save.do",
+        path : "api/stdCustLearnResource/save",
+        clazz : "PP03"
+    },{
+        name : "学员学习资源-学员多个资源id的学习情况列表",
+        url : "api/stdCustLearnResource/queryResources.do",
+        path : "api/stdCustLearnResource/queryResources",
+        clazz : "PP03"
+    },{
+        name : "学员学习资源-学员资源列表",
+        url : "api/stdCustLearnResource/queryResourcePage.do",
+        path : "api/stdCustLearnResource/queryResourcePage",
+        clazz : "PP03"
+    },{
+        name : "资源最近学习的人员",
+        url : "api/stdCustLearnResource/queryUserPage.do",
+        path : "api/stdCustLearnResource/queryUserPage",
+        clazz : "PP03"
+    },{
+        name : "资源学习统计-根据多个资源id获取统计列表",
+        url : "api/stdStudyObjectStatistics/queryByResId.do",
+        path : "api/stdStudyObjectStatistics/queryByResId",
+        clazz : "PP04"
+    },{
+        name : "多个用户id对应用户学习统计列表",
+        url : "api/stdCustExt/queryByUserId.do",
+        path : "api/stdCustExt/queryByUserId",
+        clazz : "PP04"
+    }
+];
+
+
+var tplMenus = [ '{@each menus as item}',
+    '<button class="PP ${item.clazz}" data-url="${item.url}" ',
+    ' data-path="${item.path}" data-opType=${item.opType} ',
+    ' onclick="loadForm(this)">${item.name}</button>', '{@/each}' ]
+    .join("");
+
+function loadMenus(ftClass,ftCode,ftName) {
+    try {
+        var datas = [];
+        if (ftClass || ftCode || ftName) {
+            for (var i = 0, j = menus.length; i < j; i++) {
+                var menu = menus[i];
+                if(!menu.opType)
+                    menu.opType = 0;
+                if (ftName && ftName.length > 0
+                    && menu.name.indexOf(ftName) >= 0) {
+                    datas.push(menu);
+                } else if (ftCode && ftCode.length > 0
+                    && menu.url.indexOf(ftCode) >= 0) {
+                    datas.push(menu);
+                } else if (ftClass && ftClass.length > 0
+                    && menu.clazz.indexOf(ftClass) >= 0) {
+                    datas.push(menu);
+                }
+            }
+        } else {
+            datas = menus;
+        }
+        var html = juicer(tplMenus, {
+            menus : datas
+        });
+        $("#TRAN_AREA").html(html);
+    } catch (e) {
+        alert(e);
+    }
+}

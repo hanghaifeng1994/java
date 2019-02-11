@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-资源分类-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc=""/>
+        <field name="siteId" desc="站点id"/>
+        <field name="catId" desc="资源分类id"/>
+        <field name="showStatus" desc="显示状态"/>
+        <field name="catSort" desc="排序"/>
+        <field name="catCrtSiteId" desc="创建站点"/>
+    </rcv>
+</trans>

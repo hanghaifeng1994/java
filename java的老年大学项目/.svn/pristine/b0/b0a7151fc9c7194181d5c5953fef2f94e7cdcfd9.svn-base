@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.sh.dao.ShOrderAddserviceRelDao">
+    <resultMap id="BaseResultMap" type="ShOrderAddserviceRel">
+        <id property="asId" column="AS_ID" jdbcType="VARCHAR" />
+        <result property="ordId" column="ORD_ID" jdbcType="VARCHAR" />
+        <result property="asPrice" column="AS_PRICE" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        AS_ID,ORD_ID,AS_PRICE
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{asId},#{ordId},#{asPrice}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.SH_ORDER_ADDSERVICE_REL </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            AS_ID = #{asId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="ShOrderAddserviceRel">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="ShOrderAddserviceRel">
+        update <include refid="TableClause" />
+        <set>
+        ORD_ID=#{ordId},
+        AS_PRICE=#{asPrice}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="ShOrderAddserviceRel">
+            update <include refid="TableClause" />
+            <set>
+                <if test="ordId!=null">ORD_ID=#{ordId},</if>
+                <if test="asPrice!=null">AS_PRICE=#{asPrice}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

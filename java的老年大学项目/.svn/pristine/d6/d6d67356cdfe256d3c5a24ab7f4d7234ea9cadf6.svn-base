@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.base.mapper.RolePermissionMapper">
+    <select id="queryCustIdByPerm" parameterType="map" resultType="map">
+        SELECT DISTINCT u.CUST_ID
+        from cust_info u
+        WHERE EXISTS(
+        SELECT 1 from cust_user_role ur
+        ,cust_role_func crf
+        ,cfg_function f
+        WHERE f.FUNC_ID=crf.FUNC_ID
+        and crf.ROLE_ID=ur.ROLE_ID
+        and f.FUNC_PERMISSION LIKE #{perm})
+        AND u.MCHT_ID=#{mchtId}
+        AND u.MCHT_SCHM_ID=#{mchtSchmId}
+    </select>
+    <select id="queryRoleIdByPerm" parameterType="map" resultType="map">
+        SELECT DISTINCT r.ROLE_ID from cust_role r
+        WHERE EXISTS(SELECT 1
+        from cfg_function f
+        ,cust_role_func crf
+        where crf.ROLE_ID=r.ROLE_ID
+        and f.FUNC_ID=crf.FUNC_ID
+        and f.FUNC_PERMISSION LIKE #{perm})
+        and r.MCHT_ID=#{mchtId}
+        and r.MCHT_SCHM_ID=#{mchtSchmId}
+    </select>
+</mapper>

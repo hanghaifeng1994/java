@@ -1,0 +1,174 @@
+package com.learnyeai.cert.service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
+import com.learnyeai.base.api.util.SiteUtils;
+import com.learnyeai.base.api.vo.PtsetSiteVo;
+import com.learnyeai.cert.mapper.CtCertMapper;
+import com.learnyeai.cert.model.CtCert;
+import com.learnyeai.cert.model.CtSiteCertRel;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.common.utils.WeyeCons;
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.tools.common.BeanUtils;
+import com.learnyeai.tools.common.StringUtils;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class CtCertWyService extends WeyeBaseService<CtCert> {
+
+	@Resource
+	private CtCertMapper ctCertMapper;
+
+	@Resource
+	private CtSiteCertRelWyService ctSiteCertRelWyService;
+
+	@Override
+	public BaseMapper<CtCert> getMapper() {
+		return ctCertMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return true;
+	}
+
+	@Transactional
+	public Map<String, Object> saveOrUpdate(CtCert cert) {
+		Map<String, Object> map = new HashMap();
+		boolean isNew = false;
+		if (StringUtils.isBlank(cert.getCtId())) {
+			cert.setCreateDate(new Date());
+			cert.setCtStatus("0");
+			cert.setDelFlag("0");
+			isNew = true;
+		}
+		super.save(cert);
+		// 保存关系表
+		if (isNew) {
+			for (PtsetSiteVo site : SiteUtils.getPubSites(cert.getSiteId())) {
+				CtSiteCertRel ctSiteCertRel = new CtSiteCertRel();
+				ctSiteCertRel.setCtId(cert.getCtId());
+				ctSiteCertRel.setCtCrtSiteId(cert.getSiteId());
+				ctSiteCertRel.setSiteId(site.getSiteId());
+				ctSiteCertRelWyService.save(ctSiteCertRel);
+			}
+		}
+		map.put("status", 0);
+		map.put("msg", "保存成功!");
+		map.put("id", cert.getCtId());
+		return map;
+
+	}
+
+	@Transactional
+	public Map<String, Object> deleteCert(CtCert cert) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String certId : cert.getCtId().split(",")) {
+			CtCert delOne = new CtCert();
+			delOne.setCtId(certId);
+			delOne.setDelFlag("1");
+			int c = ctCertMapper.updateByPrimaryKeySelective(delOne);
+			if (c > 0)
+				num++;
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public Map<String, Object> check(CtCert cert) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String certId : cert.getCtId().split(",")) {
+			CtCert obj = super.queryById(certId);
+			if (obj != null) {
+				obj.setCtStatus(cert.getCtStatus());
+				super.save(obj);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public Map<String, Object> submitCheck(CtCert cert) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String certId : cert.getCtId().split(",")) {
+			CtCert obj = super.queryById(certId);
+			if (obj != null) {
+				obj.setCtStatus("1");
+				super.save(obj);
+				System.out.println("发送审核消息队列。。。");
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public Object detail(String certIds) {
+		List<CtCert> list = Lists.newArrayList();
+		for (String certId : certIds.split(",")) {
+			CtCert crsCourse = super.queryById(certId);
+			if (crsCourse == null)
+				continue;
+			list.add(crsCourse);
+		}
+		return list;
+	}
+
+	@Transactional
+	public MyPage<CtCert> queryManagePage(CtCert cert) {
+		if (cert != null && cert.getPage() != null && cert.getRows() != null) {
+			PageHelper.startPage(cert.getPage(), cert.getRows());
+		}
+		List<CtCert> list = ctCertMapper.queryManagePage(cert);
+		MyPage<CtCert> page = new MyPage<CtCert>(list);
+		return page;
+	}
+
+	@Transactional
+	public MyPage<CtCert> queryShowPage(CtCert cert) {
+		if (cert != null && cert.getPage() != null && cert.getRows() != null) {
+			PageHelper.startPage(cert.getPage(), cert.getRows());
+		}
+		List<CtCert> list = ctCertMapper.queryShowPage(cert);
+		MyPage<CtCert> page = new MyPage<CtCert>(list);
+		return page;
+
+	}
+
+	@Transactional
+	public MyPage<CtCert> queryMainPage(CtCert cert) {
+		if (cert != null && cert.getPage() != null && cert.getRows() != null) {
+			PageHelper.startPage(cert.getPage(), cert.getRows());
+		}
+		List<CtCert> list = ctCertMapper.queryMainPage(cert);
+		MyPage<CtCert> page = new MyPage<CtCert>(list);
+		return page;
+
+	}
+}

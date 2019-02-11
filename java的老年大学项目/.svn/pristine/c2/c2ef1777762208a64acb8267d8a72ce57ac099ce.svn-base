@@ -1,0 +1,41 @@
+package com.learnyeai.album.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.common.support.WeyeBaseService;
+
+import com.learnyeai.album.model.AbmSitePhotoRel;
+import com.learnyeai.album.service.AbmSitePhotoRelWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class AbmSitePhotoRelController extends BaseController<AbmSitePhotoRel> {
+
+    @Autowired
+    private AbmSitePhotoRelWyService abmSitePhotoRelWyService;
+
+
+    @Override
+    protected WeyeBaseService<AbmSitePhotoRel> getService() {
+        return abmSitePhotoRelWyService;
+    }
+
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String method = CtxHeadUtil.getControllerMethod();
+        AbmSitePhotoRel ap=abmSitePhotoRelWyService.convert2Bean(ctx.getParamMap());
+        if("queryPageBySiteId".equals(method)){
+            return abmSitePhotoRelWyService.queryPageBySiteId(ap,"siteId");
+        }
+        if("queryPageByUse".equals(method)){
+            return abmSitePhotoRelWyService.queryPageBySiteId(ap,"user");
+        }
+        return  super.execute(ctx);
+    }
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="show" desc="班级分类-显示/不显示">
+    <snd>
+        <field name="id" desc="ID"/>
+        <field name="showStatus" desc="显示状态 0不显示1显示"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

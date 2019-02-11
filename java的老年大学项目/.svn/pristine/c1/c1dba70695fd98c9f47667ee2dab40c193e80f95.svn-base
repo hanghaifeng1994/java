@@ -1,0 +1,6 @@
+traincore.uploadpath=D\:\\work\\devtool\\apache-tomcat-upload\\apache-tomcat-6.0.39\\webapps\\fileserver\\upload
+traincore.uploadpath.url = http://localhost:8088/fileserver/upload
+offlinecert.url = http://localhost:8080/commonManage/usercert.action
+
+
+

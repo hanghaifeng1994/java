@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="recommend" desc="相册-批量推荐">
+    <snd>
+        <field name="abmId" desc="id"/>
+        <field name="posid" desc="推荐位置"/>
+        <field name="flag" desc="标识 0批量推荐 1取消推荐"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="操作数量"/>
+    </rcv>
+</trans>

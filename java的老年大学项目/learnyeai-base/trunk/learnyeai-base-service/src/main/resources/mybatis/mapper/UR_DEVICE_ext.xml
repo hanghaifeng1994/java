@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.base.mapper.UrDeviceMapper">
+    <!--修改用户登录状态信息-->
+    <update id="updateDeviceStatusByCustId" parameterType="map">
+        UPDATE ${schema.interPlat}.UR_DEVICE SET DEV_STATUS=#{devStatus} WHERE CUST_ID=#{custId}
+    </update>
+
+    <update id="updateDeviceStatusByUUID" parameterType="map">
+        UPDATE ${schema.interPlat}.UR_DEVICE SET DEV_STATUS=#{devStatus} WHERE UUID=#{uuid}
+    </update>
+
+    <update id="updateDeviceStatus" parameterType="map">
+        UPDATE ${schema.interPlat}.UR_DEVICE SET DEV_STATUS=#{devStatus} WHERE CUST_ID=#{custId} AND UUID=#{uuid}
+    </update>
+</mapper>

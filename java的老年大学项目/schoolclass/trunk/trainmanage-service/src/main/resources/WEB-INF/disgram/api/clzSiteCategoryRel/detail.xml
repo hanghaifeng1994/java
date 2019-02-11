@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="-详情">
+    <snd>
+        <field name="siteId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="siteId" desc=""/>
+        <field name="catId" desc=""/>
+        <field name="showStatus" desc=""/>
+        <field name="catCrtSiteId" desc=""/>
+    </rcv>
+</trans>

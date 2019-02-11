@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="getSiteAbout" desc="关于-根据站点获取">
+    <snd>
+        <field name="siteId" desc="站点" required="true"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="id"/>
+        <field name="title" desc="标题"/>
+        <field name="content" desc="内容"/>
+        <field name="remarks" desc="备注"/>
+        <field name="siteId" desc="站点"/>
+        <field name="siteName"  desc="站点名称" xpath="siteId" type="site"/>
+        <field name="ptId"  desc="平台id" xpath="siteId" type="ptId"/>
+        <field name="ptName"  desc="平台名称" xpath="siteId" type="ptName"/>
+    </rcv>
+</trans>

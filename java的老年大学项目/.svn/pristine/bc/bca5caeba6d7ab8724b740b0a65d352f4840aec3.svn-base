@@ -1,0 +1,350 @@
+package com.learnyeai.base.service;
+
+import com.google.common.collect.Sets;
+import com.learnyeai.base.api.util.BaseCons;
+import com.learnyeai.base.mapper.CustMngSiteMapper;
+import com.learnyeai.base.mapper.CustUserRoleMapper;
+import com.learnyeai.base.model.CustInfo;
+import com.learnyeai.base.mapper.CustInfoMapper;
+import com.learnyeai.base.model.CustMngSite;
+import com.learnyeai.base.model.CustRole;
+import com.learnyeai.base.model.CustUserRole;
+import com.learnyeai.base.utils.DtHelps;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.core.exception.BusinessException;
+import com.learnyeai.learnai.consts.ReportErrorKey;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.learnai.support.BaseEntity;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.tools.common.BeanMapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author zhangpz
+ */
+@CacheConfig(cacheNames = BaseCons.CACHE_CUST_INFO)
+@Service
+public class CustInfoWyService extends WeyeBaseService<CustInfo> {
+
+    @Resource
+    private CustInfoMapper custInfoMapper;
+    @Autowired
+    private CustUserRoleMapper custUserRoleMapper;
+    @Autowired
+    private CustRoleWyService custRoleWyService;
+    @Autowired
+    private CustMngSiteMapper custMngSiteMapper;
+
+    @Override
+    public BaseMapper<CustInfo> getMapper() {
+        return custInfoMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    @Override
+    protected Weekend<CustInfo> genSqlExample(CustInfo custInfo, Map params) {
+        Weekend<CustInfo> weekend = super.genSqlExample(custInfo, params);
+        WeekendCriteria<CustInfo, Object> c = weekend.createCriteriaAddOn();
+
+        weekend.and(c);
+
+        if(null != custInfo){
+            // 登录名
+            if(StringUtils.isNotBlank(custInfo.getLoginName())){
+                c.andEqualTo(CustInfo::getLoginName, custInfo.getLoginName());
+            }
+
+            // openid
+            if(StringUtils.isNotBlank(custInfo.getOpenId())){
+                c.andEqualTo(CustInfo::getOpenId, custInfo.getOpenId());
+            }
+            // 客户类型
+            if(StringUtils.isNotBlank(custInfo.getCustType())){
+                c.andEqualTo(CustInfo::getCustType, custInfo.getCustType());
+            }
+            // 姓名
+            if(StringUtils.isNotBlank(custInfo.getCustName())){
+                c.andLike(CustInfo::getCustName, "%" + custInfo.getCustName()+"%");
+            }
+            // 单位
+            if(StringUtils.isNotBlank(custInfo.getOffice())){
+                c.andLike(CustInfo::getOffice, "%" + custInfo.getOffice()+"%");
+            }
+            // 帐号状态
+            if(StringUtils.isNotBlank(custInfo.getUserStatus())){
+                c.andEqualTo(CustInfo::getUserStatus, custInfo.getUserStatus());
+            }
+            // 身份证号
+            if(StringUtils.isNotBlank(custInfo.getIdcarNo())){
+                c.andEqualTo(CustInfo::getIdcarNo, custInfo.getIdcarNo());
+            }
+            // 商户
+            if(StringUtils.isNotBlank(custInfo.getMchtId())){
+                c.andEqualTo(CustInfo::getMchtId, custInfo.getMchtId());
+            }
+            // 商户方案
+            if(StringUtils.isNotBlank(custInfo.getMchtSchmId())){
+                c.andEqualTo(CustInfo::getMchtSchmId, custInfo.getMchtSchmId());
+            }
+
+
+        }else if(null == params){
+            // 角色
+            Object roleId = params.get("roleId");
+            if(roleId != null && StringUtils.isNotBlank(roleId.toString())) {
+                c.andCondition("exists(select 1 from cust_user_role ur where cust_info.cust_id=ur.cust_id)");
+            }
+        }
+
+
+        return weekend;
+    }
+
+    /**
+     * 查询管理员列表
+     * @param params
+     * @return
+     *  添加roleNames
+     */
+    public MyPage queryStaffPage(Map params){
+        MyPage<CustInfo> page = queryPage(null, params);
+        List<CustInfo> list = page.getList();
+
+        List<Map> rstList = new ArrayList<>();
+        for(CustInfo u : list){
+            try {
+                //  查询角色
+                List<CustRole> userRoleList = custRoleWyService.queryUserRole(u.getCustId());
+                StringBuffer sb = new StringBuffer();
+                userRoleList.forEach(ur ->{
+                    sb.append(ur.getRoleName()).append(",");
+                });
+
+                if(sb.length() > 0)
+                    sb.deleteCharAt(sb.length()-1);
+
+                Map<String, Object> o = BeanMapUtils.convertBean(u);
+                o.put("roleNames", sb.toString());
+                rstList.add(o);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        MyPage rstPage = new MyPage();
+        rstPage.setList(rstList);
+        rstPage.setPageNum(page.getPageNum());
+        rstPage.setPageSize(page.getPageSize());
+        rstPage.setTotal(page.getTotal());
+        return rstPage;
+    }
+
+
+    /**
+     * 查询某租户下的用户
+     * @param loginName 登录名
+     * @param tenantId 租户id 必传，以后可能改成方案id
+     * @param custType 客户类型：1员工、2用户、3系统人员
+     * @return
+     */
+    public CustInfo queryByLoginName(String loginName, String tenantId, String custType){
+        CustInfo custInfo = new CustInfo();
+        custInfo.setLoginName(loginName);
+        custInfo.setMchtId(tenantId);
+        custInfo.setCustType(custType);
+        List<CustInfo> list = queryByExample(custInfo, null);
+        return list.size() > 0? list.get(0) : null;
+    }
+
+    /**
+     * 设置用户状态正常
+     * @param custId
+     * @return
+     */
+    @CacheEvict
+    public int enableUser(String custId){
+        CustInfo pp = new CustInfo();
+        pp.setCustId(custId);
+        pp.setUserStatus(BaseCons.CUST_INFO_STATUS.N.getVal());
+        return super.updateBySelect(pp);
+    }
+
+    /**
+     * 冻结用户
+     * @param custId
+     */
+    @CacheEvict
+    @Transactional
+    public void freezeUser(String custId){
+        CustInfo pp = new CustInfo();
+        pp.setCustId(custId);
+        pp.setUserStatus(BaseCons.CUST_INFO_STATUS.D.getVal());
+        pp.setFreezeDate(Calendar.getInstance().getTime());
+        super.updateBySelect(pp);
+    }
+    @CacheEvict
+    @Transactional
+    public void freezeUser4Sys(String custId){
+        CustInfo pp = new CustInfo();
+        pp.setCustId(custId);
+        pp.setUserStatus(BaseCons.CUST_INFO_STATUS.E.getVal());
+        pp.setFreezeDate(Calendar.getInstance().getTime());
+        super.updateBySelect(pp);
+    }
+
+    /**
+     * 重置密码
+     * @param custId
+     * @param password
+     */
+    @CacheEvict
+    @Transactional
+    public void resetPassword(String custId, String password){
+        CustInfo pp = new CustInfo();
+        pp.setCustId(custId);
+        pp.setPassword(DtHelps.entryptPassword(password));
+        super.updateBySelect(pp);
+    }
+
+    /**
+     * 根据openid查询用户
+     * @param openId
+     * @return
+     */
+    @Cacheable
+    public CustInfo queryByOpenId(String openId){
+        CustInfo custInfo = new CustInfo();
+        custInfo.setOpenId(openId);
+        List<CustInfo> list = queryByExample(custInfo, null);
+        return list.size() > 0? list.get(0) : null;
+    }
+
+    @Cacheable
+    @Override
+    public CustInfo queryById(Object id) {
+        return super.queryById(id);
+    }
+
+    @CacheEvict
+    @Override
+    public int deleteById(Object id) {
+        return super.deleteById(id);
+    }
+
+    @CacheEvict(key = "#custInfo.custId")
+    @Override
+    public int delete(CustInfo custInfo) {
+        return super.delete(custInfo);
+    }
+
+    @CacheEvict(key = "#custInfo.custId", condition = "#custInfo.custId != null ")
+    @Override
+    public int save(CustInfo custInfo) {
+        if(custInfo.getCustId() == null){
+
+        }else {
+            custInfo.setLoginName(null);
+            custInfo.setPassword(null);
+            custInfo.setCustType(null);
+            custInfo.setCustIsAdmin(null);
+            custInfo.setUserStatus(null);
+            custInfo.setFreezeDate(null);
+            custInfo.setCreateDate(null);
+        }
+        return super.save(custInfo);
+    }
+
+    /**
+     * 查询员工管理站点
+     * @param custId
+     * @return
+     */
+    public List<String> queryStaffMngSiteIds(String custId){
+        CustMngSite mngSite = new CustMngSite();
+        mngSite.setCustId(custId);
+        List<CustMngSite> list = custMngSiteMapper.select(mngSite);
+        List<String> rstList = new ArrayList<>();
+        for(CustMngSite o : list){
+            rstList.add(o.getSiteId());
+        }
+        return rstList;
+    }
+    /**
+     * 查询员工角色id列表
+     * @param custId
+     * @return
+     */
+    public List<String> queryStaffRoleIds(String custId){
+        CustUserRole userRole = new CustUserRole();
+        userRole.setCustId(custId);
+        List<CustUserRole> list = custUserRoleMapper.select(userRole);
+        List<String> rstList = new ArrayList<>();
+        for(CustUserRole o : list){
+            rstList.add(o.getRoleId());
+        }
+        return rstList;
+    }
+    /**
+     * 修改员工的角色、管理的站点
+     * @param custId
+     * @param roleIds
+     * @param siteIds
+     */
+    public void saveStaffSiteRole(String custId, String[] roleIds, String[] siteIds){
+        // 查询用记
+        CustInfo custInfo = queryById(custId);
+        /*if(null == custInfo){
+            throw AresRuntimeException.build("custInfo.userNotExits").iniMessage("用户不存在");
+        }*/
+        if(!BaseCons.CUST_INFO_TYPE.YG.getVal().equals(custInfo.getCustType())){
+            throw AresRuntimeException.build("custInfo.userTypeError").iniMessage("不是管理员用户");
+        }
+
+        CustUserRole userRole = new CustUserRole();
+        userRole.setCustId(custId);
+        custUserRoleMapper.delete(userRole);
+        for(String roleId: roleIds){
+            if(StringUtils.isBlank(roleId))
+                continue;
+            userRole = new CustUserRole();
+            userRole.setCustId(custId);
+            userRole.setRoleId(roleId);
+            custUserRoleMapper.insert(userRole);
+        }
+
+        CustMngSite mngSite = new CustMngSite();
+        mngSite.setCustId(custId);
+        custMngSiteMapper.delete(mngSite);
+        for(String siteId : siteIds){
+            if(StringUtils.isBlank(siteId))
+                continue;
+            mngSite = new CustMngSite();
+            mngSite.setCustId(custId);
+            mngSite.setSiteId(siteId);
+            custMngSiteMapper.insert(mngSite);
+        }
+    }
+}

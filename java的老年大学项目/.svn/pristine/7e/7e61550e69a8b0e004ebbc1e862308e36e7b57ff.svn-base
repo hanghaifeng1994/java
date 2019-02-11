@@ -1,0 +1,29 @@
+package com.learnyeai.orderform.service;
+
+import com.learnyeai.orderform.model.OrdOrderform;
+import com.learnyeai.orderform.mapper.OrdOrderformMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class OrdOrderformWyService extends WeyeBaseService<OrdOrderform> {
+
+    @Resource
+    private OrdOrderformMapper ordOrderformMapper;
+
+    @Override
+    public BaseMapper<OrdOrderform> getMapper() {
+        return ordOrderformMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

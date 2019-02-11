@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="querySumbitPage" desc="作业提交记录列表" isPage="true">
+	<snd>
+		<field name="custName" desc="交作业人名称" />
+		<field name="uhScoreStatus" desc="0未评分、1已评分" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="作业提交记录">
+			<field name="uhId" desc="id" />
+			<field name="hwId" desc="作业id" />
+			<field name="uhContent" desc="内容" />
+			<field name="uhStatus" desc="0未提交、1已提交" />
+			<field name="uhSubmitDate" desc="交作业时间" />
+			<field name="custId" desc="交作业人id" />
+			<field name="custName" desc="交作业人名称" />
+			<field name="uhStarNum" desc="评星" />
+			<field name="uhScore" desc="得分" />
+			<field name="uhScoreContent" desc="评分内容" />
+			<field name="uhScoreStatus" desc="0未评分、1已评分" />
+			<field name="uhScoreDate" desc="评分时间" />
+			<field name="uhScoreUserId" desc="评分人id" />
+			<field name="createDate" desc="创建时间" />
+			<field name="siteId" desc="站点" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+		</field-list>
+	</rcv>
+</trans>

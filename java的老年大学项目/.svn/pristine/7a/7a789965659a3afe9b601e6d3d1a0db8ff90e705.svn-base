@@ -1,0 +1,23 @@
+package com.learnyeai.resource.service;
+
+import javax.annotation.Resource;
+
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+
+@Component
+public class QuartzLearnResourceService {
+	@Resource
+	private StdCustLearnResourceWyService stdCustLearnResourceWyService;
+	
+	@Scheduled(cron = "0 0/59 * * * ?")
+	public void timerToNow() {
+		try {
+			stdCustLearnResourceWyService.synRedisToDb();
+		} catch (WeyeRabbitException e) {
+			e.printStackTrace();
+		}
+	}
+}

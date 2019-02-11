@@ -1,0 +1,250 @@
+package com.learnyeai.base.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+
+import java.util.Date;
+
+/**
+ * 用户
+ *
+ * @author zhangpz
+ */
+public class CustUserVo extends BaseVo {
+
+    /**
+    * 用户id
+    */
+    private String userId;
+
+    /**
+     * 姓名
+     */
+    private String userName;
+    /**
+     * 用户昵称
+     */
+    private String shortName;
+    /**
+     * 登录名
+     */
+    private String loginName;
+    /**
+     * 密码
+     */
+    private String password;
+    /**
+     * N: 正常 E:人工冻结
+     */
+    private String userStatus;
+    /**
+     * 个性签名
+     */
+    private String sign;
+    /**
+     * 手机号
+     */
+    private String phone;
+    /**
+     * 邮箱
+     */
+    private String email;
+    /**
+     * 性别
+     */
+    private String sex;
+    /**
+     * 用户生日
+     */
+    private Date birthday;
+    /**
+     * 头像
+     */
+    private String photo;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
+    /**
+     * 小程序openid
+     */
+    private String openId;
+    /**
+     * UNIONID
+     */
+    private String unionid;
+    /**
+     * 商户方案id
+     */
+    private String mchtSchmId;
+    /**
+     * 商户id
+     */
+    private String mchtId;
+    /**
+     * 消费总金额
+     */
+    private Long consumeAmount;
+    /**
+     * 节省金额
+     */
+    private Long discountAmount;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public Long getConsumeAmount() {
+        return consumeAmount;
+    }
+
+    public void setConsumeAmount(Long consumeAmount) {
+        this.consumeAmount = consumeAmount;
+    }
+    public Long getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(Long discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public static class TF {
+        public static String userId = "userId";  // 用户id
+        public static String userName = "userName";  // 姓名
+        public static String shortName = "shortName";  // 用户昵称
+        public static String loginName = "loginName";  // 登录名
+        public static String password = "password";  // 密码
+        public static String userStatus = "userStatus";  // N: 正常 E:人工冻结
+        public static String sign = "sign";  // 个性签名
+        public static String phone = "phone";  // 手机号
+        public static String email = "email";  // 邮箱
+        public static String sex = "sex";  // 性别
+        public static String birthday = "birthday";  // 用户生日
+        public static String photo = "photo";  // 头像
+        public static String createDate = "createDate";  // 创建时间
+        public static String openId = "openId";  // 小程序openid
+        public static String unionid = "unionid";  // UNIONID
+        public static String mchtSchmId = "mchtSchmId";  // 商户方案id
+        public static String mchtId = "mchtId";  // 商户id
+        public static String consumeAmount = "consumeAmount";  // 消费总金额
+        public static String discountAmount = "discountAmount";  // 节省金额
+        public static String delFlag = "delFlag";  // 删除标记
+
+    }
+
+}

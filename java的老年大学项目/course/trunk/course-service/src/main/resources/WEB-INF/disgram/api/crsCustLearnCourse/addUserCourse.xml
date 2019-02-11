@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="addUserCourse" desc="课程-用户批量选课和取消选课">
+	<snd>
+		<field name="studyUserId" desc="学习人id 多个id用英文逗号隔开" required="true" />
+		<field name="csId" desc="课程id 多个id用英文逗号隔开" required="true" />
+		<field name="lcsNormal" desc="0取消选课、1选课" required="true"/>
+	</snd>
+	<rcv>
+		<field name="status" desc="状态 0成功，1失败" />
+	</rcv>
+</trans>

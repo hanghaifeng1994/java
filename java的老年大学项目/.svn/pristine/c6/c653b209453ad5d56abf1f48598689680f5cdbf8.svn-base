@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="insert" desc="点赞-新增">
+    <snd>
+        <field name="objId" desc="对象id"/>
+        <field name="type" desc="对象类型"/>
+        <field name="theUserId" desc="被点赞人id"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

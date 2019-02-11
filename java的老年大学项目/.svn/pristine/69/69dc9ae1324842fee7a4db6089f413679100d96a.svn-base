@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="活动作品-保存">
+    <snd>
+        <field name="wksId" desc="id"/>
+        <field name="actId" desc="活动id"/>
+        <field name="wksPhoto" desc="封面"/>
+        <field name="wksType" desc="类型 audio image doc text video stream"/>
+        <field name="wksFileIds" desc="附件ids"/>
+        <field name="wksFileNames" desc="附件名称"/>
+    </snd>
+    <rcv>
+        <field name="wksStatus" desc="0操作成功 1已提交不能修改"/>
+    </rcv>
+</trans>

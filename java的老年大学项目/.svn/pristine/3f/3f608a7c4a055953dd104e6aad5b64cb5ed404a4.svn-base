@@ -1,0 +1,64 @@
+package com.learnyeai.activity.service;
+
+import com.learnyeai.activity.model.ActResults;
+import com.learnyeai.activity.mapper.ActResultsMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActResultsWyService extends WeyeBaseService<ActResults> {
+
+    @Resource
+    private ActResultsMapper actResultsMapper;
+
+    @Override
+    public BaseMapper<ActResults> getMapper() {
+        return actResultsMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+    @Override
+    protected Weekend genSqlExample(ActResults t, Map params) {
+        Weekend<ActResults> w = super.genSqlExample(t,params);
+        WeekendCriteria<ActResults,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getActId())){
+            c.andEqualTo(ActResults::getActId,t.getActId());
+        }
+        if(StringUtils.isNotBlank(t.getRstStatus())){
+            c.andEqualTo(ActResults::getRstStatus,t.getRstStatus());
+        }
+        if(StringUtils.isNotBlank(t.getSiteId())){
+            c.andEqualTo(ActResults::getSiteId,t.getSiteId());
+        }
+        w.and(c);
+        return  w;
+
+    }
+
+    @Transactional
+    public Map<String,Object> deleteBatch(ActResults t){
+        String[] ids=(t.getRstId()).split(",");
+        int num=0;
+        for(String id:ids){
+            num+=super.deleteById(id);
+        }
+        return MapUtil.newMap("num",num);
+    }
+
+}

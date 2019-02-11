@@ -1,0 +1,234 @@
+var menus = [
+	// 00基础服务
+	{
+		name : "用户名密码管登录",
+		url : "login/passwordLogin.do",
+		path : "login/passwordLogin",
+		clazz : "PP00"
+	},{
+        name : "验证码登录",
+        url : "login/dynLogin.do",
+        path : "login/dynLogin",
+        clazz : "PP00"
+    },{
+        name : "uuid登录",
+        url : "base/uuidLogin.do",
+        path : "base/uuidLogin",
+        clazz : "PP00"
+    },{
+		name : "小程序登录",
+		url : "login/appletLogin.do",
+		path : "login/appletLogin",
+		clazz : "PP00"
+	},{
+		name:"退出登录",
+		url:"login/quitLogin.do",
+		path:"login/quitLogin",
+		clazz:"PP00"
+	}, {
+		name:"员工-忘记密码",
+		url:"common/forgetPassword.do",
+		path:"common/forgetPassword",
+		clazz:"PP00"
+	},{
+		name : "员工-修改密码",
+		url : "setup/cust/updatePassword.do",
+		path : "setup/cust/updatePassword",
+		clazz : "PP00"
+	}
+	// 通用PP01-------------------
+	,{
+		name : "短信验证码获取&发送",
+		url : "common/dynCodeSend.do",
+		path : "common/dynCodeSend",
+		clazz : "PP01"
+	}, {
+		name : "短信验证码校验",
+		url : "common/dynCodeCheck.do",
+		path : "common/dynCodeCheck",
+		clazz : "PP01"
+	},{
+		name : "邮箱验证码获取&发送",
+		url : "common/dynCodeEmailSend.do",
+		path : "common/dynCodeEmailSend",
+		clazz : "PP01"
+	}, {
+		name : "邮箱验证码校验",
+		url : "common/dynCodeEmailCheck.do",
+		path : "common/dynCodeEmailCheck",
+		clazz : "PP01"
+	},{
+		name : "获取系统时间",
+		url : "common/sysdate.do",
+		path : "common/sysdate",
+		clazz : "PP01"
+	}
+	// 设置PP02--------------------------------
+	/*,{
+	 name : "设置用户-绑定手机号",
+	 url : "setup/cust/bindPhone.do",
+	 path : "setup/cust/bindPhone",
+	 clazz : "PP02"
+	 }*/
+	,{
+		name : "小程序uuid登录（内部使用）",
+		url : "base/uuidLogin.do",
+		path : "base/uuidLogin",
+		clazz : "PP02"
+	},{
+		name : "小程序-明细（内部使用）",
+		url : "base/common/shAppletBase/detail.do",
+		path : "base/common/shAppletBase/detail",
+		clazz : "PP02"
+	},{
+		name : "小程序-根据方案标识查询小程序（内部使用）",
+		url : "base/common/shAppletBase/queryByShSchmId_appSings.do",
+		path : "base/common/shAppletBase/queryByShSchmId_appSings",
+		clazz : "PP02"
+	}
+	// 客户小程序PP03--------------------------------
+	,{
+		name : "设置-客户绑定手机号",
+		url : "api/user/set/custUserBindPhone.do",
+		path : "api/user/set/custUserBindPhone",
+		clazz : "PP03"
+	},{
+		name : "门店-门店列表",
+		url : "api/shStore/queryList.do",
+		path : "api/shStore/queryList",
+		clazz : "PP03"
+	},{
+		name : "员工-明细",
+		url : "api/cust/custInfo/queryById.do",
+		path : "api/cust/custInfo/queryById",
+		clazz : "PP03"
+	},{
+        name : "员工-列表-ttt",
+        url : "api/cust/custInfo/queryPage.do",
+        path : "api/cust/custInfo/queryPage",
+        clazz : "PP03"
+    },{
+		name : "小程序-商户信息",
+		url : "api/sh/merchantInfo.do",
+		path : "api/sh/merchantInfo",
+		clazz : "PP03"
+	}
+	// 员工小程序PP05--------------------------------
+
+	// 员工、客户小程序PP06--------------------------------
+	,{
+		name : "小程序-系统配置",
+		url : "api/common/sysConfiguration.do",
+		path : "api/common/sysConfiguration",
+		clazz : "PP06"
+	},{
+		name : "小程序code转openid",
+		url : "api/common/code2penId.do",
+		path : "api/common/code2penId",
+		clazz : "PP06"
+	}
+
+
+
+	// 后管PP04--------------------------------
+	,{
+		name : "后管-商户信息",
+		url : "api/mng/common/mngMerchantInfo.do",
+		path : "api/mng/common/mngMerchantInfo",
+		clazz : "PP04"
+	},{
+		name : "后管-员工重置密码",
+		url : "api/mng/mngCust/resetPassword.do",
+		path : "api/mng/mngCust/resetPassword",
+		clazz : "PP04"
+	},{
+		name : "后管-员工启用",
+		url : "api/mng/mngCust/enable.do",
+		path : "api/mng/mngCust/enable",
+		clazz : "PP04"
+	},{
+		name : "后管-员工冻结",
+		url : "api/mng/mngCust/disable.do",
+		path : "api/mng/mngCust/disable",
+		clazz : "PP04"
+	},{
+		name : "后管-门店分页查询",
+		url : "api/mng/mngShStore/queryPage.do",
+		path : "api/mng/mngShStore/queryPage",
+		clazz : "PP04"
+	},{
+		name : "后管-门店添加",
+		url : "api/mng/mngShStore/add.do",
+		path : "api/mng/mngShStore/add",
+		clazz : "PP04"
+	},{
+		name : "后管-门店修改",
+		url : "api/mng/mngShStore/update.do",
+		path : "api/mng/mngShStore/update",
+		clazz : "PP04"
+	},{
+		name : "后管-门店删除",
+		url : "api/mng/mngShStore/delete.do",
+		path : "api/mng/mngShStore/delete",
+		clazz : "PP04"
+	},{
+		name : "后管临时-门店列表",
+		url : "temp/mchtStoreList.do",
+		path : "temp/mchtStoreList",
+		clazz : "PP04"
+	},{
+		name : "后管临时-员工信息",
+		url : "temp/staffInfo.do",
+		path : "temp/staffInfo",
+		clazz : "PP04"
+	},{
+        name : "springboot-queryPage",
+        url : "api/cfg/cfgApplet/queryPage.do",
+        path : "api/cfg/cfgApplet/queryPage",
+        clazz : "PP04"
+    },{
+        name : "springboot-queryById",
+        url : "api/cfg/cfgApplet/queryById.do",
+        path : "api/cfg/cfgApplet/queryById",
+        clazz : "PP04"
+    }
+
+];
+
+
+var tplMenus = [ '{@each menus as item}',
+	'<button class="PP ${item.clazz}" data-url="${item.url}" ',
+	' data-path="${item.path}" data-opType=${item.opType} ',
+	' onclick="loadForm(this)">${item.name}</button>', '{@/each}' ]
+		.join("");
+
+function loadMenus(ftClass,ftCode,ftName) {
+	try {
+		var datas = [];
+		if (ftClass || ftCode || ftName) {
+			for (var i = 0, j = menus.length; i < j; i++) {
+				var menu = menus[i];
+				if(!menu.opType)
+					menu.opType = 0;
+				if (ftName && ftName.length > 0
+						&& menu.name.indexOf(ftName) >= 0) {
+					datas.push(menu);
+				} else if (ftCode && ftCode.length > 0
+						&& menu.url.indexOf(ftCode) >= 0) {
+					datas.push(menu);
+				} else if (ftClass && ftClass.length > 0
+						&& menu.clazz.indexOf(ftClass) >= 0) {
+					datas.push(menu);
+				}
+			}
+		} else {
+			datas = menus;
+		}
+		var html = juicer(tplMenus, {
+			menus : datas
+		});
+		$("#TRAN_AREA").html(html);
+	} catch (e) {
+		alert(e);
+	}
+}

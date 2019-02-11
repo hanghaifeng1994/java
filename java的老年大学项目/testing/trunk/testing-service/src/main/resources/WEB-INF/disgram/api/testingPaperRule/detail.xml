@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="测验对应的组卷规则表，每一个组卷规则表,都属于一个测验外键-详情">
+    <snd>
+        <field name="paperRuleId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="paperRuleId" desc="id"/>
+        <field name="optionRand" desc="题目选项乱序"/>
+        <field name="questionRand" desc="题目乱序"/>
+        <field name="queNum" desc="出卷数量"/>
+        <field name="totalScore" desc="总分"/>
+        <field name="qpId" desc="题库"/>
+        <field name="version" desc="版本号"/>
+        <field name="isNewversion" desc="是否当前版本号"/>
+        <field name="paperVersion" desc="组卷版本号"/>
+        <field name="tsId" desc="用于测验"/>
+        <field name="delFlag" desc="删除标识"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="siteId" desc="创建站点id"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+        <field name="platformId" desc="创建平台"/>
+    </rcv>
+</trans>

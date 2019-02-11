@@ -1,0 +1,121 @@
+package com.learnyeai.cert.service;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.cert.mapper.CtTemplateMapper;
+import com.learnyeai.cert.model.CtTemplate;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.tools.common.StringUtils;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class CtTemplateWyService extends WeyeBaseService<CtTemplate> {
+
+	@Resource
+	private CtTemplateMapper ctTemplateMapper;
+
+	@Override
+	public BaseMapper<CtTemplate> getMapper() {
+		return ctTemplateMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return true;
+	}
+
+	@Transactional
+	public Map<String, Object> saveOrUpdate(CtTemplate tp) {
+		Map<String, Object> map = new HashMap();
+		boolean isNew = false;
+		if (StringUtils.isBlank(tp.getTpId())) {
+			tp.setDelFlag("0");
+			tp.setTpStatus("0");
+			isNew = true;
+		}
+		super.save(tp);
+		map.put("status", 0);
+		map.put("msg", "保存成功!");
+		return map;
+	}
+
+	@Transactional
+	public Map<String, Object> deleteTp(CtTemplate tp) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String hwId : tp.getTpId().split(",")) {
+			CtTemplate delOne = super.queryById(hwId);
+			if (delOne != null) {
+				delOne.setDelFlag("1");
+				super.save(delOne);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public Map<String, Object> modifyStatus(CtTemplate tp) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String hwId : tp.getTpId().split(",")) {
+			CtTemplate delOne = super.queryById(hwId);
+			if (delOne != null) {
+				delOne.setTpStatus(tp.getTpStatus());
+				super.save(delOne);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public MyPage<CtTemplate> queryManagePage(CtTemplate tp) {
+		if (tp != null && tp.getPage() != null && tp.getRows() != null) {
+			PageHelper.startPage(tp.getPage(), tp.getRows());
+		}
+		MyPage<CtTemplate> page = super.queryPage(tp, null);
+		return page;
+	}
+
+	@Override
+	protected Weekend<CtTemplate> genSqlExample(CtTemplate t, Map params) {
+		Weekend<CtTemplate> w = super.genSqlExample(t, params);
+		WeekendCriteria<CtTemplate, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getTpStatus())) {
+			c.andEqualTo(CtTemplate::getTpStatus, t.getTpStatus());
+		}
+		if (StringUtils.isNotBlank(t.getTpName())) {
+			c.andLike(CtTemplate::getTpName, "%" + t.getTpName() + "%");
+		}
+		if (StringUtils.isNotBlank(t.getSiteId())) {
+			c.andIn(CtTemplate::getSiteId, Arrays.asList(t.getSiteId().split(",")));
+		}
+		if(t.getSiteIds()!=null) {
+			c.andIn(CtTemplate::getSiteId, t.getSiteIds());
+		}
+		w.and(c);
+		w.setOrderByClause("CREATE_DATE desc");
+		return w;
+	}
+}

@@ -1,0 +1,46 @@
+package com.learnyeai.interact.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.common.support.WeyeBaseService;
+
+import com.learnyeai.interact.model.ItaCustExt;
+import com.learnyeai.interact.service.ItaCustExtWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ItaCustExtController extends BaseController<ItaCustExt> {
+    public static final String BASE_URL = "/itaCustExt/";
+
+    @Autowired
+    private ItaCustExtWyService itaCustExtWyService;
+    @Autowired
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    protected WeyeBaseService<ItaCustExt> getService() {
+        return itaCustExtWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx){
+        ItaCustExt ice=itaCustExtWyService.convert2Bean(ctx.getParamMap());
+        String method = CtxHeadUtil.getControllerMethod();
+        if("queryByExtId".equals(method)){
+            return itaCustExtWyService.queryList(ice,new HashMap());
+        }
+        return super.execute(ctx);
+    }
+
+
+}

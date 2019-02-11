@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="相册分类-保存">
+    <snd>
+        <field name="catId" desc="id"/>
+        <field name="catName" desc="分类名"  required="true"/>
+        <field name="siteId" desc="站点新增时必填" />
+    </snd>
+    <rcv>
+        <field name="status" desc="0操作成功 1操作失败"/>
+    </rcv>
+</trans>

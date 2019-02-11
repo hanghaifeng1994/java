@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delete" desc="资讯-删除">
+    <snd>
+        <field name="articleId" desc="id多个id 用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="删除的数量"/>
+    </rcv>
+</trans>

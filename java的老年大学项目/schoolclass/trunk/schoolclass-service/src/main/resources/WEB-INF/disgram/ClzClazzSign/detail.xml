@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="-详情">
+    <snd>
+        <field name="czSignId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="czSignId" desc="签到id"/>
+        <field name="czScId" desc="日程id"/>
+        <field name="czId" desc="班级id"/>
+        <field name="custId" desc="学员id"/>
+        <field name="czSignStartDate" desc="签到时间"/>
+        <field name="czSignEndDate" desc="下课签退时间"/>
+        <field name="status" desc="0未签到1已签到2已签退"/>
+    </rcv>
+</trans>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="班级-资讯-详情">
+    <snd>
+        <field name="czId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="czId" desc="班级id"/>
+        <field name="articleId" desc="资讯id"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+    </rcv>
+</trans>

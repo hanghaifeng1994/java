@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="showOrHideBatch" desc="站点-栏目显示隐藏">
+    <snd>
+        <field name="siteId" desc="站点id" required="true"/>
+        <field name="catId" desc="栏目id 多个栏目id 用英文逗号隔开" required="true"/>
+        <field name="status" desc="状态为0 时显示，1为隐藏" required="true"/>
+    </snd>
+    <rcv>
+        <filed name="num" desc="操作数量" />
+    </rcv>
+</trans>

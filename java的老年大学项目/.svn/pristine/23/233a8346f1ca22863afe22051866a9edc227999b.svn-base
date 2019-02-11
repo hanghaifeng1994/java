@@ -1,0 +1,118 @@
+package com.learnyeai.learnai.support;
+
+import com.learnyeai.core.IBusinessContext;
+import com.learnyeai.learnai.context.ThreadContextUtil;
+import com.learnyeai.tools.common.DateHelper;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
+import java.beans.PropertyEditorSupport;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * api-server通用controller
+ * Created by zpz on 2018/4/4.
+ */
+
+public abstract class ApiBaseController<T extends BaseEntity> implements IApiController {
+    protected abstract BaseService<T> getBaseService();
+    public abstract String getBaseUrl();
+
+    @RequestMapping(value = {"/listPage"})
+    public MyPage listPage(T params) {
+        if(null == params){
+            try {
+                params = (T)(getBaseService().getEntityClass().newInstance());
+            }catch (Exception e){}
+
+        }
+        params.initPage();
+        IBusinessContext ctx = ThreadContextUtil.getCtx();
+        List<T> countryList = getBaseService().queryList(params, ctx.getParamMap());
+        MyPage<T> page = new MyPage<T>(countryList);
+        return page;
+    }
+    @RequestMapping(value = {"/getList"})
+    public List<T> getList(T params) {
+
+        IBusinessContext ctx = ThreadContextUtil.getCtx();
+        List<T> countryList = getBaseService().queryList(params, ctx.getParamMap());
+        return countryList;
+    }
+
+    @RequestMapping(value = "/view/{id}")
+    public T view(@PathVariable Object id) {
+        T entity = getBaseService().queryById(id);
+        return entity;
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @return 1 成功 0失败
+     */
+    @RequestMapping(value = "/delete/{id}")
+    public int delete(@PathVariable Object id) {
+        int cnt = getBaseService().deleteById(id);
+        return cnt == 1 ?  1: 0;
+    }
+
+    /**
+     * 返回id
+     * @param entity
+     * @return
+     */
+    @PostMapping(value = "/save")
+    public String save(T entity) {
+        getBaseService().save(entity);
+        Object id = getBaseService().getId(entity);
+        return id.toString();
+    }
+
+    @RequestMapping(value = "/queryByIds")
+    public List<T> queryByIds(String ids){
+        String[] idArr = ids.split(",");
+        return getBaseService().queryByIds(idArr);
+    }
+    @RequestMapping(value = "deleteByids")
+    public void deleteByids(String ids){
+        String[] idArr = ids.split(",");
+        getBaseService().deleteByids(idArr);
+    }
+
+
+    /**
+     * 初始化数据绑定
+     * 1. 将所有传递进来的String进行HTML编码，防止XSS攻击
+     * 2. 将字段中Date类型转换为String类型
+     */
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        // String类型转换，将所有传递进来的String进行HTML编码，防止XSS攻击
+        binder.registerCustomEditor(String.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                setValue(text == null ? null : StringEscapeUtils.escapeHtml4(text.trim()));
+            }
+            @Override
+            public String getAsText() {
+                Object value = getValue();
+                return value != null ? value.toString() : "";
+            }
+        });
+        // Date 类型转换
+        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                setValue(DateHelper.parseDate(text));
+            }
+//			@Override
+//			public String getAsText() {
+//				Object value = getValue();
+//				return value != null ? DateUtils.formatDateTime((Date)value) : "";
+//			}
+        });
+    }
+}

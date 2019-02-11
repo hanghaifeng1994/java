@@ -1,0 +1,207 @@
+package com.learnyeai.learnai.web;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.learnyeai.learnai.consts.AppR;
+import com.learnyeai.learnai.context.ThreadContextUtil;
+import com.learnyeai.core.config.ConfigUtils;
+import com.learnyeai.tools.common.JsonMapper;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.net.INetConfParser;
+import com.learnyeai.learnai.context.CtxReportUtil;
+import com.learnyeai.learnai.net.netConf.MBTransConfBean;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.tools.common.StringUtils;
+
+import com.alibaba.fastjson.JSON;
+
+/**
+ * 接口平台测试返回页面；
+ * 
+ * @author yaoym
+ * 
+ */
+@Controller
+public class GeneryForward {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    @Qualifier("netConfParser")
+    INetConfParser confParser;// 报文装载器
+
+    private String rootpath = ConfigUtils.getValue("TEST_FILE_PATH");
+
+
+    public final static Charset UTF8 = Charset.forName("UTF-8");
+
+    private Charset charset = UTF8;
+
+    @RequestMapping("/test/transConf.do")
+    @ResponseBody
+    public Map<String, Object> trans(HttpServletRequest request, String local) {
+        IBusinessContext ctx = ThreadContextUtil.getCtx();
+        readInput(ctx);
+        long begin = new Date().getTime();
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        try {
+            String transPath = ctx.getParam("fullTransId");
+            if (StringUtils.isEmpty(transPath)) {
+                throw new AresRuntimeException("common.parameter_empty", new Object[] { "fullTransId" });
+            }
+            MBTransConfBean conf = confParser.findTransConfById(transPath,"/");
+            result.put("name", conf.getName());
+            result.put("desc", conf.getProperty("desc"));
+            // 清求字段定义
+            result.put("req", conf.getSed());
+            // 响应字段定义
+            result.put("rsp", conf.getRcv());
+
+            CtxReportUtil.showSuccessResult(ctx, result);
+//            result.put(AppR.RTN_CODE, "1");
+//            result.put(AppR.RTN_MSG, "请求成功");
+        } catch (AresRuntimeException e) {
+            CtxReportUtil.showErrorResult(e, ctx);
+        } catch (Exception e) {
+            logger.error("test config error", e);
+            CtxReportUtil.showErrorResult(e, ctx);
+        } finally {
+            long end = new Date().getTime();
+            logger.info("net total times is :{}", (end - begin));
+        }
+        return result;
+    }
+
+    @RequestMapping("/test/qdzhSave.do")
+    @ResponseBody
+    public Map<String, Object> qdzhSave(@RequestParam String transCode, @RequestParam String fileName, @RequestBody IBusinessContext ctx) {
+        readInput(ctx);
+
+        transCode = transCode.replaceAll("/", "_").replaceAll(".do", "");
+        if (StringUtils.isEmpty(fileName)) {
+            fileName = transCode;
+        }
+        Map<String, Object> rst = new HashMap<String, Object>();
+        // 初始化数据总线
+        String json = JSON.toJSONString(ctx.getParamMap());
+        String filePath = String.format("%s/%s_%s.json", rootpath, transCode, fileName);
+
+        if (!new File(rootpath).exists()) {
+            logger.warn("目录不存在{}", rootpath);
+            rst.put("STATUS", "0");
+            rst.put("MSG", "目录不存在!");
+            return rst;
+        }
+        try {
+            FileWriter fw = new FileWriter(filePath);
+            fw.write(json);
+            fw.close();
+            rst.put("STATUS", "1");
+        } catch (IOException e) {
+            logger.error("test qdzhSave error", e);
+            rst.put("STATUS", "0");
+            rst.put("MSG", "文件保存失败!");
+        }
+        return rst;
+    }
+
+    @RequestMapping("/test/qdzhFind.do")
+    @ResponseBody
+    public Map<String, Object> qdzhFind(@RequestParam String transCode, HttpServletRequest request) {
+
+        transCode = transCode.replaceAll("/", "_").replaceAll(".do", "");
+        Map<String, Object> rst = new HashMap<String, Object>();
+        // 初始化数据总线
+        final String filePre = transCode + "_";
+
+        File dir = new File(rootpath);
+        File[] files = dir.listFiles(new FilenameFilter() {
+            public boolean accept(File f, String fileName) {
+                if (fileName.startsWith(filePre) && !fileName.contains("svn")) {
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+        if (null != files && files.length > 0) {
+            for (File file : files) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                String fileName = file.getName();
+                map.put("NAME", fileName.replace(filePre, "").replace(".json", ""));
+                map.put("URL", fileName);
+                try {
+                    map.put("CONTENT", FileUtils.readFileToString(file));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                list.add(map);
+            }
+        }
+
+        rst.put("LIST", list);
+        // 加载参数
+        return rst;
+    }
+
+    private void readInput(IBusinessContext ctx){
+        try{
+            /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            InputStream in = ctx.getRequest().getInputStream();
+            byte[] buf = new byte[1024];
+            for (;;) {
+                int len = in.read(buf);
+                if (len == -1) {
+                    break;
+                }
+                if (len > 0) {
+                    baos.write(buf, 0, len);
+                }
+            }
+
+
+            byte[] bytes = baos.toByteArray();
+            String reqStr = new String(bytes, charset);
+
+            //将总线加入线程
+            ThreadContext.put(ThreadContext.BUSICTX_KEY, ctx);
+*/
+//            String reqStr = FileUtil.readFileAsString(ctx.getRequest().getInputStream());
+            String reqStr = ctx.getRequestEntry().toString();
+
+            //判空处理
+            if (StringUtils.isBlank(reqStr)) {
+                return ;
+            }
+            ctx.getParamMap().putAll(JsonMapper.jsonToMap(reqStr));
+            //请求参数放入总线
+//            ctx.getParamMap().putAll((Map) JSON.parseObject(bytes, 0, bytes.length, charset.newDecoder(), Map.class));
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
+}

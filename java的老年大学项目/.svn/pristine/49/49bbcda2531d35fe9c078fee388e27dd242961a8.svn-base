@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.cert.mapper.CtTemplateMapper">
+    <resultMap id="BaseResultMap" type="CtTemplate">
+    <id property="tpId" column="TP_ID" jdbcType="VARCHAR" />
+
+    <result property="tpName" column="TP_NAME" jdbcType="VARCHAR" />
+    <result property="tpImageBackground" column="TP_IMAGE_BACKGROUND" jdbcType="VARCHAR" />
+    <result property="tpFixedImage" column="TP_FIXED_IMAGE" jdbcType="VARCHAR" />
+    <result property="tpSubject" column="TP_SUBJECT" jdbcType="VARCHAR" />
+    <result property="tpStatus" column="TP_STATUS" jdbcType="CHAR" />
+    <result property="tpTextOne" column="TP_TEXT_ONE" jdbcType="VARCHAR" />
+    <result property="tpTextTwo" column="TP_TEXT_TWO" jdbcType="VARCHAR" />
+    <result property="tpTextThree" column="TP_TEXT_THREE" jdbcType="VARCHAR" />
+    <result property="tpTextFour" column="TP_TEXT_FOUR" jdbcType="VARCHAR" />
+    <result property="tpTextFive" column="TP_TEXT_FIVE" jdbcType="VARCHAR" />
+    <result property="tpTextSix" column="TP_TEXT_SIX" jdbcType="VARCHAR" />
+    <result property="tpTextSeven" column="TP_TEXT_SEVEN" jdbcType="VARCHAR" />
+    <result property="tpTextEight" column="TP_TEXT_EIGHT" jdbcType="VARCHAR" />
+    <result property="tpTextNine" column="TP_TEXT_NINE" jdbcType="VARCHAR" />
+    <result property="tpTextTen" column="TP_TEXT_TEN" jdbcType="VARCHAR" />
+    <result property="tpImageOne" column="TP_IMAGE_ONE" jdbcType="VARCHAR" />
+    <result property="tpImageTwo" column="TP_IMAGE_TWO" jdbcType="VARCHAR" />
+    <result property="tpImageThree" column="TP_IMAGE_THREE" jdbcType="VARCHAR" />
+    <result property="tpImageFour" column="TP_IMAGE_FOUR" jdbcType="VARCHAR" />
+    <result property="tpImageFive" column="TP_IMAGE_FIVE" jdbcType="VARCHAR" />
+    <result property="tpStaticOne" column="TP_STATIC_ONE" jdbcType="VARCHAR" />
+    <result property="tpStaticTwo" column="TP_STATIC_TWO" jdbcType="VARCHAR" />
+    <result property="tpStaticThree" column="TP_STATIC_THREE" jdbcType="VARCHAR" />
+    <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+    <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        TP_ID,TP_NAME,TP_IMAGE_BACKGROUND,TP_FIXED_IMAGE,TP_SUBJECT,
+        TP_STATUS,TP_TEXT_ONE,TP_TEXT_TWO,TP_TEXT_THREE,TP_TEXT_FOUR,
+        TP_TEXT_FIVE,TP_TEXT_SIX,TP_TEXT_SEVEN,TP_TEXT_EIGHT,TP_TEXT_NINE,
+        TP_TEXT_TEN,TP_IMAGE_ONE,TP_IMAGE_TWO,TP_IMAGE_THREE,TP_IMAGE_FOUR,
+        TP_IMAGE_FIVE,TP_STATIC_ONE,TP_STATIC_TWO,TP_STATIC_THREE,DEL_FLAG,
+        SITE_ID,MCHT_ID,MCHT_SCHM_ID,CREATE_BY,CREATE_DATE,
+        UPDATE_BY,UPDATE_DATE
+    </sql>
+
+
+    <sql id="TableClause"> ${}.CT_TEMPLATE </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

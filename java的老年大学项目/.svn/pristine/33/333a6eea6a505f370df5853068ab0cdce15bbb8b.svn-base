@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="评星-我给出的列表">
+    <snd>
+    </snd>
+    <rcv>
+        <field name="gsId" desc="id"/>
+        <field name="starNum" desc="评星"/>
+        <field name="theUserId" desc="被评星人id"/>
+        <field name="type" desc="类型"/>
+        <field name="objId" desc="对象id"/>
+        <field name="cmtUserName" desc="评星人名称"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

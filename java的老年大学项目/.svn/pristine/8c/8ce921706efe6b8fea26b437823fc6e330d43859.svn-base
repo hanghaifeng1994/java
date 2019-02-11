@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.orderform.mapper.OrdOrderformDetailMapper">
+    <resultMap id="BaseResultMap" type="OrdOrderformDetail">
+    <id property="ordDetailId" column="ORD_DETAIL_ID" jdbcType="VARCHAR" />
+
+    <result property="orderId" column="ORDER_ID" jdbcType="VARCHAR" />
+    <result property="itemId" column="ITEM_ID" jdbcType="VARCHAR" />
+    <result property="itemType" column="ITEM_TYPE" jdbcType="DECIMAL" />
+    <result property="itemname" column="ITEMNAME" jdbcType="VARCHAR" />
+    <result property="itemnum" column="ITEMNUM" jdbcType="DECIMAL" />
+    <result property="price" column="PRICE" jdbcType="DECIMAL" />
+    <result property="totalPrice" column="TOTAL_PRICE" jdbcType="DECIMAL" />
+    <result property="discount" column="DISCOUNT" jdbcType="DECIMAL" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        ORD_DETAIL_ID,ORDER_ID,ITEM_ID,ITEM_TYPE,ITEMNAME,
+        ITEMNUM,PRICE,TOTAL_PRICE,DISCOUNT
+    </sql>
+
+
+    <sql id="TableClause"> ${}.ORD_ORDERFORM_DETAIL </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

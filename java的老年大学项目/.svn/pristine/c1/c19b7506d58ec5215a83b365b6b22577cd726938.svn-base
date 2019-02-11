@@ -1,0 +1,131 @@
+var menus = [
+    // 00基础服务
+    {
+        name : "指定站点的全部或者对象的评论列表查询（前后台公用）",
+        url : "api/itaComment/queryPage.do",
+        path : "api/itaComment/queryPage",
+        clazz : "PP00"
+    },{
+        name : "个人发表的评论列表查询",
+        url : "api/itaComment/myQueryPage.do",
+        path : "api/itaComment/myQueryPage",
+        clazz : "PP00"
+    },{
+        name : "评论-新增",
+        url : "api/itaComment/insert.do",
+        path : "api/itaComment/insert",
+        clazz : "PP00"
+    },{
+        name : "评论-修改",
+        url : "api/itaComment/updateById.do",
+        path : "api/itaComment/updateById",
+        clazz : "PP00"
+    },{
+        name : "评论-删除",
+        url : "api/itaComment/delete.do",
+        path : "api/itaComment/delete",
+        clazz : "PP00"
+    },
+  /*  {
+        name : "对象点赞-列表",
+        url : "api/itaLiked/queryPage.do",
+        path : "api/itaLiked/queryPage",
+        clazz : "PP01"
+    },*/
+    {
+        name : "点赞-添加",
+        url : "api/itaLiked/insert.do",
+        path : "api/itaLiked/insert",
+        clazz : "PP01"
+    }
+   /* ,{
+        name : "对象点赞-删除",
+        url : "api/itaLiked/deleteById.do",
+        path : "api/itaLiked/deleteById",
+        clazz : "PP01"
+    }*/
+    ,{
+        name : "查询某人的对象是否点赞",
+        url : "api/itaLiked/isItaLike.do",
+        path : "api/itaLiked/isItaLike",
+        clazz : "PP01"
+    },{
+        name : "收藏-我的收藏列表查询",
+        url : "api/itaCollection/queryPage.do",
+        path : "api/itaCollection/queryPage",
+        clazz : "PP02"
+    },{
+        name : "我的收藏-新增",
+        url : "api/itaCollection/insert.do",
+        path : "api/itaCollection/insert",
+        clazz : "PP02"
+    },{
+        name : "收藏-批量删除",
+        url : "api/itaCollection/delete.do",
+        path : "api/itaCollection/delete",
+        clazz : "PP02"
+    },{
+        name : "互动次数-查询多个对象的互动统计信息列表",
+        url : "api/itaInteractionTimes/queryPage.do",
+        path : "api/itaInteractionTimes/queryPage",
+        clazz : "PP03"
+    },{
+        name : "分享-添加",
+        url : "api/itaShare/save.do",
+        path : "api/itaShare/save",
+        clazz : "PP03"
+    },{
+        name : "投票-保存",
+        url : "api/itaVote/save.do",
+        path : "api/itaVote/save",
+        clazz : "PP03"
+    },{
+        name : "查询用户是否参与了业务对象的投票",
+        url : "api/itaVote/queryListByObjId.do",
+        path : "api/itaVote/queryListByObjId",
+        clazz : "PP03"
+    },{
+        name : "用户-参与业务对象互动的多个用户统计列表",
+        url : "api/itaCustExt/queryById.do",
+        path : "api/itaCustExt/queryById",
+        clazz : "PP03"
+    }
+];
+
+
+var tplMenus = [ '{@each menus as item}',
+    '<button class="PP ${item.clazz}" data-url="${item.url}" ',
+    ' data-path="${item.path}" data-opType=${item.opType} ',
+    ' onclick="loadForm(this)">${item.name}</button>', '{@/each}' ]
+    .join("");
+
+function loadMenus(ftClass,ftCode,ftName) {
+    try {
+        var datas = [];
+        if (ftClass || ftCode || ftName) {
+            for (var i = 0, j = menus.length; i < j; i++) {
+                var menu = menus[i];
+                if(!menu.opType)
+                    menu.opType = 0;
+                if (ftName && ftName.length > 0
+                    && menu.name.indexOf(ftName) >= 0) {
+                    datas.push(menu);
+                } else if (ftCode && ftCode.length > 0
+                    && menu.url.indexOf(ftCode) >= 0) {
+                    datas.push(menu);
+                } else if (ftClass && ftClass.length > 0
+                    && menu.clazz.indexOf(ftClass) >= 0) {
+                    datas.push(menu);
+                }
+            }
+        } else {
+            datas = menus;
+        }
+        var html = juicer(tplMenus, {
+            menus : datas
+        });
+        $("#TRAN_AREA").html(html);
+    } catch (e) {
+        alert(e);
+    }
+}

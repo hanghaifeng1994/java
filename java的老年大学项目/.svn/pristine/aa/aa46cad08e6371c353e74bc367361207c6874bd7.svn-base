@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="sumbitAudit" desc="活动-详情">
+    <snd>
+        <field name="actId" desc="id"/>
+        <field name="actStatus" type="N" desc="状态：0未提交、1审核中、2审核通过、3审核失败、4不需要审核"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="提交数量" />
+    </rcv>
+</trans>

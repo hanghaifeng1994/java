@@ -1,0 +1,29 @@
+package com.learnyeai.course.service;
+
+import com.learnyeai.course.model.CrsSiteCourseRel;
+import com.learnyeai.course.mapper.CrsSiteCourseRelMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class CrsSiteCourseRelWyService extends WeyeBaseService<CrsSiteCourseRel> {
+
+    @Resource
+    private CrsSiteCourseRelMapper crsSiteCourseRelMapper;
+
+    @Override
+    public BaseMapper<CrsSiteCourseRel> getMapper() {
+        return crsSiteCourseRelMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

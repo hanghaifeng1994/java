@@ -1,0 +1,98 @@
+package com.learnyeai.studygroup.service;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.studygroup.mapper.SgpSiteCategoryMapper;
+import com.learnyeai.studygroup.model.SgpCategory;
+import com.learnyeai.studygroup.mapper.SgpCategoryMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.studygroup.model.SgpSiteCategory;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class SgpCategoryWyService extends WeyeBaseService<SgpCategory> {
+
+    @Resource
+    private SgpCategoryMapper sgpCategoryMapper;
+    @Resource
+    private SgpSiteCategoryMapper sgpSiteCategoryMapper;
+
+    @Override
+    public BaseMapper<SgpCategory> getMapper() {
+        return sgpCategoryMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+    @Override
+    protected Weekend<SgpCategory> genSqlExample(SgpCategory t, Map params) {
+        Weekend w=super.genSqlExample(t,params);
+        WeekendCriteria<SgpCategory,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getSiteId())){
+            c.andEqualTo(SgpCategory::getSiteId,t.getSiteId());
+        }
+        if(StringUtils.isNotBlank(t.getCatName())){
+            c.andLike(SgpCategory::getCatName,t.getCatName());
+        }
+        w.and(c);
+        w.setOrderByClause("CREATE_DATE desc");
+        return w;
+    }
+
+    /**
+     * 现在分类表中新建记录，然后在分类站点关联表中新建记录
+     * @param ctx
+     * @return
+     */
+    @Transactional
+    public Map<String,Object> saveData(IBusinessContext ctx){
+       SgpCategory sc= super.convert2Bean(ctx.getParamMap());
+       boolean flag=true;
+       if(StringUtils.isNotBlank(sc.getCatId())){
+           flag=false;
+       }
+
+       super.save(sc);
+       //在站点栏目关联表中新建记录（修改时不改变关联表中数据）
+        if(flag){
+            SgpSiteCategory ssc=new SgpSiteCategory();
+            ssc.setCatId(sc.getCatId());
+            ssc.setCatCrtSiteId(sc.getSiteId());
+            ssc.setSiteId(sc.getSiteId());
+            //默认都为显示
+            ssc.setShowStatus("1");
+            sgpSiteCategoryMapper.insertSelective(ssc);
+        }
+       return  null;
+    }
+    @Transactional
+    public Map<String,Object> delBatch(String catId){
+        String[] catIds=catId.split(",");
+        String siteId;
+        SgpSiteCategory ssc=new SgpSiteCategory();
+        int count=0;
+        for (String id:catIds){
+            //先通过id 获取到siteId
+            SgpCategory sc=super.queryById(id);
+            siteId=sc.getSiteId();
+            ssc.setSiteId(siteId);
+            ssc.setCatId(id);
+            count+= super.deleteById(id);
+            sgpSiteCategoryMapper.delete(ssc);
+        }
+        return MapUtil.newMap("num",count);
+    }
+}

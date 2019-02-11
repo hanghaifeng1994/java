@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.testing.mapper.TestingQuestionOptionMapper">
+    <resultMap id="BaseResultMap" type="TestingQuestionOption">
+    <id property="itemId" column="ITEM_ID" jdbcType="VARCHAR" />
+
+    <result property="questionId" column="QUESTION_ID" jdbcType="VARCHAR" />
+    <result property="optionContent" column="OPTION_CONTENT" jdbcType="VARCHAR" />
+    <result property="answer" column="ANSWER" jdbcType="CHAR" />
+    <result property="orderNum" column="ORDER_NUM" jdbcType="DECIMAL" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        ITEM_ID,QUESTION_ID,OPTION_CONTENT,ANSWER,ORDER_NUM
+    </sql>
+
+
+    <sql id="TableClause"> ${}.TESTING_QUESTION_OPTION </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

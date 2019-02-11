@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="addResource" desc="课程章节-关联资源">
+    <snd>
+        <field name="cptId" desc="课程章节id" required="true"/>
+        <field name="resId" desc="资源id 多个id用英文逗号隔开" required="true"/>
+        <field name="resType" desc="资源类型0:pc 1:手机" required="true"/>
+		<field name="fileType" desc="文件类型" required="true"/>
+    </snd>
+    <rcv>
+        <field name="status" desc="状态 0关联成功，1关联失败" />
+    </rcv>
+</trans>

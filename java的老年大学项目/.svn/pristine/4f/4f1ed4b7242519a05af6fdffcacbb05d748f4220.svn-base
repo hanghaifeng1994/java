@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="disable" desc="员工-冻结">
+    <snd>
+        <field name="id" desc="id" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans desc="短信验证码检验（完成）">
+	<snd>
+		<field name="DYN_CODE" desc="动态口令" />
+	</snd>
+	<rcv>
+	</rcv>
+</trans>

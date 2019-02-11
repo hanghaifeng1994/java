@@ -1,0 +1,68 @@
+package com.learnyeai.studygroup.task;
+
+import com.learnyeai.mq.AuditlogMq;
+import com.learnyeai.studygroup.mapper.SgpSiteStudygroupRelMapper;
+import com.learnyeai.studygroup.model.SgpSiteStudygroupRel;
+import com.learnyeai.studygroup.model.SgpStudyGroup;
+import com.learnyeai.studygroup.service.SgpStudyGroupWyService;
+import com.learnyeai.tools.common.JsonUtils;
+import org.quartz.JobExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Iterator;
+import java.util.Set;
+
+@Component("auditListener")
+public class StudyGroupListener {
+    @Value("${serviceType}")
+    private String serviceType;
+    @Autowired
+    @Qualifier(value="redisTemplateMq")
+    RedisTemplate<String,Object> redisTemplate;
+    @Autowired
+    private SgpStudyGroupWyService sgpStudyGroupWyService;
+    @Resource
+    private SgpSiteStudygroupRelMapper sgpSiteStudygroupRelMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(StudyGroupListener.class);
+    @Transactional
+    public void updateAuditStatus(JobExecutionContext context){
+        //获取所有的redis中处理后的所有id
+        Set<String> cachkeys=  redisTemplate.keys("*"+serviceType+"*");
+        int count=0;
+        SgpStudyGroup ss=new SgpStudyGroup();
+        SgpSiteStudygroupRel sssr=new SgpSiteStudygroupRel();
+        for (Object cachKey:cachkeys){
+            String type =(String) cachKey;
+            Set<Object> keys =redisTemplate.opsForHash().keys(type);
+            Iterator<Object> iterator = keys.iterator();
+            while (iterator.hasNext()){
+                String auditId=(String) iterator.next();
+                String jstr=  (String) redisTemplate.opsForHash().get(type,auditId);
+                AuditlogMq obj=JsonUtils.jsonToObject(jstr,AuditlogMq.class);
+                if(serviceType.equals(type)){
+                    ss.setSgpId(obj.getObjId());
+                    ss.setAuditId(auditId);
+                    count+= sgpStudyGroupWyService.save(ss);
+                    SgpStudyGroup ssg= sgpStudyGroupWyService.queryById(ss.getSgpId());
+                    sssr.setCrtSiteId( ssg.getSiteId());
+                    sssr.setSiteId(ssg.getSiteId());
+                    sssr.setManageStatus("1");
+                    sssr.setSgpId(ssg.getSgpId());
+                    sgpSiteStudygroupRelMapper.insertSelective(sssr);
+                }
+                //操作成功后删除缓存数据
+                redisTemplate.opsForHash().delete(type,auditId);
+            }
+        }
+        logger.info("更新学习小组{}条数据",count);
+    }
+}

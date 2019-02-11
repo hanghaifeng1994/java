@@ -1,0 +1,236 @@
+package com.learnyeai.base.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+import java.util.Date;
+
+/**
+ * 登录信息
+ *
+ * @author zhangpz
+ */
+public class CustLgnInfoVo extends BaseVo {
+
+    /**
+    * ID
+    */
+    private String lgnId;
+
+    /**
+     * 客户ID
+     */
+    private String userId;
+    /**
+     * Y：首次登陆 N：非首次登陆
+     */
+    private String firstLgnFlag;
+    /**
+     * 第一次登录时间
+     */
+    private String firstLgnDate;
+    /**
+     * 错误登录次数
+     */
+    private Integer lgnErrNum;
+    /**
+     * 登录日期
+     */
+    private String lgnDate;
+    /**
+     * 登录时间
+     */
+    private String lgnTime;
+    /**
+     * 登录日期时间
+     */
+    private Date lgnDatetime;
+    /**
+     * 1APP、2网页
+     */
+    private String lgnType;
+    /**
+     * 登录IP
+     */
+    private String lgnIp;
+    /**
+     * 经度
+     */
+    private String yLine;
+    /**
+     * 纬度
+     */
+    private String xLine;
+    /**
+     * 当前地址
+     */
+    private String curAdress;
+    /**
+     * 区县名称
+     */
+    private String areaName;
+    /**
+     * 区县id
+     */
+    private String areaId;
+    /**
+     * 登录城市id
+     */
+    private String lastLgnCityId;
+    /**
+     * 登录城市名称
+     */
+    private String lastLgnCityName;
+    /**
+     * 是否在线
+     */
+    private String isOnline;
+
+    public String getLgnId() {
+        return lgnId;
+    }
+
+    public void setLgnId(String lgnId) {
+        this.lgnId = lgnId;
+    }
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    public String getFirstLgnFlag() {
+        return firstLgnFlag;
+    }
+
+    public void setFirstLgnFlag(String firstLgnFlag) {
+        this.firstLgnFlag = firstLgnFlag;
+    }
+    public String getFirstLgnDate() {
+        return firstLgnDate;
+    }
+
+    public void setFirstLgnDate(String firstLgnDate) {
+        this.firstLgnDate = firstLgnDate;
+    }
+    public Integer getLgnErrNum() {
+        return lgnErrNum;
+    }
+
+    public void setLgnErrNum(Integer lgnErrNum) {
+        this.lgnErrNum = lgnErrNum;
+    }
+    public String getLgnDate() {
+        return lgnDate;
+    }
+
+    public void setLgnDate(String lgnDate) {
+        this.lgnDate = lgnDate;
+    }
+    public String getLgnTime() {
+        return lgnTime;
+    }
+
+    public void setLgnTime(String lgnTime) {
+        this.lgnTime = lgnTime;
+    }
+    public Date getLgnDatetime() {
+        return lgnDatetime;
+    }
+
+    public void setLgnDatetime(Date lgnDatetime) {
+        this.lgnDatetime = lgnDatetime;
+    }
+    public String getLgnType() {
+        return lgnType;
+    }
+
+    public void setLgnType(String lgnType) {
+        this.lgnType = lgnType;
+    }
+    public String getLgnIp() {
+        return lgnIp;
+    }
+
+    public void setLgnIp(String lgnIp) {
+        this.lgnIp = lgnIp;
+    }
+    public String getYLine() {
+        return yLine;
+    }
+
+    public void setYLine(String yLine) {
+        this.yLine = yLine;
+    }
+    public String getXLine() {
+        return xLine;
+    }
+
+    public void setXLine(String xLine) {
+        this.xLine = xLine;
+    }
+    public String getCurAdress() {
+        return curAdress;
+    }
+
+    public void setCurAdress(String curAdress) {
+        this.curAdress = curAdress;
+    }
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
+    }
+    public String getLastLgnCityId() {
+        return lastLgnCityId;
+    }
+
+    public void setLastLgnCityId(String lastLgnCityId) {
+        this.lastLgnCityId = lastLgnCityId;
+    }
+    public String getLastLgnCityName() {
+        return lastLgnCityName;
+    }
+
+    public void setLastLgnCityName(String lastLgnCityName) {
+        this.lastLgnCityName = lastLgnCityName;
+    }
+    public String getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(String isOnline) {
+        this.isOnline = isOnline;
+    }
+
+    public static class TF {
+        public static String lgnId = "lgnId";  // ID
+        public static String userId = "userId";  // 客户ID
+        public static String firstLgnFlag = "firstLgnFlag";  // Y：首次登陆 N：非首次登陆
+        public static String firstLgnDate = "firstLgnDate";  // 第一次登录时间
+        public static String lgnErrNum = "lgnErrNum";  // 错误登录次数
+        public static String lgnDate = "lgnDate";  // 登录日期
+        public static String lgnTime = "lgnTime";  // 登录时间
+        public static String lgnDatetime = "lgnDatetime";  // 登录日期时间
+        public static String lgnType = "lgnType";  // 1APP、2网页
+        public static String lgnIp = "lgnIp";  // 登录IP
+        public static String yLine = "yLine";  // 经度
+        public static String xLine = "xLine";  // 纬度
+        public static String curAdress = "curAdress";  // 当前地址
+        public static String areaName = "areaName";  // 区县名称
+        public static String areaId = "areaId";  // 区县id
+        public static String lastLgnCityId = "lastLgnCityId";  // 登录城市id
+        public static String lastLgnCityName = "lastLgnCityName";  // 登录城市名称
+        public static String isOnline = "isOnline";  // 是否在线
+
+    }
+
+}

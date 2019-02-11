@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryById" desc="班级日程-详情">
+    <snd>
+        <field name="czScId" desc="id" required="true"/>
+    </snd>
+    <rcv>
+        <field name="czScId" desc="班级日程id"/>
+        <field name="czId" desc="班级名称"/>
+        <field name="scContent" desc="日程内容"/>
+        <field name="scStatus" desc="0未开始1进行中2已结束"/>
+        <field name="scName" desc="日程名称"/>
+        <field name="startDate" desc="开始时间"/>
+        <field name="endDate" desc="结束时间"/>
+        <field name="scTearcher" desc="辅导老师id"/>
+        <field name="scRealStartDate" desc="真实开始时间"/>
+        <field name="scRealEndDate" desc="真实结束时间"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+    </rcv>
+</trans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="小程序-详情" isPage="true">
+    <snd>
+        <field name="apltId" desc="id"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="商户门店-列表" type="E">
+            <field name="apltId" desc="id"/>
+            <field name="apltAppId" desc="小程序appid"/>
+            <field name="apltAppSecret" desc="小程序secret"/>
+            <field name="apltName" desc="小程序名称"/>
+            <field name="apltDesc" desc="小程序描述"/>
+            <field name="apltMdlCode" desc="模块编码"/>
+            <field name="apltVerCode" desc="版本编码"/>
+            <field name="apltVerId" desc="当前版本id"/>
+            <field name="schmId" desc="行业方案id"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+        </field-list>
+    </rcv>
+</trans>

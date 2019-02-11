@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="deleteById" desc="资讯栏目-删除">
+    <snd>
+        <field name="catId" desc="资讯栏目id 多个id用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <field name="status" desc="状态 0删除成功，1栏目下有咨讯不能删除" />
+        <field name="num" desc="删除数量"/>
+    </rcv>
+</trans>

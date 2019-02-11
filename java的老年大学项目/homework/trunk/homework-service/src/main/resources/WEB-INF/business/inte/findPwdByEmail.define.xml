@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="findPwdByEmail" title="通过邮箱找回密码">
+    <actions>
+        <!--<action ref="emailCheckOp" title="邮箱校验"></action>-->
+        <action ref="emailDynCodeCheckOp" title="验证码校验"></action>
+        <action ref="updatePwdOp" title="修改密码"></action>
+    </actions>
+</config>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="addBasic" desc="客户-添加客户基本信息">
+    <snd>
+        <field name="SHORT_NAME" desc="用户昵称" required="true"/>
+        <field name="SEX" desc="性别" required="true" comment="1男、2女"/>
+        <field name="BIRTHDAY" desc="用户生日" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

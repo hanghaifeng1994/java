@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="insert" desc="班级日程-新增">
+    <snd>
+        <field name="czId" desc="班级id"  required="true"/>
+        <field name="scContent" desc="日程内容"/>
+        <field name="scName" desc="日程名称" required="true"/>
+        <field name="startDate" desc="开始时间" required="true"/>
+        <field name="endDate" desc="结束时间" required="true"/>
+        <field name="scTearcher" desc="辅导老师id"/>
+    </snd>
+    <rcv>
+       <field   name="id" desc="日程id"/>
+    </rcv>
+</trans>

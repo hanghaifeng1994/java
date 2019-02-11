@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="add" desc="商户门店-详情">
+    <snd>
+        <field name="STORE_NAME" desc="门店名称" required="true"/>
+        <field name="STORE_ADRESS" desc="地址"/>
+        <field name="STORE_PHOTO" desc="图片"/>
+        <field name="STORE_IMGS" desc="图片展示"/>
+        <field name="STORE_LINKMAN" desc="负责人"/>
+        <field name="STORE_PHONE" desc="电话"/>
+        <field name="STORE_INFO" desc="门店介绍"/>
+        <field name="MCHT_SCHM_ID" desc="商户方案ID"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

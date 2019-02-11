@@ -1,0 +1,94 @@
+package com.learnyeai.interact.web;
+
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.service.ItaInteractionTimesWyService;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.interact.model.ItaLiked;
+import com.learnyeai.interact.service.ItaLikedWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ItaLikedController extends BaseController<ItaLiked> {
+    public static final String BASE_URL = "/ItaLiked/";
+
+    @Autowired
+    private ItaLikedWyService itaLikedWyService;
+    @Value("${spring.application.name}")
+    private String aplicationName;
+    @Value("${schema.interPlat}")
+    private String interPlat;
+    @Value("${isLike_key}")
+    private String isLikeKey;
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private ItaInteractionTimesWyService itaInteractionTimesWyService;
+
+    @Autowired
+    private CurrentUserInfoIml currentUserInfoIml;
+    @Override
+    protected BaseService<ItaLiked> getService() {
+        return itaLikedWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String method = CtxHeadUtil.getControllerMethod();
+        ItaLiked isLiked= itaLikedWyService.convert2Bean(ctx.getParamMap());
+        ItaInteractionTimes it=new ItaInteractionTimes();
+        it.setObjId(isLiked.getObjId());
+        it.setType(isLiked.getType());
+        //该对象的收藏列表存在数据，将收藏数量拿出和新增的收藏数量相加放入缓存
+        List<ItaInteractionTimes> list= itaInteractionTimesWyService.queryList(it ,new HashMap());
+        int num=0;
+        //加入缓存
+        String cachKey=aplicationName+":"+interPlat;
+        String key= isLikeKey+","+isLiked.getObjId()+","+isLiked.getType();
+
+        //缓存中存在去缓存中取值，不存在去数据库中取值
+        Integer numstr=0;
+        if(redisTemplate.opsForHash().hasKey(cachKey,key)){
+            numstr  = (Integer)redisTemplate.opsForHash().get(cachKey,key);
+        }else{
+            if(list.size()>0){
+                ItaInteractionTimes i=list.get(0);
+                if(i.getLkNum()!=null){
+                    num+=i.getLkNum();
+                }
+            }
+        }
+        if(numstr!=null){
+            num+=numstr;
+        }
+        if("isItaLike".equals(method)){
+           return super.queryList(ctx);
+        }
+        if("insert".equals(method)){
+            isLiked.setLkUserName(currentUserInfoIml.getLoginName());
+            isLiked.setLkStatus("1");
+            num+= itaLikedWyService.save(isLiked);
+            redisTemplate.opsForHash().put(cachKey,key,num);
+            return MapUtil.newMap("lkId",isLiked.getLkId());
+        }
+        return super.execute(ctx);
+    }
+}

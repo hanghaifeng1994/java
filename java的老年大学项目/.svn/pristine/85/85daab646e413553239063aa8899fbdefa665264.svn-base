@@ -1,0 +1,55 @@
+package com.learnyeai.album.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+
+/**
+ * 站点-图片分类
+ *
+ * @author yl
+ */
+public class AbmSiteCategoryRelVo extends BaseVo {
+
+    /**
+    * 站点id
+    */
+    private String siteId;
+
+    /**
+     * 图片分类id
+     */
+    private String catId;
+    /**
+     * 显示状态
+     */
+    private String showStatus;
+
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+    public String getCatId() {
+        return catId;
+    }
+
+    public void setCatId(String catId) {
+        this.catId = catId;
+    }
+    public String getShowStatus() {
+        return showStatus;
+    }
+
+    public void setShowStatus(String showStatus) {
+        this.showStatus = showStatus;
+    }
+
+    public static class CF {
+        public static String siteId = "siteId";  // 站点id
+        public static String catId = "catId";  // 图片分类id
+        public static String showStatus = "showStatus";  // 显示状态
+
+    }
+
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点课程关联表-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="ID"/>
+        <field name="siteId" desc="站点"/>
+        <field name="csId" desc="课程id"/>
+        <field name="csAsName" desc="别名"/>
+        <field name="csManageStatus" desc="管理状态"/>
+        <field name="csPubStatus" desc="发布状态"/>
+        <field name="csPubDate" desc="发布时间"/>
+        <field name="csTjStatus" desc="推荐状态"/>
+        <field name="csTjDate" desc="推荐时间"/>
+        <field name="csCrtSiteId" desc="创建站点"/>
+    </rcv>
+</trans>

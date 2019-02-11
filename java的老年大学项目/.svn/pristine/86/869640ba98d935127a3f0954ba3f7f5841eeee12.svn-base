@@ -1,0 +1,57 @@
+package com.learnyeai.cert.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.learnyeai.cert.model.CtTemplate;
+import com.learnyeai.cert.service.CtTemplateWyService;
+import com.learnyeai.cert.util.CertUtil;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.IBusinessContext;
+
+/**
+ *
+ * @author twang
+ */
+@RestController
+@RequestMapping("${adminPath}" + CtTemplateController.BASE_URL)
+public class CtTemplateController extends BaseController<CtTemplate> {
+	public static final String BASE_URL = "/CtTemplate/";
+
+	@Autowired
+	private CtTemplateWyService ctTemplateWyService;
+
+	@Override
+	protected BaseService<CtTemplate> getService() {
+		return ctTemplateWyService;
+	}
+
+	@Override
+	public Object execute(IBusinessContext ctx) {
+		String method = CtxHeadUtil.getControllerMethod();
+		CtTemplate tp = ctTemplateWyService.convert2Bean(ctx.getParamMap());
+		tp.setSiteIds(CertUtil.convertSiteIds((String)ctx.getParamMap().get("sites")));
+		if ("save".equals(method)) {
+			return ctTemplateWyService.saveOrUpdate(tp);
+		}
+		if ("deleteById".equals(method)) {
+			return ctTemplateWyService.deleteTp(tp);
+		}
+
+		if ("modifyStatus".equals(method)) {
+			return ctTemplateWyService.modifyStatus(tp);
+		}
+
+		if ("queryManagePage".equals(method)) {
+			return rtnPageList4Report(ctTemplateWyService.queryManagePage(tp));
+		}
+
+		if ("queryById".equals(method)) {
+			return ctTemplateWyService.queryById(tp.getTpId());
+		}
+		return super.execute(ctx);
+	}
+}

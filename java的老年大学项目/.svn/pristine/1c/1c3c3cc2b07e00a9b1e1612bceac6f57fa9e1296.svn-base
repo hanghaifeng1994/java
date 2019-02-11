@@ -1,0 +1,12 @@
+package com.learnyeai.album.mapper;
+
+import com.learnyeai.album.model.AbmCategoryPhotoRel;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyBatisDao;
+/**
+ * @Description: 分类-相册关联表
+ * @author yl
+ */
+@MyBatisDao
+public interface AbmCategoryPhotoRelMapper extends BaseMapper<AbmCategoryPhotoRel> {
+}

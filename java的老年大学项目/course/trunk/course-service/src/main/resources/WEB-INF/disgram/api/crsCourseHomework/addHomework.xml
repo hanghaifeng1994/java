@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="addHomework" desc="课程-新增课程作业关系">
+    <snd>
+        <field name="csId" desc="课程id" required="true"/>
+        <field name="hwId" desc="作业id 多个id用英文逗号隔开" required="true"/>
+    </snd>
+    <rcv>
+        <field name="status" desc="状态 0关联成功，1关联失败" />
+    </rcv>
+</trans>

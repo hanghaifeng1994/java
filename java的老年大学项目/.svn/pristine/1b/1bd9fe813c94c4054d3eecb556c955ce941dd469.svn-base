@@ -1,0 +1,29 @@
+package com.learnyeai.album.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.album.model.AbmAlbum;
+import com.learnyeai.album.service.AbmAlbumWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class AbmAlbumController extends BaseController<AbmAlbum> {
+
+    @Autowired
+    private AbmAlbumWyService abmAlbumWyService;
+
+    @Override
+    protected BaseService<AbmAlbum> getService() {
+        return abmAlbumWyService;
+    }
+
+
+}

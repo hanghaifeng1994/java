@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="资源文件-新增/编辑">
+	<snd>
+		<field name="resFielId" desc="id" />
+		<field name="fileName" desc="文件名" />
+		<field name="resId" desc="资源id" />
+		<field name="fileId" desc="文件id" />
+		<field name="fileType" desc="文件类型" />
+		<field name="fileFormat" desc="文件格式" />
+		<field name="fileSize" desc="大小" />
+		<field name="fileSuffix" desc="后缀" />
+		<field name="fileTimeLen" desc="时长" />
+		<field name="siteId" desc="站点id"/>
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常,2:新增资源文件时，资源id不能为空" />
+		<field name="msg" desc="msg" />
+		<field name="id" desc="id" />
+	</rcv>
+</trans>

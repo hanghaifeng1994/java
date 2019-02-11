@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="publish" desc="活动-发布/取消发布">
+    <snd>
+        <field name="actId" desc="id"  required="true"/>
+        <field name="actPubStatus" desc="发布状态 0未发布 1已发布"  required="true"/>
+        <field name="siteId" desc="站点" required="true"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="共发布了多少条记录"/>
+    </rcv>
+</trans>

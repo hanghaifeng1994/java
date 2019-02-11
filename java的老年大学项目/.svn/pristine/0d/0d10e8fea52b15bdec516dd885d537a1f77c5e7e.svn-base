@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="isAnswer" desc="研讯通答题">
+    <snd>
+        <field name="custId" desc="用户id" required="true"/>
+        <field name="tsIds" desc="测试id多个测试id用英文逗号隔开" required="true"/>
+    </snd>
+    <rcv>
+      <field name="LIST" desc="" type="E">
+          <field name="custId" desc="用户id" required="true"/>
+          <field name="tsId" desc="测试id" required="true"/>
+          <field name="status" desc="0未答题，1已答题" required="true"/>
+      </field>
+    </rcv>
+</trans>

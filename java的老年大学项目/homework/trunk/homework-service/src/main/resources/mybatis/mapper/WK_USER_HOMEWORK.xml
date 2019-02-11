@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.homework.mapper.WkUserHomeworkMapper">
+    <resultMap id="BaseResultMap" type="WkUserHomework">
+    <id property="uhId" column="UH_ID" jdbcType="VARCHAR" />
+
+    <result property="hwId" column="HW_ID" jdbcType="VARCHAR" />
+    <result property="uhContent" column="UH_CONTENT" jdbcType="VARCHAR" />
+    <result property="uhStatus" column="UH_STATUS" jdbcType="CHAR" />
+    <result property="uhSubmitDate" column="UH_SUBMIT_DATE" jdbcType="TIMESTAMP" />
+    <result property="custId" column="CUST_ID" jdbcType="VARCHAR" />
+    <result property="custName" column="CUST_NAME" jdbcType="VARCHAR" />
+    <result property="uhStarNum" column="UH_STAR_NUM" jdbcType="DECIMAL"/>
+    <result property="uhScore" column="UH_SCORE" jdbcType="DECIMAL"/>
+    <result property="uhScoreStatus" column="UH_SCORE_STATUS" jdbcType="CHAR" />
+    <result property="uhScoreDate" column="UH_SCORE_DATE" jdbcType="TIMESTAMP" />
+    <result property="uhScoreUserId" column="UH_SCORE_USER_ID" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+    <result property="uhScoreContent" column="UH_SCORE_CONTENT" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        UH_ID,HW_ID,UH_CONTENT,UH_STATUS,UH_SUBMIT_DATE,
+        CUST_ID,CUST_NAME,UH_STAR_NUM,UH_SCORE,UH_SCORE_STATUS,
+        UH_SCORE_DATE,UH_SCORE_USER_ID,CREATE_DATE,SITE_ID,MCHT_ID,
+        MCHT_SCHM_ID,UH_SCORE_CONTENT
+    </sql>
+
+
+    <sql id="TableClause"> ${}.WK_USER_HOMEWORK </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.news.mapper.NewsCategoryMapper">
+    <select id="queryShowPage" parameterType="NewsCategory" resultMap="BaseResultMap">
+        SELECT
+        c.*
+        FROM
+          news_category c
+          JOIN news_site_category_rel r
+            ON c.`CAT_ID` = r.`CAT_ID`
+        WHERE r.`SHOW_STATUS` = '1'
+        <if test="siteId !=null and siteId!=''">
+          <!--<foreach collection=""-->
+           and  r.site_id=#{siteId,jdbcType=VARCHAR}
+        </if>
+          ORDER by c.CAT_SORT asc
+    </select>
+</mapper>

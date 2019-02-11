@@ -1,0 +1,66 @@
+package com.learnyeai.base.api.bean;
+
+import com.learnyeai.base.api.client.*;
+import com.learnyeai.base.api.util.BaseCons;
+import com.learnyeai.base.api.vo.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by zpz on 2018/8/3.
+ */
+@Component
+public class ClientBaseInfoGet {
+    @Autowired
+    private CustInfoClient custInfoClient;
+    @Autowired
+    private CfgSchemeClient schemeClient;
+    @Autowired
+    private CfgSchemeEditionClient schemeEditionClient;
+    @Autowired
+    private ShMerchantClient merchantClient;
+    @Autowired
+    private ShMerchantSchemeClient merchantSchemeClient;
+    @Autowired
+    private PtsetPlatformClient platformClient;
+    @Autowired
+    private PtsetSiteClient siteClient;
+
+    // 客户
+    @Cacheable(cacheNames = BaseCons.CACHE_CUST_INFO)
+    public CustInfoVo queryCustInfo(String custId){
+        return custInfoClient.view(custId);
+    }
+    //方案
+    @Cacheable(cacheNames = BaseCons.CACHE_SCACHE)
+    public CfgSchemeVo queryScheme(String schmId){
+        return schemeClient.view(schmId);
+    }
+    // 方案版本
+    @Cacheable(cacheNames = BaseCons.CACHE_SCHEMEEDITION)
+    public CfgSchemeEditionVo querySchemeEdition(String schmEdtId){
+        return schemeEditionClient.view(schmEdtId);
+    }
+    // 商户
+    @Cacheable(cacheNames = BaseCons.CACHE_MERCHANT)
+    public ShMerchantVo queryMerchant(String mchtId){
+        return merchantClient.view(mchtId);
+    }
+    // 商户方案
+    @Cacheable(cacheNames = BaseCons.CACHE_MERCHANTSCHEME)
+    public ShMerchantSchemeVo queryMerchantScheme(String mchtSchmId){
+        return merchantSchemeClient.view(mchtSchmId);
+    }
+    // 平台
+    @Cacheable(cacheNames = BaseCons.CACHE_PLATFORM)
+    public PtsetPlatformVo queryPlatform(String ptId){
+        return platformClient.view(ptId);
+    }
+    // 站点
+    @Cacheable(cacheNames = BaseCons.CACHE_SITE)
+    public PtsetSiteVo querySite(String siteId){
+        return siteClient.view(siteId);
+    }
+
+}

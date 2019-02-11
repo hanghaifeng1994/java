@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans desc="动态口令（邮箱验证码）获取and发送">
+    <snd>
+        <field name="EMAIL" required="true" desc="邮箱账号" />
+    </snd>
+    <rcv>
+        <field name="msg" required="false" desc="短信内容，上线前务必屏蔽该字段，否则有安全风险" />
+    </rcv>
+</trans>

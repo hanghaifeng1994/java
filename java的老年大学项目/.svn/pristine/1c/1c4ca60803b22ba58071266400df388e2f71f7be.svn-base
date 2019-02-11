@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="关于-添加">
+    <snd>
+        <field name="id" desc="id"/>
+        <field name="title" desc="标题"/>
+        <field name="content" desc="内容"/>
+        <field name="remarks" desc="备注"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="课程-新增/编辑">
+	<snd>
+		<field name="csId" desc="id" />
+		<field name="csCatstr" desc="课程分类id，逗号隔开" />
+		<field name="csName" desc="名称" />
+		<field name="csSerialNo" desc="课程编号" />
+		<field name="csTag" desc="标签" />
+		<field name="csInfo" desc="简介" />
+		<field name="csPhoto" desc="封面" />
+		<field name="csImgs" desc="配图" />
+		<field name="csPoints" desc="积分" />
+		<field name="csPrice" desc="价格" />
+		<field name="csStudylength" desc="学分/学时" />
+		<field name="csLecturer" desc="讲师" />
+		<field name="csCopyrightStartdate" desc="有效期开始时间" />
+		<field name="csCopyrightEnddate" desc="有效期结束时间" />
+		<field name="csTotalTime" desc="总时长" />
+		<field name="csModel" desc="课程类型1:公需课;2:专业课;3:开放课" />
+		<field name="csStudyneed" desc="是否要求学习时长  0/1" />
+		<field name="csStudyTime" desc="要求学习时长(分钟)" />
+		<field name="csHomeworkneed" desc="是否要求作业成绩 0/1" />
+		<field name="csHomeworkScore" desc="要求作业成绩" />
+		<field name="csExamneed" desc="是否要求测验成绩  0/1" />
+		<field name="csExamScore" desc="要求测验成绩  0/1" />
+		<field name="csScoreneed" desc="是否要求总成绩" />
+		<field name="csScore" desc="要求总成绩" />
+		<field name="siteId" desc="站点id"/>
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常,2:新增课程时，课程分类id不能为空" />
+		<field name="msg" desc="msg" />
+		<field name="id" desc="id" />
+	</rcv>
+</trans>

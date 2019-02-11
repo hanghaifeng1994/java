@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="isJoin" desc="小组成员-是否已加入">
+    <snd>
+        <field-list name="list" desc="小组客户列表" type="E">
+            <field name="sgpId" desc="小组id"/>
+            <field name="custId" desc="客户id"/>
+        </field-list>
+    </snd>
+    <rcv>
+        <field-list name="LIST" type="E">
+            <field name="sgpId" desc="小组id"/>
+            <field name="custId" desc="客户id"/>
+            <field name="status" desc="状态1已参加" />
+        </field-list>
+    </rcv>
+</trans>

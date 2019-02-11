@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.course.mapper.CrsCustLearnCourseMapper">
+    <resultMap id="BaseResultMap" type="CrsCustLearnCourse">
+    <id property="lcsId" column="LCS_ID" jdbcType="VARCHAR" />
+
+    <result property="studyUserId" column="STUDY_USER_ID" jdbcType="VARCHAR" />
+    <result property="csId" column="CS_ID" jdbcType="VARCHAR" />
+    <result property="lcsNormal" column="LCS_NORMAL" jdbcType="CHAR" />
+    <result property="curCptId" column="CUR_CPT_ID" jdbcType="VARCHAR" />
+    <result property="lcsStudyTime" column="LCS_STUDY_TIME" jdbcType="DECIMAL" />
+    <result property="lcsProcess" column="LCS_PROCESS" jdbcType="DECIMAL" />
+    <result property="lcsHomeworkScore" column="LCS_HOMEWORK_SCORE" jdbcType="DECIMAL" />
+    <result property="lcsExamScore" column="LCS_EXAM_SCORE" jdbcType="DECIMAL" />
+    <result property="lcsScore" column="LCS_SCORE" jdbcType="DECIMAL" />
+    <result property="lcsStudyFinished" column="LCS_STUDY_FINISHED" jdbcType="CHAR" />
+    <result property="lcsHomeworkeFinished" column="LCS_HOMEWORKE_FINISHED" jdbcType="CHAR" />
+    <result property="lcsExameFinished" column="LCS_EXAME_FINISHED" jdbcType="CHAR" />
+    <result property="lcsScoreFinished" column="LCS_SCORE_FINISHED" jdbcType="CHAR" />
+    <result property="lcsFinished" column="LCS_FINISHED" jdbcType="CHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        LCS_ID,STUDY_USER_ID,CS_ID,LCS_NORMAL,CUR_CPT_ID,
+        LCS_STUDY_TIME,LCS_PROCESS,LCS_HOMEWORK_SCORE,LCS_EXAM_SCORE,LCS_SCORE,
+        LCS_STUDY_FINISHED,LCS_HOMEWORKE_FINISHED,LCS_EXAME_FINISHED,LCS_SCORE_FINISHED,LCS_FINISHED,
+        CREATE_DATE,UPDATE_DATE,SITE_ID,MCHT_ID,MCHT_SCHM_ID
+    </sql>
+
+
+    <sql id="TableClause"> ${}.CRS_CUST_LEARN_COURSE </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

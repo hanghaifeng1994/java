@@ -1,0 +1,11 @@
+package com.learnyeai.mq;
+
+/**
+ * Created by zpz on 2018/6/13.
+ */
+public class NewsConstans {
+    public static final String NEWS_EXCHANGE = "news.exchange";
+    public static final String NEWS_QUEUE = "news.queue";
+    public static final String NEWS_KEY = "news.key";
+
+}

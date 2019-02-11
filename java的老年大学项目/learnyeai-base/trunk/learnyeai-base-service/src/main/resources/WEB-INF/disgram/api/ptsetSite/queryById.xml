@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-详情">
+    <snd>
+        <field name="siteId" desc="id" required="true"/>
+    </snd>
+    <rcv>
+        <field name="siteId" desc="id"/>
+        <field name="siteName" desc="名称"/>
+        <field name="siteCode" desc="编码"/>
+        <field name="siteLogo" desc="logo" type="res"/>
+        <field name="pageHeadImg" desc="头部图片" type="res"/>
+        <field name="pageSiteCopyright" desc="站点版权"/>
+        <field name="siteDomain" desc="域名"/>
+        <field name="areaId" desc="区域"/>
+        <field name="sort" desc="排序"/>
+        <field name="ptId" desc="平台ID"/>
+        <field name="ptName" desc="平台名称" type="ptName" xpath="siteId"/>
+        <field name="siteType" desc="1主站、2子站"/>
+        <field name="status" desc="0未启用、1启用"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

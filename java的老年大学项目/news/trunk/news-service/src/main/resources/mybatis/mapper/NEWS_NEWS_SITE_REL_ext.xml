@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.news.mapper.NewsNewsSiteRelMapper">
+    <delete id="deleteBySiteAndArtId" parameterType="NewsNewsSiteRel" >
+        DELETE
+        FROM
+          news_news_site_rel
+        WHERE art_id = #{artId,jdbcType=VARCHAR}
+          AND site_id =#{siteId,jdbcType=VARCHAR}
+    </delete>
+</mapper>

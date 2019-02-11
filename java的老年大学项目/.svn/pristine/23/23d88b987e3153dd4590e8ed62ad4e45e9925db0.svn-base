@@ -1,0 +1,83 @@
+package com.learnyeai.album.service;
+
+import com.learnyeai.album.model.AbmAlbum;
+import com.learnyeai.album.model.AbmSitePhotoRel;
+import com.learnyeai.album.mapper.AbmSitePhotoRelMapper;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.*;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class AbmSitePhotoRelWyService extends BaseService<AbmSitePhotoRel> {
+
+    @Resource
+    private AbmSitePhotoRelMapper abmSitePhotoRelMapper;
+    @Resource
+    private AbmAlbumWyService abmAlbumWyService;
+
+
+    @Override
+    public BaseMapper<AbmSitePhotoRel> getMapper() {
+        return abmSitePhotoRelMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Override
+    protected Weekend genSqlExample(AbmSitePhotoRel t, Map params) {
+        Weekend w=super.genSqlExample(t,params);
+        WeekendCriteria<AbmSitePhotoRel,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getSiteId())){
+            String[] arr=(t.getSiteId()).split(",");
+            c.andIn(AbmSitePhotoRel::getSiteId,Arrays.asList(arr));
+        }
+        if(StringUtils.isNotBlank(t.getPhManageStatus())){
+            c.andEqualTo(AbmSitePhotoRel::getPhManageStatus,t.getPhManageStatus());
+        }
+        w.and(c);
+        return  w;
+    }
+
+    /**
+     *   n+1查询
+     *   通过站点id查询所有的图片
+     *   id，再通过图片id去查询所有图片
+     * @return
+     */
+    public List<AbmAlbum> queryPageBySiteId(AbmSitePhotoRel ap){
+        List<AbmAlbum> result=new ArrayList<>();
+        //管理状态为1可管理
+        ap.setPhManageStatus("1");
+        //根据站点查询出所有的
+        MyPage<AbmSitePhotoRel> page=super.queryPage(ap,new HashMap());
+        List<AbmSitePhotoRel> list=page.getList();
+        rtnPageList4Report(page);
+        //根据图片id 查询所有图片
+        for(AbmSitePhotoRel aspr:list){
+            AbmAlbum a=  abmAlbumWyService.queryById(aspr.getPhId());
+            result.add(a);
+        }
+        return  result;
+    }
+    public static List rtnPageList4Report(MyPage page) {
+        if (page.getTotal() > -1L) {
+            ThreadContext.put("totalCount", page.getTotal());
+        }
+        return page.getList();
+    }
+
+}

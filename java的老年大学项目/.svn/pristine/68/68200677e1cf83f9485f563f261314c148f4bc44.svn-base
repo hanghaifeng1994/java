@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="用户设备-详情">
+    <snd>
+        <field name="devId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="devId" desc="ID"/>
+        <field name="uuid" desc="UUID"/>
+        <field name="custId" desc="客户id"/>
+        <field name="devStatus" desc="1登录、2退出登录、3在其它设备登录"/>
+        <field name="bindDate" desc="绑定时间"/>
+        <field name="clientType" desc="IP: IPHONE PD: IPAD AD: ANDROID AP: ANDROID PAD"/>
+        <field name="clientVerNo" desc="客户端版本"/>
+        <field name="clientInfo" desc="客户端详情"/>
+        <field name="clientOs" desc="I:IOS A:ANDROID"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

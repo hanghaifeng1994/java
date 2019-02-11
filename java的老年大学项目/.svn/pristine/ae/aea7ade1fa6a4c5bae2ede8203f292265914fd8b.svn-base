@@ -1,0 +1,14 @@
+package com.learnyeai.base.api.client;
+
+import com.learnyeai.base.api.vo.UrDeviceVo;
+import com.learnyeai.core.support.BaseFeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
+
+/**
+ * 用户设备
+ *
+ * @author zhangpz
+ */
+@FeignClient(name = "${BASE-SERVICE}", path="/base/UrDevice")
+public interface UrDeviceClient extends BaseFeignClient<UrDeviceVo> {
+}

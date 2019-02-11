@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       ">
+
+	<!-- 公共检查 -->
+	<bean id="commonFlow" class="com.learnyeai.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/common.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+	
+	<!-- 登录流程定义 --> 
+	<!--<bean id="loginFlow" class="cn.com.weyeyun.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/login.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>-->
+	<!--短信验证码登录-->
+	<!--<bean id="dynLoginFlow" class="cn.com.weyeyun.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/dynLogin.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>-->
+
+	<!--微业云登录VVVVVVVVVVVVVVVVV -->
+	<!--商家后管，管理员登录-->
+	<bean id="passwordLoginFlow" class="com.learnyeai.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/login_password.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+	<!--员工小程序登录-->
+	<bean id="dynLoginFlow" class="com.learnyeai.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/login_dyn.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+	<!--小程序登录-->
+	<bean id="appletLoginFlow" class="com.learnyeai.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/login_applet.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+	<!--小程序登录检查-->
+	<bean id="appletStartCheckFlow" class="com.learnyeai.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/appletStartCheck.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+
+
+	<!--注册流程定义-->
+	<bean id="registerFlow" class="com.learnyeai.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/register.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+
+	<!--通过手机号找回密码-->
+	<!--<bean id="findPwdByMobile" class="cn.com.weyeyun.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/findPwdByMobile.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>-->
+
+	 <!--app启动检查流程定义-->
+	<bean id="appStartCheckFlow" class="com.learnyeai.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/appStartCheck.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+
+	<!--通过邮箱找回密码-->
+	<!--<bean id="findPwdByEmail" class="cn.com.zhisou.ares.flow.AresFlowDispatch" init-method="init">
+		<property name="defineName" value="WEB-INF/business/inte/findPwdByEmail.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+
+	&lt;!&ndash;通过手机号找回密码&ndash;&gt;
+	<bean id="findPwdByMobile" class="cn.com.zhisou.ares.flow.AresFlowDispatch" init-method="init">
+		<property name="defineName" value="WEB-INF/business/inte/findPwdByMobile.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+
+	&lt;!&ndash;注册流程定义&ndash;&gt;
+	<bean id="registerFlow" class="cn.com.zhisou.ares.flow.AresFlowDispatch" init-method="init">
+		<property name="defineName" value="WEB-INF/business/inte/register.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>-->
+
+</beans>

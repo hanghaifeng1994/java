@@ -1,0 +1,225 @@
+package com.learnyeai.album.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+import java.util.Date;
+
+/**
+ * 图片组
+ *
+ * @author yl
+ */
+public class AbmPhotoVo extends BaseVo {
+
+    /**
+    * id
+    */
+    private String phId;
+
+    /**
+     * 标题
+     */
+    private String phTitle;
+    /**
+     * 封面
+     */
+    private String phPhoto;
+    /**
+     * 图片ids
+     */
+    private String phImgs;
+    /**
+     * 图片名称
+     */
+    private String phImgNames;
+    /**
+     * 内容
+     */
+    private String phContent;
+    /**
+     * 相册id
+     */
+    private String abmId;
+    /**
+     * 客户名称
+     */
+    private String phAddUsername;
+    /**
+     * 0未提交、1审核中、2审核通过、3审核失败
+     */
+    private String phStatus;
+    /**
+     * 审核id
+     */
+    private String auditId;
+    /**
+     * 创建人
+     */
+    private String createBy;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
+    /**
+     * 更新人
+     */
+    private String updateBy;
+    /**
+     * 更新时间
+     */
+    private Date updateDate;
+    /**
+     * 站点
+     */
+    private String siteId;
+    /**
+     * 商户id
+     */
+    private String mchtId;
+    /**
+     * 商户方案id
+     */
+    private String mchtSchmId;
+
+    public String getPhId() {
+        return phId;
+    }
+
+    public void setPhId(String phId) {
+        this.phId = phId;
+    }
+    public String getPhTitle() {
+        return phTitle;
+    }
+
+    public void setPhTitle(String phTitle) {
+        this.phTitle = phTitle;
+    }
+    public String getPhPhoto() {
+        return phPhoto;
+    }
+
+    public void setPhPhoto(String phPhoto) {
+        this.phPhoto = phPhoto;
+    }
+    public String getPhImgs() {
+        return phImgs;
+    }
+
+    public void setPhImgs(String phImgs) {
+        this.phImgs = phImgs;
+    }
+    public String getPhImgNames() {
+        return phImgNames;
+    }
+
+    public void setPhImgNames(String phImgNames) {
+        this.phImgNames = phImgNames;
+    }
+    public String getPhContent() {
+        return phContent;
+    }
+
+    public void setPhContent(String phContent) {
+        this.phContent = phContent;
+    }
+    public String getAbmId() {
+        return abmId;
+    }
+
+    public void setAbmId(String abmId) {
+        this.abmId = abmId;
+    }
+    public String getPhAddUsername() {
+        return phAddUsername;
+    }
+
+    public void setPhAddUsername(String phAddUsername) {
+        this.phAddUsername = phAddUsername;
+    }
+    public String getPhStatus() {
+        return phStatus;
+    }
+
+    public void setPhStatus(String phStatus) {
+        this.phStatus = phStatus;
+    }
+    public String getAuditId() {
+        return auditId;
+    }
+
+    public void setAuditId(String auditId) {
+        this.auditId = auditId;
+    }
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+
+    public static class CF {
+        public static String phId = "phId";  // id
+        public static String phTitle = "phTitle";  // 标题
+        public static String phPhoto = "phPhoto";  // 封面
+        public static String phImgs = "phImgs";  // 图片ids
+        public static String phImgNames = "phImgNames";  // 图片名称
+        public static String phContent = "phContent";  // 内容
+        public static String abmId = "abmId";  // 相册id
+        public static String phAddUsername = "phAddUsername";  // 客户名称
+        public static String phStatus = "phStatus";  // 0未提交、1审核中、2审核通过、3审核失败
+        public static String auditId = "auditId";  // 审核id
+        public static String createBy = "createBy";  // 创建人
+        public static String createDate = "createDate";  // 创建时间
+        public static String updateBy = "updateBy";  // 更新人
+        public static String updateDate = "updateDate";  // 更新时间
+        public static String delFlag = "delFlag";  // 删除标记
+        public static String siteId = "siteId";  // 站点
+        public static String mchtId = "mchtId";  // 商户id
+        public static String mchtSchmId = "mchtSchmId";  // 商户方案id
+
+    }
+
+}

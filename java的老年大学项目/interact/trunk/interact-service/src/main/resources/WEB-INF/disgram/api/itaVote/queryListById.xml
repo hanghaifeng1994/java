@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryListById" desc="投票-是否投票">
+    <snd>
+       <field-list name="list" desc="对象列表" type="E">
+           <field name="objId" desc="对像id"/>
+           <field name="type" desc="course资源 resource经验 experience小组 group班级 class证书 cert咨讯 news"/>
+       </field-list>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="是否投票列表" type="E">
+            <field name="objId" desc="对像id"/>
+            <field name="type" desc="类型"/>
+            <field name="status" desc="状态0已投票，1未投票"/>
+        </field-list>
+    </rcv>
+</trans>

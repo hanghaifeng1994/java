@@ -1,0 +1,145 @@
+
+全站搜索
+
+查询字段
+	id
+	title
+	content
+	photo图片
+	pub_date发布时间
+	
+	type 类型
+	site_id站点
+字段
+------------------课程
+
+SELECT '课程' type
+,group_concat(DISTINCT r.SITE_ID) site_id
+,c.cs_id id
+,c.CS_NAME title
+,c.CS_PHOTO photo
+,c.UPDATE_DATE pub_date
+,group_concat(DISTINCT ca.CAT_NAME) lable
+from crs_course c
+,crs_site_course_rel r
+,crs_catalog_course_rel ccr
+, crs_catalog ca
+where r.CS_ID=c.CS_ID
+and ccr.CS_ID=c.CS_ID
+and ca.CAT_ID=ccr.CAT_ID
+and c.CS_STATUS='2'
+and c.CS_PUB_STATUS='1'
+GROUP BY c.CS_ID,c.CS_NAME,c.CS_PHOTO,c.UPDATE_DATE
+
+------------------资源
+
+SELECT 
+'资源' type
+,group_concat(DISTINCT sr.SITE_ID) site_id
+,r.RES_ID ID
+,r.RES_NAME title
+,r.RES_PHOTO photo
+,r.UPDATE_DATE pub_date
+,group_concat(DISTINCT ca.CAT_NAME) lable
+from res_resource r
+,res_category_resource_rel rr
+,res_category ca
+,res_site_resource_rel sr
+WHERE rr.RES_ID=r.RES_ID
+and ca.CAT_ID=rr.CAT_ID
+and sr.RES_ID=r.RES_ID
+and r.RES_STATUS='2'
+and r.RES_PUB_STATUS='1'
+GROUP BY r.RES_ID,r.RES_NAME,r.RES_PHOTO,r.UPDATE_DATE
+------------------证书、班级
+SELECT case when cz.CZ_CERTED='1' then '证书' else '班级' end type
+,group_concat(DISTINCT sc.SITE_ID) site_id
+,cz.CZ_ID id
+,cz.CZ_NAME title
+,cz.CZ_PHOTO photo
+,cz.UPDATE_DATE pub_date
+,group_concat(DISTINCT ca.CAT_NAME) label
+from clz_clazz cz
+,clz_site_clazz sc
+,clz_category_clzz_rell ccr
+,clz_category ca
+WHERE sc.CZ_ID=cz.CZ_ID
+and ccr.CZ_ID=cz.CZ_ID
+and ccr.CAT_ID=ca.CAT_ID
+and cz.CZ_STATUS='2'
+and cz.CZ_PUB_STATUS='1'
+GROUP BY cz.CZ_ID,cz.CZ_NAME,cz.CZ_PHOTO,cz.UPDATE_DATE
+------------------资讯、通知、经验、帮助
+
+SELECT '资讯' type
+,group_concat(DISTINCT nsr.SITE_ID) site_id
+,n.ARTICLE_ID id
+,n.TITLE
+,n.PHOTO
+,n.UPDATE_DATE pub_date
+,group_concat(DISTINCT ca.CAT_NAME) label
+from news_article n
+,news_news_site_rel nsr
+,news_category_article_rel car
+,news_category ca
+WHERE nsr.ART_ID=n.ARTICLE_ID
+AND car.ARTICLE_ID=n.ARTICLE_ID
+and ca.CAT_ID=car.CAT_ID
+and n.STATUS='2'
+and n.PUB_STATUS='1'
+GROUP BY n.ARTICLE_ID,n.TITLE,n.PHOTO,n.UPDATE_DATE
+------------------活动
+select '活动' type
+,group_concat(DISTINCT sar.SITE_ID) site_id
+,a.ACT_ID id
+,a.ACT_TITLE title
+,a.ACT_PHOTO photo
+,a.UPDATE_DATE pub_date
+,group_concat(DISTINCT ca.CAT_NAME) label
+from act_activity a
+,act_site_activity_rel sar
+,act_category_activity car
+,act_category ca
+where sar.ACT_ID=a.ACT_ID
+and car.ACT_ID=a.ACT_ID
+and ca.CAT_ID=car.CAT_ID
+and a.ACT_STATUS='2'
+and a.ACT_PUB_STATUS='1'
+GROUP BY a.ACT_ID,a.ACT_TITLE,a.ACT_PHOTO,a.UPDATE_DATE
+
+------------------小组
+
+SELECT '小组' type
+,group_concat(DISTINCT sgr.SITE_ID) site_id
+,g.SGP_ID id
+,g.SGP_NAME title
+,g.SGP_PHOTO photo
+,g.UPDATE_DATE PUB_DATE
+,group_concat(DISTINCT ca.CAT_NAME) label
+from sgp_study_group g
+,sgp_site_studygroup_rel sgr
+,sgp_category_group_rel cgr
+,sgp_category ca
+WHERE sgr.SGP_ID=g.SGP_ID
+and cgr.SGP_ID=g.SGP_ID
+and ca.CAT_ID=cgr.CAT_ID
+and g.SGP_STATUS = '2'
+GROUP BY g.SGP_ID
+------------------才艺 
+SELECT '才艺' type
+,group_concat(DISTINCT spr.SITE_ID) site_id
+,a.ABM_ID id
+,a.ABM_NAME title
+,a.ABM_PHOTO photo
+,a.UPDATE_DATE pub_date
+,group_concat(DISTINCT ca.CAT_NAME) label
+FROM abm_album a
+,abm_site_photo_rel spr
+,abm_category_photo_rel cpr
+,abm_category ca
+WHERE spr.ABM_ID=a.ABM_ID
+and cpr.ABM_ID=a.ABM_ID
+and ca.CAT_ID=cpr.CAT_ID
+AND a.ABM_STATUS='2'
+GROUP BY a.ABM_ID,a.ABM_NAME,a.ABM_PHOTO,a.UPDATE_DATE
+

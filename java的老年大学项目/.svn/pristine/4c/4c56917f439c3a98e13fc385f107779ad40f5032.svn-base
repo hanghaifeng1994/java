@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="publish" desc="班级-批量发布/取消发布（取消发布只能单条取消）">
+    <snd>
+        <field name="ids" desc="id" required="true"/>
+        <field name="czPubStatus" desc="0未发布、1已发布"/>
+    </snd>
+    <rcv>
+        <field name="errormsg" desc="取消发布异常描述"/>
+        <field name="num" desc="操作数量"/>
+    </rcv>
+</trans>

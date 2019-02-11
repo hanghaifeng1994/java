@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="dynLogin" title="登录流程">
+    <actions>
+        <action ref="mobileCheckOp" title="校验手机号"></action>
+        <action ref="dynCodeCheckOp" title="短信验证码检查"></action>
+        <action ref="loginCheckOp" title="用户检查"></action>
+        <action ref="loginInfoGetOp" title="获取登录信息"></action>
+        <action ref="loginInfoSaveOp" title="保存登录信息"></action>
+        <action ref="loginDeviceSaveOp" title="保存设备信息"></action>
+        <action ref="loginSessionCreateOp" title="创建用户会话"></action>
+        <!--<action ref="sessionAnsyOp" title="单点登录检查"></action>-->
+    </actions>
+</config>

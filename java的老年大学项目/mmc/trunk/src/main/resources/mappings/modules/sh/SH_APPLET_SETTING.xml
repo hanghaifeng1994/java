@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.sh.dao.ShAppletSettingDao">
+    <resultMap id="BaseResultMap" type="ShAppletSetting">
+        <id property="apltSetId" column="APLT_SET_ID" jdbcType="VARCHAR" />
+        <result property="appId" column="APP_ID" jdbcType="VARCHAR" />
+        <result property="appSecret" column="APP_SECRET" jdbcType="VARCHAR" />
+        <result property="appName" column="APP_NAME" jdbcType="VARCHAR" />
+        <result property="appSigns" column="APP_SIGNS" jdbcType="VARCHAR" />
+        <result property="appAuthRefreshToken" column="APP_AUTH_REFRESH_TOKEN" jdbcType="VARCHAR" />
+        <result property="appAuthInfo" column="APP_AUTH_INFO" jdbcType="VARCHAR" />
+        <result property="wechatMerchantName" column="WECHAT_MERCHANT_NAME" jdbcType="VARCHAR" />
+        <result property="wechatMerchantNum" column="WECHAT_MERCHANT_NUM" jdbcType="VARCHAR" />
+        <result property="wechatMerchantPasswod" column="WECHAT__MERCHANT_PASSWOD" jdbcType="VARCHAR" />
+        <result property="publicNumName" column="PUBLIC_NUM_NAME" jdbcType="VARCHAR" />
+        <result property="publicNumAppid" column="PUBLIC_NUM_APPID" jdbcType="VARCHAR" />
+        <result property="publicNumAppsecrete" column="PUBLIC_NUM_APPSECRETE" jdbcType="VARCHAR" />
+        <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+        <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+        <result property="apltId" column="APLT_ID" jdbcType="VARCHAR" />
+        <result property="apltVerId" column="APLT_VER_ID" jdbcType="VARCHAR" />
+        <result property="appExtJson" column="APP_EXT_JSON" jdbcType="VARCHAR" />
+        <result property="appCodeUploadStatus" column="APP_CODE_UPLOAD_STATUS" jdbcType="CHAR" />
+        <result property="appAuditId" column="APP_AUDIT_ID" jdbcType="VARCHAR" />
+        <result property="appAuditStatus" column="APP_AUDIT_STATUS" jdbcType="CHAR" />
+        <result property="appPubStatus" column="APP_PUB_STATUS" jdbcType="CHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        APLT_SET_ID,APP_ID,APP_SECRET,APP_NAME,APP_SIGNS,
+        APP_AUTH_REFRESH_TOKEN,APP_AUTH_INFO,WECHAT_MERCHANT_NAME,WECHAT_MERCHANT_NUM,WECHAT__MERCHANT_PASSWOD,
+        PUBLIC_NUM_NAME,PUBLIC_NUM_APPID,PUBLIC_NUM_APPSECRETE,MCHT_SCHM_ID,MCHT_ID,
+        APLT_ID,APLT_VER_ID,APP_EXT_JSON,APP_CODE_UPLOAD_STATUS,APP_AUDIT_ID,
+        APP_AUDIT_STATUS,APP_PUB_STATUS,CREATE_BY,CREATE_DATE,UPDATE_BY,
+        UPDATE_DATE,DEL_FLAG
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{apltSetId},#{appId},#{appSecret},#{appName},#{appSigns},
+        #{appAuthRefreshToken},#{appAuthInfo},#{wechatMerchantName},#{wechatMerchantNum},#{wechatMerchantPasswod},
+        #{publicNumName},#{publicNumAppid},#{publicNumAppsecrete},#{mchtSchmId},#{mchtId},
+        #{apltId},#{apltVerId},#{appExtJson},#{appCodeUploadStatus},#{appAuditId},
+        #{appAuditStatus},#{appPubStatus},#{createBy},#{createDate},#{updateBy},
+        #{updateDate},#{delFlag}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.SH_APPLET_SETTING </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            APLT_SET_ID = #{apltSetId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="ShAppletSetting">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="ShAppletSetting">
+        update <include refid="TableClause" />
+        <set>
+        APP_ID=#{appId},
+        APP_SECRET=#{appSecret},
+        APP_NAME=#{appName},
+        APP_SIGNS=#{appSigns},
+        APP_AUTH_REFRESH_TOKEN=#{appAuthRefreshToken},
+        APP_AUTH_INFO=#{appAuthInfo},
+        WECHAT_MERCHANT_NAME=#{wechatMerchantName},
+        WECHAT_MERCHANT_NUM=#{wechatMerchantNum},
+        WECHAT__MERCHANT_PASSWOD=#{wechatMerchantPasswod},
+        PUBLIC_NUM_NAME=#{publicNumName},
+        PUBLIC_NUM_APPID=#{publicNumAppid},
+        PUBLIC_NUM_APPSECRETE=#{publicNumAppsecrete},
+        MCHT_SCHM_ID=#{mchtSchmId},
+        MCHT_ID=#{mchtId},
+        APLT_ID=#{apltId},
+        APLT_VER_ID=#{apltVerId},
+        APP_EXT_JSON=#{appExtJson},
+        APP_CODE_UPLOAD_STATUS=#{appCodeUploadStatus},
+        APP_AUDIT_ID=#{appAuditId},
+        APP_AUDIT_STATUS=#{appAuditStatus},
+        APP_PUB_STATUS=#{appPubStatus},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate},
+        UPDATE_BY=#{updateBy},
+        UPDATE_DATE=#{updateDate},
+        DEL_FLAG=#{delFlag}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="ShAppletSetting">
+            update <include refid="TableClause" />
+            <set>
+                <if test="appId!=null">APP_ID=#{appId},</if>
+                <if test="appSecret!=null">APP_SECRET=#{appSecret},</if>
+                <if test="appName!=null">APP_NAME=#{appName},</if>
+                <if test="appSigns!=null">APP_SIGNS=#{appSigns},</if>
+                <if test="appAuthRefreshToken!=null">APP_AUTH_REFRESH_TOKEN=#{appAuthRefreshToken},</if>
+                <if test="appAuthInfo!=null">APP_AUTH_INFO=#{appAuthInfo},</if>
+                <if test="wechatMerchantName!=null">WECHAT_MERCHANT_NAME=#{wechatMerchantName},</if>
+                <if test="wechatMerchantNum!=null">WECHAT_MERCHANT_NUM=#{wechatMerchantNum},</if>
+                <if test="wechatMerchantPasswod!=null">WECHAT__MERCHANT_PASSWOD=#{wechatMerchantPasswod},</if>
+                <if test="publicNumName!=null">PUBLIC_NUM_NAME=#{publicNumName},</if>
+                <if test="publicNumAppid!=null">PUBLIC_NUM_APPID=#{publicNumAppid},</if>
+                <if test="publicNumAppsecrete!=null">PUBLIC_NUM_APPSECRETE=#{publicNumAppsecrete},</if>
+                <if test="mchtSchmId!=null">MCHT_SCHM_ID=#{mchtSchmId},</if>
+                <if test="mchtId!=null">MCHT_ID=#{mchtId},</if>
+                <if test="apltId!=null">APLT_ID=#{apltId},</if>
+                <if test="apltVerId!=null">APLT_VER_ID=#{apltVerId},</if>
+                <if test="appExtJson!=null">APP_EXT_JSON=#{appExtJson},</if>
+                <if test="appCodeUploadStatus!=null">APP_CODE_UPLOAD_STATUS=#{appCodeUploadStatus},</if>
+                <if test="appAuditId!=null">APP_AUDIT_ID=#{appAuditId},</if>
+                <if test="appAuditStatus!=null">APP_AUDIT_STATUS=#{appAuditStatus},</if>
+                <if test="appPubStatus!=null">APP_PUB_STATUS=#{appPubStatus},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate},</if>
+                <if test="updateBy!=null">UPDATE_BY=#{updateBy},</if>
+                <if test="updateDate!=null">UPDATE_DATE=#{updateDate},</if>
+                <if test="delFlag!=null">DEL_FLAG=#{delFlag}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

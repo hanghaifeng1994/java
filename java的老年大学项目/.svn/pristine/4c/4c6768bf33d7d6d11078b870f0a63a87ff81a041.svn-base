@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="submit" desc="用户作业-提交">
+	<snd>
+		<field name="uhId" desc="用户作业id" required="true"/>
+	</snd>
+	<rcv>
+		<field name="status" desc="状态 0:成功，1:失败" />
+	</rcv>
+</trans>

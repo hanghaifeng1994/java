@@ -1,0 +1,333 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.com.weyeyun</groupId>
+	<artifactId>common-cert-service</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.3.0.RELEASE</version>
+		<relativePath />
+	</parent>
+	<properties>
+		<!-- 声明项目配置依赖编码格式为 utf-8 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- java jdk 版本声明 可变更 根据自己配置去匹配 -->
+		<java.version>1.7</java.version>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<fastjson.version>1.2.24</fastjson.version>
+		<hibernate.version>3.5.5-Final</hibernate.version>
+		<slf4j.version>1.6.1</slf4j.version>
+	</properties>
+
+	<dependencies>
+		<!-- 对web开发的支持，包括tomcat,spring-webmvc -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- spring boot核心,包括自动配置支持，日志和YAML -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
+		<!-- DevTools in Spring Boot 项目热部署 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-data-jpa</artifactId> 
+			</dependency> -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<!-- spring orm -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>3.0.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>3.0.4.RELEASE</version>
+		</dependency>
+
+		<!-- hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<!-- newest version in jboss repository -->
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.12.1.GA</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode</groupId>
+			<artifactId>hibernate-memcached</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+		<!-- optional datasource -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<version>1.5.4</version>
+		</dependency>
+		<!-- database access end -->
+
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<!-- json -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.codehaus.jackson</groupId> <artifactId>jackson-jaxrs</artifactId> 
+			<version>1.6.0</version> </dependency> -->
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-lgpl</artifactId>
+			<version>1.8.5</version>
+		</dependency>
+
+
+		<!-- logging begin -->
+		<!-- slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+			<exclusions></exclusions>
+		</dependency>
+
+		<!-- slf4j-log4j绑定 -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.7.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>1.7.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>1.7.13</version>
+		</dependency>
+		<!-- logging end -->
+
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.common.lib</groupId>
+			<artifactId>common-cache</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<!-- common begin -->
+		<!-- <dependency> <groupId>cn.common.lib</groupId> <artifactId>common-ipquery</artifactId> 
+			<version>1.0</version> </dependency> <dependency> <groupId>cn.common.lib</groupId> 
+			<artifactId>common-constant</artifactId> <version>1.2</version> </dependency> -->
+		<!-- <dependency> <groupId>cn.common.lib.springside</groupId> <artifactId>springside-web</artifactId> 
+			<version>1.3</version> </dependency> -->
+		<dependency>
+			<groupId>cn.common.lib.springside</groupId>
+			<artifactId>springside-service</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.common.lib.springside</groupId>
+			<artifactId>springside-util</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springside</groupId>
+			<artifactId>springside3-core</artifactId>
+			<version>3.3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.common.lib</groupId>
+			<artifactId>common-constant</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.common.lib.springside</groupId>
+			<artifactId>springside-orm</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.common.lib</groupId>
+			<artifactId>common-utils</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+		<!-- cert tempalte -->
+		<dependency>
+			<groupId>com.drcl.certtemplate</groupId>
+			<artifactId>certtemplate-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.common.lib</groupId>
+			<artifactId>common-bbssso</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.common.lib</groupId>
+			<artifactId>common-cache</artifactId>
+			<version>1.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/commons-cli-1.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.apache</groupId>
+			<artifactId>avalon-framework</artifactId>
+			<version>4.2.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/avalon-framework-4.2.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>barcode4j</groupId>
+			<artifactId>barcode4j</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/barcode4j.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>rt</groupId>
+			<artifactId>rt</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/rt.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- spring boot maven插件，可以将项目打包成一个可执行的jar文件 -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>aliyun-repos</id>
+			<name>aliyun-repos</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+</project>

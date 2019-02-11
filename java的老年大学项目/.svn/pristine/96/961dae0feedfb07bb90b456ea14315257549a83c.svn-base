@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+<style type="text/css">
+	* {margin: 0; padding: 0;}
+	img {border: 0;}
+	.slideBox {position: relative;padding-bottom: 0px;background-color: #121212;padding-left: 0px;width: 410px;padding-right: 0px;height: 246px;overflow: hidden;padding-top: 0px}
+	.slideBox .slide,
+	.slideBox .slide a.pic,
+	.slideBox .slide a.pic img {width: 410px; height: 246px;}
+	.slideBox .slide {position: absolute; z-index: 0;}
+	.slideBox .slide01 {z-index: 1;}
+	.slideBox .slide a.pic,
+	.slideBox .slide span.txt {display: block;}
+	.slideBox .slide img {}
+	.slideBox .slide span.txt {padding-top:5px;position: absolute; bottom: 0; left: 0; width: 410px; height: 30px; background: #000; filter: alpha(opacity: 100); background: rgba(0, 0, 0, 0.6); text-indent: 20px; line-height: 38px;}
+	.slideBox .slide span.txt a {text-decoration: none; color: #fff; font: 16px arial;}
+	.slideBox .slide span.txt a:hover {text-decoration: underline;}
+
+	.slideBox .xbtns {position: absolute; list-style: none; bottom: 11px; right: 5px; z-index: 99999999;}
+	.slideBox .xbtns li {float: left; margin-right: 5px; width: 18px; height: 18px; border: 0px solid #ccc; background: #666; text-align: center; font: 12px/20px arial;}
+	.slideBox .xbtns li.current {background: #f33;}
+	.slideBox .xbtns li a {text-decoration: none; display: block; color: #fff;}
+</style>

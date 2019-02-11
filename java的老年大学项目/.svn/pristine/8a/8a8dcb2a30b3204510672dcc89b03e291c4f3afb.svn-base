@@ -1,0 +1,17 @@
+package com.learnyeai.resource.service;
+
+import javax.annotation.Resource;
+
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+public class QuartzLearnResourceService {
+	@Resource
+	private StdCustLearnResourceWyService stdCustLearnResourceWyService;
+	
+	@Scheduled(cron = "0 0/10 * * * ?")
+	public void timerToNow() {
+		stdCustLearnResourceWyService.synRedisToDb();
+	}
+}

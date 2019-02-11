@@ -1,0 +1,28 @@
+package com.learnyeai.course.mq;
+
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.learnyeai.course.service.CrsCustLearnCourseWyService;
+import com.learnyeai.mq.ResourceMq;
+
+@Component
+//@RabbitListener(queues = "resource.queue")
+public class ResourceLearnReceiver {
+	@Autowired
+	private CrsCustLearnCourseWyService crsCustLearnCourseWyService;
+
+	//@RabbitHandler
+	public void process(ResourceMq obj) throws Exception {
+		try {
+			crsCustLearnCourseWyService.saveQueueCustLearnCourse(obj.getStudyUserId(), obj.getCsId(), obj.getCptId(),
+					obj.getResId(), obj.getUpdateDate());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+}

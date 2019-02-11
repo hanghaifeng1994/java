@@ -1,0 +1,315 @@
+package com.learnyeai.learnai.net.netMsg.xml;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.learnyeai.learnai.net.INetConfParser;
+import com.learnyeai.learnai.net.IResponseParser;
+import com.learnyeai.learnai.net.netConf.MBTransConfBean;
+import com.learnyeai.learnai.error.AresCoreException;
+import com.learnyeai.learnai.error.OtherRuntimeException;
+import com.learnyeai.learnai.support.IBusinessContext;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.learnyeai.learnai.consts.AppR;
+import com.learnyeai.learnai.net.netConf.MBTransItem;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.learnai.net.netConf.NetConst;
+import com.learnyeai.tools.common.AmountUtils;
+import com.learnyeai.tools.common.FileAnalysis;
+import com.learnyeai.tools.common.FileUtil;
+import com.learnyeai.tools.common.StringUtils;
+import com.learnyeai.tools.common.XmlUtil;
+
+@Component
+public class NetResponse4Xml implements IResponseParser {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	
+	@Override
+	public boolean parserResponseData(IBusinessContext ctx,
+									  INetConfParser confParser, String transCode) {
+		MBTransConfBean conf = confParser.findTransConfById(transCode, NetConst.HTTP_XML_PATH);
+		if (conf == null) {
+			logger.debug("net.config_not_definied {}", transCode);
+			throw new AresCoreException("net.config_not_definied", transCode);
+		}
+		String rsp = ctx.getResponseEntry();
+		
+		if(StringUtils.isBlank(rsp)){
+			logger.debug("net.response_is_empty {}", transCode);
+			throw new AresCoreException("net.response_is_empty", transCode);
+		}
+		//  处理不规范报文   如：00123456<xml><head>....
+		int index = rsp.indexOf("<");
+		if (index > 0) {
+			rsp = rsp.substring(index + 1);
+		}
+		// 解析交易体
+		Element root = null;
+		try {
+			Document doc = XmlUtil.readText(rsp);
+			root = doc.getRootElement();
+		} catch (Exception e) {
+			logger.error("net.response_parse_error", e);
+            throw new AresRuntimeException("net.response_parse_error", transCode);
+		}
+		
+		// 不能放在上方的try catch里面，不如真实异常无法抛出
+		parseHeader(root, transCode, ctx);
+		
+		Map map = new HashMap();
+        // 取定义
+		List<MBTransItem> items = conf.getRcv();
+		parseXml(root, items, map, conf, ctx);
+		ctx.getParamMap().clear();
+		ctx.getParamMap().putAll(map);
+		return true;
+	}
+
+    /**
+     * 解析响应头
+     * 
+     * @param header
+     * @param transCode
+     * @param ctx
+     * @return
+     */
+	private void parseHeader(Element root, String transCode,
+			IBusinessContext ctx) {
+        // TODO 需要适配 2015-03-10
+        Element head = root.element("head");
+        String rtnCode = head.elementText("errorcode");
+        String rtnMsg = head.elementText("errormsg");
+		if (NetConst.SUCCESS.equals(rtnCode)) {
+			return;
+		}
+		logger.warn("ebnak error {}", rtnCode);
+		//错误消息转义
+		rtnMsg = parseErrorMsg(rtnCode,transCode,rtnMsg);
+		ctx.setParam(AppR.RTN_MSG, rtnMsg);
+		throw new OtherRuntimeException(rtnCode, rtnMsg);
+	}
+
+	/**
+	 * 解析文件，提取内容列表
+	 * 
+	 * @param root
+	 * @param items
+	 * @param outMap
+	 * @param conf
+	 */
+	private void parseFile(Element root, List<MBTransItem> items, Map outMap,
+			MBTransConfBean conf, IBusinessContext ctx) {// 文件方式解析
+		String nextKey = ctx.getParam(NetConst.NEXT_KEY, "");
+		// nextKey==filename#pos
+		String[] tmps = nextKey.split("#");
+		String fileName = null;
+		int beginIndex = 0;
+		//feixiaobo---begin--modify--2014-12-05--如果无pageSize，则设一个最大值
+		String ps= ctx.getParam(NetConst.PAGE_SIZE);
+		//如果无分页大小、则默认不分页，设最大值
+		if(StringUtils.isBlank(ps)) {
+			ps = "1000";
+		}
+		//feixiaobo--begin--modify--2014-12-05--如果无pageSize，则设一个最大值
+		int pageSize = Integer.parseInt(ps);
+		List<String[]> datas = new ArrayList();
+		if (StringUtils.isEmpty(nextKey) || tmps.length != 2) {
+			String attrFileName = conf.getProperty(NetConst.FILE_NAME);
+			String attrFileRows = conf.getProperty(NetConst.FILE_ROWS);
+			// 新查询
+			fileName = root.elementText(attrFileName);
+			String fileRows = root.elementText(attrFileRows);
+			logger.debug("QA fileName:{},totals:{}", fileName, fileRows);
+		} else {
+			// 查询延续
+			fileName = tmps[0];
+			beginIndex = StringUtils.parseInt(tmps[1]);
+		}
+		ctx.getParamMap().clear();// 过路交易清理总线数据；
+		if (StringUtils.isEmpty(fileName)) {
+			logger.debug("数据为空！");
+			return;
+		}
+//		String filePath = String.format("%s%s", rootPath4xaqz, fileName);
+		String filePath = String.format("%s%s%s", FileUtil.getAbsolutePathByClass(),"data/file/", fileName);
+		logger.debug("QZ filePath:{},beginIndex:{}", filePath, beginIndex);
+//		filePath = "G:\\NFSS\\EBANK\\XACB\\PZXXQuery2563_20141211_00054172";
+		int endPos = 0;
+		// 生成响应数据
+		for (MBTransItem item : items) {
+			if (!NetConst.FILED_TYPE_E.equals(item.getType())) {
+				// 普通字段
+				parseItem(root, item, outMap);
+				//非文件内容 直接生成map
+				String value = root.elementText(item.getTargetName());
+				outMap.put(item.getName(), value);
+				continue;// 中断
+			}
+			// 取定义
+			List<MBTransItem> children = item.getChildren();
+
+			endPos = FileAnalysis.loadDatas(filePath, beginIndex, pageSize, datas,
+					children.size());
+			
+			// 设置输出值
+			List outDatas = new ArrayList();
+			// 遍历值
+			for (String[] row : datas) {
+				Map outData = new HashMap();
+				// 遍历定义
+				int i = 0;
+				for (MBTransItem child : children) {
+					// 取列内容
+					outData.put(child.getName(), row[i]);
+					parseItemMapKey(child, outData,row[i]);
+					i++;
+					
+				}
+				// logger.debug("row data:{}", outData);
+				outDatas.add(outData);
+				
+			}
+			outMap.put(item.getName(), outDatas);
+		}
+		// 含有下页
+		if (endPos > 0) {
+			// 设置下一页标记
+			outMap.put(NetConst.NEXT_KEY,
+					String.format("%s#%d", fileName, endPos));
+		}
+	}
+	
+
+    /**
+     * 深度解析XML
+     * 
+     * @param parent
+     * @param items
+     * @param outMap
+     */
+    private void parseXml(Element root, List<MBTransItem> items, Map outMap, MBTransConfBean conf, IBusinessContext ctx) {
+        // TODO 需要适配 2015-03-10
+        Element parent = root.element("body");
+        
+        String fileRst = conf.getProperty(NetConst.FILE_NAME);
+		if (StringUtils.isNotEmpty(fileRst)) {
+			parseFile(parent, items, outMap, conf, ctx);
+			return;
+		}
+		
+        // 遍历定义
+		for (MBTransItem item : items) {
+			if (!NetConst.FILED_TYPE_E.equals(item.getType())) {
+                // 普通字段
+				parseItem(parent, item, outMap);
+                continue;// 中断
+			}
+            // 列表字段
+			Element list = parent.element(item.getXmlPath());
+            // 取值
+			List<Element> rows = list.elements(NetConst.TYPE_MAP);
+			if (rows == null || rows.isEmpty()) {
+				logger.debug("list is empty:{}", item);
+				continue;
+			}
+            // 取定义
+			List<MBTransItem> children = item.getChildren();
+            // 设置输出值
+			List outDatas = new ArrayList();
+            // 遍历值
+			for (Element row : rows) {
+				Map outData = new HashMap();
+                // 遍历定义
+				for (MBTransItem child : children) {
+                    // 判断字段类型
+					if (!NetConst.FILED_TYPE_E.equals(child.getType())) {
+                        // 普通字段
+						parseItem(row, child, outData);
+                        continue;// 中断
+					}
+                    // 列表字段
+                    // 取定义
+					List<MBTransItem> sonChildren = child.getChildren();
+                    // 深度解析
+					parseXml(row, sonChildren, outData, conf, ctx);
+				}
+				outDatas.add(outData);
+			}
+			outMap.put(item.getName(), outDatas);
+		}
+	}
+    /**
+     * 提取子节点字段
+     * 
+     * @param parent
+     * @param item
+     * @param outMap
+     */
+	private void parseItem(Element parent, MBTransItem item, Map outMap) {
+		// 字段转换，如果设置了targetName则上送targetName对应的字段，否则送name字段
+		String value = parent.elementText(item.getTargetName());
+		
+		// 金额统一处理 分转元
+		if(NetConst.FILED_TYPE_M.equals(item.getType())){
+			value = AmountUtils.changeF2Y(value);
+		}
+		outMap.put(item.getName(), value);
+		// 解析mapKey 数据字典
+		parseItemMapKey(item, outMap, value);
+	}
+
+    // 解析数据字典
+    private void parseItemMapKey(MBTransItem item, Map outMap, String key) {
+		if (StringUtils.isEmpty(key)) {
+			return ;
+		}
+		String type = item.getDictType();
+		if (StringUtils.isEmpty(type)) {
+			return ;
+		}
+//		String label = inteParams.getLabel(type, key);
+	}
+	
+	/**
+	 * 
+	 * 转义请求头
+	 * 
+	 * @param errorCode
+	 * 			核心错误码/前置错误码
+	 * @param transCode
+	 * 			前置交易码
+	 * @param type
+	 * 			ERROR_MSG
+	 * @param errorMsg
+	 * 			errorMsg
+	 * @return
+	 */
+	private String parseErrorMsg(String errorCode,String transCode,String errorMsg) {
+		
+		if(StringUtils.isBlank(errorCode)){
+			return "交易失败";
+		}
+		String mapKey = String.format("%s%s", transCode,errorCode);
+		if(StringUtils.isEmpty(mapKey)){
+			mapKey = String.format("%s%s", "COMMON_MSG",errorCode);
+		}
+		String msgValue = null;//confMsgParams.getMsgValue("ERROR_MSG", mapKey);
+		//如果转义为空，则取原来的值，如果原来的值为空，则设置默认值“交易失败”
+		if(StringUtils.isNotBlank(msgValue)){
+			return msgValue;
+		}
+		if(StringUtils.isNotBlank(errorMsg)){
+			return errorMsg;
+		}
+		return "交易失败";
+	}
+}

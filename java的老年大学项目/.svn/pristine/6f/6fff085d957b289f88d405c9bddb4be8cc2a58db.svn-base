@@ -1,0 +1,89 @@
+package com.learnyeai.base.api.util;
+
+import com.learnyeai.base.api.bean.BaseInfoDao;
+import com.learnyeai.base.api.vo.*;
+import com.learnyeai.common.utils.WeyeCons;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.core.utils.SpringContextUtils;
+
+
+/**
+ * Created by zpz on 2018/8/3.
+ */
+public class CurrentBaseInfoUtil {
+    private static BaseInfoDao baseInfoDao;
+    private static BaseInfoDao getBaseInfoDao(){
+        if(null == baseInfoDao){
+            baseInfoDao = SpringContextUtils.getBean(BaseInfoDao.class);
+        }
+        return baseInfoDao;
+    }
+
+    // 商户
+    public static String getMerchantId(){
+        Object id = ThreadContext.get(WeyeCons.CTX_CUR_MERCHANT);
+        if(null == id)
+            return null;
+
+        return id.toString();
+    }
+    public static ShMerchantVo getMerchant(){
+        Object id = ThreadContext.get(WeyeCons.CTX_CUR_MERCHANT);
+        if(null == id)
+            return null;
+
+        return getBaseInfoDao().queryMerchant(id.toString());
+    }
+    // 商户方案
+    public static String getMerchantSchemeId(){
+
+        Object id = ThreadContext.get(WeyeCons.CTX_CUR_MERCHANT_SCHEME);
+        if(null == id)
+            return null;
+
+        return id.toString();
+    }
+    public static ShMerchantSchemeVo getMerchantScheme(){
+
+        Object id = ThreadContext.get(WeyeCons.CTX_CUR_MERCHANT_SCHEME);
+        if(null == id)
+            return null;
+
+        return getBaseInfoDao().queryMerchantScheme(id.toString());
+    }
+
+    // 平台
+    public static String getPlatformId(){
+
+        Object id = ThreadContext.get(WeyeCons.CTX_CUR_PLATFORM);
+        if(null == id)
+            return null;
+        return id.toString();
+    }
+    public static PtsetPlatformVo getPlatform(){
+
+        Object id = ThreadContext.get(WeyeCons.CTX_CUR_PLATFORM);
+        if(null == id)
+            return null;
+
+        return getBaseInfoDao().queryPlatform(id.toString());
+    }
+    // 站点
+    public static String getSiteId(){
+
+        Object id = ThreadContext.get(WeyeCons.CTX_CUR_SITE);
+        if(null == id)
+            return null;
+
+        return id.toString();
+    }
+    public static PtsetSiteVo getSite(){
+
+        Object id = ThreadContext.get(WeyeCons.CTX_CUR_SITE);
+        if(null == id)
+            return null;
+
+        return getBaseInfoDao().querySite(id.toString());
+    }
+
+}

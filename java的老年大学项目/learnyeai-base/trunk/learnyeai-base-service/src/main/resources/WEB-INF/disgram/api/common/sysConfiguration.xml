@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="sysConfiguration" desc="系统配置（完成）">
+    <snd>
+    </snd>
+    <!-- 响应报文，可过滤响应信息，并对数据字典进行解析 -->
+    <rcv>
+        <!--<field name="DW_INTERVAL" desc="实时定位间隔时间" comment="单位为秒"/>-->
+        <!--<field name="RES_WEB_URL" desc="资源服务器地址" />-->
+        <field name="RES_UPLOAD_URL" desc="资源上传地址"/>
+        <field name="test.z1" desc="测试"/>
+        <field name="base.server.url" desc="serverBaseUrl"/>
+    </rcv>
+</trans>

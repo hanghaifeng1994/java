@@ -1,0 +1,77 @@
+package com.learnyeai.interact.web;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.core.cache.RedisUtil;
+import com.learnyeai.core.cache.RedisUtilFactory;
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.service.ItaInteractionTimesWyService;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.common.support.WeyeBaseService;
+
+import com.learnyeai.interact.model.ItaComment;
+import com.learnyeai.interact.service.ItaCommentWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ItaCommentController extends BaseController<ItaComment> {
+    public static final String BASE_URL = "/ItaComment/";
+
+    @Autowired
+    private ItaCommentWyService itaCommentWyService;
+    @Autowired
+    CurrentUserInfoIml currentUserInfoIml;
+    @Autowired
+    ItaInteractionTimesWyService itaInteractionTimesWyService;
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+    @Override
+    protected WeyeBaseService<ItaComment> getService() {
+        return itaCommentWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx){
+        String method = CtxHeadUtil.getControllerMethod();
+        ItaComment itaComment= itaCommentWyService.convert2Bean(ctx.getParamMap());
+        if("insert".equals(method)){
+            itaComment.setCmtDate(new Date());
+            itaComment.setCmtUserName(currentUserInfoIml.getLoginName());
+          return   itaCommentWyService.saveData(itaComment);
+        }
+        if("myQueryPage".equals(method)){
+            itaComment.setCreateBy(currentUserInfoIml.getId());
+            if (itaComment != null) {
+                itaComment.initPage();
+                PageHelper.startPage(itaComment.getPage(), itaComment.getRows());
+            }
+            MyPage<ItaComment> page= itaCommentWyService.queryPage(itaComment,new HashMap());
+            return  super.rtnPageList4Report(page);
+        }
+        if("delete".equals(method)){
+             int total= itaCommentWyService.deleteData(itaComment);
+            return  MapUtil.newMap("num",total);
+        }
+        return  super.execute(ctx);
+    }
+}

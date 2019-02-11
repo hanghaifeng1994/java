@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.resource.mapper.ResCategoryMapper">
+	<select id="countByParent" resultType="java.lang.Integer">
+		select count(*) from res_category where SITE_ID = #{siteId}
+		<choose>
+			<when test="parentId !=null and parentId!=''">and PARENT_ID = #{parentId,jdbcType=VARCHAR}</when>
+			<otherwise>and PARENT_ID is null</otherwise>
+		</choose>
+	</select>
+
+	<select id="queryShowPage" parameterType="ResCategory"
+		resultMap="BaseResultMap">
+		SELECT c.* FROM res_category c JOIN res_site_category_rel r ON
+		c.CAT_ID = r.CAT_ID
+		WHERE c.DEL_FLAG = '0' and r.SHOW_STATUS = '1'
+		<if test="siteIds != null">
+			and r.SITE_ID in
+			<foreach collection="siteIds" index="index" item="item" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<choose>
+			<when test="parentId !=null and parentId!=''">and c.PARENT_ID=#{parentId,jdbcType=VARCHAR}</when>
+			<otherwise>and c.PARENT_ID is null</otherwise>
+		</choose>
+		ORDER by c.CAT_SORT asc
+	</select>
+
+	<select id="queryManagePage" parameterType="ResCategory"
+		resultMap="BaseResultMap">
+		SELECT
+		c.*
+		FROM
+		res_category c
+		WHERE c.DEL_FLAG = '0'
+		<if test="siteIds != null">
+			and c.SITE_ID in
+			<foreach collection="siteIds" index="index" item="item" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<choose>
+			<when test="parentId !=null and parentId!=''">and c.PARENT_ID=#{parentId,jdbcType=VARCHAR}</when>
+			<otherwise>and c.PARENT_ID is null</otherwise>
+		</choose>
+		ORDER by c.CAT_SORT asc
+	</select>
+</mapper>

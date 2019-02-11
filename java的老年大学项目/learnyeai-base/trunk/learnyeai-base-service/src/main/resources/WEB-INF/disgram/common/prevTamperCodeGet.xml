@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans desc="防篡改随机码获取">
+    <snd>
+    </snd>
+    <rcv>
+        <field-list name="signCode" desc="随机码" type="E">
+        </field-list>
+    </rcv>
+</trans>

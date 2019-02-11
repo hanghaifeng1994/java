@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="personPage" desc="活动参与人员-列表" isPage="true">
+    <snd>
+        <field name="actId" desc="id"/>
+    </snd>
+    <rcv>
+       <field name="userId" desc="用户ids"/>
+    </rcv>
+</trans>

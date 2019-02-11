@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="订单功能包-详情">
+    <snd>
+        <field name="ordPkgId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="ordPkgId" desc="订单功能包Id"/>
+        <field name="ordId" desc="商户订单id"/>
+        <field name="edtPkgHisId" desc="版本功能包历史id"/>
+        <field name="pkgName" desc="功能包名称"/>
+    </rcv>
+</trans>

@@ -1,0 +1,19 @@
+package com.learnyeai.auth.action;
+
+import com.learnyeai.auth.domain.BaseResponse;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+
+/**
+ * Created by zpz on 2018/8/2.
+ */
+@RestController
+public class CheckPermissionsAction {
+
+    @RequestMapping(value = "/**/*.do")
+    public BaseResponse check(){
+        return BaseResponse.ok();
+    }
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>文件上传demo</title> 
+</head>  
+<style> 
+.m-form{line-height:29px;color:#555;}
+.m-form legend{font-size:14px;font-weight:bold;}
+.m-form .formitm{padding:20px 0 0;line-height:30px;}
+.m-form .formitm-1{padding-left:100px;}
+.m-form .lab{float:left;width:90px;margin-right:-90px;text-align:right;font-weight:bold;}
+.m-form .ipt{margin-left:100px;}
+.m-form .ipt *{vertical-align:middle;}
+.m-form .ipt a,.m-form .ipt a:hover{text-decoration:none;color:#3891eb;}
+.m-form .ipt img{height:32px;margin:0 15px 0 5px;}
+.m-form .ipt .domain{margin:0 0 0 5px;font-weight:bold;color:#777;}
+.m-form .ipt p{height:22px;line-height:22px;color:#999;}
+.m-form .tip{padding-top:10px;}
+.m-form .tip input{margin:0 5px 3px 0;}
+/* 文本输入框 */
+.u-ipt{width:180px;padding:5px;height:17px;border:1px solid #D9D9D9;border-top-color:#c0c0c0;line-height:17px;font-size:14px;color:#777;background:#fff;}
+/* 文本输入框-窄 */
+.u-ipt-1{width:90px;}
+/* 文本输入框-出错 */
+.u-ipt-err{border-color:#c00 #e00 #e00;}
+/* 通用自定义按钮-默认蓝色 */
+.u-btn{display:inline-block;*display:inline;*zoom:1;*overflow:visible;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;padding:0 12px;height:28px;line-height:28px;border:1px solid #2d88bf;font-size:12px;letter-spacing:1px;word-spacing:normal;text-align:center;vertical-align:middle;cursor:pointer;background:#54aede;}
+button.u-btn{*height:30px;_line-height:25px;}
+.u-btn,.u-btn:hover{color:#fff;text-decoration:none;}
+.u-btn:hover,.u-btn:focus{background:#399dd8;}
+.u-btn::-moz-focus-inner{padding:0;margin:0;border:0;}
+.u-btn .btntxt{margin-right:3px;_vertical-align:middle;}
+.u-btn .btnsel{display:inline-block;*display:inline;*zoom:1;width:0;height:0;overflow:hidden;vertical-align:middle;border-style:solid dashed dashed;border-width:4px 4px 0;border-color:#fff transparent transparent;}
+</style>
+<body> 
+<div class="m-form">
+    <a href="https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxae9bda0cae80068c&pre_auth_code=preauthcode%40%40%40HPdkizaPiDwJ0A96SXRlC6ics0qVsd10lonJdEJB5Bhdi0zRnl0G2T7UJiQ7i2rU&redirect_uri=https%3A%2F%2Fapi.weyeyun.com%2FBaseApiWeb2%2Fwechat%2Fcomponentlogin%2Fauthcallback.do%3Fthd_appid%3Dwxae9bda0cae80068c&auth_type=2">打开授权页面</a>
+</div>
+<!-- <div class="m-form">
+    <form name="" action="#" method="get">
+        <fieldset>
+            <legend>文件下载</legend>
+            <legend>请求地址：/mitomapi/mitom/download.do</legend>
+            <div class="formitm">
+                <label class="lab">contentUrl</label>
+                <div class="ipt">
+                    <input type="text" id="contentUrl" name="contentUrl"  class="u-ipt"/>
+                     <p>参数：contentUrl</p>
+                </div>
+            </div>
+            <div class="formitm">
+                <label class="lab">文件名称：</label>
+                <div class="ipt">
+                    <input type="text"  id="fileName" name="fileName" class="u-ipt"/>      
+                     <p>参数：fileName</p> 
+                </div> 
+            </div>
+            <div class="formitm">
+                <label class="lab">保存地址：</label>
+                <div class="ipt">
+                    <input  id="downloadDir" name="downloadDir" type="text" class="u-ipt"/>  
+                     <p>参数：downloadDir</p>  
+                </div>
+            </div>
+            
+              <div class="formitm">
+                <label class="lab">TOKEN</label>
+                <div class="ipt">
+                    <input id="TOKEN_JSON" name="TOKEN_JSON" type="text" value="{'URL':'http://mitom.drcl.com.cn/api/','APP_SECRET':'324668ad7a5e465e83fe46f64b43e9c4','APP_KEY':'ODM1'}" class="u-ipt"/>
+                    <p>参数：TOKEN_JSON</p>
+                </div>
+            </div>
+              <div class="formitm">
+                <div class="ipt" id="success2">
+                </div>
+            </div>
+            <div class="formitm formitm-1"><button id="btn2" class="u-btn" type="button">调试</button></div>
+        </fieldset>
+    </form>
+</div> -->
+
+
+<div class="m-form">
+    <form name="" action="#" method="get">
+        <fieldset>
+            <legend>读取文件</legend>
+            <legend>请求地址：/mitomapi/mitom/read.do</legend>
+            <div class="formitm">
+                <label class="lab">contentUrl</label>
+                <div class="ipt">
+                    <input type="text" id="contentUrl" name="contentUrl"  class="u-ipt"/>
+                     <p>参数：contentUrl</p>
+                </div>
+            </div>
+              <div class="formitm">
+                <label class="lab">TOKEN</label>
+                <div class="ipt">
+                    <input id="TOKEN_JSON2" name="TOKEN_JSON2" type="text" value="" class="u-ipt"/>
+                    <p>参数：TOKEN_JSON</p>
+                </div> 
+            </div>
+              <div class="formitm">
+                <div class="ipt" id="success2">
+                </div>
+            </div>
+            <div class="formitm formitm-1"><button id="btn3" class="u-btn" type="button">调试</button></div>
+        </fieldset>
+    </form>
+</div>
+    <script src="js/jquery-1.8.2.js"></script>
+    <script> 
+        var $file = $('#file'); 
+        $('#btn').click(function() { 
+            var data = new FormData(); 
+            data.append('file', $file[0].files[0]); 
+            data.append('TOKEN_JSON', $("#TOKEN_JSON").val()); 
+               
+            var xhr = new XMLHttpRequest();  
+            xhr.open('post', '../mitomapi/mitom/upload.do'); 
+            xhr.onload = function(e) { 
+            	if(xhr.status == 200)
+                $("#success1").html(e.currentTarget.response)
+                else
+                $("#success1").html("请选择文件")	
+            }  
+            xhr.send(data); 
+        }); 
+        
+      /*   $('#btn2').click(function() { 
+            var data = new FormData(); 
+            data.append('contentUrl', $("#contentUrl").val()); 
+            data.append('downloadDir', $("#downloadDir").val()); 
+            data.append('fileName', $("#fileName").val()); 
+            data.append('TOKEN_JSON', $("#TOKEN_JSON").val()); 
+               
+            var xhr = new XMLHttpRequest();  
+            xhr.open('post', '../mitomapi/mitom/download.do'); 
+            xhr.onload = function(e) { 
+            	 $("#success2").html(e.currentTarget.response)
+            }  
+            xhr.send(data); 
+        });  */
+        $('#btn3').click(function() {
+            var data = new FormData(); 
+            data.append('contentUrl', $("#contentUrl").val()); 
+            data.append('TOKEN_JSON', $("#TOKEN_JSON2").val()); 
+               
+            var xhr = new XMLHttpRequest();  
+            xhr.open('post', '../mitomapi/mitom/read.do'); 
+            xhr.onload = function(e) { 
+            	if(xhr.status == 200)
+                    $("#success2").html("文件流")
+                    else 
+                    $("#success2").html("contentUrl不能为空")	
+            }  
+            xhr.send(data); 
+        }); 
+    </script> 
+</body> 
+</html> 

@@ -1,0 +1,263 @@
+package com.learnyeai.common.engine;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.learnyeai.common.utils.WeyeCons;
+import com.learnyeai.core.consts.ConfigEnum;
+import com.learnyeai.core.exception.BusinessException;
+import com.learnyeai.core.flow.IAresFlowDispatch;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.core.utils.CtxCommonUtils;
+import com.learnyeai.learnai.consts.ReportErrorKey;
+import com.learnyeai.learnai.consts.SessR;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.context.CtxReportUtil;
+import com.learnyeai.learnai.context.ThreadContextUtil;
+import com.learnyeai.learnai.engine.AbstractChannelEngine;
+import com.learnyeai.learnai.engine.RequestReport;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.learnai.error.DaoException;
+import com.learnyeai.learnai.net.INetConfParser;
+import com.learnyeai.learnai.net.IRequstBuilder;
+import com.learnyeai.learnai.net.IResponseParser;
+import com.learnyeai.learnai.session.Session;
+import com.learnyeai.learnai.session.SessionException;
+import com.learnyeai.learnai.session.util.SessionManagerUtils;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.IController;
+import com.learnyeai.tools.common.BeanMapUtils;
+import com.learnyeai.tools.common.JsonMapper;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by zpz on 2016/4/19.
+ */
+public class WeyeChannelEngine extends AbstractChannelEngine {
+
+    @Autowired
+    @Qualifier("netConfParser")
+    private INetConfParser conf;
+
+    @Autowired
+    @Qualifier("responseFilter4Web")
+    private IResponseParser parser;
+
+    @Autowired
+    @Qualifier("requestBuilder4Web")
+    private IRequstBuilder requstBuilder;
+
+
+    @Autowired
+    @Qualifier("commonFlow")
+    private IAresFlowDispatch commonFlow;
+    @Autowired
+    ILearnAiThreadStart learnAiThreadStart;
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+
+    private void init(HttpServletRequest request, IBusinessContext ctx) {
+        // 读取报文内容
+        String reqStr = null;
+        if(ctx.getRequestEntry() == null){
+            throw new BusinessException("报文数据为空"); // 没有报文
+        }
+        reqStr = ctx.getRequestEntry();
+
+        // 解密
+        String msg = (String)codecFactory.decode(getCoderKey(), reqStr);
+        RequestReport reqMsg = JsonMapper.getInstance().fromJson(msg, RequestReport.class);
+        ctx.getParamMap().putAll(reqMsg.getPayload());
+        ctx.setReqHead(reqMsg.getHeader());
+
+        // 如果是小程序登录,APP_ID,拆分成APLT_ID、APP_ID，添加OPEN_ID
+        String clientOs = CtxCommonUtils.getClientOs(ctx.getReqHead());
+        CtxCommonUtils.setClientOs(clientOs);
+        if(CtxCommonUtils.getClientOs() == ConfigEnum.CLIENT_OS.WA){
+            String ss = MapUtil.getMapValue(ctx.getReqHead(), CtxCommonUtils.APP_ID, "");
+            String[] ids = ss.split("_");
+            if(ids.length != 2){
+                throw new RuntimeException();
+            }
+            ctx.getReqHead().put(CtxCommonUtils.APLT_ID, ids[0]);
+            ctx.getReqHead().put(CtxCommonUtils.APP_ID, ids[1]);
+        }
+
+        initSession(ctx);
+        // 防重复检查
+        commonFlow.execute(ctx);
+
+
+    }
+
+    /**
+     * 渠道处理
+     * @param request
+     * @param ctx
+     * @return
+     */
+    public String execute(HttpServletRequest request, IBusinessContext ctx ){
+        try{
+            init(request, ctx);
+            String rst = super.execute(request, ctx);
+
+            // 加密
+            if(logger.isDebugEnabled()){
+                logger.debug(rst);
+            }
+            String ss = codecFactory.encode(getCoderKey(), rst);
+            if(logger.isDebugEnabled()){
+                logger.debug(ss);
+            }
+            return ss;
+
+        }catch (DaoException e){
+            AresRuntimeException ae = new AresRuntimeException(ReportErrorKey.common_system_error);
+            CtxReportUtil.showAresError(ae, ctx);
+            logger.error("数据库访问错误", e);
+            e.printStackTrace();
+        }catch (SessionException e){
+            logger.error("error", e);
+            CtxReportUtil.showAresError(new AresRuntimeException(ReportErrorKey.RTN_TIME_OUT), ctx);
+        }
+        catch (AresRuntimeException e){
+            CtxReportUtil.showAresError(e, ctx);
+            logger.error(e.getMessageCode(), e);
+            e.printStackTrace();
+
+        }catch (BusinessException e){ // 业务异常
+            CtxReportUtil.showBuisinessError(ctx, e.getMessage());
+            e.printStackTrace();
+        }catch (Exception e){
+            logger.error("error", e);
+            e.printStackTrace();
+            AresRuntimeException ae = new AresRuntimeException(ReportErrorKey.inte_service_not_found_or_error);
+            ae.setCauseMsg(e.getMessage());
+            CtxReportUtil.showAresError(ae, ctx);
+        }
+
+        Map resutMap = new HashMap();
+        CtxReportUtil.checkResult(ctx, resutMap);
+
+        String errMsg = JSON.toJSONString(resutMap, new SerializerFeature[0]);
+
+
+        if(logger.isDebugEnabled()){
+            logger.debug(errMsg);
+        }
+        String ss = codecFactory.encode(getCoderKey(), errMsg);
+        if(logger.isDebugEnabled()){
+            logger.debug(ss);
+        }
+        return ss;
+    }
+
+    @Override
+    protected Object doAction(IBusinessContext ctx, IController action) {
+        ctx.setReport(requstBuilder, parser,conf);
+        Map rst = new HashMap();
+        Object data = null;
+        // 请求报文检查，把多余的参数去掉
+        if(CtxReportUtil.transPrev(ctx, ctx.getTransCode(), conf, requstBuilder)){
+
+            data = action.execute(ctx);
+
+            try {
+                if(data == null) {
+                }else if(data instanceof String){
+                }else if(data instanceof Map){
+                    // 是map什么都不做
+                }else if(data instanceof List){ // 如果不是List,查看其中的元素是否是map
+                    List ll = (List)data;
+                    if(ll.size() > 0 && !(ll.get(0) instanceof Map)){
+//                把集合转成map
+                        data = BeanMapUtils.convert2ListMap((List) data);
+
+                    }
+                }else {
+                    data = BeanMapUtils.convertBean(data);
+                }
+            }catch (Exception e){
+                logger.error("对应转换出错", e);
+                throw new BusinessException(e.getMessage());
+            }
+        }
+        // 不检查返回报文
+        if(CtxHeadUtil.getReportDataDealType(ctx).equals("1"))
+            rst = CtxReportUtil.transAfter(ctx, data);
+        else
+            rst = CtxReportUtil.transAfter(ctx, data, ctx.getTransCode(),conf, parser);
+
+        return rst;
+    }
+    // 添加登录session
+    private void initSession(IBusinessContext ctx){
+        // sessionid必传
+        // app版必须传设备号
+
+        // 判断客户端类型，A:android、I:ios、WA:小程序 O:浏览器
+        ConfigEnum.CLIENT_OS client = CtxCommonUtils.getClientOs();
+        if(client == null)
+            throw new AresRuntimeException();
+
+        boolean bWeb = client ==  ConfigEnum.CLIENT_OS.O;
+
+        // 获取sessionid、设备号
+        String sessionId = CtxCommonUtils.getSessionToken(ctx.getReqHead());
+        String deviceCode =CtxCommonUtils.getUUID(ctx.getReqHead());
+
+        if(StringUtils.isBlank(deviceCode)&&!bWeb){
+            throw new RuntimeException();
+        }
+
+        if(ThreadContextUtil.isLogining()){
+            sessionId = null;
+        }else {
+            if(StringUtils.isBlank(sessionId)){
+                throw new RuntimeException();
+            }
+        }
+
+        // 初始化session
+        ThreadContext.put(ThreadContextUtil.SESSION_ID_KEY, sessionId);
+        Session session = ThreadContextUtil.getSessionRequired();
+        if(!bWeb) {
+            session.setDeviceCode(deviceCode);
+        }
+        //  提交session
+        SessionManagerUtils.getDefaultManager().submit(ThreadContextUtil.getSession(false));
+
+        if(ThreadContextUtil.isLogining()){
+            logger.debug("正在登录");
+        }else {
+            //
+            // 即使是shiro也需要判断哪些url是匿名登录，哪些不是，所以还是需要把url分开
+
+            // 需要检查登录
+            Boolean checkLoging = ThreadContext.getValue(ThreadContextUtil.CHECK_LOGINING_KEY, Boolean.class);
+            if(null != checkLoging && checkLoging.booleanValue()){
+                if (!SessR.isLogined()) {
+                    // 初始化用户session;
+                    learnAiThreadStart.initUserSession(ctx);
+                }else{
+                    // 已登录
+                }
+
+            }else {
+            }
+
+            // 初始化线程
+            learnAiThreadStart.initThreadContex(ctx);
+        }
+    }
+}

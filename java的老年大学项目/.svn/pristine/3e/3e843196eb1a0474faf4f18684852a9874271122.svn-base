@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgModuleDao">
+    <resultMap id="BaseResultMap" type="CfgModule">
+        <id property="mdlId" column="MDL_ID" jdbcType="VARCHAR" />
+        <result property="mdlCode" column="MDL_CODE" jdbcType="VARCHAR" />
+        <result property="mdlName" column="MDL_NAME" jdbcType="VARCHAR" />
+        <result property="mdlStatus" column="MDL_STATUS" jdbcType="CHAR" />
+        <result property="mdlStaffTableName" column="MDL_STAFF_TABLE_NAME" jdbcType="VARCHAR" />
+        <result property="mdlUserTableName" column="MDL_USER_TABLE_NAME" jdbcType="VARCHAR" />
+        <result property="mdlServerContext" column="MDL_SERVER_CONTEXT" jdbcType="VARCHAR" />
+        <result property="mdlVerName" column="MDL_VER_NAME" jdbcType="VARCHAR" />
+        <result property="mdlVerCode" column="MDL_VER_CODE" jdbcType="DECIMAL" />
+        <result property="mdlVerId" column="MDL_VER_ID" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        MDL_ID,MDL_CODE,MDL_NAME,MDL_STATUS,MDL_STAFF_TABLE_NAME,
+        MDL_USER_TABLE_NAME,MDL_SERVER_CONTEXT,MDL_VER_NAME,MDL_VER_CODE,MDL_VER_ID,
+        CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE,DEL_FLAG
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{mdlId},#{mdlCode},#{mdlName},#{mdlStatus},#{mdlStaffTableName},
+        #{mdlUserTableName},#{mdlServerContext},#{mdlVerName},#{mdlVerCode},#{mdlVerId},
+        #{createBy},#{createDate},#{updateBy},#{updateDate},#{delFlag}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.CFG_MODULE </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            MDL_ID = #{mdlId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="CfgModule">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="CfgModule">
+        update <include refid="TableClause" />
+        <set>
+        MDL_CODE=#{mdlCode},
+        MDL_NAME=#{mdlName},
+        MDL_STATUS=#{mdlStatus},
+        MDL_STAFF_TABLE_NAME=#{mdlStaffTableName},
+        MDL_USER_TABLE_NAME=#{mdlUserTableName},
+        MDL_SERVER_CONTEXT=#{mdlServerContext},
+        MDL_VER_NAME=#{mdlVerName},
+        MDL_VER_CODE=#{mdlVerCode},
+        MDL_VER_ID=#{mdlVerId},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate},
+        UPDATE_BY=#{updateBy},
+        UPDATE_DATE=#{updateDate},
+        DEL_FLAG=#{delFlag}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="CfgModule">
+            update <include refid="TableClause" />
+            <set>
+                <if test="mdlCode!=null">MDL_CODE=#{mdlCode},</if>
+                <if test="mdlName!=null">MDL_NAME=#{mdlName},</if>
+                <if test="mdlStatus!=null">MDL_STATUS=#{mdlStatus},</if>
+                <if test="mdlStaffTableName!=null">MDL_STAFF_TABLE_NAME=#{mdlStaffTableName},</if>
+                <if test="mdlUserTableName!=null">MDL_USER_TABLE_NAME=#{mdlUserTableName},</if>
+                <if test="mdlServerContext!=null">MDL_SERVER_CONTEXT=#{mdlServerContext},</if>
+                <if test="mdlVerName!=null">MDL_VER_NAME=#{mdlVerName},</if>
+                <if test="mdlVerCode!=null">MDL_VER_CODE=#{mdlVerCode},</if>
+                <if test="mdlVerId!=null">MDL_VER_ID=#{mdlVerId},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate},</if>
+                <if test="updateBy!=null">UPDATE_BY=#{updateBy},</if>
+                <if test="updateDate!=null">UPDATE_DATE=#{updateDate},</if>
+                <if test="delFlag!=null">DEL_FLAG=#{delFlag}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

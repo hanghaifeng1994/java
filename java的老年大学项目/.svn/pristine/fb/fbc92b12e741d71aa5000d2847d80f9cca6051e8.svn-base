@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="login_applet.define" title="小程序登录流程">
+    <actions>
+        <action ref="weye_AppletGetOpenId" title="小程序code转openid"></action>
+
+        <!--小程序登录-->
+        <!--<action ref="appletLoginOp" title="小程序登录"></action>-->
+        <action ref="weye_AppletCheckOp" title="检验appid"></action>
+        <action ref="apltUserAddOp" title="小程序用户添加"></action>
+        <action ref="loginCheckOp" title="用户检查"></action>
+        <!--检查商户-->
+        <action ref="weye_CheckMerchantOp" title="检查商户版本、商户状态"></action>
+
+        <action ref="loginInfoGetOp" title="获取登录信息"></action>
+        <action ref="loginInfoSaveOp" title="保存登录信息"></action>
+        <action ref="loginDeviceSaveOp" title="保存设备信息"></action>
+
+        <!--创建会话-->
+        <action ref="loginSessionCreateOp" title="创建用户会话"></action>
+        <!--<action ref="weye_SessionAddMerchantInfoOp" title="向session中添加商户、商户版本、程序信息"></action>-->
+    </actions>
+</config>

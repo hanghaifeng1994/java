@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="小程序配置-详情">
+    <snd>
+        <field name="apltSetId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="apltSetId" desc="小程序配置id"/>
+        <field name="appId" desc="AppId"/>
+        <field name="appSecret" desc="AppSecret"/>
+        <field name="appName" desc="小程序名称"/>
+        <field name="appSigns" desc="小程序标志，是核销的客户小程序，还是核销导购小程序"/>
+        <field name="appAuthRefreshToken" desc="接口调用凭据刷新令牌"/>
+        <field name="appAuthInfo" desc="授权信息"/>
+        <field name="wechatMerchantName" desc="商户名称"/>
+        <field name="wechatMerchantNum" desc="商户号"/>
+        <field name="wechatMerchantPasswod" desc="商户密钥"/>
+        <field name="publicNumName" desc="公众号名称"/>
+        <field name="publicNumAppid" desc="公众号appid"/>
+        <field name="publicNumAppsecrete" desc="公众号appsecrete"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="apltId" desc="小程序ID"/>
+        <field name="apltVerId" desc="小程序版本id"/>
+        <field name="appExtJson" desc="模板小程序扩展信息，不包含APPID，使用时再做拼json串"/>
+        <field name="appCodeUploadStatus" desc="上传代码状态：0未上传、1上传中、2成功、3失败"/>
+        <field name="appAuditId" desc="审核id"/>
+        <field name="appAuditStatus" desc="审核状态：0未提交、1提交中、2审核中、3成功、4失败"/>
+        <field name="appPubStatus" desc="发布状态：0未发布、1发布中、2发布成功、2发布失败"/>
+        <field name="appRevertStatus" desc="版本回退状态：0未回退、1回退成功、2回退失败"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

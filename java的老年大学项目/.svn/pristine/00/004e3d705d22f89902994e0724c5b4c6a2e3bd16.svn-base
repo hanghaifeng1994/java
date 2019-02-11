@@ -1,0 +1,71 @@
+package com.learnyeai.resource.service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.resource.mapper.ResFileMapper;
+import com.learnyeai.resource.model.ResFile;
+import com.learnyeai.tools.common.StringUtils;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class ResFileWyService extends WeyeBaseService<ResFile> {
+
+    @Resource
+    private ResFileMapper resFileMapper;
+
+    @Override
+    public BaseMapper<ResFile> getMapper() {
+        return resFileMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+    
+    @Transactional
+	public Map<String, Object> saveOrUpdate(ResFile rf) {
+		Map<String, Object> map = new HashMap();
+		if (StringUtils.isBlank(rf.getResFielId())) {
+			rf.setCreateDate(new Date());
+			if(StringUtils.isBlank(rf.getResId())) {
+				map.put("status", 2);
+				map.put("msg", "新增资源文件时，资源id不能为空");
+				return map;
+			}
+		}
+		super.save(rf);
+		map.put("status", 0);
+		map.put("msg", "保存成功!");
+		map.put("id", rf.getResFielId());
+		return map;
+
+	}
+
+	@Transactional
+	public Map<String, Object> deleteResFile(ResFile rf) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String rfId : rf.getResFielId().split(",")) {
+			ResFile delOne = new ResFile();
+			delOne.setResFielId(rfId);
+			delOne.setDelFlag("1");
+			int c = resFileMapper.updateByPrimaryKeySelective(delOne);
+			if(c>0) num++;
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+}

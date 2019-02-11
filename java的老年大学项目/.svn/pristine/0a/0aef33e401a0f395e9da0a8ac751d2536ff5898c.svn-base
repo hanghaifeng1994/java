@@ -1,0 +1,19 @@
+package com.learnyeai.testing.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyBatisDao;
+import com.learnyeai.testing.model.TestingQuestion;
+
+/**
+ * @Description:
+ * @author twang
+ */
+@MyBatisDao
+public interface TestingQuestionMapper extends BaseMapper<TestingQuestion> {
+	public List<Map<String, Object>> queryItemTypes(String qpId);
+
+	int updateByOnlyCode(TestingQuestion t);
+}

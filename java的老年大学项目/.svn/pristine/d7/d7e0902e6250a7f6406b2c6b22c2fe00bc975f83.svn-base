@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="top" desc="资讯-置顶/取消置顶">
+    <snd>
+        <field name="articleId" desc="id多个id时用英文逗号 隔开" required="true"/>
+        <field name="status" desc="推荐状态 0批量置顶，1取消置顶" required="true"/>
+    </snd>
+    <rcv>
+        <filed name="num" desc="批量操作数量"/>
+    </rcv>
+</trans>

@@ -1,0 +1,52 @@
+package com.learnyeai.learnbehavior.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.learnbehavior.model.StdCustLearnRecord;
+import com.learnyeai.learnbehavior.service.StdCustLearnRecordWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+
+/**
+ *
+ * @author yl
+ */
+@RestController
+@RequestMapping("${adminPath}" + StdCustLearnRecordController.BASE_URL)
+public class StdCustLearnRecordController extends BaseController<StdCustLearnRecord> {
+    public static final String BASE_URL = "/StdCustLearnRecord/";
+
+    @Autowired
+    private StdCustLearnRecordWyService stdCustLearnRecordWyService;
+    @Autowired
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    protected BaseService<StdCustLearnRecord> getService() {
+        return stdCustLearnRecordWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String transCode = ctx.getTransCode();
+        StdCustLearnRecord sclr =stdCustLearnRecordWyService.convert2Bean(ctx.getParamMap());
+        String method = CtxHeadUtil.getControllerMethod();
+       if("insert".equals(method)){
+           sclr.setStudyUserId(currentUserInfoIml.getId());
+            return stdCustLearnRecordWyService.save(sclr);
+        }else if("queryPage".equals(method)){
+            sclr.setStudyUserId(currentUserInfoIml.getId());
+            MyPage<StdCustLearnRecord> page= stdCustLearnRecordWyService.queryPage(sclr ,new HashMap());
+           return super.rtnPageList4Report(page);
+       }
+        return super.execute(ctx);
+    }
+}

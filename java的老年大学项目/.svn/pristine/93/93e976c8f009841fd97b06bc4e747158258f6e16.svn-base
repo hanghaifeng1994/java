@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="平台-列表">
+    <snd>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="平台-列表" type="E">
+            <field name="ptId" desc="id"/>
+            <field name="ptName" desc="平台名称"/>
+            <field name="ptCode" desc="平台编码"/>
+            <field name="siteId" desc="主站点id"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+
+        </field-list>
+    </rcv>
+</trans>

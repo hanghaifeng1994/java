@@ -1,0 +1,248 @@
+package com.learnyeai.cert.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
+
+/**
+ * 证书
+ *
+ * @author twang
+ */
+public class CtCert extends BaseEntity {
+
+    /**
+    * 证书id
+    */
+    @Id
+    @Column(name = "CT_ID")
+    private String ctId;
+
+    /**
+     * 证书模板id
+     */
+    @Column(name = "TP_ID")
+    private String tpId;
+    /**
+     * 证书名称
+     */
+    @Column(name = "CT_NAME")
+    private String ctName;
+    /**
+     * 证书编号开头
+     */
+    @Column(name = "CT_CODE")
+    private String ctCode;
+    /**
+     * 发证单位
+     */
+    @Column(name = "CT_UNIT")
+    private String ctUnit;
+    /**
+     * 对应的模板文本字段
+     */
+    @Column(name = "CT_TP_TEXT")
+    private String ctTpText;
+    /**
+     * 对应的模板图片字段
+     */
+    @Column(name = "CT_TP_IMAGE")
+    private String ctTpImage;
+    /**
+     * 创建人
+     */
+    @Column(name = "CREATE_BY")
+    private String createBy;
+    /**
+     * 创建时间
+     */
+    @Column(name = "CREATE_DATE")
+    private Date createDate;
+    /**
+     * 更新人
+     */
+    @Column(name = "UPDATE_BY")
+    private String updateBy;
+    /**
+     * 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
+    private Date updateDate;
+    /**
+     * 状态：0未提交、1审核中、2审核通过、3审核失败、4不需要审核
+     */
+    @Column(name = "CT_STATUS")
+    private String ctStatus;
+    /**
+     * 审核id
+     */
+    @Column(name = "CT_AUDIT_ID")
+    private String ctAuditId;
+    /**
+     * 删除标记
+     */
+    @Column(name = "DEL_FLAG")
+    private String delFlag;
+    /**
+     * 站点
+     */
+    @Column(name = "SITE_ID")
+    private String siteId;
+    /**
+     * 商户id
+     */
+    @Column(name = "MCHT_ID")
+    private String mchtId;
+    /**
+     * 商户方案id
+     */
+    @Column(name = "MCHT_SCHM_ID")
+    private String mchtSchmId;
+
+    public String getCtId() {
+        return ctId;
+    }
+
+    public void setCtId(String ctId) {
+        this.ctId = ctId;
+    }
+    public String getTpId() {
+        return tpId;
+    }
+
+    public void setTpId(String tpId) {
+        this.tpId = tpId;
+    }
+    public String getCtName() {
+        return ctName;
+    }
+
+    public void setCtName(String ctName) {
+        this.ctName = ctName;
+    }
+    public String getCtCode() {
+        return ctCode;
+    }
+
+    public void setCtCode(String ctCode) {
+        this.ctCode = ctCode;
+    }
+    public String getCtUnit() {
+        return ctUnit;
+    }
+
+    public void setCtUnit(String ctUnit) {
+        this.ctUnit = ctUnit;
+    }
+    public String getCtTpText() {
+        return ctTpText;
+    }
+
+    public void setCtTpText(String ctTpText) {
+        this.ctTpText = ctTpText;
+    }
+    public String getCtTpImage() {
+        return ctTpImage;
+    }
+
+    public void setCtTpImage(String ctTpImage) {
+        this.ctTpImage = ctTpImage;
+    }
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getCtStatus() {
+        return ctStatus;
+    }
+
+    public void setCtStatus(String ctStatus) {
+        this.ctStatus = ctStatus;
+    }
+    public String getCtAuditId() {
+        return ctAuditId;
+    }
+
+    public void setCtAuditId(String ctAuditId) {
+        this.ctAuditId = ctAuditId;
+    }
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "CT_CERT";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("");   // 库名
+
+        public static String ctId = "CT_ID";  // 证书id
+        public static String tpId = "TP_ID";  // 证书模板id
+        public static String ctName = "CT_NAME";  // 证书名称
+        public static String ctCode = "CT_CODE";  // 证书编号开头
+        public static String ctUnit = "CT_UNIT";  // 发证单位
+        public static String ctTpText = "CT_TP_TEXT";  // 对应的模板文本字段
+        public static String ctTpImage = "CT_TP_IMAGE";  // 对应的模板图片字段
+        public static String createBy = "CREATE_BY";  // 创建人
+        public static String createDate = "CREATE_DATE";  // 创建时间
+        public static String updateBy = "UPDATE_BY";  // 更新人
+        public static String updateDate = "UPDATE_DATE";  // 更新时间
+        public static String ctStatus = "CT_STATUS";  // 状态：0未提交、1审核中、2审核通过、3审核失败、4不需要审核
+        public static String ctAuditId = "CT_AUDIT_ID";  // 审核id
+        public static String delFlag = "DEL_FLAG";  // 删除标记
+        public static String siteId = "SITE_ID";  // 站点
+        public static String mchtId = "MCHT_ID";  // 商户id
+        public static String mchtSchmId = "MCHT_SCHM_ID";  // 商户方案id
+
+    }
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.base.mapper.PtsetSiteMapper">
+    <resultMap id="BaseResultMap" type="PtsetSite">
+    <id property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+
+    <result property="siteName" column="SITE_NAME" jdbcType="VARCHAR" />
+    <result property="siteCode" column="SITE_CODE" jdbcType="VARCHAR" />
+    <result property="siteLogo" column="SITE_LOGO" jdbcType="VARCHAR" />
+    <result property="pageHeadImg" column="PAGE_HEAD_IMG" jdbcType="VARCHAR" />
+    <result property="pageSiteCopyright" column="PAGE_SITE_COPYRIGHT" jdbcType="VARCHAR" />
+    <result property="siteDomain" column="SITE_DOMAIN" jdbcType="VARCHAR" />
+    <result property="areaId" column="AREA_ID" jdbcType="VARCHAR" />
+    <result property="sort" column="SORT" jdbcType="DECIMAL" />
+    <result property="ptId" column="PT_ID" jdbcType="VARCHAR" />
+    <result property="siteType" column="SITE_TYPE" jdbcType="CHAR" />
+    <result property="status" column="STATUS" jdbcType="CHAR" />
+    <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+    <result property="extCol1" column="EXT_COL1" jdbcType="VARCHAR" />
+    <result property="extCol2" column="EXT_COL2" jdbcType="VARCHAR" />
+    <result property="extCol3" column="EXT_COL3" jdbcType="VARCHAR" />
+    <result property="extCol4" column="EXT_COL4" jdbcType="VARCHAR" />
+    <result property="extCol5" column="EXT_COL5" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        SITE_ID,SITE_NAME,SITE_CODE,SITE_LOGO,PAGE_HEAD_IMG,
+        PAGE_SITE_COPYRIGHT,SITE_DOMAIN,AREA_ID,SORT,PT_ID,
+        SITE_TYPE,STATUS,CREATE_BY,CREATE_DATE,UPDATE_BY,
+        UPDATE_DATE,DEL_FLAG,MCHT_ID,MCHT_SCHM_ID,EXT_COL1,
+        EXT_COL2,EXT_COL3,EXT_COL4,EXT_COL5
+    </sql>
+
+
+    <sql id="TableClause"> ${schema.interPlat}.PTSET_SITE </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

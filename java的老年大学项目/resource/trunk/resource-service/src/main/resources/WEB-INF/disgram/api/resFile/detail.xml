@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="资源文件-详情">
+    <snd>
+        <field name="resFielId" desc="id" required="true"/>
+    </snd>
+    <rcv>
+        <field name="resFielId" desc="id"/>
+        <field name="fileName" desc="文件名"/>
+        <field name="resId" desc="资源id"/>
+        <field name="fileId" desc="文件id" type="res"/>
+        <field name="fileType" desc="文件类型"/>
+        <field name="fileFormat" desc="文件格式"/>
+        <field name="fileSize" desc="大小"/>
+        <field name="fileSuffix" desc="后缀"/>
+        <field name="fileTimeLen" desc="时长"/>
+        <field name="downloadNum" desc="下载次数"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="siteId" desc="站点"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

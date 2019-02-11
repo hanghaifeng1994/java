@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryUserClazzCoursePage" desc="学员班级课程列表-带进度" isPage="true">
+	<snd>
+		<field name="custId" desc="学生id" />
+		<field name="czId" desc="班级id" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="班级课程列表">
+			<field name="uccId" desc="学生班级课程id" />
+			<field name="custId" desc="学生id" />
+			<field name="czId" desc="班级id" />
+			<field name="csId" desc="课程id" />
+			<field name="csType" desc="1选修课、2必修课" />
+			<field name="csStudylength" desc="学时" type="F" dolt="1"/>
+			<field name="csAmount" desc="金额" type="F" dolt="1"/>
+			<field name="lcsFinished" desc="是否完成" />
+			<field name="csName" desc="课程名称" />
+			<field name="curCptId" desc="当前学习章节id" />
+			<field name="lcsStudyTime" desc="学习时间" />
+			<field name="lcsProcess" desc="学习进度" type="F" dolt="1"/>
+			<field name="lcsHomeworkScore" desc="作业成绩" type="F" dolt="1"/>
+			<field name="lcsExamScore" desc="测验成绩" type="F" dolt="1"/>
+			<field name="lcsScore" desc="总成绩" type="F" dolt="1"/>
+			<field name="lcsStudyFinished" desc="学习时间是否完成 0/1" />
+			<field name="lcsHomeworkeFinished" desc="作业是否完成" />
+			<field name="lcsExameFinished" desc="测验是否完成" />
+			<field name="lcsScoreFinished" desc="总成绩是否完成" />
+		</field-list>
+	</rcv>
+</trans>

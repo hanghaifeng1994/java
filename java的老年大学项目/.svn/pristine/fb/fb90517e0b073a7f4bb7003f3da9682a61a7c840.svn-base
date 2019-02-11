@@ -1,0 +1,50 @@
+package com.learnyeai.auth.action;
+
+import com.learnyeai.auth.domain.BaseResponse;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+
+/**
+ * Created by zpz on 2018/8/2.
+ */
+@RestController
+public class CheckPermissionsAction {
+
+//    @Autowired
+//    private CacheManager cacheManager;
+
+    @RequestMapping(value = "/**/*.do")
+    public BaseResponse check(){
+
+        Subject sub = SecurityUtils.getSubject();
+        Session sess = sub.getSession();
+        return BaseResponse.ok()
+                .add("", sess.getStartTimestamp())
+                .add("timeout", sess.getTimeout());
+    }
+
+    /**
+     * 免密码登录，登录后，拿到sessionid，请求需要鉴权登录，url拼上参数JSESSIONID=
+     * @param account
+     * @return
+     */
+    @RequestMapping(value = "/loginNoPass")
+    public BaseResponse login(String account){
+        UsernamePasswordToken token = new UsernamePasswordToken(account, "111");
+
+        Subject sub = SecurityUtils.getSubject();
+        sub.login(token);
+        Session sess = sub.getSession();
+        return BaseResponse.ok()
+                .add("sessionId", sess.getId())
+                .add("timeout", sess.getTimeout());
+    }
+}

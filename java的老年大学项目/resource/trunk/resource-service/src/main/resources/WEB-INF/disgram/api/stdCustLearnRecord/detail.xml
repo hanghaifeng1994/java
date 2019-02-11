@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="客户学习记录-详情">
+	<snd>
+		<field name="rcdId" desc="id" />
+	</snd>
+	<rcv>
+		<field name="rcdId" desc="id" />
+		<field name="studyUserId" desc="学习人id" />
+		<field name="csId" desc="课程id" />
+		<field name="cptId" desc="章节id" />
+		<field name="resId" desc="资源id" />
+		<field name="studyBreakpoint" desc="学习断点" />
+		<field name="startDate" desc="开始时间" />
+		<field name="endDate" desc="结束时间" />
+		<field name="studyTime" desc="学习时长" />
+		<field name="callbackTimes" desc="回调次数" />
+		<field name="siteId" desc="站点" />
+		<field name="mchtId" desc="商户id" />
+		<field name="mchtSchmId" desc="商户方案id" />
+	</rcv>
+</trans>

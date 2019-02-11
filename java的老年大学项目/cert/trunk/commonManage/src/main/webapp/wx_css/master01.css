@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+/*------------------------------------------------------------------
+[Master Stylesheet]
+
+Project:	DRCL CSS template : Master.css
+Version:	1.0
+Created by:	 Mad.JonIrenicus(CSS)
+-------------------------------------------------------------------*/
+@import url("structure01.css");
+@import url("reset01.css");

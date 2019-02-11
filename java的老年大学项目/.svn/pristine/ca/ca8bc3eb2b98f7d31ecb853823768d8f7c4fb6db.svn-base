@@ -1,0 +1,94 @@
+#server.port=8861
+#server.servlet.context-path=/base-intfc
+
+# \u8BBE\u7F6E\u6FC0\u6D3B\u7684\u73AF\u5883
+spring.profiles.active=dev
+spring.application.name=STUDYGROUP-SERVICE
+
+#eureka server
+eureka.client.registerWithEureka=true
+eureka.client.fetchRegistry=true
+#eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+
+#feign
+#\u5168\u5C40\u8BBE\u7F6E ribbon RibbonProperties
+#EnableConnectionPool MaxHttpConnectionsPerHost MaxTotalHttpConnections SendBufferSize
+ribbon.ReadTimeout = 60000
+ribbon.ConnectTimeout = 60000
+
+feign.httpclient.enabled = true
+#Feign\u7684\u8D85\u65F6 FeignClientConfiguration
+#feign.client.config.feignName.connectTimeout=5000
+#feign.client.config.feignName.readTimeout=5000
+
+#\u5C40\u90E8\u8BBE\u7F6E service-id \u662FRibbon\u6240\u4F7F\u7528\u7684\u865A\u62DF\u4E3B\u673A\u540D\uFF0C\u4E00\u822C\u548CEureka Server\u4E0A\u6CE8\u518C\u7684\u670D\u52A1\u540D\u79F0\u4E00\u81F4
+#service-id:
+#ribbon:
+#ReadTimeout: 1000
+#ConnectTimeout: 1000
+
+
+#\u65AD\u8DEF\u7531
+feign.hystrix.enabled = false
+
+
+#mvc
+#spring.mvc.static-path-pattern=/**
+#spring.resources.static-locations=classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+spring.mvc.static-path-pattern=/static/**
+spring.resources.static-locations=classpath:/static/,file:${web.upload-path}
+
+spring.mvc.view.prefix=/templates/
+spring.mvc.view.suffix=.ftl
+#\u51FA\u73B0\u9519\u8BEF\u65F6, \u76F4\u63A5\u629B\u51FA\u5F02\u5E38
+spring.mvc.throw-exception-if-no-handler-found=true
+#\u4E0D\u8981\u4E3A\u6211\u4EEC\u5DE5\u7A0B\u4E2D\u7684\u8D44\u6E90\u6587\u4EF6\u5EFA\u7ACB\u6620\u5C04
+spring.resources.add-mappings=false
+spring.freemarker.cache=false
+spring.freemarker.request-context-attribute=request
+
+
+
+
+# mybatis \u914D\u7F6E
+mybatis.type-aliases-package=com.learnyeai.studygroup.model
+mybatis.mapper-locations=classpath:mybatis/mapper/**/*.xml
+mybatis.configLocation=classpath:/learnyeai-learnai/core-mybatis-config.xml
+
+# \u901A\u7528 Mapper \u914D\u7F6E
+#mapper.mappers=com.learnyeai.core.support.BaseMapper
+mapper.not-empty=false
+mapper.identity=MYSQL
+
+# \u5206\u9875\u63D2\u4EF6\u914D\u7F6E
+pagehelper.helperDialect=mysql
+pagehelper.reasonable=true
+pagehelper.supportMethodsArguments=true
+pagehelper.params=count=countSql
+
+#--------------------
+#\u4E3B\u952E\u751F\u6210\u65B9\u5F0F\uFF1Asequence\u3001uuid\uFF0C\u9ED8\u8BA4\u4E3Asequence
+key.generator_type=uuid
+SYS_LOGIN_PWD_ERR_LMT=3
+
+adminPath=/activity
+
+schema.configPlat=WEYE_MMC2
+schema.interPlat=activity
+
+BASE-SERVICE=BASE-SERVICE
+
+
+
+#custom
+web.upload-path=D:/temp/study13/
+
+#session
+session.validation_interval=60
+
+#filter
+filter.session.exclude=/api*;/login*;/common/*;/test/*;/wxlogin.do;
+filter.thread.context.loginUrl = /common/registerUpdate.do;/login/passwordLogin.do;/common/dynCodeEmailSend.do;/common/dynCodeEmailCheck.do;/common/dynCodeSend.do;/common/dynCodeCheck.do;/login/appletLogin.do;/login/staffAppletLogin.do;
+
+#other cust
+extconfig.paths=classpath:conf.properties;

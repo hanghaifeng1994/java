@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="课程辅导老师-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="ID"/>
+        <field name="csId" desc="课程id"/>
+        <field name="tutorId" desc="辅导老师id"/>
+    </rcv>
+</trans>

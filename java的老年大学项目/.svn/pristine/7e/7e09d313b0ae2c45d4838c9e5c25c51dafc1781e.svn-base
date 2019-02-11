@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.interact.mapper.ItaLikedBatchMapper">
+    <insert id="saveBatch" parameterType="ItaLiked" >
+        insert into ita_liked
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="lkId != null" >
+                LK_ID,
+            </if>
+            <if test="objId != null" >
+                OBJ_ID,
+            </if>
+            <if test="type != null" >
+                TYPE,
+            </if>
+            <if test="theUserId != null" >
+                THE_USER_ID,
+            </if>
+            <if test="lkUserName != null" >
+                LK_USER_NAME,
+            </if>
+            <if test="lkStatus != null" >
+                LK_STATUS,
+            </if>
+            <if test="createBy != null" >
+                CREATE_BY,
+            </if>
+            <if test="createDate != null" >
+                CREATE_DATE,
+            </if>
+            <if test="mchtId != null" >
+                MCHT_ID,
+            </if>
+            <if test="mchtSchmId != null" >
+                MCHT_SCHM_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="lkId != null" >
+                #{lkId,jdbcType=VARCHAR},
+            </if>
+            <if test="objId != null" >
+                #{objId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="theUserId != null" >
+                #{theUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="lkUserName != null" >
+                #{lkUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="lkStatus != null" >
+                #{lkStatus,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null" >
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="mchtId != null" >
+                #{mchtId,jdbcType=VARCHAR},
+            </if>
+            <if test="mchtSchmId != null" >
+                #{mchtSchmId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateBatch" parameterType="ItaLiked" >
+        update ita_liked
+        <set >
+            <if test="objId != null" >
+                OBJ_ID = #{objId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                TYPE = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="theUserId != null" >
+                THE_USER_ID = #{theUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="lkUserName != null" >
+                LK_USER_NAME = #{lkUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="lkStatus != null" >
+                LK_STATUS = #{lkStatus,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null" >
+                CREATE_BY = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="mchtId != null" >
+                MCHT_ID = #{mchtId,jdbcType=VARCHAR},
+            </if>
+            <if test="mchtSchmId != null" >
+                MCHT_SCHM_ID = #{mchtSchmId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where OBJ_ID = #{objId,jdbcType=VARCHAR} and  TYPE = #{type,jdbcType=VARCHAR}
+    </update>
+</mapper>

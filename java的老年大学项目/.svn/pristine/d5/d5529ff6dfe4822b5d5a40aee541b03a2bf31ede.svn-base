@@ -1,0 +1,29 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.model.PtsetPlatform;
+import com.learnyeai.base.mapper.PtsetPlatformMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Service
+public class PtsetPlatformWyService extends BaseService<PtsetPlatform> {
+
+    @Resource
+    private PtsetPlatformMapper ptsetPlatformMapper;
+
+    @Override
+    public BaseMapper<PtsetPlatform> getMapper() {
+        return ptsetPlatformMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

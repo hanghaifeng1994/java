@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.course.mapper.CrsChapterMapper">
+	<select id="queryByParent" resultMap="BaseResultMap">
+		SELECT CPT_ID,CPT_NAME,CPT_INFO,CPT_PHOTO,CPT_MAX_STUDY_TIME,
+		CPT_SORT,PARENT_ID,PARENT_IDS,CS_ID,CREATE_BY,
+		CREATE_DATE,UPDATE_BY,UPDATE_DATE,DEL_FLAG,SITE_ID,
+		MCHT_ID,MCHT_SCHM_ID
+		FROM crs_chapter
+		WHERE DEL_FLAG = '0' and CS_ID = #{csId}
+		<choose>
+			<when test="parentId !=null and parentId != ''">
+				and PARENT_ID = #{parentId}
+			</when>
+			<otherwise>
+				and PARENT_ID is null
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

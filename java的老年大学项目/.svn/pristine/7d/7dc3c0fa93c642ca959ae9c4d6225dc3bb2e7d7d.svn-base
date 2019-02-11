@@ -1,0 +1,84 @@
+package com.learnyeai.learnai.support;
+
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+/**
+ * Created by zpz on 2018/4/21.
+ */
+public abstract class BaseController<T extends BaseEntity> implements IController {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String transCode = ctx.getTransCode();
+        // 获取方法
+        String method = CtxHeadUtil.getControllerMethod();
+        if(null == method)
+            throw new RuntimeException();
+
+        Object result = null;
+
+        if(method.equals("insert") || method.equals("updateById"))
+            this.save(ctx);
+        else if(method.equals("deleteById"))
+            this.deleteById(ctx);
+        else if(method.equals("queryById"))
+            result = this.queryById(ctx);
+        else if(method.equals("queryList"))
+            result = this.queryList(ctx);
+        else if(method.equals("queryPage"))
+            result = this.queryPage(ctx);
+        else
+            result = this.doDispached(ctx, method);
+        return result;
+
+    }
+
+    protected Object doDispached(IBusinessContext context, String method){
+        return null;
+    }
+    protected abstract BaseService<T> getService();
+
+    public Object queryById(IBusinessContext ctx){
+        return getService().queryById(ctx);
+    }
+
+    public List queryPage(IBusinessContext ctx) {
+
+        // 获取分页参数
+        MyPage page = getService().queryPage(null, ctx.getParamMap());
+        return rtnPageList4Report(page);
+    }
+
+    public List queryList(IBusinessContext ctx) {
+        return getService().queryList(null, ctx.getParamMap());
+    }
+
+    public void save(IBusinessContext ctx) {
+        T t = getService().convert2Bean(ctx.getParamMap());
+        getService().save(t);
+    }
+
+    public void deleteById(IBusinessContext ctx) {
+        T t = getService().convert2Bean(ctx.getParamMap());
+        getService().delete(t);
+    }
+
+   /**
+            * 分页请求的报文，添加totalCount
+     * @param page
+     * @return
+             */
+    public static List rtnPageList4Report(MyPage page){
+        if(page.getTotal() > -1){
+            ThreadContext.put(CtxHeadUtil.REPORT_TOTAL_COUNT, page.getTotal());
+        }
+        return page.getList();
+    }
+}

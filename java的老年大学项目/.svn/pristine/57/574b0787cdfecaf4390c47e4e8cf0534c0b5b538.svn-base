@@ -1,0 +1,95 @@
+package com.learnyeai.lucene.document.impl;
+
+import com.learnyeai.lucene.document.DocumentCreator;
+import com.learnyeai.lucene.utils.JavaTypeResolverUtil;
+import com.learnyeai.tools.common.StringUtils;
+import com.learnyeai.tools.common.TypeHelper;
+import org.apache.commons.collections.map.HashedMap;
+import org.apache.lucene.document.*;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * ResultSet转成doc，通用转换，所有字段都是text
+ *  子类可以覆盖convert2Doc，实现自定义field
+ * Created by zpz on 2018/9/6.
+ */
+public class CommonDocumentCreator implements DocumentCreator {
+    @Override
+    public Document createDocument(ResultSet rs) throws Exception {
+        Document document = new Document();
+        ResultSetMetaData md = rs.getMetaData();
+        Map<String, Object> dataMap = new HashedMap();
+        int colCount = md.getColumnCount();
+        for(int i=1; i<=colCount; i++){
+            String colName = md.getColumnName(i);
+            colName = StringUtils.toCamelCase(colName);
+            Object val = rs.getObject(i);
+
+            int scale = md.getScale(i);
+            int type = md.getColumnType(i);
+            int length = md.getColumnDisplaySize(i);
+
+            Class javaType = JavaTypeResolverUtil.calculateJavaType(type, scale, length);
+
+            if (javaType == Integer.class || javaType == Long.class) {
+                if(val instanceof BigDecimal){
+                    val = ((BigDecimal)val).longValue();
+                }else if(val instanceof Integer){
+                    val = ((Integer)val).longValue();
+                }
+            } else if (javaType == BigDecimal.class) {
+                val = ((BigDecimal)val).doubleValue();
+            }
+            dataMap.put(colName, val);
+        }
+        List<Field> fieldList = convert2Doc(dataMap);
+        for(Field field : fieldList){
+            document.add(field);
+        }
+        return document;
+    }
+    protected List<Field> convert2Doc(Map<String, Object> dataMap){
+        List<Field> list = new ArrayList<>();
+        dataMap.forEach((k, v)->{
+            Field field = null;
+            Field field1 = null;
+            boolean isStore = false;
+            if(v instanceof Integer){
+                int a = (Integer)v;
+                field = new IntPoint(k, a);
+                field1 = new StoredField(k, a);
+            } else if(v instanceof Short){
+                int a = ((Short)v).intValue();
+                field = new IntPoint(k, a);
+                field1 = new StoredField(k, a);
+            }else if(v instanceof Long){
+                long a = (Long) v;
+                field = new LongPoint(k, a);
+                field1 = new StoredField(k, a);
+            }else if(v instanceof Float){
+                double a = (Float)v;
+                field = new DoublePoint(k, a);
+                field1 = new StoredField(k, a);
+            }else if(v instanceof Double){
+                double a = (Double)v;
+                field = new DoublePoint(k, a);
+                field1 = new StoredField(k, a);
+            }else {
+                field = new TextField(k, TypeHelper.toString(v), Field.Store.YES);
+            }
+
+            list.add(field);
+            if(null != field1){
+                list.add(field1);
+            }
+        });
+        return list;
+    }
+
+}

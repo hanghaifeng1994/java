@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="角色-暂不用-详情">
+    <snd>
+        <field name="roleId" desc="ID"/>
+        <field name="roleName" desc="角色名称"/>
+        <field name="roleEname" desc="角色英文名称"/>
+        <field name="remarks" desc="备注"/>
+
+        <field name="funcIds" desc="功能ids" comment="多个id用逗号分割"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

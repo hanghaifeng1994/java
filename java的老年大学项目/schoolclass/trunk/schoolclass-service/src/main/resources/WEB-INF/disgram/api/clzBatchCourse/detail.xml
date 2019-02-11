@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="班级报名批次-课程-详情">
+    <snd>
+        <field name="bcId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="bcId" desc="批次课程id"/>
+        <field name="batchId" desc="班级批次id"/>
+        <field name="csId" desc="课程id"/>
+        <field name="csType" desc="1选修课、2必修课"/>
+        <field name="csStudylength" desc="学时" type="F" dolt="1"/>
+        <field name="csAmount" desc="金额" type="F" dolt="1"/>
+    </rcv>
+</trans>

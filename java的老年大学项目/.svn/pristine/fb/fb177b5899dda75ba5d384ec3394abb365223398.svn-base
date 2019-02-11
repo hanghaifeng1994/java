@@ -1,0 +1,134 @@
+#\u7D22\u5F15\u914D\u7F6E\uFF0C\u53CA\u6267\u884C\u987A\u5E8F
+inndexConfigs = aa,a2,a3,a3,a4,a5,a6,a7,a8,a9,bb
+driverClassName=com.mysql.jdbc.Driver
+
+aa.url=jdbc:mysql://localhost:3306/course?useUnicode=true&characterEncoding=utf-8
+aa.user=root
+aa.password=weye@2419
+aa.indexName=\u7AD9\u70B9-\u8BFE\u7A0B
+aa.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+aa.createIndexMode=1
+aa.sql=SELECT '\u8BFE\u7A0B' type ,group_concat(DISTINCT r.SITE_ID) site_id ,c.cs_id id ,c.CS_NAME title ,c.CS_PHOTO photo ,c.UPDATE_DATE pub_date ,group_concat(DISTINCT ca.CAT_NAME) lable from crs_course c ,crs_site_course_rel r ,crs_catalog_course_rel ccr , crs_catalog ca where r.CS_ID=c.CS_ID and ccr.CS_ID=c.CS_ID and ca.CAT_ID=ccr.CAT_ID and c.CS_STATUS='2' and c.CS_PUB_STATUS='1' GROUP BY c.CS_ID,c.CS_NAME,c.CS_PHOTO,c.UPDATE_DATE  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#aa.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+aa.columns=pub_date&3_1
+
+a2.url=jdbc:mysql://localhost:3306/resource?useUnicode=true&characterEncoding=utf-8
+a2.user=root
+a2.password=weye@2419
+a2.indexName=\u7AD9\u70B9-\u8D44\u6E90
+a2.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+a2.createIndexMode=2
+a2.sql=SELECT  '\u8D44\u6E90' type ,group_concat(DISTINCT sr.SITE_ID) site_id ,r.RES_ID ID ,r.RES_NAME title ,r.RES_PHOTO photo ,r.UPDATE_DATE pub_date ,group_concat(DISTINCT ca.CAT_NAME) lable from res_resource r ,res_category_resource_rel rr ,res_category ca ,res_site_resource_rel sr WHERE rr.RES_ID=r.RES_ID and ca.CAT_ID=rr.CAT_ID and sr.RES_ID=r.RES_ID and r.RES_STATUS='2' and r.RES_PUB_STATUS='1' GROUP BY r.RES_ID,r.RES_NAME,r.RES_PHOTO,r.UPDATE_DATE  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#a2.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+a2.columns=pub_date&3_1
+
+a3.url=jdbc:mysql://localhost:3306/schoolclass?useUnicode=true&characterEncoding=utf-8
+a3.user=root
+a3.password=weye@2419
+a3.indexName=\u7AD9\u70B9-\u73ED\u7EA7\u3001\u8BC1\u4E66
+a3.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+a3.createIndexMode=2
+a3.sql=SELECT case when cz.CZ_CERTED='1' then '\u8BC1\u4E66' else '\u73ED\u7EA7' end type ,group_concat(DISTINCT sc.SITE_ID) site_id ,cz.CZ_ID id ,cz.CZ_NAME title ,cz.CZ_PHOTO photo ,cz.UPDATE_DATE pub_date ,group_concat(DISTINCT ca.CAT_NAME) label from clz_clazz cz ,clz_site_clazz sc ,clz_category_clzz_rell ccr ,clz_category ca WHERE sc.CZ_ID=cz.CZ_ID and ccr.CZ_ID=cz.CZ_ID and ccr.CAT_ID=ca.CAT_ID and cz.CZ_STATUS='2' and cz.CZ_PUB_STATUS='1' GROUP BY cz.CZ_ID,cz.CZ_NAME,cz.CZ_PHOTO,cz.UPDATE_DATE  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#a3.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+a3.columns=pub_date&3_1
+
+a4.url=jdbc:mysql://localhost:3306/news?useUnicode=true&characterEncoding=utf-8
+a4.user=root
+a4.password=weye@2419
+a4.indexName=\u7AD9\u70B9-\u8D44\u8BAF
+a4.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+a4.createIndexMode=2
+a4.sql=SELECT '\u8D44\u8BAF' type ,group_concat(DISTINCT nsr.SITE_ID) site_id ,n.ARTICLE_ID id ,n.TITLE ,n.PHOTO ,n.UPDATE_DATE pub_date ,group_concat(DISTINCT ca.CAT_NAME) label from news_article n ,news_news_site_rel nsr ,news_category_article_rel car ,news_category ca WHERE nsr.ART_ID=n.ARTICLE_ID AND car.ARTICLE_ID=n.ARTICLE_ID and ca.CAT_ID=car.CAT_ID and n.STATUS='2' and n.PUB_STATUS='1' GROUP BY n.ARTICLE_ID,n.TITLE,n.PHOTO,n.UPDATE_DATE  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#a4.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+a4.columns=pub_date&3_1
+
+a5.url=jdbc:mysql://localhost:3306/notice?useUnicode=true&characterEncoding=utf-8
+a5.user=root
+a5.password=weye@2419
+a5.indexName=\u7AD9\u70B9-\u901A\u77E5
+a5.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+a5.createIndexMode=2
+a5.sql=SELECT '\u901A\u77E5' type ,group_concat(DISTINCT nsr.SITE_ID) site_id ,n.ARTICLE_ID id ,n.TITLE ,n.PHOTO ,n.UPDATE_DATE pub_date ,group_concat(DISTINCT ca.CAT_NAME) label from news_article n ,news_news_site_rel nsr ,news_category_article_rel car ,news_category ca WHERE nsr.ART_ID=n.ARTICLE_ID AND car.ARTICLE_ID=n.ARTICLE_ID and ca.CAT_ID=car.CAT_ID and n.STATUS='2' and n.PUB_STATUS='1' GROUP BY n.ARTICLE_ID,n.TITLE,n.PHOTO,n.UPDATE_DATE  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#a5.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+a5.columns=pub_date&3_1
+
+a6.url=jdbc:mysql://localhost:3306/help?useUnicode=true&characterEncoding=utf-8
+a6.user=root
+a6.password=weye@2419
+a6.indexName=\u7AD9\u70B9-\u5E2E\u52A9
+a6.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+a6.createIndexMode=2
+a6.sql=SELECT '\u5E2E\u52A9' type ,group_concat(DISTINCT nsr.SITE_ID) site_id ,n.ARTICLE_ID id ,n.TITLE ,n.PHOTO ,n.UPDATE_DATE pub_date ,group_concat(DISTINCT ca.CAT_NAME) label from news_article n ,news_news_site_rel nsr ,news_category_article_rel car ,news_category ca WHERE nsr.ART_ID=n.ARTICLE_ID AND car.ARTICLE_ID=n.ARTICLE_ID and ca.CAT_ID=car.CAT_ID and n.STATUS='2' and n.PUB_STATUS='1' GROUP BY n.ARTICLE_ID,n.TITLE,n.PHOTO,n.UPDATE_DATE  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#a6.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+a6.columns=pub_date&3_1
+
+a7.url=jdbc:mysql://localhost:3306/exp?useUnicode=true&characterEncoding=utf-8
+a7.user=root
+a7.password=weye@2419
+a7.indexName=\u7AD9\u70B9-\u7ECF\u9A8C
+a7.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+a7.createIndexMode=2
+a7.sql=SELECT '\u7ECF\u9A8C' type ,group_concat(DISTINCT nsr.SITE_ID) site_id ,n.ARTICLE_ID id ,n.TITLE ,n.PHOTO ,n.UPDATE_DATE pub_date ,group_concat(DISTINCT ca.CAT_NAME) label from news_article n ,news_news_site_rel nsr ,news_category_article_rel car ,news_category ca WHERE nsr.ART_ID=n.ARTICLE_ID AND car.ARTICLE_ID=n.ARTICLE_ID and ca.CAT_ID=car.CAT_ID and n.STATUS='2' and n.PUB_STATUS='1' GROUP BY n.ARTICLE_ID,n.TITLE,n.PHOTO,n.UPDATE_DATE  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#a7.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+a7.columns=pub_date&3_1
+
+a8.url=jdbc:mysql://localhost:3306/activity?useUnicode=true&characterEncoding=utf-8
+a8.user=root
+a8.password=weye@2419
+a8.indexName=\u7AD9\u70B9-\u6D3B\u52A8
+a8.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+a8.createIndexMode=2
+a8.sql=select '\u6D3B\u52A8' type ,group_concat(DISTINCT sar.SITE_ID) site_id ,a.ACT_ID id ,a.ACT_TITLE title ,a.ACT_PHOTO photo ,a.UPDATE_DATE pub_date ,group_concat(DISTINCT ca.CAT_NAME) label from act_activity a ,act_site_activity_rel sar ,act_category_activity car ,act_category ca where sar.ACT_ID=a.ACT_ID and car.ACT_ID=a.ACT_ID and ca.CAT_ID=car.CAT_ID and a.ACT_STATUS='2' and a.ACT_PUB_STATUS='1' GROUP BY a.ACT_ID,a.ACT_TITLE,a.ACT_PHOTO,a.UPDATE_DATE  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#a8.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+a8.columns=pub_date&3_1
+
+a9.url=jdbc:mysql://localhost:3306/study_group?useUnicode=true&characterEncoding=utf-8
+a9.user=root
+a9.password=weye@2419
+a9.indexName=\u7AD9\u70B9-\u5C0F\u7EC4
+a9.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+a9.createIndexMode=2
+a9.sql=SELECT '\u5C0F\u7EC4' type ,group_concat(DISTINCT sgr.SITE_ID) site_id ,g.SGP_ID id ,g.SGP_NAME title ,g.SGP_PHOTO photo ,g.UPDATE_DATE PUB_DATE ,group_concat(DISTINCT ca.CAT_NAME) label from sgp_study_group g ,sgp_site_studygroup_rel sgr ,sgp_category_group_rel cgr ,sgp_category ca WHERE sgr.SGP_ID=g.SGP_ID and cgr.SGP_ID=g.SGP_ID and ca.CAT_ID=cgr.CAT_ID and g.SGP_STATUS = '2' GROUP BY g.SGP_ID  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#a9.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+a9.columns=pub_date&3_1
+
+bb.url=jdbc:mysql://localhost:3306/show?useUnicode=true&characterEncoding=utf-8
+bb.user=root
+bb.password=weye@2419
+bb.indexName=\u7AD9\u70B9-\u624D\u827A
+bb.indexDirUrl=/serverdata/lucene-data/site
+#1\u521B\u5EFA\uFF0C\u5176\u5176\u8FFD\u52A0\u91CD\u5EFA
+bb.createIndexMode=2
+bb.sql=SELECT '\u624D\u827A' type ,group_concat(DISTINCT spr.SITE_ID) site_id ,a.ABM_ID id ,a.ABM_NAME title ,a.ABM_PHOTO photo ,a.UPDATE_DATE pub_date ,group_concat(DISTINCT ca.CAT_NAME) label FROM abm_album a ,abm_site_photo_rel spr ,abm_category_photo_rel cpr ,abm_category ca WHERE spr.ABM_ID=a.ABM_ID and cpr.ABM_ID=a.ABM_ID and ca.CAT_ID=cpr.CAT_ID AND a.ABM_STATUS='2' GROUP BY a.ABM_ID,a.ABM_NAME,a.ABM_PHOTO,a.UPDATE_DATE  
+#\u521B\u5EFAdocument\u7684\u7C7B\u540D\uFF0C\u81EA\u5B9A\u4E49\u65F6\u7EE7\u627Fcom.learnyeai.lucene.document.DocumentCreator
+#bb.documentCreatorClassName=
+#\u6392\u5E8F\u5B57\u6BB5\u5B9A\u4E49:\u5B57\u6BB5\u540D&\u5B57\u6BB5\u7C7B\u578B_\u6392\u5E8F\uFF0C1long 2double 3string
+bb.columns=pub_date&3_1
+

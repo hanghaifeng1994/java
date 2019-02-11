@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="saveSorts" desc="推广-保存排序">
+    <snd>
+        <field name="ids" desc="ids" required="true"/>
+        <field name="sorts" desc="排序" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

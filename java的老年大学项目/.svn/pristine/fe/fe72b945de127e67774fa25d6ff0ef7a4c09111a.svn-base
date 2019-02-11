@@ -1,0 +1,261 @@
+package com.learnyeai.album.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
+
+/**
+ * 图片组
+ *
+ * @author yl
+ */
+public class AbmPhoto extends BaseEntity {
+
+    /**
+    * id
+    */
+    @Id
+    @Column(name = "PH_ID")
+    private String phId;
+
+    /**
+     * 标题
+     */
+    @Column(name = "PH_TITLE")
+    private String phTitle;
+    /**
+     * 封面
+     */
+    @Column(name = "PH_PHOTO")
+    private String phPhoto;
+    /**
+     * 图片ids
+     */
+    @Column(name = "PH_IMGS")
+    private String phImgs;
+    /**
+     * 图片名称
+     */
+    @Column(name = "PH_IMG_NAMES")
+    private String phImgNames;
+    /**
+     * 内容
+     */
+    @Column(name = "PH_CONTENT")
+    private String phContent;
+    /**
+     * 相册id
+     */
+    @Column(name = "ABM_ID")
+    private String abmId;
+    /**
+     * 客户名称
+     */
+    @Column(name = "PH_ADD_USERNAME")
+    private String phAddUsername;
+    /**
+     * 0未提交、1审核中、2审核通过、3审核失败
+     */
+    @Column(name = "PH_STATUS")
+    private String phStatus;
+    /**
+     * 审核id
+     */
+    @Column(name = "AUDIT_ID")
+    private String auditId;
+    /**
+     * 创建人
+     */
+    @Column(name = "CREATE_BY")
+    private String createBy;
+    /**
+     * 创建时间
+     */
+    @Column(name = "CREATE_DATE")
+    private Date createDate;
+    /**
+     * 更新人
+     */
+    @Column(name = "UPDATE_BY")
+    private String updateBy;
+    /**
+     * 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
+    private Date updateDate;
+    /**
+     * 删除标记
+     */
+    @Column(name = "DEL_FLAG")
+    private String delFlag;
+    /**
+     * 站点
+     */
+    @Column(name = "SITE_ID")
+    private String siteId;
+    /**
+     * 商户id
+     */
+    @Column(name = "MCHT_ID")
+    private String mchtId;
+    /**
+     * 商户方案id
+     */
+    @Column(name = "MCHT_SCHM_ID")
+    private String mchtSchmId;
+
+    public String getPhId() {
+        return phId;
+    }
+
+    public void setPhId(String phId) {
+        this.phId = phId;
+    }
+    public String getPhTitle() {
+        return phTitle;
+    }
+
+    public void setPhTitle(String phTitle) {
+        this.phTitle = phTitle;
+    }
+    public String getPhPhoto() {
+        return phPhoto;
+    }
+
+    public void setPhPhoto(String phPhoto) {
+        this.phPhoto = phPhoto;
+    }
+    public String getPhImgs() {
+        return phImgs;
+    }
+
+    public void setPhImgs(String phImgs) {
+        this.phImgs = phImgs;
+    }
+    public String getPhImgNames() {
+        return phImgNames;
+    }
+
+    public void setPhImgNames(String phImgNames) {
+        this.phImgNames = phImgNames;
+    }
+    public String getPhContent() {
+        return phContent;
+    }
+
+    public void setPhContent(String phContent) {
+        this.phContent = phContent;
+    }
+    public String getAbmId() {
+        return abmId;
+    }
+
+    public void setAbmId(String abmId) {
+        this.abmId = abmId;
+    }
+    public String getPhAddUsername() {
+        return phAddUsername;
+    }
+
+    public void setPhAddUsername(String phAddUsername) {
+        this.phAddUsername = phAddUsername;
+    }
+    public String getPhStatus() {
+        return phStatus;
+    }
+
+    public void setPhStatus(String phStatus) {
+        this.phStatus = phStatus;
+    }
+    public String getAuditId() {
+        return auditId;
+    }
+
+    public void setAuditId(String auditId) {
+        this.auditId = auditId;
+    }
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "ABM_PHOTO";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("schema.interPlat");   // 库名
+
+        public static String phId = "PH_ID";  // id
+        public static String phTitle = "PH_TITLE";  // 标题
+        public static String phPhoto = "PH_PHOTO";  // 封面
+        public static String phImgs = "PH_IMGS";  // 图片ids
+        public static String phImgNames = "PH_IMG_NAMES";  // 图片名称
+        public static String phContent = "PH_CONTENT";  // 内容
+        public static String abmId = "ABM_ID";  // 相册id
+        public static String phAddUsername = "PH_ADD_USERNAME";  // 客户名称
+        public static String phStatus = "PH_STATUS";  // 0未提交、1审核中、2审核通过、3审核失败
+        public static String auditId = "AUDIT_ID";  // 审核id
+        public static String createBy = "CREATE_BY";  // 创建人
+        public static String createDate = "CREATE_DATE";  // 创建时间
+        public static String updateBy = "UPDATE_BY";  // 更新人
+        public static String updateDate = "UPDATE_DATE";  // 更新时间
+        public static String delFlag = "DEL_FLAG";  // 删除标记
+        public static String siteId = "SITE_ID";  // 站点
+        public static String mchtId = "MCHT_ID";  // 商户id
+        public static String mchtSchmId = "MCHT_SCHM_ID";  // 商户方案id
+
+    }
+}

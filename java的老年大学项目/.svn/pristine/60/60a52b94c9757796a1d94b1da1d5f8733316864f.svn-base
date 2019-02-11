@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="商户方案-详情">
+    <snd>
+        <field name="mchtSchmId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="mchtSchmId" desc="商家方案id"/>
+        <field name="mchtSchmExpireDate" desc="到期时间"/>
+        <field name="ordId" desc="当前订单id"/>
+        <field name="mchtSchmStatus" desc="0禁用、1启用"/>
+        <field name="mchtSchmPayStatus" desc="0未付费、1已付费、2欠费"/>
+        <field name="mchtUpgradeStatus" desc="0不升级、1免费升级"/>
+        <field name="schmEdtId" desc="方案版本id"/>
+        <field name="schmEdtHisId" desc="方案版本历史id"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="createUserName" desc="创建人名称"/>
+        <field name="updateUserName" desc="修改人名称"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="learnSave" desc="客户学习记录-提交计时">
+	<snd>
+		<field name="studyUserId" desc="学习人id" required="true"/>
+		<field name="resId" desc="资源id" required="true"/>
+		<field name="studyBreakpoint" desc="学习断点" />
+		<field name="studyTime" desc="学习时长" />
+	</snd>
+	<rcv>
+		<field name="status" desc="状态 0成功，1失败" />
+	</rcv>
+</trans>

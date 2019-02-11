@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delete" desc="题库章节目录-详情">
+    <snd>
+        <field name="sectionId" desc="id多个id用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <field name="msg" desc="返回消息"/>
+        <field name="num" desc="删除成功数量"/>
+    </rcv>
+</trans>

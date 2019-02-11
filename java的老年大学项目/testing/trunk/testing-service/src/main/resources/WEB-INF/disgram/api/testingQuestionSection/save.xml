@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="题库章节目录-新增修改保存">
+    <snd>
+        <field name="sectionId" desc="ID"/>
+        <field name="qpId" desc="题库 修改时不需要传"/>
+        <field name="name" desc="名称"/>
+        <field name="parentId" desc="父章节修改时不需要传"/>
+        <field name="parentIds" desc="所有父ids"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="章节id"/>
+    </rcv>
+</trans>

@@ -1,0 +1,40 @@
+package com.learnyeai.lucene.index;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by zpz on 2018/9/10.
+ */
+public class LuceneIndexPropUtils {
+    private static Map<String, LuceneConf> confMap = new HashMap<>();
+
+    public static LuceneConf getConf(String asName){
+        return get(asName);
+    }
+    private static LuceneConf get(String asName){
+        if(confMap.containsKey(asName)){
+            return confMap.get(asName);
+        }
+        if(confMap.size() > 0)
+            return null;
+        String confs = LuceneIndexProperties.instance.getConfigs();
+        Map<String,String> prop = LuceneIndexProperties.instance.getProp();
+        String arr[] = confs.split(",");
+        for(String as :arr){
+            LuceneConf o = new LuceneConf();
+            o.setAsName(as);
+            o.setIndexName(prop.get(as + ".indexName"));
+            o.setIndexDir(prop.get(as + ".indexDir"));
+            o.setDoc2ObjectClassName(prop.get(as + ".doc2ObjectClassName"));
+            o.setBuildQueryClassName(prop.get(as + ".buildQueryClassName"));
+            confMap.put(as, o);
+        }
+
+        if(confMap.containsKey(asName)){
+            return confMap.get(asName);
+        }
+        return null;
+    }
+
+}

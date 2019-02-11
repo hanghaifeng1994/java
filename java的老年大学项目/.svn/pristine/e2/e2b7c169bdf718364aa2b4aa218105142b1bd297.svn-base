@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="活动作品-我的列表" isPage="true">
+    <snd>
+        <field name="wksStatus" desc="提交状态0未提交、1审核中、2审核通过、3审核失败"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="我的列表" type="E">
+            <field name="wksId" desc="id"/>
+            <field name="actId" desc="活动id"/>
+            <field name="wksCode" desc="作品编码"/>
+            <field name="wksPhone" desc="封面"/>
+            <field name="wksType" desc="类型"/>
+            <field name="wksFileIds" desc="附件ids"/>
+            <field name="wksFileNa" desc="附件名称"/>
+            <field name="wksUserId" desc="上传人id"/>
+            <field name="wksUserN" desc="上传人名称"/>
+            <field name="wksUpload" desc="上传时间"/>
+            <field name="wksStatus" desc="0未提交、1审核中、2审核通过、3审核失败"/>
+            <field name="wksAuditI" desc="审核id"/>
+            <field name="wksVoteN" desc="投票数"/>
+            <field name="wksAvgSc" desc="平均分"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmI" desc="商户方案id"/>
+            <field name="siteId" desc="站点"/>
+        </field-list>
+    </rcv>
+</trans>

@@ -1,0 +1,34 @@
+package com.learnyeai.base.api.service;
+
+import com.learnyeai.base.api.client.CustInfoClient;
+import com.learnyeai.base.api.vo.CustInfoVo;
+import com.learnyeai.core.support.BaseFeignClient;
+import com.learnyeai.learnai.support.BaseClientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Service
+public class CustInfoApiService extends BaseClientService<CustInfoVo> {
+    @Autowired
+    private CustInfoClient custInfoClient;
+
+    @Override
+    public BaseFeignClient<CustInfoVo> getFeignClient() {
+        return custInfoClient;
+    }
+
+    @Override
+    public Object getId(Map params) {
+        String idKey = "custId";
+        if(params.containsKey(idKey)){
+        return params.get(idKey);
+        }
+        return null;
+    }
+}

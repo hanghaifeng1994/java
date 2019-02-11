@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="dataCount" desc="统计分值">
+    <snd>
+        <field name="tsId" desc="测试id" required="true"/>
+        <field name="objId" desc="班级id" required="true"/>
+    </snd>
+    <rcv>
+        <field-list name="starDataCounts" desc="问卷调查列表" type="E">
+            <field name="name" desc="题目名称"/>
+            <field name="avgScore" desc="平均分值"  dolt="1"/>
+            <field name="commonStars" desc="" type="E">
+                <field name="starLevel" desc="分值"/>
+                <field name="num" desc="数量"/>
+            </field>
+        </field-list>
+        <field name="msg" desc="提示"/>
+    </rcv>
+</trans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryByIds" desc="相册-根据多ids获取对象列表
+">
+    <snd>
+        <field name="ids" desc="id"  required="true"/>
+    </snd>
+    <rcv>
+        <field name="LIST" desc="根据多ids获取对象列表" type="E">
+            <field name="abmId" desc="id"/>
+            <field name="abmName" desc="名称"/>
+            <field name="abmPhoto" desc="封面" type="res"/>
+            <field name="abmWeight" desc="权重"/>
+            <field name="remarks" desc="备注"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+            <field name="siteId" desc="站点"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="ptName" desc="平台名称" xpath="siteId"  type="ptName"/>
+            <field name="ptId" desc="平台id" xpath="siteId"  type="ptId"/>
+            <field name="siteName" desc="站点名称" xpath="siteId"  type="site"/>
+            <field name="createByName" desc="创建人姓名" xpath="createBy" type="user"/>
+            <field name="updateByName" desc="更新人名称" xpath="updateBy" type="user"/>
+            <field name="catName" desc="分类名称"/>
+            <field name="catId" desc="分类id"/>
+        </field>
+    </rcv>
+</trans>

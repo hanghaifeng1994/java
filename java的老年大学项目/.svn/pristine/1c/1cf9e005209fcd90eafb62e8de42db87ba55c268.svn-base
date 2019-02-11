@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="learnSave" desc="用户资源-学习保存">
+	<snd>
+		<field name="userId" desc="用户id" required="true"/>
+        <field name="resId" desc="资源id" required="true"/>
+        <field name="lastPage" desc="最后学习时间点，秒" required="true"/>
+        <field name="app" desc="是否App学习   true/false" />
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常" />
+	</rcv>
+</trans>

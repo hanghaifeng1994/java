@@ -1,0 +1,112 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.api.util.BaseCons;
+import com.learnyeai.base.model.CustInfo;
+import com.learnyeai.base.mapper.CustInfoMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.Calendar;
+import java.util.List;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Service
+public class CustInfoWyService extends BaseService<CustInfo> {
+
+    @Resource
+    private CustInfoMapper custInfoMapper;
+
+    @Override
+    public BaseMapper<CustInfo> getMapper() {
+        return custInfoMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    @Override
+    protected Weekend genSqlExample(CustInfo custInfo) {
+        Weekend<CustInfo> weekend = super.genSqlExample(custInfo);
+        WeekendCriteria<CustInfo, Object> c = weekend.createCriteriaAddOn();
+        // 登录名
+        if(StringUtils.isNotBlank(custInfo.getLoginName())){
+            c.andEqualTo(CustInfo::getLoginName, custInfo.getLoginName());
+        }
+        // 租户id
+        if(StringUtils.isNotBlank(custInfo.getMchtId())){
+            c.andEqualTo(CustInfo::getMchtId, custInfo.getMchtId());
+        }
+        if(StringUtils.isNotBlank(custInfo.getOpenId())){
+            c.andEqualTo(CustInfo::getOpenId, custInfo.getOpenId());
+        }
+        if(StringUtils.isNotBlank(custInfo.getCustType())){
+            c.andEqualTo(CustInfo::getCustType, custInfo.getCustType());
+        }
+        weekend.and(c);
+        return weekend;
+    }
+
+    /**
+     * 查询某租户下的用户
+     * @param loginName 登录名
+     * @param tenantId 租户id
+     * @param custType 客户类型：1员工、2客户
+     * @return
+     */
+    public CustInfo queryByLoginName(String loginName, String tenantId, String custType){
+        CustInfo custInfo = new CustInfo();
+        custInfo.setLoginName(loginName);
+        custInfo.setMchtId(tenantId);
+        custInfo.setCustType(custType);
+        List<CustInfo> list = queryByExample(custInfo, null);
+        return list.size() > 0? list.get(0) : null;
+    }
+
+    /**
+     * 设置用户状态正常
+     * @param custId
+     * @return
+     */
+    public int enableUser(String custId){
+        CustInfo pp = new CustInfo();
+        pp.setCustId(custId);
+        pp.setUserStatus(BaseCons.CUST_INFO_STATUS.N.getVal());
+        return super.updateBySelect(pp);
+    }
+
+    /**
+     * 冻结用户
+     * @param custId
+     */
+    @Transactional
+    public void freezeUser(String custId){
+        CustInfo pp = new CustInfo();
+        pp.setCustId(custId);
+        pp.setUserStatus(BaseCons.CUST_INFO_STATUS.D.getVal());
+        pp.setFreezeDate(Calendar.getInstance().getTime());
+        super.updateBySelect(pp);
+    }
+
+    /**
+     * 根据openid查询用户
+     * @param openId
+     * @return
+     */
+    public CustInfo queryByOpenId(String openId){
+        CustInfo custInfo = new CustInfo();
+        custInfo.setOpenId(openId);
+        List<CustInfo> list = queryByExample(custInfo, null);
+        return list.size() > 0? list.get(0) : null;
+    }
+
+}

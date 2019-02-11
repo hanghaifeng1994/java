@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="isItaLike" desc="我是否点赞">
+    <snd>
+        <field-list name="list" type="E" desc="对象数组">
+            <field name="objId" desc="对象id" />
+            <field name="type" desc="对象id " required="true"/>
+         </field-list>
+    </snd>
+    <rcv>
+        <field-list name="LIST" type="E" desc="是否被点赞列表0 未被点赞 1已点赞">
+            <field name="lkId" desc="点赞id"/>
+            <field name="objId" desc="对象id"/>
+            <field name="lkStatus" desc="状态 1点赞 2未点赞"/>
+        </field-list>
+    </rcv>
+</trans>

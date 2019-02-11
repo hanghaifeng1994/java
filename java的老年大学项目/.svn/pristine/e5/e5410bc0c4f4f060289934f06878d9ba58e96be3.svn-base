@@ -1,0 +1,106 @@
+package com.learnyeai.interact.web;
+
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.service.ItaInteractionTimesWyService;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.interact.model.ItaComment;
+import com.learnyeai.interact.service.ItaCommentWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ItaCommentController extends BaseController<ItaComment> {
+    public static final String BASE_URL = "/ItaComment/";
+
+    @Autowired
+    private ItaCommentWyService itaCommentWyService;
+    @Autowired
+    CurrentUserInfoIml currentUserInfoIml;
+    @Autowired
+    ItaInteractionTimesWyService itaInteractionTimesWyService;
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+    @Value("${spring.application.name}")
+    private String aplicationName;
+    @Value("${schema.interPlat}")
+    private String interPlat;
+    @Value("${comment_key}")
+    private String commentKey;
+
+    @Override
+    protected BaseService<ItaComment> getService() {
+        return itaCommentWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx){
+        String method = CtxHeadUtil.getControllerMethod();
+        ItaComment itaComment= itaCommentWyService.convert2Bean(ctx.getParamMap());
+        ItaInteractionTimes it=new ItaInteractionTimes();
+        it.setObjId(itaComment.getObjId());
+        it.setType(itaComment.getType());
+        //该对象的收藏列表存在数据，将收藏数量拿出和新增的收藏数量相加放入缓存
+        List<ItaInteractionTimes> list= itaInteractionTimesWyService.queryList(it ,new HashMap());
+        int num=0;
+        //加入缓存
+        String cachKey=aplicationName+":"+interPlat;
+        String key=commentKey+","+itaComment.getObjId()+","+itaComment.getType();
+        //缓存中存在去缓存中取值，不存在去数据库中取值
+        Integer numstr=0;
+        if(redisTemplate.opsForHash().hasKey(cachKey,key)){
+            numstr  = (Integer)redisTemplate.opsForHash().get(cachKey,key);
+        }else{
+            if(list.size()>0){
+                ItaInteractionTimes i=list.get(0);
+                if(i.getCmtNum()!=null){
+                    num+=i.getCmtNum();
+                }
+            }
+        }
+        if(numstr!=null){
+            num+=numstr;
+        }
+        if("insert".equals(method)){
+            itaComment.setCmtDate(new Date());
+            itaComment.setCmtUserName(currentUserInfoIml.getLoginName());
+            itaCommentWyService.saveData(cachKey,key,num,itaComment);
+//            num+=itaCommentWyService.save(itaComment);
+//            redisTemplate.opsForHash().put(cachKey,key,num);
+            return MapUtil.newMap("cmtId",itaComment.getCmtId());
+        }
+        if("myQueryPage".equals(method)){
+            itaComment.setCreateBy(currentUserInfoIml.getId());
+            MyPage<ItaComment> page= itaCommentWyService.queryPage(itaComment,new HashMap());
+            return  super.rtnPageList4Report(page);
+        }
+        if("delete".equals(method)){
+             int total= itaCommentWyService.deleteData(itaComment);
+             num-=total;
+            redisTemplate.opsForHash().put(cachKey,key,num);
+            return  MapUtil.newMap("num",total);
+        }
+        return  super.execute(ctx);
+    }
+}

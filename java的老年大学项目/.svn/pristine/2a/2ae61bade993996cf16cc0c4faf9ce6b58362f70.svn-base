@@ -1,0 +1,52 @@
+package com.learnyeai.album.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+
+/**
+ * 图片分类-图片关联表
+ *
+ * @author yl
+ */
+public class AbmCategoryPhotoRel extends BaseEntity {
+
+    /**
+    * 分类id
+    */
+    @Id
+    @Column(name = "CAT_ID")
+    private String catId;
+
+    /**
+     * 图片id
+     */
+    @Column(name = "PH_ID")
+    private String phId;
+
+    public String getCatId() {
+        return catId;
+    }
+
+    public void setCatId(String catId) {
+        this.catId = catId;
+    }
+    public String getPhId() {
+        return phId;
+    }
+
+    public void setPhId(String phId) {
+        this.phId = phId;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "ABM_CATEGORY_PHOTO_REL";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("schema.interPlat");   // 库名
+
+        public static String catId = "CAT_ID";  // 分类id
+        public static String phId = "PH_ID";  // 图片id
+
+    }
+}

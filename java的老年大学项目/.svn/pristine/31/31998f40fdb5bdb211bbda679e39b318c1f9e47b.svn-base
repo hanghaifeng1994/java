@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="角色-详情">
+    <snd>
+        <field name="roleId" desc="id" required="true"/>
+    </snd>
+    <rcv>
+        <field name="roleId" desc="ID"/>
+        <field name="roleName" desc="角色名称"/>
+        <field name="roleEname" desc="角色英文名称" required="true"/>
+        <field name="userable" desc="0否、1是"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="remarks" desc="备注"/>
+    </rcv>
+</trans>

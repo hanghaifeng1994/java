@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="querySiteLinks" desc="友情链接-站点链接列表">
+    <snd>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="列表" type="E">
+            <field name="id" desc="id"/>
+            <field name="name" desc="名称"/>
+            <field name="icon" desc="图标" type="res"/>
+            <field name="url" desc="链接url"/>
+        </field-list>
+    </rcv>
+</trans>

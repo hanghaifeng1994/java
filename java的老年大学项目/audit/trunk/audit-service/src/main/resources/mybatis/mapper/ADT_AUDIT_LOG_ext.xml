@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.audit.mapper.AdtAuditLogMapper">
+    <select id="queryPageByIds" resultType="java.lang.String" parameterType="java.util.HashMap">
+       select GROUP_CONCAT(ad_id +",") as asId from ADT_AUDIT_LOG
+       where AD_USER_ID=#{t.adUserId,jdbcType=VARCHAR}
+       and SERVICE_TYPE=#{t.serviceType,jdbcType=VARCHAR}
+       <foreach collection="ids" item="item" separator="," open="and OBJ_ID in(" close=")" >
+          ${item}
+       </foreach>
+      ORDER  by AD_DATE DESC
+    </select>
+</mapper>

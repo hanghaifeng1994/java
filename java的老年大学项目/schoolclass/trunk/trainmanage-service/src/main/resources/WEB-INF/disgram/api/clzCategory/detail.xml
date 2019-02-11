@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="-详情">
+    <snd>
+        <field name="catId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="catId" desc=""/>
+        <field name="catName" desc=""/>
+        <field name="catLevel" desc=""/>
+        <field name="parentId" desc=""/>
+        <field name="parentIds" desc=""/>
+        <field name="createBy" desc=""/>
+        <field name="createDate" desc=""/>
+        <field name="updateBy" desc=""/>
+        <field name="updateDate" desc=""/>
+        <field name="delFlag" desc=""/>
+        <field name="siteId" desc=""/>
+        <field name="mchtId" desc=""/>
+        <field name="mchtSchmId" desc=""/>
+    </rcv>
+</trans>

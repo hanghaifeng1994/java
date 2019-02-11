@@ -1,0 +1,609 @@
+package com.learnyeai.schoolclass.model;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import com.learnyeai.learnai.support.BaseEntity;
+
+/**
+ * 班级
+ *
+ * @author twang
+ */
+public class ClzClazz extends BaseEntity {
+
+	/**
+	 * id
+	 */
+	@Id
+	@Column(name = "CZ_ID")
+	private String czId;
+
+	/**
+	 * 班级名称
+	 */
+	@Column(name = "CZ_NAME")
+	private String czName;
+	/**
+	 * 封面
+	 */
+	@Column(name = "CZ_PHOTO")
+	private String czPhoto;
+	/**
+	 * 课时数
+	 */
+	@Column(name = "CZ_HOURS")
+	private Integer czHours;
+	/**
+	 * 开始时间
+	 */
+	@Column(name = "CZ_START_DATE")
+	private Date czStartDate;
+	/**
+	 * 结束时间
+	 */
+	@Column(name = "CZ_END_DATE")
+	private Date czEndDate;
+	/**
+	 * 上课时间
+	 */
+	@Column(name = "CZ_TIME")
+	private String czTime;
+	/**
+	 * 班级简介
+	 */
+	@Column(name = "CZ_SUMMARY")
+	private String czSummary;
+	/**
+	 * 班级说明
+	 */
+	@Column(name = "CZ_INFO")
+	private String czInfo;
+	/**
+	 * 区域id
+	 */
+	@Column(name = "AREA_ID")
+	private String areaId;
+	/**
+	 * 地址
+	 */
+	@Column(name = "CZ_ADRESS")
+	private String czAdress;
+	/**
+	 * 培训方式：1线下、2线上
+	 */
+	@Column(name = "CZ_TRAINING_TYPE")
+	private String czTrainingType;
+	/**
+	 * 1免费、2打包、3按课
+	 */
+	@Column(name = "CZ_CHARGE_MODE")
+	private String czChargeMode;
+	/**
+	 * 培训费
+	 */
+	@Column(name = "CZ_TRAINING_FEE")
+	private BigDecimal czTrainingFee;
+	/**
+	 * 培训导师id
+	 */
+	@Column(name = "CZ_MASTER_TRAINER_ID")
+	private String czMasterTrainerId;
+	/**
+	 * 培训导师名称
+	 */
+	@Column(name = "CZ_MASTER_TRAINER")
+	private String czMasterTrainer;
+	/**
+	 * 辅导老师id
+	 */
+	@Column(name = "CZ_SECONDARY_TRAINER_ID")
+	private String czSecondaryTrainerId;
+	/**
+	 * 辅导老师名称
+	 */
+	@Column(name = "CZ_SECONDARY_TRAINER")
+	private String czSecondaryTrainer;
+	/**
+	 * 是否是证书班级
+	 */
+	@Column(name = "CZ_CERTED")
+	private String czCerted;
+	/**
+	 * 证书id
+	 */
+	@Column(name = "CT_ID")
+	private String ctId;
+	/**
+	 * 未开始、进行中、已结束
+	 */
+	@Column(name = "CZ_STATUS")
+	private String czStatus;
+	/**
+	 * 0未发布、1已发布
+	 */
+	@Column(name = "CZ_PUB_STATUS")
+	private String czPubStatus;
+	/**
+	 * 
+	 */
+	@Column(name = "CZ_PUB_DATE")
+	private Date czPubDate;
+	/**
+	 * 总学时要求
+	 */
+	@Column(name = "STUDYLENGTH")
+	private BigDecimal studylength;
+	/**
+	 * 必修改课要求
+	 */
+	@Column(name = "MUST_STUDYLENGTH")
+	private BigDecimal mustStudylength;
+	/**
+	 * 选修课要求
+	 */
+	@Column(name = "SEL_STUDYLENGTH")
+	private BigDecimal selStudylength;
+	/**
+	 * 测验成绩要求
+	 */
+	@Column(name = "EXAM_SCORE")
+	private BigDecimal examScore;
+	/**
+	 * 报名人数
+	 */
+	@Column(name = "CZ_JOINUP_NUM")
+	private Long czJoinupNum;
+	/**
+	 * 创建人
+	 */
+	@Column(name = "CREATE_BY")
+	private String createBy;
+	/**
+	 * 创建时间
+	 */
+	@Column(name = "CREATE_DATE")
+	private Date createDate;
+	/**
+	 * 更新人
+	 */
+	@Column(name = "UPDATE_BY")
+	private String updateBy;
+	/**
+	 * 更新时间
+	 */
+	@Column(name = "UPDATE_DATE")
+	private Date updateDate;
+	/**
+	 * 删除标记
+	 */
+	@Column(name = "DEL_FLAG")
+	private String delFlag;
+	/**
+	 * 站点
+	 */
+	@Column(name = "SITE_ID")
+	private String siteId;
+	/**
+	 * 商户id
+	 */
+	@Column(name = "MCHT_ID")
+	private String mchtId;
+	/**
+	 * 商户方案id
+	 */
+	@Column(name = "MCHT_SCHM_ID")
+	private String mchtSchmId;
+	/**
+	 * 
+	 */
+	@Column(name = "POSID")
+	private String posid;
+	/**
+	 * 
+	 */
+	@Column(name = "POSID_DATE")
+	private Date posidDate;
+
+	/**
+	 * 分类名称
+	 */
+	@Transient
+	private String catName;
+	@Transient
+	private Date startDate;
+	@Transient
+	private Date endDate;
+    /**
+     * 1已结束 2 未结束
+     */
+	@Transient
+	private String isEnd;
+
+    public String getIsEnd() {
+        return isEnd;
+    }
+
+    public void setIsEnd(String isEnd) {
+        this.isEnd = isEnd;
+    }
+
+    public String getCzId() {
+		return czId;
+	}
+
+	public void setCzId(String czId) {
+		this.czId = czId;
+	}
+
+	public String getCzName() {
+		return czName;
+	}
+
+	public void setCzName(String czName) {
+		this.czName = czName;
+	}
+
+	public String getCzPhoto() {
+		return czPhoto;
+	}
+
+	public void setCzPhoto(String czPhoto) {
+		this.czPhoto = czPhoto;
+	}
+
+	public Integer getCzHours() {
+		return czHours;
+	}
+
+	public void setCzHours(Integer czHours) {
+		this.czHours = czHours;
+	}
+
+	public Date getCzStartDate() {
+		return czStartDate;
+	}
+
+	public void setCzStartDate(Date czStartDate) {
+		this.czStartDate = czStartDate;
+	}
+
+	public Date getCzEndDate() {
+		return czEndDate;
+	}
+
+	public void setCzEndDate(Date czEndDate) {
+		this.czEndDate = czEndDate;
+	}
+
+	public String getCzTime() {
+		return czTime;
+	}
+
+	public void setCzTime(String czTime) {
+		this.czTime = czTime;
+	}
+
+	public String getCzSummary() {
+		return czSummary;
+	}
+
+	public void setCzSummary(String czSummary) {
+		this.czSummary = czSummary;
+	}
+
+	public String getCzInfo() {
+		return czInfo;
+	}
+
+	public void setCzInfo(String czInfo) {
+		this.czInfo = czInfo;
+	}
+
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	public String getCzAdress() {
+		return czAdress;
+	}
+
+	public void setCzAdress(String czAdress) {
+		this.czAdress = czAdress;
+	}
+
+	public String getCzTrainingType() {
+		return czTrainingType;
+	}
+
+	public void setCzTrainingType(String czTrainingType) {
+		this.czTrainingType = czTrainingType;
+	}
+
+	public String getCzChargeMode() {
+		return czChargeMode;
+	}
+
+	public void setCzChargeMode(String czChargeMode) {
+		this.czChargeMode = czChargeMode;
+	}
+
+	public BigDecimal getCzTrainingFee() {
+		return czTrainingFee;
+	}
+
+	public void setCzTrainingFee(BigDecimal czTrainingFee) {
+		this.czTrainingFee = czTrainingFee;
+	}
+
+	public String getCzMasterTrainerId() {
+		return czMasterTrainerId;
+	}
+
+	public void setCzMasterTrainerId(String czMasterTrainerId) {
+		this.czMasterTrainerId = czMasterTrainerId;
+	}
+
+	public String getCzMasterTrainer() {
+		return czMasterTrainer;
+	}
+
+	public void setCzMasterTrainer(String czMasterTrainer) {
+		this.czMasterTrainer = czMasterTrainer;
+	}
+
+	public String getCzSecondaryTrainerId() {
+		return czSecondaryTrainerId;
+	}
+
+	public void setCzSecondaryTrainerId(String czSecondaryTrainerId) {
+		this.czSecondaryTrainerId = czSecondaryTrainerId;
+	}
+
+	public String getCzSecondaryTrainer() {
+		return czSecondaryTrainer;
+	}
+
+	public void setCzSecondaryTrainer(String czSecondaryTrainer) {
+		this.czSecondaryTrainer = czSecondaryTrainer;
+	}
+
+	public String getCzCerted() {
+		return czCerted;
+	}
+
+	public void setCzCerted(String czCerted) {
+		this.czCerted = czCerted;
+	}
+
+	public String getCtId() {
+		return ctId;
+	}
+
+	public void setCtId(String ctId) {
+		this.ctId = ctId;
+	}
+
+	public String getCzStatus() {
+		return czStatus;
+	}
+
+	public void setCzStatus(String czStatus) {
+		this.czStatus = czStatus;
+	}
+
+	public String getCzPubStatus() {
+		return czPubStatus;
+	}
+
+	public void setCzPubStatus(String czPubStatus) {
+		this.czPubStatus = czPubStatus;
+	}
+
+	public Date getCzPubDate() {
+		return czPubDate;
+	}
+
+	public void setCzPubDate(Date czPubDate) {
+		this.czPubDate = czPubDate;
+	}
+
+	public BigDecimal getStudylength() {
+		return studylength;
+	}
+
+	public void setStudylength(BigDecimal studylength) {
+		this.studylength = studylength;
+	}
+
+	public BigDecimal getMustStudylength() {
+		return mustStudylength;
+	}
+
+	public void setMustStudylength(BigDecimal mustStudylength) {
+		this.mustStudylength = mustStudylength;
+	}
+
+	public BigDecimal getSelStudylength() {
+		return selStudylength;
+	}
+
+	public void setSelStudylength(BigDecimal selStudylength) {
+		this.selStudylength = selStudylength;
+	}
+
+	public BigDecimal getExamScore() {
+		return examScore;
+	}
+
+	public void setExamScore(BigDecimal examScore) {
+		this.examScore = examScore;
+	}
+
+	public Long getCzJoinupNum() {
+		return czJoinupNum;
+	}
+
+	public void setCzJoinupNum(Long czJoinupNum) {
+		this.czJoinupNum = czJoinupNum;
+	}
+
+	public String getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getUpdateBy() {
+		return updateBy;
+	}
+
+	public void setUpdateBy(String updateBy) {
+		this.updateBy = updateBy;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public String getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(String delFlag) {
+		this.delFlag = delFlag;
+	}
+
+	public String getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(String siteId) {
+		this.siteId = siteId;
+	}
+
+	public String getMchtId() {
+		return mchtId;
+	}
+
+	public void setMchtId(String mchtId) {
+		this.mchtId = mchtId;
+	}
+
+	public String getMchtSchmId() {
+		return mchtSchmId;
+	}
+
+	public void setMchtSchmId(String mchtSchmId) {
+		this.mchtSchmId = mchtSchmId;
+	}
+
+	public String getPosid() {
+		return posid;
+	}
+
+	public void setPosid(String posid) {
+		this.posid = posid;
+	}
+
+	public Date getPosidDate() {
+		return posidDate;
+	}
+
+	public void setPosidDate(Date posidDate) {
+		this.posidDate = posidDate;
+	}
+
+	public static class TF {
+
+		public static String TABLE_NAME = "CLZ_CLAZZ"; // 表名
+
+		// public static String TABLE_SCHEMA = ConfigUtils.getValue(""); // 库名
+
+		public static String czId = "CZ_ID"; // id
+		public static String czName = "CZ_NAME"; // 班级名称
+		public static String czPhoto = "CZ_PHOTO"; // 封面
+		public static String czHours = "CZ_HOURS"; // 课时数
+		public static String czStartDate = "CZ_START_DATE"; // 开始时间
+		public static String czEndDate = "CZ_END_DATE"; // 结束时间
+		public static String czTime = "CZ_TIME"; // 上课时间
+		public static String czSummary = "CZ_SUMMARY"; // 班级简介
+		public static String czInfo = "CZ_INFO"; // 班级说明
+		public static String areaId = "AREA_ID"; // 区域id
+		public static String czAdress = "CZ_ADRESS"; // 地址
+		public static String czTrainingType = "CZ_TRAINING_TYPE"; // 培训方式：1线下、2线上
+		public static String czChargeMode = "CZ_CHARGE_MODE"; // 1免费、2打包、3按课
+		public static String czTrainingFee = "CZ_TRAINING_FEE"; // 培训费
+		public static String czMasterTrainerId = "CZ_MASTER_TRAINER_ID"; // 培训导师id
+		public static String czMasterTrainer = "CZ_MASTER_TRAINER"; // 培训导师名称
+		public static String czSecondaryTrainerId = "CZ_SECONDARY_TRAINER_ID"; // 辅导老师id
+		public static String czSecondaryTrainer = "CZ_SECONDARY_TRAINER"; // 辅导老师名称
+		public static String czCerted = "CZ_CERTED"; // 是否是证书班级
+		public static String ctId = "CT_ID"; // 证书id
+		public static String czStatus = "CZ_STATUS"; // 未开始、进行中、已结束
+		public static String czPubStatus = "CZ_PUB_STATUS"; // 0未发布、1已发布
+		public static String czPubDate = "CZ_PUB_DATE"; //
+		public static String studylength = "STUDYLENGTH"; // 总学时要求
+		public static String mustStudylength = "MUST_STUDYLENGTH"; // 必修改课要求
+		public static String selStudylength = "SEL_STUDYLENGTH"; // 选修课要求
+		public static String examScore = "EXAM_SCORE"; // 测验成绩要求
+		public static String czJoinupNum = "CZ_JOINUP_NUM"; // 报名人数
+		public static String createBy = "CREATE_BY"; // 创建人
+		public static String createDate = "CREATE_DATE"; // 创建时间
+		public static String updateBy = "UPDATE_BY"; // 更新人
+		public static String updateDate = "UPDATE_DATE"; // 更新时间
+		public static String delFlag = "DEL_FLAG"; // 删除标记
+		public static String siteId = "SITE_ID"; // 站点
+		public static String mchtId = "MCHT_ID"; // 商户id
+		public static String mchtSchmId = "MCHT_SCHM_ID"; // 商户方案id
+		public static String posid = "POSID"; //
+		public static String posidDate = "POSID_DATE"; //
+
+	}
+
+	public String getCatName() {
+		return catName;
+	}
+
+	public void setCatName(String catName) {
+		this.catName = catName;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+}

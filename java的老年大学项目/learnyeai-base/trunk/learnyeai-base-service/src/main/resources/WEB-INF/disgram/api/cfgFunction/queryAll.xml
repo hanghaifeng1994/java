@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="功能-详情">
+    <snd>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="列表" type="E">
+            <field name="funcId" desc="功能id"/>
+            <field name="funcName" desc="功能名称"/>
+            <field name="funcType" desc="1后管、2小程序接口"/>
+            <field name="funcMngType" desc="1接口、2html"/>
+            <field name="funcUrl" desc="url"/>
+            <field name="funcPermission" desc="权限标识"/>
+            <field name="funcStatus" desc="0禁用、1启用"/>
+            <field name="funcShowStatus" desc="0隐藏、1显示"/>
+            <field name="parentId" desc="父节点"/>
+            <field name="parentIds" desc="所有父节点"/>
+            <field name="mdlId" desc="模块id"/>
+            <field name="sort" desc="排序"/>
+        </field-list>
+    </rcv>
+</trans>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="相册-详情">
+    <snd>
+        <field name="abmId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="abmId" desc="id"/>
+        <field name="abmName" desc="名称"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="siteId" desc="站点"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

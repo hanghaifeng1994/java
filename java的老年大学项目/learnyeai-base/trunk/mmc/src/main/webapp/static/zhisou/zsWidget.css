@@ -1,0 +1,15 @@
+
+/*多文件上传预览*/
+.preview > .preview-item{
+	width:10em;
+	float:left;
+	margin:0px 0.5em 0.5em;
+}
+.preview > .preview-item > .close{
+	color:red;
+}
+
+/*单文件上传预览*/
+.single_img{
+	width: 10em; margin:0px 0.5em 0.5em;
+}

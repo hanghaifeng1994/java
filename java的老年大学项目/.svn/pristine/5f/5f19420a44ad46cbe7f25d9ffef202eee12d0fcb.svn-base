@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="AnonLogin" desc="登录-获取站点数据">
+	<snd>
+		<field name="siteId" desc="站点id" required="false" />
+		<field name="siteDomain" desc="站点域名" required="false" />
+	</snd>
+	<!-- 响应报文，可过滤响应信息，并对数据字典进行解析 -->
+	<rcv>
+		<field name="siteId" desc="id"/>
+		<field name="siteName" desc="名称"/>
+		<field name="siteCode" desc="编码"/>
+		<field type="res" name="siteLogo" desc="logo"/>
+		<field type="res" name="pageHeadImg" desc="头部图片"/>
+		<field name="pageSiteCopyright" desc="站点版权"/>
+		<field name="siteDomain" desc="域名"/>
+		<field name="ptId" desc="平台ID"/>
+		<field name="siteType" desc="1主站、2子站"/>
+		<field name="mchtId" desc="商户id"/>
+		<field name="mchtSchmId" desc="商户方案id"/>
+
+		<field name="SESSION_TOKEN" desc="登录token"/>
+	</rcv>
+</trans>

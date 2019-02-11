@@ -1,0 +1,42 @@
+package com.learnyeai.learnbehavior.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnbehavior.model.StdCustExt;
+import com.learnyeai.learnbehavior.model.StdStudyObjectStatistics;
+import com.learnyeai.learnbehavior.service.StdCustExtWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ *
+ * @author yl
+ */
+@RestController
+@RequestMapping("${adminPath}" + StdCustExtController.BASE_URL)
+public class StdCustExtController extends BaseController<StdCustExt> {
+    public static final String BASE_URL = "/StdCustExt/";
+
+    @Autowired
+    private StdCustExtWyService stdCustExtWyService;
+
+    @Override
+    protected BaseService<StdCustExt> getService() {
+        return stdCustExtWyService;
+    }
+
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String transCode = ctx.getTransCode();
+        String method = CtxHeadUtil.getControllerMethod();
+        StdCustExt ssos=stdCustExtWyService.convert2Bean(ctx.getParamMap());
+        if("queryById".equals(method)){
+            return stdCustExtWyService.queryById(ssos.getCustId());
+        }
+        return super.execute(ctx);
+    }
+}

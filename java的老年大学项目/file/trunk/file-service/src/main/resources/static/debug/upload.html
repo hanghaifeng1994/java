@@ -1,0 +1,193 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>文件上传demo</title>
+</head>  
+<style> 
+.m-form{line-height:29px;color:#555;}
+.m-form legend{font-size:14px;font-weight:bold;}
+.m-form .formitm{padding:20px 0 0;line-height:30px;}
+.m-form .formitm-1{padding-left:100px;}
+.m-form .lab{float:left;width:90px;margin-right:-90px;text-align:right;font-weight:bold;}
+.m-form .ipt{margin-left:100px;}
+.m-form .ipt *{vertical-align:middle;}
+.m-form .ipt a,.m-form .ipt a:hover{text-decoration:none;color:#3891eb;}
+.m-form .ipt img{height:32px;margin:0 15px 0 5px;}
+.m-form .ipt .domain{margin:0 0 0 5px;font-weight:bold;color:#777;}
+.m-form .ipt p{height:22px;line-height:22px;color:#999;}
+.m-form .tip{padding-top:10px;}
+.m-form .tip input{margin:0 5px 3px 0;}
+/* 文本输入框 */
+.u-ipt{width:180px;padding:5px;height:17px;border:1px solid #D9D9D9;border-top-color:#c0c0c0;line-height:17px;font-size:14px;color:#777;background:#fff;}
+/* 文本输入框-窄 */
+.u-ipt-1{width:90px;}
+/* 文本输入框-出错 */
+.u-ipt-err{border-color:#c00 #e00 #e00;}
+/* 通用自定义按钮-默认蓝色 */
+.u-btn{display:inline-block;*display:inline;*zoom:1;*overflow:visible;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;padding:0 12px;height:28px;line-height:28px;border:1px solid #2d88bf;font-size:12px;letter-spacing:1px;word-spacing:normal;text-align:center;vertical-align:middle;cursor:pointer;background:#54aede;}
+button.u-btn{*height:30px;_line-height:25px;}
+.u-btn,.u-btn:hover{color:#fff;text-decoration:none;}
+.u-btn:hover,.u-btn:focus{background:#399dd8;}
+.u-btn::-moz-focus-inner{padding:0;margin:0;border:0;}
+.u-btn .btntxt{margin-right:3px;_vertical-align:middle;}
+.u-btn .btnsel{display:inline-block;*display:inline;*zoom:1;width:0;height:0;overflow:hidden;vertical-align:middle;border-style:solid dashed dashed;border-width:4px 4px 0;border-color:#fff transparent transparent;}
+</style>
+<body> 
+<div class="m-form">
+    <form name="fmPic" action="#" method="get">
+        <fieldset>
+            <legend>文件上传&nbsp;<a href="kindEditor.html" target="_blank">kindeditor图片上传</a></legend>
+            <div class="formitm">
+                <label class="lab">文件</label>
+                <div class="ipt">
+                    <input id="file" name="uploadFile" type="file" class="u-ipt"/>
+                </div>
+            </div>
+            <div class="formitm">
+                <label class="lab">文件类型</label>
+                <div class="ipt">
+                    <input id="fileType" name="uploadFile" type="text" class="u-ipt"/>
+                    audio image doc text video stream
+                </div>
+            </div>
+            <div class="formitm">
+                <label class="lab">文件大小限制</label>
+                <div class="ipt">
+                    <input id="maxSize" name="uploadFile" type="text" class="u-ipt"/>
+                    单位M
+                </div>
+            </div>
+            <div class="formitm">
+                <div class="ipt" id="success1">
+                </div>
+            </div>
+            <div class="formitm">
+                <p>
+                    返回格式：<br>
+                    {"data":{"fileName":"1_04.gif","fileSize":"13KB","fileExt":"gif","fileType":"image","timeLength":"00:1:20","fileId":"group1/M00/00/01/Cml0oFuM3peAO-G-AAA2nUN_DFc483.gif"},"success":"1"}
+                </p>
+                <p>
+                    请求参数说明：fileType、maxSize<br>
+                    图片上传：不用输入文件类型，固定限制10M， &nbsp;&nbsp;<b>请求地址：/upload/pic</b><br>
+                    视频上传：不用输入文件类型、大小限制自定义,最大限制500M，path中要加入ffmpeg路径，会计算视频的时长<b>请求地址：/upload/uploadVido.do</b><br>
+                    小文件上传，文件类型可选择，固定限制10M&nbsp;&nbsp;<b>请求地址：/upload/file</b><br>
+                    自定义文件上传，文件类型、大小限制自定义，最大限制500M&nbsp;&nbsp;<b>请求地址：/upload/custfile.do</b><br>
+                    获取文件信息参数 fileId&nbsp;&nbsp;<b>请求地址：/getFileInfo</b><br>
+                    删除文件，参数 fileId &nbsp;&nbsp;<b>请求地址：/deleteFile.do</b>
+                </p>
+                <p>
+                    <div  style="color: red; font-size: 20px">
+                    文件上传前，前端必须先判断文件大小、类型，文件大小超限，浏览器会报链接被重置ERR_CONNECTION_RESET
+                    </div>
+                </p>
+            </div>
+            <div class="formitm formitm-1">
+                <button id="btn" class="u-btn upload-btn" type="button" data-url="../upload/pic" data-tt="图片上传中...">图片上传</button>
+                <button id="btnVido" class="u-btn upload-btn" type="button" data-url="../upload/uploadVido.do" data-tt="视频上传中...">视频上传</button>
+                <button id="btnMin" class="u-btn upload-btn" type="button" data-url="../upload/file" data-tt="小文件上传中...">小文件上传</button>
+                <button id="btnFile" class="u-btn upload-btn" type="button" data-url="../upload/custfile.do" data-tt="自定义文件上传中...">文件上传</button>
+                <button id="btnInfo" class="u-btn" type="button">获取文件信息</button>
+                &nbsp;&nbsp;
+                <button id="btnDel" style="color: red;" class="u-btn" type="button">删除文件(上传测试后-记得点我！！)</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<script src="js/jquery-1.8.2.js"></script>
+
+    <script> 
+        var $file = $('#file');
+        var $fileType = $('#fileType')
+        var $maxSize = $('#maxSize')
+
+        var fileId;
+        $('.upload-btn').click(function() {
+            if(fileId){
+                alert("请删除测试文件，再上传");
+                return;
+            }
+            var clickText = $(this).data("tt");
+            var reqUrl = $(this).data("url");
+            $("#success1").html(clickText)
+            var data = new FormData();
+            var files = $file[0].files;
+            data.append('imgFile', files[0]);
+
+            if($(this).attr("id") == 'btnFile') {
+                if (!$fileType.val()) {
+                    alert("文件类型不能为空")
+                    return;
+                }
+                if (!$maxSize.val()) {
+                    alert("文件大小限制不能为空");
+                    return;
+                }
+            }
+
+            if($(this).attr("id") == 'btnVido') {
+                if (!$maxSize.val()) {
+                    alert("文件大小限制不能为空");
+                    return;
+                }
+            }
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('post', reqUrl);
+            xhr.setRequestHeader("fileType", $fileType.val());
+            xhr.setRequestHeader("maxSize", $maxSize.val());
+            xhr.onload = function(e) {
+                if(xhr.status == 200){
+                    var res = eval("(" + e.currentTarget.response +")");
+                    fileId = res.data.fileId;
+                    var hh = $("#success1").html() + "<br>" +  e.currentTarget.response;
+                    $("#success1").html(hh);
+//                    $("#success1").html(e.currentTarget.response)
+                }else
+                    $("#success1").html("请选择文件")
+            }
+            xhr.send(data);
+        });
+
+        $("#btnDel").click(function() {
+            if(!fileId){
+                alert("还未上传文件")
+                return;
+            }
+            var data = new FormData();
+            data.append('fileId', fileId);
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('post', '../deleteFile.do');
+            xhr.onload = function(e) {
+                if(xhr.status == 200){
+                    var res = eval("(" + e.currentTarget.response +")");
+                    alert(res.message + fileId);
+                    fileId = null;
+                }else
+                    alert("删除文件失败")
+            }
+            xhr.send(data);
+        });
+        $("#btnInfo").click(function() {
+            if(!fileId){
+                alert("还未上传文件")
+                return;
+            }
+            var data = new FormData();
+            data.append('fileId', fileId);
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('post', '../getFileInfo');
+            xhr.onload = function(e) {
+                if(xhr.status == 200){
+                    alert(e.currentTarget.response);
+                }else
+                    alert("獲取文件信息失败")
+            }
+            xhr.send(data);
+        });
+    </script>
+</body> 
+</html> 

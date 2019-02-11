@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="mngMerchantInfo" desc="商户后管-商户信息">
+    <snd>
+        <field name="mchtId" desc="id" required="true"/>
+    </snd>
+    <rcv>
+        <field name="MCHT_ID" desc="商户id"/>
+        <field name="MCHT_NAME" desc="商户名称"/>
+        <field name="MCHT_SHORTNAME" desc="商户shortname"/>
+        <!--<field name="MCHT_LINKMAN" desc="联系人"/>-->
+        <!--<field name="MCHT_PHONE" desc="手机号"/>-->
+        <!--<field name="MCHT_TELEPHONE" desc="座机"/>-->
+        <!--<field name="MCHT_ADRESS" desc="地址"/>-->
+        <field name="MCHT_LOGO" desc="logo"/>
+
+        <field name="mchtSchmList" desc="小程序列表" type="E">
+            <field name="MCHT_SCHM_ID" desc="商家方案id"/>
+            <field name="MCHT_SCHM_EXPIRE_DATE" desc="到期时间"/>
+            <field name="SCHM_EDT_ID" desc="方案版本id"/>
+            <field name="SCHM_EDT_NAME" desc="方案版本名称"/>
+            <!--<field name="SCHM_EDT_DESC" desc="方案版本描述"/>-->
+        </field>
+    </rcv>
+</trans>

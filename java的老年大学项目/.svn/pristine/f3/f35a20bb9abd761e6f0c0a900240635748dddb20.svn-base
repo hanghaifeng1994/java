@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="deleteById" desc="上报审核-删除">
+    <snd>
+        <field name="rpId" desc="id"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

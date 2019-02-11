@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="signUp" desc="活动-报名">
+    <snd>
+        <field name="actId" desc="活动id"/>
+    </snd>
+    <rcv>
+        <field name="status" desc="状态为1时已加入该活动不能重复加入，0加入成功"/>
+    </rcv>
+</trans>

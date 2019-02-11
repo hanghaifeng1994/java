@@ -1,0 +1,1009 @@
+package cn.com.weyeyun.commoncert.service;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springside.modules.orm.Page;
+import org.springside.modules.utils.web.struts2.Struts2Utils;
+
+import cn.com.weyeyun.commoncert.constains.Constants;
+import cn.com.weyeyun.commoncert.dao.CertDao;
+import cn.com.weyeyun.commoncert.dao.CertTemplateDao;
+import cn.com.weyeyun.commoncert.dao.UserCertOfflineDao;
+import cn.com.weyeyun.commoncert.model.Cert;
+import cn.com.weyeyun.commoncert.model.CertTemplate;
+import cn.com.weyeyun.commoncert.model.UserCertOffline;
+import cn.com.weyeyun.commoncert.util.GimageUtil;
+import cn.com.weyeyun.commoncert.util.ImageSizer;
+import cn.com.weyeyun.commoncert.util.QrUtils;
+import cn.com.weyeyun.commoncert.util.TiaomaUtils;
+import cn.com.weyeyun.commoncert.vo.CertplateVO;
+import cn.com.weyeyun.commoncert.vo.PrintClazzVO;
+import cn.common.lib.springside.orm.ExtPropertyFilter;
+import cn.common.lib.util.date.DateUtils;
+import cn.common.lib.vo.LabelValue;
+
+import com.google.common.collect.Maps;
+
+@Component
+@Transactional
+public class UserCertOfflineService extends CacheEntityService<UserCertOffline, Long> {
+	@Autowired
+	private UserCertOfflineDao userCertOfflineDao;
+	@Autowired
+	private CertDao certDao;
+	@Autowired
+	private CertTemplateDao certTemplateDao;
+	
+	@Value("${traincore.uploadpath}")
+	private String uploadPath;
+	
+	@Value("${traincore.uploadpath.url}")
+	private String uploadUrl;
+	
+	@Value("${offlinecert.url}")
+	private String offlinecertUrl;
+	
+	@Override
+	protected UserCertOfflineDao getEntityDao() {
+		return userCertOfflineDao;
+	}
+
+	/**
+	 * 获得对象
+	 * 
+	 * @author hli
+	 * @param id
+	 * @return
+	 */
+	public UserCertOffline get(String id) {
+		return userCertOfflineDao.get(Long.valueOf(id));
+	}
+
+	/**
+	 * 保存
+	 * 
+	 * @author hli
+	 */
+	public void save(UserCertOffline userCertOffline) {
+		userCertOfflineDao.save(userCertOffline);
+	}
+
+	/**
+	 * 删除
+	 * 
+	 * @author hli
+	 */
+	public void delete(Long id) {
+		userCertOfflineDao.delete(id);
+	}
+
+	/**
+	 * @author zhaowei
+	 * @param page
+	 * @param filters
+	 * @return
+	 */
+	public Page<UserCertOffline> extSearch(final Page<UserCertOffline> page, List<ExtPropertyFilter> filters) {
+		return userCertOfflineDao.extFindPage(page, filters);
+	}
+
+	public List<UserCertOffline> extFind(List<ExtPropertyFilter> filters) {
+		return userCertOfflineDao.extFind(filters);
+	}
+
+	public List<UserCertOffline> getByUser(Long userId) {
+		return userCertOfflineDao.findBy("userId", userId);
+	}
+
+	public long getUserCertCount(boolean published, Long tenantId, Long userId) {
+		return userCertOfflineDao.getUserCertCount(published, tenantId, userId);
+	}
+
+	/**
+	 * 发布证书
+	 * 
+	 * @author hli
+	 * @param ids
+	 */
+	public void publish(Long[] ids) {
+		UserCertOffline userCertOffline = null;
+		for (Long id : ids) {
+			userCertOffline = this.get(id);
+			userCertOffline.setPublished(true);
+			userCertOffline.setPublishedTime(new Date());
+			userCertOfflineDao.save(userCertOffline);
+		}
+	}
+
+	/**
+	 * 取消发布证书
+	 * 
+	 * @author hli
+	 * @param ids
+	 */
+	public void unpublish(Long[] ids) {
+		UserCertOffline userCertOffline = null;
+		for (Long id : ids) {
+			userCertOffline = this.get(id);
+			userCertOffline.setPublished(false);
+			userCertOffline.setPublishedTime(null);
+			userCertOfflineDao.save(userCertOffline);
+		}
+	}
+
+	public void printed(Long[] ids) {
+		for (Long id : ids) {
+			UserCertOffline userCertOffline = get(id);
+			userCertOffline.setPrinted(true);
+			save(userCertOffline);
+		}
+	}
+
+	public void unprinted(Long[] ids) {
+		for (Long id : ids) {
+			UserCertOffline userCertOffline = get(id);
+			userCertOffline.setPrinted(false);
+			save(userCertOffline);
+		}
+	}
+
+	public List<UserCertOffline> getUserCertsByIds(List<Long> ids) {
+		return super.getObjectsbyIds(ids);
+	}
+	
+	public UserCertOffline getUserCertOfflineByUserIdAndCert(String userId, Long certId) {
+		String hql = "from UserCertOffline where userId=? and cert.id = ?";
+		return userCertOfflineDao.findUnique(hql, userId, certId);
+	}
+	
+	public UserCertOffline getUserCertOne(Long certId, String certno) {
+		String hql = "from UserCertOffline where cert.id = ? and certno = ?";
+		return userCertOfflineDao.findUnique(hql, certId, certno);
+	}
+	
+	public List<UserCertOffline> getUserCerts(Long certId, String idcard, String unit, String name, String mobilePhone, Boolean published) {
+		String hql = "from UserCertOffline where 1=1 ";
+		if(certId!=null) {
+			hql += " and cert.id = " + certId;
+		}
+		if(StringUtils.isNotBlank(idcard)){
+			idcard = idcard.trim();
+			hql += " and idcard like '%" + idcard+"%'";
+		}
+		if(StringUtils.isNotBlank(unit)){
+			unit = unit.trim();
+			hql += " and unit like '%" + unit+"%'";
+		}
+		if(StringUtils.isNotBlank(name)){
+			name = name.trim();
+			hql += " and name like '%" + name+"%'";
+		}
+		if(StringUtils.isNotBlank(mobilePhone)){
+			mobilePhone = mobilePhone.trim();
+			hql += " and mobilePhone = '" + mobilePhone+"'";
+		}
+		
+		if(published!=null) {
+			hql += " and published = " + published;
+		}
+		hql += " order by genTime desc";
+		return userCertOfflineDao.find(hql);
+	}
+
+	public void batchPrintStatus(String usercertids, boolean printed) {
+		userCertOfflineDao.batchPrintStatus(usercertids, printed);
+	}
+
+	public void batchPrintStatus(List<ExtPropertyFilter> filters, boolean printed) {
+		StringBuffer sql = new StringBuffer("update usercert_offline uc set ");
+		if (printed) {
+			sql.append(" uc.printed = 1 where 1=1 ");
+		} else {
+			sql.append(" uc.printed = 0 where 1=1 ");
+		}
+		for (ExtPropertyFilter e : filters) {
+			if (e.getPropertyName().equals("genTime") && e.getExtMatchType().name().equals(ExtPropertyFilter.ExtMatchType.GE.toString())) {
+				Date geDate = (Date) e.getMatchValue();
+				sql.append(" and to_char(uc.gen_time,'yyyymmdd')>= " + DateUtils.getDateFromDateTime(geDate));
+			} else if (e.getPropertyName().equals("genTime") && e.getExtMatchType().name().equals(ExtPropertyFilter.ExtMatchType.LE.toString())) {
+				Date leDate = (Date) e.getMatchValue();
+				sql.append(" and to_char(uc.gen_time,'yyyymmdd')<= " + DateUtils.getDateFromDateTime(leDate));
+			} else if (e.getPropertyName().equals("published")) {
+				if ("true".equals(e.getMatchValue().toString())) {
+					sql.append(" and uc.published = 1");
+				} else {
+					sql.append(" and uc.published = 0");
+				}
+			} else if (e.getPropertyName().equals("printed")) {
+				if ("true".equals(e.getMatchValue().toString())) {
+					sql.append(" and uc.printed = 1");
+				} else {
+					sql.append(" and uc.printed = 0");
+				}
+			} else if (e.getPropertyName().equals("checked")) {
+				sql.append(" and uc.checked = " + e.getMatchValue());
+			} else if (e.getPropertyName().equals("name")) {
+				sql.append(" and uc.name = '" + e.getMatchValue() + "'");
+			} else if (e.getPropertyName().equals("username")) {
+				sql.append(" and uc.username like '%" + e.getMatchValue() + "%'");
+			} else if (e.getPropertyName().equals("tenantId")) {
+				sql.append(" and uc.tenant_id = " + e.getMatchValue());
+			}
+		}
+		userCertOfflineDao.updateSqlQuery(sql.toString());
+	}
+
+	public Map<String, CertplateVO> singleViewPrint(Long id) throws Exception {
+		try {
+			if (id != null) {
+				UserCertOffline userCertOffline = this.get(id);
+				CertplateVO vo = new CertplateVO();// 定义证书VO
+				Cert cert = userCertOffline.getCert();
+
+				if (cert.getCertTemplate() == null) {
+					Struts2Utils.renderJson(new LabelValue("null", ""));
+					return null;
+				}
+
+				String templateValue = cert.getTemplateText();
+				String[] tvs = new String[15];
+				String[] tvsr = templateValue.split(";");
+				for (int i = 0; i < tvsr.length; i++) {
+					tvs[i] = tvsr[i];
+				}
+
+				String valueOne = getPrintTextValue(tvs[0], userCertOffline);
+				String valueTwo = getPrintTextValue(tvs[1], userCertOffline);
+				String valueThree = getPrintTextValue(tvs[2], userCertOffline);
+				String valueFour = getPrintTextValue(tvs[3], userCertOffline);
+				String valueFive = getPrintTextValue(tvs[4], userCertOffline);
+				String valueSix = getPrintTextValue(tvs[5], userCertOffline);
+				String valueSeven = getPrintTextValue(tvs[6], userCertOffline);
+				String valueEight = getPrintTextValue(tvs[7], userCertOffline);
+				String valueNine = getPrintTextValue(tvs[8], userCertOffline);
+				String valueTen = getPrintTextValue(tvs[9], userCertOffline);
+				String valueEleven = getPrintTextValue(tvs[10], userCertOffline);
+
+				String imageOne = "";
+				String imageTwo = "";
+				String imageThree = "";
+				String imageFour = "";
+				String imageFive = "";
+
+				int imageOneWid = 0;
+				int imageOneHei = 0;
+				int imageTwoWid = 0;
+				int imageTwoHei = 0;
+				int imageThreeWid = 0;
+				int imageThreeHei = 0;
+				int imageFourWid = 0;
+				int imageFourHei = 0;
+				int imageFiveWid = 0;
+				int imageFiveHei = 0;
+
+				String templateImage = cert.getTemplateImage();
+				if (StringUtils.isNotBlank(templateImage)) {
+					String[] tis = new String[5];
+					String[] tisr = templateImage.split(";");
+					for (int i = 0; i < tisr.length; i++) {
+						tis[i] = tisr[i];
+					}
+
+					imageOne = getPrintImageValue(tis[0], userCertOffline, 1);
+					imageTwo = getPrintImageValue(tis[1], userCertOffline, 2);
+					imageThree = getPrintImageValue(tis[2], userCertOffline, 3);
+					imageFour = getPrintImageValue(tis[3], userCertOffline, 4);
+					imageFive = getPrintImageValue(tis[4], userCertOffline, 5);
+
+					if (StringUtils.isNotBlank(imageOne)) {
+						imageOneWid = getImageWidthHeight(tis[0], userCertOffline, 1)[0];
+						imageOneHei = getImageWidthHeight(tis[0], userCertOffline, 1)[1];
+					}
+
+					if (StringUtils.isNotBlank(imageTwo)) {
+						imageTwoWid = getImageWidthHeight(tis[1], userCertOffline, 2)[0];
+						imageTwoHei = getImageWidthHeight(tis[1], userCertOffline, 2)[1];
+					}
+
+					if (StringUtils.isNotBlank(imageThree)) {
+						imageThreeWid = getImageWidthHeight(tis[2], userCertOffline, 3)[0];
+						imageThreeHei = getImageWidthHeight(tis[2], userCertOffline, 3)[1];
+					}
+
+					if (StringUtils.isNotBlank(imageFour)) {
+						imageFourWid = getImageWidthHeight(tis[3], userCertOffline, 4)[0];
+						imageFourHei = getImageWidthHeight(tis[3], userCertOffline, 4)[1];
+					}
+
+					if (StringUtils.isNotBlank(imageFive)) {
+						imageFiveWid = getImageWidthHeight(tis[4], userCertOffline, 5)[0];
+						imageFiveHei = getImageWidthHeight(tis[4], userCertOffline, 5)[1];
+					}
+				}
+
+				vo = this.getCertSubImagePrint(cert.getCertTemplate().getId(), valueOne, valueTwo, valueThree, valueFour, valueFive, valueSix, valueSeven, valueEight, valueNine, valueTen, imageOne,
+						imageTwo, imageThree, imageFour, imageFive, imageOneWid, imageOneHei, imageTwoWid, imageTwoHei, imageThreeWid, imageThreeHei, imageFourWid, imageFourHei, imageFiveWid,
+						imageFiveHei);
+
+				// System.out.println("vo.subject 1:"+vo.getSubject());
+				// 设置模板背景图片的上边距,左边距,图片宽和图片高
+				setBackImageProperty(vo);
+
+				Map<String, CertplateVO> map = Maps.newHashMap();
+				// System.out.println("vo.subject:"+vo.getSubject());
+				map.put("vo", vo);
+				return map;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public CertplateVO getCertSubImagePrint(Long certtemplateId, String valueOne, String valueTwo, String valueThree, String valueFour, String valueFive, String valueSix, String valueSeven,
+			String valueEight, String valueNine, String valueTen, String imageOne, String imageTwo, String imageThree, String imageFour, String imageFive, int imageOneWid, int imageOneHei,
+			int imageTwoWid, int imageTwoHei, int imageThreeWid, int imageThreeHei, int imageFourWid, int imageFourHei, int imageFiveWid, int imageFiveHei) throws Exception {
+		if (certtemplateId != null) {
+			CertTemplate certTemplate = certTemplateDao.get(certtemplateId);
+			CertplateVO cvo = new CertplateVO(certTemplate.getTextOne(), certTemplate.getTextTwo(), certTemplate.getTextThree(), certTemplate.getTextFour(), certTemplate.getTextFive(),
+					certTemplate.getTextSix(), certTemplate.getTextSeven(), certTemplate.getTextEight(), certTemplate.getTextNine(), certTemplate.getTextTen(), certTemplate.getTextEleven(),
+					certTemplate.getTextTwelve(), certTemplate.getTextThirteen(), certTemplate.getTextFourteen(), certTemplate.getTextFifteen(), certTemplate.getSubject(),
+					certTemplate.getImageName(), certTemplate.getImageUrlOne(), certTemplate.getImageUrlTwo(), certTemplate.getImageUrlThree(), certTemplate.getImageUrlFour(),
+					certTemplate.getImageUrlFive());
+			if (cvo == null) {
+				return null;
+			}
+
+			String subject = "";
+			if (StringUtils.isNotBlank(cvo.getSubject())) {
+				subject = cvo.getSubject().replace("[##]", "");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextOne())) {
+				subject = subject.replace("\"" + cvo.getTextOne() + "\"", "\"" + valueOne + "\"");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextTwo())) {
+				subject = subject.replace("\"" + cvo.getTextTwo() + "\"", "\"" + valueTwo + "\"");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextThree())) {
+				subject = subject.replace("\"" + cvo.getTextThree() + "\"", "\"" + valueThree + "\"");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextFour())) {
+				subject = subject.replace("\"" + cvo.getTextFour() + "\"", "\"" + valueFour + "\"");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextFive())) {
+				subject = subject.replace("\"" + cvo.getTextFive() + "\"", "\"" + valueFive + "\"");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextSix())) {
+				subject = subject.replace("\"" + cvo.getTextSix() + "\"", "\"" + valueSix + "\"");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextSeven())) {
+				subject = subject.replace("\"" + cvo.getTextSeven() + "\"", "\"" + valueSeven + "\"");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextEight())) {
+				subject = subject.replace("\"" + cvo.getTextEight() + "\"", "\"" + valueEight + "\"");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextNine())) {
+				subject = subject.replace("\"" + cvo.getTextNine() + "\"", "\"" + valueNine + "\"");
+			}
+
+			if (StringUtils.isNotBlank(cvo.getTextTen())) {
+				subject = subject.replace("\"" + cvo.getTextTen() + "\"", "\"" + valueTen + "\"");
+			}
+
+			// System.out.println("文本替换后："+subject);
+			String certtemPath = "";
+			if (StringUtils.isNotBlank(cvo.getImageOne())) {
+				// 替换源图片的宽和高
+				subject = getImageWidHei(subject, cvo.getImageOne(), imageOneWid, imageOneHei);
+				// 获得目标图片的根路径
+				certtemPath = Constants.CETTEMPLATE_PATH;
+				// 获得目标图片的全路径
+				String imageUrl = uploadUrl + certtemPath + cvo.getImageOne();
+				System.out.println("imageUrl:" + imageUrl);
+				System.out.println("imageOne:" + imageOne);
+				// 替换源图片的src
+				subject = subject.replace(imageUrl, imageOne);
+			}
+
+			if (StringUtils.isNotBlank(cvo.getImageTwo())) {
+				// 获得目标图片的根路径
+				subject = getImageWidHei(subject, cvo.getImageTwo(), imageTwoWid, imageTwoHei);
+				// 获得目标图片的全路径
+				String imageUrl = uploadUrl + certtemPath + cvo.getImageTwo();
+				System.out.println("imageUrl:" + imageUrl);
+				System.out.println("imageTwo:" + imageTwo);
+				// 替换源图片的src
+				subject = subject.replace(imageUrl, imageTwo);
+			}
+
+			if (StringUtils.isNotBlank(cvo.getImageThree())) {
+				// 获得目标图片的根路径
+				subject = getImageWidHei(subject, cvo.getImageThree(), imageThreeWid, imageThreeHei);
+				// 获得目标图片的全路径
+				String imageUrl = uploadUrl + certtemPath + cvo.getImageThree();
+				System.out.println("imageUrl:" + imageUrl);
+				System.out.println("imageThree:" + imageThree);
+				// 替换源图片的src
+				subject = subject.replace(imageUrl, imageThree);
+			}
+
+			if (StringUtils.isNotBlank(cvo.getImageFour())) {
+				// 获得目标图片的根路径
+				subject = getImageWidHei(subject, cvo.getImageFour(), imageFourWid, imageFourHei);
+				// 获得目标图片的全路径
+				String imageUrl = uploadUrl + certtemPath + cvo.getImageFour();
+				System.out.println("imageUrl:" + imageUrl);
+				System.out.println("imageFour:" + imageFour);
+				// 替换源图片的src
+				subject = subject.replace(imageUrl, imageFour);
+			}
+
+			if (StringUtils.isNotBlank(cvo.getImageFive())) {
+				// 替换图片的宽和高
+				subject = getImageWidHei(subject, cvo.getImageFive(), imageFiveWid, imageFiveHei);
+				// 获得目标图片的全路径
+				String imageUrl = uploadUrl + certtemPath + cvo.getImageFive();
+				System.out.println("imageUrl:" + imageUrl);
+				System.out.println("imageFive:" + imageFive);
+				// 替换源图片的src
+				subject = subject.replace(imageUrl, imageFive);
+			}
+			cvo.setSubject(subject);
+			return cvo;
+		}
+		// }
+		return null;
+	}
+
+	/**
+	 * 
+	 * 设置模板背景图片的上边距,左边距,图片宽和图片高
+	 * 
+	 * @since 2013-3-7
+	 * @author fangyong
+	 * @param vo
+	 */
+	private void setBackImageProperty(CertplateVO vo) {
+		String subject = vo.getSubject();
+		if (StringUtils.isNotBlank(subject)) {
+			int indexTop = subject.indexOf("BKIMG_TOP");
+			if (indexTop != -1) {
+				String top = subject.substring(indexTop + 11);
+				vo.setTop(top.substring(0, top.indexOf(");")));
+			} else {
+				vo.setTop("0%");
+			}
+
+			int indexLeft = subject.indexOf("BKIMG_LEFT");
+			if (indexLeft != -1) {
+				String left = subject.substring(indexLeft + 12);
+				vo.setLeft(left.substring(0, left.indexOf(");")));
+			} else {
+				vo.setLeft("0%");
+			}
+
+			int indexWidth = subject.indexOf("BKIMG_WIDTH");
+			if (indexWidth != -1) {
+				String width = subject.substring(indexWidth + 13);
+				vo.setWidth(width.substring(0, width.indexOf(");")));
+			} else {
+				vo.setWidth("100%");
+			}
+
+			int indexHeight = subject.indexOf("BKIMG_HEIGHT");
+			if (indexHeight != -1) {
+				String height = subject.substring(indexHeight + 14);
+				vo.setHeight(height.substring(0, height.indexOf(");")));
+			} else {
+				vo.setHeight("100%");
+			}
+		}
+	}
+
+	/**
+	 * 设置图片宽和高
+	 * 
+	 * @since 2013-7-18
+	 * @author fangyong
+	 * @param subject
+	 * @param imageUrl
+	 * @param imageOneWid
+	 * @param imageOneHei
+	 * @return
+	 */
+	private static String getImageWidHei(String subject, String imageUrl, int imageOneWid, int imageOneHei) {
+		StringBuilder sb = new StringBuilder();
+		// 替换宽
+		if (imageOneWid != 0) {
+			String[] arraySubj = subject.split(";");
+			for (String subj : arraySubj) {
+				if (subj.contains(imageUrl)) {
+					String[] arrayImg = subj.split(",");
+					arrayImg[2] = String.valueOf(imageOneWid);
+					arrayImg[3] = String.valueOf(imageOneHei);
+					subj = "";
+					for (String imgstr : arrayImg) {
+						subj += "," + imgstr;
+					}
+					if (subj.length() > 0)
+						subj = subj.substring(1);
+				}
+				sb.append(subj).append(";");
+			}
+			return sb.toString();
+		} else {
+			return subject;
+		}
+
+	}
+
+	/**
+	 * 
+	 * 获得文本打印的真实值
+	 * 
+	 * @since 2017-0822
+	 * @author twang
+	 * @param tempValue
+	 * @param crd
+	 * @param userCertOffline
+	 * @return
+	 */
+	public String getPrintTextValue(String tempValue, UserCertOffline userCertOffline) {
+		// UserDTO userDTO = userCertOffline.getUser();
+		if ("name".equals(tempValue)) {
+			return userCertOffline.getName();
+		}
+		if ("unit".equals(tempValue)) {
+			return userCertOffline.getUnit();
+		}
+		if ("certno".equals(tempValue)) {
+			return userCertOffline.getCertno();
+		}
+		if ("program".equals(tempValue)) {
+			return userCertOffline.getProgram();
+		}
+		if ("mobilephone".equals(tempValue)) {
+			return userCertOffline.getMobilePhone();
+		}
+		if ("idcard".equals(tempValue)) {
+			return userCertOffline.getIdcard();
+		}
+		if ("score".equals(tempValue)) {
+			return userCertOffline.getScore();
+		}
+		if ("phase".equals(tempValue)) {
+			return userCertOffline.getPhase();
+		}
+		if ("year".equals(tempValue)) {
+			return userCertOffline.getYear();
+		}
+		if ("month".equals(tempValue)) {
+			return userCertOffline.getMonth();
+		}
+		if ("day".equals(tempValue)) {
+			return userCertOffline.getDay();
+		}
+		if ("col01".equals(tempValue)) {
+			return userCertOffline.getCol01();
+		}
+		if ("col02".equals(tempValue)) {
+			return userCertOffline.getCol02();
+		}
+		if ("col03".equals(tempValue)) {
+			return userCertOffline.getCol03();
+		}
+		if ("col04".equals(tempValue)) {
+			return userCertOffline.getCol04();
+		}
+		if ("col05".equals(tempValue)) {
+			return userCertOffline.getCol05();
+		}
+		if ("col06".equals(tempValue)) {
+			return userCertOffline.getCol06();
+		}
+		if ("col07".equals(tempValue)) {
+			return userCertOffline.getCol07();
+		}
+		if ("col08".equals(tempValue)) {
+			return userCertOffline.getCol08();
+		}
+		if ("col09".equals(tempValue)) {
+			return userCertOffline.getCol09();
+		}
+		if ("col10".equals(tempValue)) {
+			return userCertOffline.getCol10();
+		}
+		return "";
+	}
+
+	/**
+	 * 
+	 * 获得文本图片打印的真实值
+	 * 
+	 * @since 2013-2-5
+	 * @author fangyong
+	 * @param tempValue
+	 * @param crd
+	 * @param cert
+	 * @param index
+	 *            第几张图片 modify by twang
+	 * @return
+	 * @throws Exception
+	 */
+	private String getPrintImageValue(String tempValue, UserCertOffline userCertOffline, int index) throws Exception {
+		if ("photo".equals(tempValue)) {
+			String photoUrlPath = "";
+			String photoPath = "";
+			photoUrlPath = uploadUrl;
+			photoPath = uploadPath;
+			/**
+			 * 先取证书照片，没有就取用户照片 twang 20151216
+			 */
+			String photo = "/avatar/photo.jpg";
+			String hz = StringUtils.substringAfter(photo, ".");
+			String certPhoto = StringUtils.substringBefore(photo, ".") + "-cert." + hz;
+			String certPhotoFile = null;
+			String oPhotoFile = null;
+			if (certPhoto.startsWith("/")) {
+				certPhotoFile = photoPath + File.separator + certPhoto;
+				oPhotoFile = photoPath + File.separator + photo;
+			} else {
+				certPhotoFile = photoPath + certPhoto;
+				oPhotoFile = photoPath + photo;
+			}
+
+			// 判断用于证书照片是否存在，不存在则进行压缩生成，按照剪裁217,262压缩成 108,131
+			if (!new File(certPhotoFile).exists()) {
+				try {
+					// linux下有问题
+					// MagickUtil.zoomImage(108,null,oPhotoFile,certPhotoFile);
+					System.out.println("certPhotoFile is " + certPhotoFile);
+					ImageSizer.resize(new File(oPhotoFile), new File(certPhotoFile), 108, hz);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return photoUrlPath + "/" + certPhoto;
+		}
+		if ("tiaoma".equals(tempValue)) {
+			return getUrlByUsercert(userCertOffline, Constants.TIAOMAPATH) + File.separator + userCertOffline.getCertno() + ".jpg";
+		}
+		if ("stamper".equals(tempValue)) {
+			String stamperUrlPath = "";
+			String stamperName = null;
+			CertplateVO cv = this.getCertplate(userCertOffline.getCert().getCertTemplate().getId());
+			switch (index) {
+			case 1:
+				stamperName = cv.getImageOne();
+				break;
+			case 2:
+				stamperName = cv.getImageTwo();
+				break;
+			case 3:
+				stamperName = cv.getImageThree();
+				break;
+			case 4:
+				stamperName = cv.getImageFour();
+				break;
+			case 5:
+				stamperName = cv.getImageFive();
+				break;
+			default:
+				break;
+			}
+			stamperUrlPath = uploadUrl;
+			String path = stamperUrlPath + "/" + "certtemplate" + stamperName;
+			if (stamperName != null) {
+				return path;
+			}
+			// return stamperUrlPath+"/"+stamperName+".jpg";
+			return null;
+		}
+
+		if ("ewm".equals(tempValue)) {
+			return getUrlByUsercert(userCertOffline, Constants.EWM) + File.separator + userCertOffline.getCertno() + ".png";
+		}
+		return "";
+	}
+
+	private String getDirByUsercert(UserCertOffline userCertOffline, String path) {
+		String dir = uploadPath + path;
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+			String time = sdf.format(userCertOffline.getGenTime());
+			File file = new File(dir + File.separator + time);
+			if (!file.isDirectory()) {
+				file.mkdir();
+			}
+			return dir + File.separator + time;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return dir;
+		}
+
+	}
+
+	private String getUrlByUsercert(UserCertOffline userCertOffline, String path) {
+		String dir = uploadUrl + path;
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+			String time = sdf.format(userCertOffline.getGenTime());
+			return dir + File.separator + time;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return dir;
+		}
+
+	}
+
+	/**
+	 * 
+	 * 获得某个模板集VO,VO只保存模板ID和模板名称
+	 * 
+	 * @since 2013-1-31
+	 * @author fangyong
+	 * @return
+	 * @throws Exception
+	 */
+	public CertplateVO getCertplate(Long certtemplateId) throws Exception {
+		if (certtemplateId != null) {
+			try {
+				CertTemplate certTemplate = certTemplateDao.get(certtemplateId);
+
+				CertplateVO ctv = new CertplateVO(Long.valueOf(certtemplateId), certTemplate.getName(), certTemplate.getTextOne(), certTemplate.getTextTwo(), certTemplate.getTextThree(),
+						certTemplate.getTextFour(), certTemplate.getTextFive(), certTemplate.getTextSix(), certTemplate.getTextSeven(), certTemplate.getTextEight(), certTemplate.getTextNine(),
+						certTemplate.getTextTen(), certTemplate.getTextEleven(), certTemplate.getTextTwelve(), certTemplate.getTextThirteen(), certTemplate.getTextFourteen(),
+						certTemplate.getTextFifteen(), certTemplate.getImageUrlOne(), certTemplate.getImageUrlTwo(), certTemplate.getImageUrlThree(), certTemplate.getImageUrlFour(),
+						certTemplate.getImageUrlFive());
+
+				return ctv;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 获得图片的实际宽和高
+	 * 
+	 * @since 2013-7-18
+	 * @author fangyong
+	 * @param imageUrl
+	 * @return
+	 * @throws Exception
+	 */
+	public int[] getImageWidthHeight(String tempValue, UserCertOffline userCertOffline, int index) throws Exception {
+		int[] arrayWidHei = new int[2];
+		// 人照片
+		if ("photo".equals(tempValue)) {
+			String photoPath = uploadPath;
+			String photo = "/avatar/photo.jpg";
+			String certPhoto = StringUtils.substringBefore(photo, ".") + "-cert." + StringUtils.substringAfter(photo, ".");
+			String certPhotoFile = null;
+			if (certPhoto.startsWith("/")) {
+				certPhotoFile = photoPath + File.separator + certPhoto;
+			} else {
+				certPhotoFile = photoPath + certPhoto;
+			}
+
+			// 判断用于证书照片是否存在，不存在则进行压缩生成，按照剪裁217,262压缩成 108,131
+			if (new File(certPhotoFile).exists()) {
+				File picture = new File(certPhotoFile);
+				BufferedImage sourceImg = ImageIO.read(new FileInputStream(picture));
+				if (sourceImg == null) {
+					getPrintImageValue(tempValue, userCertOffline, index);
+					sourceImg = ImageIO.read(new FileInputStream(picture));
+				}
+				String.format("%.1f", picture.length() / 1024.0);
+				arrayWidHei[0] = sourceImg.getWidth();
+				arrayWidHei[1] = sourceImg.getHeight();
+				return arrayWidHei;
+			}
+		}
+		// 条形码
+		if ("tiaoma".equals(tempValue)) {
+			String tiaomaUrlPath = getDirByUsercert(userCertOffline, Constants.TIAOMAPATH);
+			String tiaomaFile = tiaomaUrlPath + "/" + userCertOffline.getCertno() + ".jpg";
+			if (!new File(tiaomaFile).exists()) {// 重新生成
+				this.genTiaoMa(userCertOffline);
+			}
+			File picture = new File(tiaomaFile);
+			BufferedImage sourceImg = ImageIO.read(new FileInputStream(picture));
+			if (sourceImg == null) {
+				this.genTiaoMa(userCertOffline);
+				sourceImg = ImageIO.read(new FileInputStream(picture));
+			}
+			String.format("%.1f", picture.length() / 1024.0);
+			arrayWidHei[0] = sourceImg.getWidth();
+			arrayWidHei[1] = sourceImg.getHeight();
+			return arrayWidHei;
+		}
+		// 公章
+		if ("stamper".equals(tempValue)) {
+			String stamperUrlPath = uploadPath;
+			String stamperName = null;
+			CertplateVO cv = this.getCertplate(userCertOffline.getCert().getCertTemplate().getId());
+			switch (index) {
+			case 1:
+				stamperName = cv.getImageOne();
+				break;
+			case 2:
+				stamperName = cv.getImageTwo();
+				break;
+			case 3:
+				stamperName = cv.getImageThree();
+				break;
+			case 4:
+				stamperName = cv.getImageFour();
+				break;
+			case 5:
+				stamperName = cv.getImageFive();
+				break;
+			default:
+				break;
+			}
+
+			if (StringUtils.isNotBlank(stamperName)) {
+				String stamperFile = stamperUrlPath + "/" + "certtemplate" + stamperName;
+				if (new File(stamperFile).exists()) {
+					File picture = new File(stamperFile);
+					BufferedImage sourceImg = ImageIO.read(new FileInputStream(picture));
+					String.format("%.1f", picture.length() / 1024.0);
+					arrayWidHei[0] = sourceImg.getWidth();
+					arrayWidHei[1] = sourceImg.getHeight();
+					return arrayWidHei;
+				}
+			}
+
+		}
+
+		// 二维码
+		if ("ewm".equals(tempValue)) {
+			String ewmUrlPath = getDirByUsercert(userCertOffline, Constants.EWM);
+			String ewmFile = ewmUrlPath + "/" + userCertOffline.getCertno() + ".png";
+			if (!new File(ewmFile).exists()) {// 重新生成
+				this.genEwm(userCertOffline);
+			}
+			File picture = new File(ewmFile);
+			BufferedImage sourceImg = ImageIO.read(new FileInputStream(picture));
+			if (sourceImg == null) {
+				this.genEwm(userCertOffline);
+				sourceImg = ImageIO.read(new FileInputStream(picture));
+			}
+			String.format("%.1f", picture.length() / 1024.0);
+			arrayWidHei[0] = sourceImg.getWidth();
+			arrayWidHei[1] = sourceImg.getHeight();
+			return arrayWidHei;
+		}
+		return new int[] { 0, 0 };
+	}
+
+	/**
+	 * 生成条码图片
+	 * 
+	 * @param code
+	 */
+	public void genTiaoMa(String code) {
+		// 保存图片
+		String tiaomaUrlPath = null;
+		tiaomaUrlPath = uploadPath + Constants.TIAOMAPATH;
+		java.io.File file = new java.io.File(tiaomaUrlPath);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+		tiaomaUrlPath = tiaomaUrlPath + "/" + code + ".jpg";
+		TiaomaUtils.genCodeImage(tiaomaUrlPath, code);
+	}
+
+	public void genTiaoMa(UserCertOffline userCertOffline) {
+		// 保存图片
+		String tiaomaUrlPath = getDirByUsercert(userCertOffline, Constants.TIAOMAPATH);
+		tiaomaUrlPath = tiaomaUrlPath + File.separator + userCertOffline.getCertno() + ".jpg";
+		TiaomaUtils.genCodeImage(tiaomaUrlPath, userCertOffline.getCertno());
+	}
+
+	/**
+	 * 生成二维码图片
+	 * 
+	 * @param code
+	 */
+	public void genEwm(UserCertOffline userCertOffline) {
+		String code = userCertOffline.getCertno();
+		// 保存图片
+		String ewmUrlPath = getDirByUsercert(userCertOffline, Constants.EWM);
+
+		String content = offlinecertUrl + "?id=" + userCertOffline.getId();
+		code = code + ".png";
+		try {
+			System.out.println("ewm content:" + content);
+			// 111*111只能生产110*110的,这个不能宽高参数，完全限制二维码的宽，生产的二维码和内容有关
+			QrUtils.genCodeImage(ewmUrlPath, "", content, code, 111, 111);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("qr code gen error:" + e.getMessage());
+		}
+	}
+
+	public String getUserCertPath(Long id, CertplateVO certplateVO) {
+		UserCertOffline userCertOffline = this.get(id);
+		String backgroundimagePath;
+		String certImageUrl;
+		String certImagePath;
+		String imgPath = "";
+		List<PrintClazzVO> printClazzVOs = GimageUtil.convertToPrintClazz(certplateVO.getSubject().trim().replaceAll("\\\\\"", "").replaceAll("\"", ""));
+
+		try {
+			backgroundimagePath = uploadPath + Constants.CETTEMPLATE_PATH + certplateVO.getImageUrl();
+			File backgroundimageFile = new File(backgroundimagePath);
+			if (backgroundimageFile.exists()) {
+				certImagePath = uploadPath + Constants.USERCERTPATH + "/" + userCertOffline.getCertno() + "." + backgroundimagePath.substring(backgroundimagePath.lastIndexOf(".") + 1);
+				certImageUrl = uploadUrl + Constants.USERCERTPATH + "/" + userCertOffline.getCertno() + "." + backgroundimagePath.substring(backgroundimagePath.lastIndexOf(".") + 1);
+				File certImageFile = new File(certImagePath);
+				if (certImageFile.exists()) {
+					certImageFile.delete();
+				}
+				GimageUtil.copyFile(backgroundimagePath, certImagePath, uploadPath + Constants.USERCERTPATH);
+				GimageUtil.orgImage(certImagePath, printClazzVOs);
+				imgPath = certImagePath;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return imgPath;
+	}
+	
+	
+	public String getBlankUserCertPath(Long id,CertplateVO certplateVO) {
+		UserCertOffline userCertOffline = this.get(id);
+		String backgroundimagePath;
+		String certImageUrl;
+		String certImagePath;
+		String imgPath = "";
+		List<PrintClazzVO> printClazzVOs = GimageUtil.convertToPrintClazz(certplateVO.getSubject().trim().replaceAll("\\\\\"", "").replaceAll("\"", ""));
+
+		try {
+			backgroundimagePath = uploadPath + Constants.CETTEMPLATE_PATH + certplateVO.getImageUrl();
+			File backgroundimageFile = new File(backgroundimagePath);
+			if (backgroundimageFile.exists()) {
+				String endFix = backgroundimagePath.substring(backgroundimagePath.lastIndexOf(".")+1);
+				certImagePath = uploadPath + Constants.USERCERTPATH + "/" + userCertOffline.getCertno() + "." + backgroundimagePath.substring(backgroundimagePath.lastIndexOf(".") + 1);
+				certImageUrl = uploadUrl + Constants.USERCERTPATH + "/" + userCertOffline.getCertno() + "." + backgroundimagePath.substring(backgroundimagePath.lastIndexOf(".") + 1);
+				File certImageFile = new File(certImagePath);
+				if (certImageFile.exists()) {
+					certImageFile.delete();
+				}
+				GimageUtil.createBlankImage(backgroundimagePath, certImagePath, endFix);
+				GimageUtil.orgImage(certImagePath, printClazzVOs);
+				imgPath = certImagePath;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return imgPath;
+	}
+
+}

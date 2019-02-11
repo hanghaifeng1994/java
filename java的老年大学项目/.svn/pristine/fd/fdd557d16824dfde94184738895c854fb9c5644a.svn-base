@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delHomework" desc="课程-删除课程作业关系">
+	<snd>
+		<field name="csId" desc="课程id" required="true" />
+		<field name="hwId" desc="作业id 多个id用英文逗号隔开" required="true" />
+	</snd>
+	<rcv>
+		<field name="status" desc="状态 0删除成功，1删除失败" />
+	</rcv>
+</trans>

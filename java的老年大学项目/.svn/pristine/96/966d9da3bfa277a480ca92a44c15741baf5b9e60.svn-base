@@ -1,0 +1,29 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.model.ShMerchantSchemePackage;
+import com.learnyeai.base.mapper.ShMerchantSchemePackageMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Service
+public class ShMerchantSchemePackageWyService extends BaseService<ShMerchantSchemePackage> {
+
+    @Resource
+    private ShMerchantSchemePackageMapper shMerchantSchemePackageMapper;
+
+    @Override
+    public BaseMapper<ShMerchantSchemePackage> getMapper() {
+        return shMerchantSchemePackageMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

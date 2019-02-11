@@ -1,0 +1,44 @@
+package com.learnyeai.learnbehavior.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnbehavior.model.StdCustLearnRecord;
+import com.learnyeai.learnbehavior.model.StdStudyObjectStatistics;
+import com.learnyeai.learnbehavior.service.StdStudyObjectStatisticsWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+
+/**
+ *
+ * @author yl
+ */
+@RestController
+@RequestMapping("${adminPath}" + StdStudyObjectStatisticsController.BASE_URL)
+public class StdStudyObjectStatisticsController extends BaseController<StdStudyObjectStatistics> {
+    public static final String BASE_URL = "/StdStudyObjectStatistics/";
+
+    @Autowired
+    private StdStudyObjectStatisticsWyService stdStudyObjectStatisticsWyService;
+
+    @Override
+    protected BaseService<StdStudyObjectStatistics> getService() {
+        return stdStudyObjectStatisticsWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String transCode = ctx.getTransCode();
+        String method = CtxHeadUtil.getControllerMethod();
+        StdStudyObjectStatistics ssos=stdStudyObjectStatisticsWyService.convert2Bean(ctx.getParamMap());
+        if("queryById".equals(method)){
+            return stdStudyObjectStatisticsWyService.queryById(ssos.getSosId());
+        }
+        return super.execute(ctx);
+    }
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="qurGoodsInfo" desc="查询测试">
+	<snd>
+		<field name="goodsId" desc="核心客户号" />
+	</snd>
+	<rcv>
+		<field name="frontGoodsInfo" desc="房屋信息" type="M">
+			<field name="eHouse" desc="基础信息" type="M">
+				<field name="buildYear" desc="年份" />
+				<field name="city" desc="城市" />
+			</field>
+			<field name="goodsInfo" desc="xx信息" type="M">
+				<field name="goodsImg" desc="年份" />
+			</field>
+			<field-list name="goodsImgs" desc="图片信息" type="E">
+				<field name="uri" desc="地址"/>
+				<field name="imgSize" desc="图片大小" />
+				<field name="imgId" desc="图片ID" />
+			</field-list>
+		</field>
+	</rcv>
+</trans>

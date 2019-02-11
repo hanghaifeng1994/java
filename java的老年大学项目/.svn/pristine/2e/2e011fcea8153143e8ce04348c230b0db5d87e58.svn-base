@@ -1,0 +1,30 @@
+package com.learnyeai.resource.web.api;
+
+import com.learnyeai.resource.model.StdCustLearnResource;
+import com.learnyeai.resource.service.StdCustLearnResourceWyService;
+import com.learnyeai.learnai.support.ApiBaseController;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author twang
+ */
+@Component
+public class StdCustLearnResourceAction extends ApiBaseController<StdCustLearnResource> {
+    public static final String BASE_URL = "/StdCustLearnResource/";
+
+    @Autowired
+    private StdCustLearnResourceWyService stdCustLearnResourceWyService;
+
+    @Override
+    protected BaseService<StdCustLearnResource> getBaseService() {
+        return stdCustLearnResourceWyService;
+    }
+
+    @Override
+    public String getBaseUrl() {
+        return BASE_URL;
+    }
+}

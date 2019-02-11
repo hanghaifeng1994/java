@@ -1,0 +1,97 @@
+package com.learnyeai.schoolclass.service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import com.learnyeai.schoolclass.model.ClzStudentClazz;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.learnyeai.base.api.vo.CustInfoVo;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.schoolclass.mapper.ClzClazzBatchMapper;
+import com.learnyeai.schoolclass.model.ClzClazz;
+import com.learnyeai.schoolclass.model.ClzClazzBatch;
+import com.learnyeai.schoolclass.model.ClzClazzCourse;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class ClzClazzBatchWyService extends WeyeBaseService<ClzClazzBatch> {
+
+	@Resource
+	private ClzClazzBatchMapper clzClazzBatchMapper;
+
+	@Resource
+	private ClzStudentBatchWyService clzStudentBatchWyService;
+
+	@Resource
+	private ClzBatchCourseWyService clzBatchCourseWyService;
+
+	@Override
+	public BaseMapper<ClzClazzBatch> getMapper() {
+		return clzClazzBatchMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+	@Override
+	protected Weekend<ClzClazzBatch> genSqlExample(ClzClazzBatch t, Map params) {
+		Weekend<ClzClazzBatch> w = super.genSqlExample(t, params);
+		WeekendCriteria<ClzClazzBatch, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getCzId())) {
+			c.andEqualTo(ClzClazzBatch::getCzId, t.getCzId());
+		}
+		w.and(c);
+		return w;
+	}
+
+	/**
+	 * 前台人个用户报名
+	 * 
+	 * @param cust
+	 * @param clazz
+	 * @param clazzCourses
+	 * @return
+	 */
+	@Transactional
+	public Map<String, String> webSignup(CustInfoVo cust, ClzClazz clazz, List<ClzClazzCourse> clazzCourses, String siteId) {
+		Map<String, String> result = new HashMap<String, String>();
+		ClzClazzBatch batch = new ClzClazzBatch();
+		batch.setCzId(clazz.getCzId());
+		batch.setBatchName(clazz.getCzName() + "_人个报名_" + cust.getCustName());
+		batch.setBatchType(0);
+		batch.setCustId(cust.getCustId());
+		batch.setDelFlag("0");
+		batch.setSingupDate(new Date());
+		super.save(batch);
+		System.out.println("开始调用订单服务接口");
+		System.out.println("888888888888888888888888888888888888");
+		String orderformId = "123";
+		batch.setOrderformId(orderformId);
+		super.save(batch);
+		boolean success = clzBatchCourseWyService.saveBatchCourse(batch, clazzCourses);
+		List<CustInfoVo> custs = new ArrayList<CustInfoVo>();
+		custs.add(cust);
+		if (success) {
+			success = clzStudentBatchWyService.saveStudentBatch(batch, custs, clazz);
+		}
+		result.put("orderformId", orderformId);
+		result.put("status", "1");
+		return result;
+
+	}
+}

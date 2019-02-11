@@ -1,0 +1,97 @@
+package com.learnyeai.interact.task;
+
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.service.ItaInteractionTimesWyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.quartz.JobExecutionContext;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
+@Component("collectInteractInfoTask")
+public class CollectInteractInfoTask {
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private ItaInteractionTimesWyService itaInteractionTimesWyService;
+    @Value("${spring.application.name}")
+    private String aplicationName;
+
+    @Value("${schema.interPlat}")
+    private String interPlat;
+
+    @Value("${collect_key}")
+    private String collectKey;
+    @Value("${comment_key}")
+    private String comment;
+    @Value("${isLike_key}")
+    private String isLike;
+    @Value("${share_key}")
+    private String shareKey;
+    @Value("${vote_key}")
+    private String voteKey;
+
+    private static final Logger Logger = LoggerFactory.getLogger(CollectInteractInfoTask.class);
+    /**
+     * 将缓存中的数据同步到数据库中
+     * @param context
+     */
+    @Transactional
+    public void saveInteractData(JobExecutionContext context) {
+        Logger.info("----定时同步互动统计开始----");
+        String cachkey=aplicationName+":"+interPlat;
+            //获取所有redis 中的key
+        Set<Object> cachkeyList=redisTemplate.opsForHash().keys(cachkey);
+        for (Object Hashkey:cachkeyList){
+//          Hashkey = 互动类型 ,对象id,对象类型
+            String[] keys=((String )Hashkey).split(",");
+            Integer num= (Integer) redisTemplate.opsForHash().get(cachkey,Hashkey);
+            ItaInteractionTimes iit=new ItaInteractionTimes();
+            iit.setObjId(keys[1]);
+            iit.setType(keys[2]);
+            //先判断该对象在互动次数表中是否有数据
+            List<ItaInteractionTimes> list=   itaInteractionTimesWyService.queryList(iit,new HashMap());
+                    //说明存在数据，执行更新语句
+                     if(list.size()>0){
+                         ItaInteractionTimes itaTimes= list.get(0);
+                         if(comment.equals(keys[0])){
+                             itaTimes.setCmtNum(num);
+                         }else if(collectKey.equals(keys[0])){
+                             itaTimes.setFavNum(num);
+                         }else if(isLike.equals(keys[0])){
+                             itaTimes.setLkNum(num);
+                         }else if(shareKey.equals(keys[0])){
+                             itaTimes.setShareNum(num);
+                         }else if(voteKey.equals(keys[0])){
+                             itaTimes.setVoteNum(num);
+                         }
+                         itaInteractionTimesWyService.save(itaTimes);
+                     }else{
+                         if(comment.equals(keys[0])){
+                             iit.setCmtNum(num);
+                         }else if(collectKey.equals(keys[0])){
+                             iit.setFavNum(num);
+                         }else if(isLike.equals(keys[0])){
+                             iit.setLkNum(num);
+                         }else if(shareKey.equals(keys[0])){
+                             iit.setShareNum(num);
+                         }else if(voteKey.equals(keys[0])){
+                             iit.setVoteNum(num);
+                         }
+                         itaInteractionTimesWyService.save(iit);
+                }
+             //同步完成后删除缓存数据
+            redisTemplate.opsForHash().delete(cachkey,Hashkey);
+        }
+    }
+}

@@ -1,0 +1,5 @@
+restart.include.mapper=/mapper-[\\w-\\.]+jar
+restart.include.pagehelper=/pagehelper-[\\w-\\.]+jar
+
+restart.include.learnyeai-core=/learnyeai-[\\w-\\.]+jar
+restart.include.base-api=/base-api-[\\w-\\.]+jar

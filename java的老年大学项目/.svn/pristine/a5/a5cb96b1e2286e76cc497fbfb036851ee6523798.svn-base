@@ -1,0 +1,11 @@
+package com.learnyeai.base.api.service.common;
+
+/**
+ * Created by zpz on 2018/5/4.
+ */
+public class LoginService {
+
+    // 商家后管登录(用户、密码)
+    // 员工、客户小程序登录（校验码）
+    // 员工、客户小程序登录检查
+}

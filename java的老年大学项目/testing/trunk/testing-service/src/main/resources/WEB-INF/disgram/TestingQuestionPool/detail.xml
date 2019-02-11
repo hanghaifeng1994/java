@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="题库-详情">
+    <snd>
+        <field name="qpId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="qpId" desc="ID"/>
+        <field name="name" desc="题库名称"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="siteId" desc="创建站点id"/>
+        <field name="platformId" desc="创建平台"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+        <field name="mchtId" desc="商户id"/>
+    </rcv>
+</trans>

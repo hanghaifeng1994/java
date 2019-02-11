@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="将平台下面的题库自动下发到所有平台的站点。如果创建题库是选择了主站id，那么只自动下放到本平台其他子站。-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="ID"/>
+        <field name="siteId" desc="使用站点id"/>
+        <field name="tsCrtSiteId" desc="创建站点"/>
+        <field name="tsCrtPlatformId" desc="创建平台id"/>
+        <field name="disable" desc="本站点是否禁用"/>
+    </rcv>
+</trans>

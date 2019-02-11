@@ -1,0 +1,89 @@
+package com.learnyeai.interact.web;
+
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.service.ItaInteractionTimesWyService;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.common.support.WeyeBaseService;
+
+import com.learnyeai.interact.model.ItaShare;
+import com.learnyeai.interact.service.ItaShareWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ItaShareController extends BaseController<ItaShare> {
+
+    @Autowired
+    private ItaShareWyService itaShareWyService;
+    @Autowired
+    private ItaInteractionTimesWyService itaInteractionTimesWyService;
+    @Autowired
+    CurrentUserInfoIml currentUserInfoIml;
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+    @Value("${spring.application.name}")
+    private String aplicationName;
+    @Value("${schema.interPlat}")
+    private String interPlat;
+    @Value("${share_key}")
+    private String shareKey;
+    @Override
+    protected WeyeBaseService<ItaShare> getService() {
+        return itaShareWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String method = CtxHeadUtil.getControllerMethod();
+        ItaShare is=itaShareWyService.convert2Bean(ctx.getParamMap());
+        ItaInteractionTimes it=new ItaInteractionTimes();
+        it.setObjId(is.getObjId());
+        it.setType(is.getServiceType());
+        //该对象的收藏列表存在数据，将收藏数量拿出和新增的收藏数量相加放入缓存
+        List<ItaInteractionTimes> list= itaInteractionTimesWyService.queryList(it ,new HashMap());
+        int num=0;
+        //加入缓存
+        String cachKey=aplicationName+":"+interPlat;
+        String key=shareKey+","+is.getObjId()+","+is.getServiceType();
+        //缓存中存在去缓存中取值，不存在去数据库中取值
+        Integer numstr=0;
+        if(redisTemplate.opsForHash().hasKey(cachKey,key)){
+            numstr  = (Integer)redisTemplate.opsForHash().get(cachKey,key);
+        }else{
+            if(list.size()>0){
+                ItaInteractionTimes i=list.get(0);
+                if(i.getShareNum()!=null){
+                    num+=i.getShareNum();
+                }
+            }
+        }
+        if(numstr!=null){
+            num+=numstr;
+        }
+        if("save".equals(method)){
+            is.setShareDate(new Date());
+            is.setCustId(currentUserInfoIml.getId());
+            is.setCustName(currentUserInfoIml.getLoginName());
+            num +=itaShareWyService.save(is);
+            //将分享数量更新到缓存中
+            redisTemplate.opsForHash().put(cachKey,key,num);
+           return MapUtil.newMap("id",is.getId());
+        }
+        return super.execute(ctx);
+    }
+}

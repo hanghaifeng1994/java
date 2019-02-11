@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="shAppletBase-queryByShSchmId_appSings" desc="小程序配置-详情">
+    <snd>
+        <field name="STORE_ID" desc="门店id" required="true"/>
+        <field name="APP_SIGNS" desc="小程序标识" required="true"/>
+    </snd>
+    <rcv>
+        <field name="APP_ID" desc="AppId"/>
+        <field name="APP_SECRET" desc="AppSecret"/>
+        <field name="APP_NAME" desc="小程序名称"/>
+        <field name="PUBLIC_NUM_APPID" desc="公众号appid"/>
+        <field name="PUBLIC_NUM_APPSECRETE" desc="公众号appsecrete"/>
+        <field name="MCHT_SCHM_ID" desc="商户方案id"/>
+        <field name="MCHT_ID" desc="商户id"/>
+    </rcv>
+</trans>

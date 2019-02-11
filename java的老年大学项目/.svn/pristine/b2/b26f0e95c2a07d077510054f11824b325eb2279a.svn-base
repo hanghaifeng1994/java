@@ -1,0 +1,152 @@
+package com.learnyeai.resource.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+import java.util.Date;
+
+/**
+ * 
+ *
+ * @author twang
+ */
+public class ResUserResourceVo extends BaseVo {
+
+    /**
+    * id
+    */
+    private String id;
+
+    /**
+     * 用户id
+     */
+    private String userId;
+    /**
+     * 资源id
+     */
+    private String resId;
+    /**
+     * 最后学习时间点，秒
+     */
+    private String lastPage;
+    /**
+     * 
+     */
+    private Integer studyTime;
+    /**
+     * 
+     */
+    private Integer appStudyTime;
+    /**
+     * 进度百分比*100
+     */
+    private Double processPercent;
+    /**
+     * 
+     */
+    private Integer studyNo;
+    /**
+     * 
+     */
+    private Date startLearningDate;
+    /**
+     * 
+     */
+    private Date endLearningDate;
+    /**
+     * 
+     */
+    private Date createDate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    public String getResId() {
+        return resId;
+    }
+
+    public void setResId(String resId) {
+        this.resId = resId;
+    }
+    public String getLastPage() {
+        return lastPage;
+    }
+
+    public void setLastPage(String lastPage) {
+        this.lastPage = lastPage;
+    }
+    public Integer getStudyTime() {
+        return studyTime;
+    }
+
+    public void setStudyTime(Integer studyTime) {
+        this.studyTime = studyTime;
+    }
+    public Integer getAppStudyTime() {
+        return appStudyTime;
+    }
+
+    public void setAppStudyTime(Integer appStudyTime) {
+        this.appStudyTime = appStudyTime;
+    }
+    public Double getProcessPercent() {
+        return processPercent;
+    }
+
+    public void setProcessPercent(Double processPercent) {
+        this.processPercent = processPercent;
+    }
+    public Integer getStudyNo() {
+        return studyNo;
+    }
+
+    public void setStudyNo(Integer studyNo) {
+        this.studyNo = studyNo;
+    }
+    public Date getStartLearningDate() {
+        return startLearningDate;
+    }
+
+    public void setStartLearningDate(Date startLearningDate) {
+        this.startLearningDate = startLearningDate;
+    }
+    public Date getEndLearningDate() {
+        return endLearningDate;
+    }
+
+    public void setEndLearningDate(Date endLearningDate) {
+        this.endLearningDate = endLearningDate;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public static class TF {
+        public static String id = "id";  // id
+        public static String userId = "userId";  // 用户id
+        public static String resId = "resId";  // 资源id
+        public static String lastPage = "lastPage";  // 最后学习时间点，秒
+        public static String studyTime = "studyTime";  // 
+        public static String appStudyTime = "appStudyTime";  // 
+        public static String processPercent = "processPercent";  // 进度百分比*100
+        public static String studyNo = "studyNo";  // 
+        public static String startLearningDate = "startLearningDate";  // 
+        public static String endLearningDate = "endLearningDate";  // 
+        public static String createDate = "createDate";  // 
+
+    }
+
+}

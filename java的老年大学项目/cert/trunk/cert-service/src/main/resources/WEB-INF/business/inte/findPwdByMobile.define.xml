@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="findPwdByMobile" title="通过手机找回密码">
+    <actions>
+        <action ref="mobileCheckOp" title="校验手机号"></action>
+        <action ref="dynCodeCheckOp" title="验证码校验"></action>
+        <action ref="updatePwdOp" title="修改密码"></action>
+    </actions>
+</config>

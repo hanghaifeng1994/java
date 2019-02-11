@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="资讯-保存">
+    <snd>
+        <field name="articleId" desc="ID"/>
+        <field name="title" desc="标题"/>
+        <field name="link" desc="链接"/>
+        <field name="color" desc="标题颜色"/>
+        <field name="photo" desc="封面"/>
+        <field name="keywords" desc="关键字"/>
+        <field name="description" desc="描述、摘要"/>
+        <field name="weight" desc="权重"/>
+        <field name="weightDate" desc="权重日期"/>
+        <field name="posid" desc="位置标识"/>
+        <field name="copyfrom" desc="来源"/>
+        <field name="author" desc="作者"/>
+        <field name="allowComment" desc="是否允许评论"/>
+        <field name="content" desc="文章内容"/>
+        <field name="relation" desc="相关文章"/>
+        <field name="fileIds" desc="附件ids"/>
+        <field name="fileIdNames" desc="附件名称"/>
+        <field name="articleBit" desc="是否加精"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+        <field name="status" desc="状态 ：0 操作成功 1已发布不能更新" />
+    </rcv>
+</trans>

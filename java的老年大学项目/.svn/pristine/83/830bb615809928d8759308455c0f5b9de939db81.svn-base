@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPageManger" desc="班级-可管理列表" isPage="true" sorts="true">
+	<snd>
+		<field name="catId" desc="分类id" />
+		<field name="czName" desc="班级名称" />
+		<field name="updateDate" desc="发布时间" />
+		<field name="catSiteId" desc="站点id" />
+		<field name="czCerted" desc="是否是证书班级1否2是" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" desc="" type="E">
+			<field name="czId" desc="id" />
+			<field name="czName" desc="班级名称" />
+			<field name="czPhoto" desc="封面" />
+			<field name="czHours" desc="课时数" />
+			<field name="czStartDate" desc="开始时间" />
+			<field name="czEndDate" desc="结束时间" />
+			<field name="czTime" desc="上课时间" />
+			<field name="czSummary" desc="班级简介" />
+			<field name="czInfo" desc="班级说明" />
+			<field name="areaId" desc="区域id" />
+			<field name="czAdress" desc="地址" />
+			<field name="czTrainingType" desc="培训方式：1线下、2线上" />
+			<field name="czChargeMode" desc="1免费、2打包、3按课" />
+			<field name="czTrainingFee" desc="培训费" />
+			<field name="czMasterTrainerId" desc="培训导师id" />
+			<field name="czMasterTrainer" desc="培训导师名称" />
+			<field name="czSecondaryTrainerId" desc="辅导老师id" />
+			<field name="czSecondaryTrainer" desc="辅导老师名称" />
+			<field name="czCerted" desc="是否是证书班级1否2是" />
+			<field name="ctId" desc="证书id" />
+			<field name="czStatus" desc="未开始、进行中、已结束" />
+			<field name="czPubStatus" desc="0未发布、1已发布" />
+			<field name="studylength" desc="总学时要求" type="F" dolt="1" />
+			<field name="mustStudylength" desc="必修改课要求" type="F" dolt="1" />
+			<field name="selStudylength" desc="选修课要求" type="F" dolt="1" />
+			<field name="examScore" desc="测验成绩要求" type="F" dolt="1" />
+			<field name="czJoinupNum" desc="报名人数" />
+			<field name="createBy" desc="创建人" />
+			<field name="createDate" desc="创建时间" />
+			<field name="updateBy" desc="更新人" />
+			<field name="updateDate" desc="更新时间" />
+			<field name="delFlag" desc="删除标记" />
+			<field name="siteId" desc="站点" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+			<field name="catName" desc="分类名称" />
+            <field name="isEnd" desc="1已结束2未结束" />
+		</field-list>
+	</rcv>
+</trans>

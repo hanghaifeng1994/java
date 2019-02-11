@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.album.mapper.AbmAlbumMapper">
+    <resultMap id="BaseResultMap" type="AbmAlbum">
+    <id property="abmId" column="ABM_ID" jdbcType="VARCHAR" />
+
+    <result property="abmName" column="ABM_NAME" jdbcType="VARCHAR" />
+    <result property="abmPhoto" column="ABM_PHOTO" jdbcType="VARCHAR" />
+    <result property="abmWeight" column="ABM_WEIGHT" jdbcType="INTEGER" />
+    <result property="remarks" column="REMARKS" jdbcType="VARCHAR" />
+    <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+    <result property="abmStatus" column="ABM_STATUS" jdbcType="CHAR" />
+    <result property="auditId" column="AUDIT_ID" jdbcType="VARCHAR" />
+    <result property="posid" column="POSID" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        ABM_ID,ABM_NAME,ABM_PHOTO,ABM_WEIGHT,REMARKS,
+        CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE,DEL_FLAG,
+        SITE_ID,MCHT_ID,MCHT_SCHM_ID,ABM_STATUS,AUDIT_ID,
+        POSID
+    </sql>
+
+
+    <sql id="TableClause"> ${schema.interPlat}.ABM_ALBUM </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

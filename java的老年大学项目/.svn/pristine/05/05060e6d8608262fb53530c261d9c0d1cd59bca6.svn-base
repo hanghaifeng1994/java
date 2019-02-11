@@ -1,0 +1,16 @@
+package com.learnyeai.lucene.document;
+
+import com.learnyeai.lucene.build.IndexColumn;
+import org.apache.lucene.document.Document;
+
+import java.sql.ResultSet;
+import java.util.List;
+
+/**
+ * 创建doc 接口协议
+ * Created by zpz on 2018/9/6.
+ */
+public interface DocumentCreator {
+    Document createDocument(ResultSet resultSet) throws Exception;
+    void setIndexColumn(List<IndexColumn> columnList);
+}

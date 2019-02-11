@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="对象互动数据-列表">
+    <snd>
+        <field-list name="list" desc="" type="E">
+            <field name="objId" desc="对象id"/>
+            <field name="type" desc="类型"/>
+        </field-list>
+    </snd>
+    <rcv>
+        <field-list name="LIST" type="E" desc="对象互动数据-列表">
+            <field name="tmId" desc="id"/>
+            <field name="objId" desc="对象id"/>
+            <field name="type" desc="类型"/>
+            <field name="lkNum" desc="点赞数"/>
+            <field name="cmtNum" desc="评论数"/>
+            <field name="favNum" desc="收藏数"/>
+            <field name="browseNum" desc="浏览数"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+        </field-list>
+    </rcv>
+</trans>

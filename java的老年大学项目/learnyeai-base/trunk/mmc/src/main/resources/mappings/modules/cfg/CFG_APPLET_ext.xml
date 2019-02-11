@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgAppletDao">
+    <resultMap id="BaseResultMapExt" type="CfgAppletVo">
+        <id property="apltId" column="APLT_ID" jdbcType="VARCHAR" />
+        <result property="apltAppId" column="APLT_APP_ID" jdbcType="VARCHAR" />
+        <result property="apltAppSecret" column="APLT_APP_SECRET" jdbcType="VARCHAR" />
+        <result property="apltName" column="APLT_NAME" jdbcType="VARCHAR" />
+        <result property="apltDesc" column="APLT_DESC" jdbcType="VARCHAR" />
+        <result property="apltMdlCode" column="APLT_MDL_CODE" jdbcType="VARCHAR" />
+        <result property="apltVerCode" column="APLT_VER_CODE" jdbcType="DECIMAL" />
+        <result property="apltVerId" column="APLT_VER_ID" jdbcType="VARCHAR" />
+        <result property="schmId" column="SCHM_ID" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+
+        <result property="schmName" column="SCHM_NAME" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="queryByCriteriaExt" resultMap="BaseResultMapExt" parameterType="CriteriaQuery">
+        select
+        a.*
+        ,e.SCHM_NAME
+        from ${schema.interPlat}.CFG_APPLET a
+        INNER JOIN ${schema.interPlat}.CFG_SCHEME e on e.SCHM_ID=a.SCHM_ID
+        <include refid="public.WhereClause4Query" />
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="queryListBySchmEdtId" parameterType="string" resultMap="BaseResultMap">
+        select
+        a.*
+        from ${schema.interPlat}.CFG_APPLET a
+        INNER JOIN ${schema.interPlat}.CFG_SCHEME_EDITION_APLT_REL e on e.APLT_ID=a.APLT_ID
+        WHERE e.SCHM_EDT_ID=#{schmEdtId}
+    </select>
+</mapper>

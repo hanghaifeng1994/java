@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-图片-详情">
+    <snd>
+        <field name="siteId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="siteId" desc="站点id"/>
+        <field name="phId" desc="图片id"/>
+        <field name="phAsName" desc="别名"/>
+        <field name="phManageStatus" desc="管理状态"/>
+        <field name="phPubStatus" desc="发布状态"/>
+        <field name="phCrtSiteId" desc="创建站点"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

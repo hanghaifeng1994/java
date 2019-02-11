@@ -1,0 +1,183 @@
+package com.learnyeai.base.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
+
+/**
+ * 角色-暂不用
+ *
+ * @author zhangpz
+ */
+public class CustRole extends BaseEntity {
+
+    /**
+    * ID
+    */
+    @Id
+    @Column(name = "ROLE_ID")
+    private String roleId;
+
+    /**
+     * 角色名称
+     */
+    @Column(name = "ROLE_NAME")
+    private String roleName;
+    /**
+     * 英文名称
+     */
+    @Column(name = "ROLE_ENAME")
+    private String roleEname;
+    /**
+     * 角色类型
+     */
+    @Column(name = "ROLE_TYPE")
+    private String roleType;
+    /**
+     * 0否、1是
+     */
+    @Column(name = "USERABLE")
+    private String userable;
+    /**
+     * 创建人
+     */
+    @Column(name = "CREATE_BY")
+    private String createBy;
+    /**
+     * 创建时间
+     */
+    @Column(name = "CREATE_DATE")
+    private Date createDate;
+    /**
+     * 更新人
+     */
+    @Column(name = "UPDATE_BY")
+    private String updateBy;
+    /**
+     * 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
+    private Date updateDate;
+    /**
+     * 备注
+     */
+    @Column(name = "REMARKS")
+    private String remarks;
+    /**
+     * 删除标记
+     */
+    @Column(name = "DEL_FLAG")
+    private String delFlag;
+    /**
+     *  商户id
+     */
+    @Column(name = "MCHT_ID")
+    private String mchtId;
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+    public String getRoleEname() {
+        return roleEname;
+    }
+
+    public void setRoleEname(String roleEname) {
+        this.roleEname = roleEname;
+    }
+    public String getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
+    }
+    public String getUserable() {
+        return userable;
+    }
+
+    public void setUserable(String userable) {
+        this.userable = userable;
+    }
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "CUST_ROLE";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("schema.interPlat");   // 库名
+
+        public static String roleId = "ROLE_ID";  // ID
+        public static String roleName = "ROLE_NAME";  // 角色名称
+        public static String roleEname = "ROLE_ENAME";  // 英文名称
+        public static String roleType = "ROLE_TYPE";  // 角色类型
+        public static String userable = "USERABLE";  // 0否、1是
+        public static String createBy = "CREATE_BY";  // 创建人
+        public static String createDate = "CREATE_DATE";  // 创建时间
+        public static String updateBy = "UPDATE_BY";  // 更新人
+        public static String updateDate = "UPDATE_DATE";  // 更新时间
+        public static String remarks = "REMARKS";  // 备注
+        public static String delFlag = "DEL_FLAG";  // 删除标记
+        public static String mchtId = "MCHT_ID";  //  商户id
+
+    }
+}

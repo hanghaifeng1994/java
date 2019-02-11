@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="appletLogin" desc="登录-小程序登录(客户小程序报文头必须添加APP_ID)">
+	<snd>
+		<!--<field name="APP_ID" desc="小程序appid"  required="true"/>-->
+		<field name="PHOTO" desc="头像"/>
+		<field name="IV" desc="IV"/>
+		<field name="encryptedData" desc="用户信息"/>
+	</snd>
+	<!-- 响应报文，可过滤响应信息，并对数据字典进行解析 -->
+	<rcv>
+		<field name="custId" desc="用户id"/>
+		<field name="custName" desc="姓名"/>
+		<field name="shortName" desc="用户昵称"/>
+		<field name="loginName" desc="登录名"/>
+		<field name="custType" desc="客户类型"/>
+		<field name="sign" desc="个性签名"/>
+		<field name="phone" desc="手机号"/>
+		<field name="email" desc="邮箱"/>
+		<field name="sex" desc="性别"/>
+		<field name="birthday" desc="用户生日"/>
+		<field name="photo" desc="头像" valType="res"/>
+
+		<field name="openId" desc="小程序openid"/>
+		<field name="unionid" desc="小程序unionid"/>
+		<field name="mchtId" desc="商户id"/>
+		<field name="mchtSchmId" desc="商户版本id"/>
+		<field name="siteId" desc="站点id"/>
+		<field name="SESSION_TOKEN" desc="登录token"/>
+	</rcv>
+</trans>

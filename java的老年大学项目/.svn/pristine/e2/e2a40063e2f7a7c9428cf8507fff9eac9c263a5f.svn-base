@@ -1,0 +1,236 @@
+package com.learnyeai.schoolclass.service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.learnyeai.base.api.vo.CustInfoVo;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.schoolclass.api.service.CrsCourseApiService;
+import com.learnyeai.schoolclass.api.service.CrsCustLearnCourseApiService;
+import com.learnyeai.schoolclass.api.vo.CrsCourseVo;
+import com.learnyeai.schoolclass.api.vo.CrsCustLearnCourseVo;
+import com.learnyeai.schoolclass.mapper.ClzUserClazzCourseMapper;
+import com.learnyeai.schoolclass.model.ClzClazz;
+import com.learnyeai.schoolclass.model.ClzClazzCourse;
+import com.learnyeai.schoolclass.model.ClzUserClazzCourse;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class ClzUserClazzCourseWyService extends WeyeBaseService<ClzUserClazzCourse> {
+	Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Resource
+	private ClzUserClazzCourseMapper clzUserClazzCourseMapper;
+
+	@Resource
+	private ClzClazzCourseWyService clzClazzCourseWyService;
+
+	@Resource
+	private ClzStudentClazzWyService clzStudentClazzWyService;
+
+	@Resource
+	private CrsCustLearnCourseApiService crsCustLearnCourseApiService;
+
+	@Resource
+	private CrsCourseApiService crsCourseApiService;
+
+	@Override
+	public BaseMapper<ClzUserClazzCourse> getMapper() {
+		return clzUserClazzCourseMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	@Transactional
+	public MyPage<ClzUserClazzCourse> queryUserClazzCoursePage(ClzUserClazzCourse sc) {
+		ClzClazzCourse classCourse = new ClzClazzCourse();
+		classCourse.setCzId(sc.getCzId());
+		MyPage<ClzClazzCourse> ccPage = clzClazzCourseWyService.queryPage(classCourse, null);
+
+		// 查找所有报名的课程进度信息
+		List<ClzUserClazzCourse> uccs = this.queryWithProcess(sc.getCustId(), sc.getCzId());
+		Map<String, ClzUserClazzCourse> map = new HashMap<String, ClzUserClazzCourse>();
+		for (ClzUserClazzCourse ucc : uccs) {
+			map.put(ucc.getCsId(), ucc);
+		}
+		List<ClzUserClazzCourse> list = new ArrayList<ClzUserClazzCourse>();
+		ClzUserClazzCourse obj = null;
+		for (ClzClazzCourse cc : ccPage.getList()) {
+			if (map.get(cc.getCsId()) == null) {
+				obj = new ClzUserClazzCourse();
+				obj.setCzId(sc.getCzId());
+				obj.setCsId(cc.getCsId());
+			} else {
+				obj = map.get(cc.getCsId());
+			}
+			CrsCourseVo course = crsCourseApiService.queryCourseApi(cc.getCsId());
+			if (course != null) {
+				obj.setCsName(course.getCsName());
+			}
+			list.add(obj);
+		}
+
+		MyPage<ClzUserClazzCourse> page = new MyPage<ClzUserClazzCourse>(list);
+		page.setPageNum(ccPage.getPageNum());
+		page.setPageSize(ccPage.getPageSize());
+		return page;
+	}
+
+	/**
+	 * 查询带进度的用户班级课程
+	 * 
+	 * @param custId
+	 * @param clazzId
+	 * @return
+	 */
+	public List<ClzUserClazzCourse> queryWithProcess(String custId, String clazzId) {
+		ClzUserClazzCourse ucc = new ClzUserClazzCourse();
+		ucc.setCustId(custId);
+		ucc.setCzId(clazzId);
+		ucc.setNormal("1");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sorts", "lcsFinished=1");
+		List<ClzUserClazzCourse> list = super.queryList(ucc, params);
+		String csIds = "";
+		for (ClzUserClazzCourse obj : list) {
+			csIds += "," + obj.getCsId();
+		}
+		if (StringUtils.isNotBlank(csIds))
+			csIds = csIds.substring(1);
+		List<CrsCustLearnCourseVo> learnCourses = crsCustLearnCourseApiService.queryUserCoursesApi(custId, csIds);
+		for (ClzUserClazzCourse obj : list) {
+			for (CrsCustLearnCourseVo vo : learnCourses) {
+				if (obj.getCsId().equals(vo.getCsId())) {
+					obj.setLcsStudyTime(vo.getLcsStudyTime());
+					obj.setLcsHomeworkScore(vo.getLcsHomeworkScore());
+					obj.setLcsExamScore(vo.getLcsExamScore());
+					obj.setLcsScore(vo.getLcsScore());
+					obj.setLcsStudyFinished(vo.getLcsStudyFinished());
+					obj.setLcsHomeworkeFinished(vo.getLcsHomeworkeFinished());
+					obj.setLcsExameFinished(vo.getLcsExameFinished());
+					obj.setLcsProcess(vo.getLcsProcess());
+					obj.setCsName(vo.getCsName());
+				}
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * 学生班级课程报名
+	 * 
+	 * @param cust
+	 * @param clazz
+	 * @param clazzCourses
+	 * @param normal
+	 * @return
+	 */
+	@Transactional
+	public boolean saveUserClazzCourse(CustInfoVo cust, ClzClazz clazz, List<ClzClazzCourse> clazzCourses,
+			String siteId, String normal) {
+		ClzUserClazzCourse ucc = null;
+		List<String> csIds = new ArrayList<String>();
+		for (ClzClazzCourse clazzCourse : clazzCourses) {
+			ucc = new ClzUserClazzCourse();
+			ucc.setCustId(cust.getCustId());
+			ucc.setCzId(clazz.getCzId());
+			ucc.setCsId(clazzCourse.getCsId());
+			ucc = super.queryOne(ucc);
+			if (ucc == null) {
+				ucc = new ClzUserClazzCourse();
+				ucc.setCustId(cust.getCustId());
+				ucc.setCzId(clazz.getCzId());
+				ucc.setCsId(clazzCourse.getCsId());
+				ucc.setCsAmount(clazzCourse.getCsAmount());
+				ucc.setCsStudylength(clazzCourse.getCsStudylength());
+				ucc.setCsType(clazzCourse.getCsType());
+				ucc.setLcsFinished("0");
+				ucc.setSiteId(clazz.getSiteId());
+				ucc.setNormal(normal);
+			}
+			if ("1".equals(normal)) {// 预防正式的再次报名变成非正式的了
+				ucc.setNormal(normal);
+				csIds.add(clazzCourse.getCsId());
+			}
+			super.save(ucc);
+		}
+		if (csIds != null && csIds.size() > 0) {// 同步到课程服务
+			crsCustLearnCourseApiService.saveUserCourseApi(cust.getCustId(), String.join(",", csIds), siteId);
+
+		}
+		return true;
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	public Map<String, Object> saveQueueUserClazzCourse(String custId, String csId, Date updateDate) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		ClzUserClazzCourse ucc = new ClzUserClazzCourse();
+		ucc.setCustId(custId);
+		ucc.setCsId(csId);
+		ucc.setNormal("1");
+		ucc.setLcsFinished("0");
+		List<ClzUserClazzCourse> uccs = super.queryList(ucc, null);
+		logger.info("开始更新ucc数据.custId={}|csId={}|uccs.size={}", custId, csId, uccs.size());
+		for (ClzUserClazzCourse obj : uccs) {
+			obj.setLcsFinished("1");
+			obj.setFinishedDate(new Date());
+			clzUserClazzCourseMapper.updateByPrimaryKeySelective(obj);
+			clzStudentClazzWyService.saveFinishStudentClazz(custId, obj.getCzId());
+		}
+
+		map.put("status", 1);
+		map.put("msg", "处理成功.");
+		return map;
+	}
+
+	public double sumStudylength(String custId, String czId) {
+		Double studyLength = clzUserClazzCourseMapper.sumStudylength(custId, czId);
+		return studyLength == null ? 0d : studyLength.doubleValue();
+	}
+
+	@Override
+	protected Weekend<ClzUserClazzCourse> genSqlExample(ClzUserClazzCourse t, Map params) {
+		Weekend<ClzUserClazzCourse> w = super.genSqlExample(t, params);
+		WeekendCriteria<ClzUserClazzCourse, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getCzId())) {
+			c.andEqualTo(ClzUserClazzCourse::getCzId, t.getCzId());
+		}
+		if (StringUtils.isNotBlank(t.getCustId())) {
+			c.andEqualTo(ClzUserClazzCourse::getCustId, t.getCustId());
+		}
+		if (StringUtils.isNotBlank(t.getCsId())) {
+			c.andEqualTo(ClzUserClazzCourse::getCsId, t.getCsId());
+		}
+		if (StringUtils.isNotBlank(t.getNormal())) {
+			c.andEqualTo(ClzUserClazzCourse::getNormal, t.getNormal());
+		}
+		if (StringUtils.isNotBlank(t.getLcsFinished())) {
+			c.andEqualTo(ClzUserClazzCourse::getLcsFinished, t.getLcsFinished());
+		}
+		w.and(c);
+		return w;
+	}
+
+}

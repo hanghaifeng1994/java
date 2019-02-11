@@ -1,0 +1,174 @@
+
+var menus = [
+    // 00基础服务
+    {
+        name : "活动-站点可管理列表",
+        url : "api/actSiteActivityRel/queryPage.do",
+        path : "api/actSiteActivityRel/queryPage",
+        clazz : "PP00"
+    },{
+        name : "活动-列表(按条件查询)",
+        url : "api/actActivity/queryPageByCriteria.do",
+        path : "api/actActivity/queryPageByCriteria",
+        clazz : "PP00"
+    },{
+        name : "活动-保存",
+        url : "api/actActivity/save.do",
+        path : "api/actActivity/save",
+        clazz : "PP00"
+    },{
+        name : "活动-删除",
+        url : "api/actActivity/delete.do",
+        path : "api/actActivity/delete",
+        clazz : "PP00"
+    },{
+        name : "活动-详情",
+        url : "api/actActivity/queryById.do",
+        path : "api/actActivity/queryById",
+        clazz : "PP00"
+    },{
+        name : "活动-提交审核",
+        url : "api/actActivity/sumbitAudit.do",
+        path : "api/actActivity/sumbitAudit",
+        clazz : "PP00"
+    },{
+        name : "活动-审核",
+        url : "api/actActivity/audit.do",
+        path : "api/actActivity/audit",
+        clazz : "PP00"
+    },{
+        name : "活动-发布",
+        url : "api/actActivity/publish.do",
+        path : "api/actActivity/publish",
+        clazz : "PP00"
+    },
+    {
+        name : "活动-主站下发子站活动列表",
+        url : "api/actSiteActivityRel/sendLowerPage.do",
+        path : "api/actSiteActivityRel/sendLowerPage",
+        clazz : "PP00"
+    },{
+        name : "活动-站点可用活动列表",
+        url : "api/actSiteActivityRel/queryPageUse.do",
+        path : "api/actSiteActivityRel/queryPageUse",
+        clazz : "PP00"
+    },{
+        name : "活动-活动报名",
+        url : "api/actActivityMemer/signUp.do",
+        path : "api/actActivityMemer/signUp",
+        clazz : "PP00"
+    },{
+        name : "活动-活动人员列表",
+        url : "api/actActivity/personPage.do",
+        path : "api/actActivity/personPage",
+        clazz : "PP00"
+    },{
+        name : "活动作品-详情",
+        url : "api/actActivityWorks/queryById.do",
+        path : "api/actActivityWorks/queryById",
+        clazz : "PP01"
+    },{
+        name : "活动作品-删除",
+        url : "api/actActivityWorks/delete.do",
+        path : "api/actActivityWorks/delete",
+        clazz : "PP01"
+    },{
+        name : "活动作品-我的列表",
+        url : "api/actActivityWorks/queryPage.do",
+        path : "api/actActivityWorks/queryPage",
+        clazz : "PP01"
+    },{
+        name : "活动作品-保存",
+        url : "api/actActivityWorks/save.do",
+        path : "api/actActivityWorks/save",
+        clazz : "PP01"
+    },{
+        name : "活动作品-提交审核",
+        url : "api/actActivityWorks/sumbitAudit.do",
+        path : "api/actActivityWorks/sumitAudit",
+        clazz : "PP01"
+    },{
+        name : "活动作品-审核",
+        url : "api/actActivityWorks/audit.do",
+        path : "api/actActivityWorks/audit",
+        clazz : "PP01"
+    },{
+        name : "活动作品打分-我的列表",
+        url : "api/actMarking/queryPage.do",
+        path : "api/actMarking/queryPage",
+        clazz : "PP01"
+    }, {
+        name : "活动作品打分-保存",
+        url : "api/actMarking/save.do",
+        path : "api/actMarking/save",
+        clazz : "PP01"
+    },{
+        name : "活动成果-列表",
+        url : "api/actResults/queryPage.do",
+        path : "api/actResults/queryPage",
+        clazz : "PP02"
+    },{
+        name : "活动成果-保存",
+        url : "api/actResults/save.do",
+        path : "api/actResults/save",
+        clazz : "PP02"
+    },{
+        name : "活动成果-删除",
+        url : "api/actResults/delete.do",
+        path : "api/actResults/delete",
+        clazz : "PP02"
+    },{
+        name : "活动成果-详情",
+        url : "api/actResults/queryById.do",
+        path : "api/actResults/queryById",
+        clazz : "PP02"
+    },{
+        name : "活动成果-提交审核",
+        url : "api/actResults/sumbitAudit.do",
+        path : "api/actResults/sumbitAudit",
+        clazz : "PP02"
+    },{
+        name : "活动成果-审核",
+        url : "api/actResults/audit.do",
+        path : "api/actResults/audit",
+        clazz : "PP02"
+    }
+];
+
+
+var tplMenus = [ '{@each menus as item}',
+    '<button class="PP ${item.clazz}" data-url="${item.url}" ',
+    ' data-path="${item.path}" data-opType=${item.opType} ',
+    ' onclick="loadForm(this)">${item.name}</button>', '{@/each}' ]
+    .join("");
+
+function loadMenus(ftClass,ftCode,ftName) {
+    try {
+        var datas = [];
+        if (ftClass || ftCode || ftName) {
+            for (var i = 0, j = menus.length; i < j; i++) {
+                var menu = menus[i];
+                if(!menu.opType)
+                    menu.opType = 0;
+                if (ftName && ftName.length > 0
+                    && menu.name.indexOf(ftName) >= 0) {
+                    datas.push(menu);
+                } else if (ftCode && ftCode.length > 0
+                    && menu.url.indexOf(ftCode) >= 0) {
+                    datas.push(menu);
+                } else if (ftClass && ftClass.length > 0
+                    && menu.clazz.indexOf(ftClass) >= 0) {
+                    datas.push(menu);
+                }
+            }
+        } else {
+            datas = menus;
+        }
+        var html = juicer(tplMenus, {
+            menus : datas
+        });
+        $("#TRAN_AREA").html(html);
+    } catch (e) {
+        alert(e);
+    }
+}

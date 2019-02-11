@@ -1,0 +1,43 @@
+package com.learnyeai.album.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+
+/**
+ * 图片分类-图片关联表
+ *
+ * @author yl
+ */
+public class AbmCategoryPhotoRelVo extends BaseVo {
+
+    /**
+    * 分类id
+    */
+    private String catId;
+
+    /**
+     * 图片id
+     */
+    private String phId;
+
+    public String getCatId() {
+        return catId;
+    }
+
+    public void setCatId(String catId) {
+        this.catId = catId;
+    }
+    public String getPhId() {
+        return phId;
+    }
+
+    public void setPhId(String phId) {
+        this.phId = phId;
+    }
+
+    public static class CF {
+        public static String catId = "catId";  // 分类id
+        public static String phId = "phId";  // 图片id
+
+    }
+
+}

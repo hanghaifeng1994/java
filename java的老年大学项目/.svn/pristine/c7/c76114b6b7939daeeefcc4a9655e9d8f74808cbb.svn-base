@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryById" desc="用户-统计信息">
+    <snd>
+        <field name="custId" desc="id 多个id 用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="多个用户统计" type="E">
+            <field name="custId" desc="客户id"/>
+            <field name="commentNum" desc="我评论数"/>
+            <field name="likedNum" desc="我收到的点赞数"/>
+            <field name="collectionNum" desc="我的收藏数"/>
+            <field name="starNum" desc="我得到的星总数"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+        </field-list>
+    </rcv>
+</trans>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="班级课程-新增/修改">
+	<snd>
+		<field name="ccId" desc="班级课程id" />
+		<field name="czId" desc="班级id" />
+		<field name="csId" desc="课程id" />
+		<field name="csType" desc="1选修课、2必修课" />
+		<field name="csStudylength" desc="学时" />
+		<field name="csAmount" desc="金额" />
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常" />
+		<field name="msg" desc="返回信息" />
+		<field name="id" desc="班级课程id" />
+	</rcv>
+</trans>

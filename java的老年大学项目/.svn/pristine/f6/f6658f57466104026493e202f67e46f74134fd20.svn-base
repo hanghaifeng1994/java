@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="addTest" desc="新增班级测验">
+	<snd>
+		<field name="czId" desc="班级id" required="true" />
+		<field name="tsId" desc="测验id 多个id用英文逗号隔开" required="true" />
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常" />
+		<field name="num" desc="成功个数" />
+	</rcv>
+</trans>

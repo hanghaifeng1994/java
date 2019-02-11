@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans desc="短信验证码获取and发送（完成）">
+	<snd>
+		<field name="stType" required="true" desc="模板类型" comment="0：注册类 1：忘记密码类 2：登录验证码"/>
+		<field name="mobile" required="true" desc="手机号" />
+	</snd>
+	<rcv>
+		<field name="msg" required="false" desc="短信内容，上线前务必屏蔽该字段，否则有安全风险" />
+	</rcv>
+</trans>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delete" desc="小组经验-删除">
+    <snd>
+        <field name="sgpId" desc="小组id" required="true"/>
+        <field name="epcId" desc="经验id" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

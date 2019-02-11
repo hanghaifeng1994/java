@@ -1,0 +1,70 @@
+package com.learnyeai.cert.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.learnyeai.cert.model.CtCert;
+import com.learnyeai.cert.service.CtCertWyService;
+import com.learnyeai.cert.util.CertUtil;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.IBusinessContext;
+
+/**
+ *
+ * @author twang
+ */
+@RestController
+@RequestMapping("${adminPath}" + CtCertController.BASE_URL)
+public class CtCertController extends BaseController<CtCert> {
+	public static final String BASE_URL = "/CtCert/";
+
+	@Autowired
+	private CtCertWyService ctCertWyService;
+
+	@Override
+	protected BaseService<CtCert> getService() {
+		return ctCertWyService;
+	}
+
+	@Override
+	public Object execute(IBusinessContext ctx) {
+		String method = CtxHeadUtil.getControllerMethod();
+		CtCert cert = ctCertWyService.convert2Bean(ctx.getParamMap());
+		cert.setSiteIds(CertUtil.convertSiteIds((String)ctx.getParamMap().get("sites")));
+		if ("save".equals(method)) {
+			// 根据parentId 查询出所有父类id
+			return ctCertWyService.saveOrUpdate(cert);
+		}
+		if ("deleteById".equals(method)) {
+			return ctCertWyService.deleteCert(cert);
+		}
+
+		if ("submitCheck".equals(method)) {
+			return ctCertWyService.submitCheck(cert);
+		}
+
+		if ("check".equals(method)) {
+			return ctCertWyService.check(cert);
+		}
+
+		if ("queryManagePage".equals(method)) {
+			return rtnPageList4Report(ctCertWyService.queryManagePage(cert));
+		}
+
+		if ("queryShowPage".equals(method)) {
+			return rtnPageList4Report(ctCertWyService.queryShowPage(cert));
+		}
+
+		if ("queryMainPage".equals(method)) {
+			return rtnPageList4Report(ctCertWyService.queryMainPage(cert));
+		}
+
+		if ("queryById".equals(method)) {
+			return ctCertWyService.queryById(cert.getCtId());
+		}
+		return super.execute(ctx);
+	}
+}

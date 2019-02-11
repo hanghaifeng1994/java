@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="insert" desc="用户扩展-新增">
+    <snd>
+        <field name="studyLen" desc="学习时长"/>
+        <field name="studyNum" desc="学习次数"/>
+        <field name="curCourseId" desc="当前课程id"/>
+        <field name="curChapterId" desc="当前章节id"/>
+        <field name="curResourceId" desc="当前资源id"/>
+        <field name="studyBreakpoint" desc="学习断点"/>
+    </snd>
+    <rcv>
+
+    </rcv>
+</trans>

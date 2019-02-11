@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="8583" desc="8583报文测试">
+    <snd>
+        <!--过滤响应信息，并对数据字典进行解析 -->
+        <field name="TRAN_CODE" targetName="FIELD003" desc="交易码" required="true" />
+	    <field name="ACCNO" targetName="FIELD002"  desc="账号" required="true" />
+        <field name="TRAN_DATE" targetName="FIELD013" desc="交易日期" required="true"/>
+        <field name="AMT" targetName="FIELD004"  desc="交易金额" required="true"/>
+    </snd>
+    <!-- 响应报文，可过滤响应信息，并对数据字典进行解析 -->
+    <rcv>
+        <field name="TRAN_CODE" targetName="FIELD003" desc="交易码" required="true" />
+        <field name="ACCNO" targetName="FIELD008"  desc="账号" required="true" />
+        <field name="TRAN_DATE" targetName="FIELD013" desc="交易日期" required="true"/>
+        <field name="DESC" targetName="FIELD033"  desc="描述" required="true"/>
+        <field name="DESC2" targetName="FIELD036"  desc="描述2" required="true"/>
+    </rcv>
+</trans>

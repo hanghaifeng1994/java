@@ -1,0 +1,172 @@
+var menus = [
+    // 00基础服务
+    {
+        name : "题库-可管理题库列表",
+        url : "api/orderformQuestionPool/queryPage.do",
+        path : "api/orderformQuestionPool/queryPage",
+        clazz : "PP00"
+    },{
+        name : "题库-新增修改保存",
+        url : "api/orderformQuestionPool/save.do",
+        path : "api/orderformQuestionPool/save",
+        clazz : "PP00"
+    },{
+        name : "题库-主站下发子站列表",
+        url : "api/orderformQuestionPool/sendLowerPage.do",
+        path : "api/orderformQuestionPool/sendLowerPage",
+        clazz : "PP00"
+    },{
+        name : "题库章节列表",
+        url : "api/orderformQuestionSection/queryList.do",
+        path : "api/orderformQuestionSection/queryList",
+        clazz : "PP00"
+    },{
+        name : "题库章节保存",
+        url : "api/orderformQuestionSection/save.do",
+        path : "api/orderformQuestionSection/save",
+        clazz : "PP00"
+    },{
+        name : "题库章节批量删除",
+        url : "api/orderformQuestionSection/delete.do",
+        path : "api/orderformQuestionSection/delete",
+        clazz : "PP00"
+    },{
+        name : "题库题目列表",
+        url : "api/orderformQuestion/queryPageExt.do",
+        path : "api/orderformQuestion/queryPageExt",
+        clazz : "PP00"
+    },{
+        name : "题库题目新增修改保存",
+        url : "api/orderformQuestion/save.do",
+        path : "api/orderformQuestion/save",
+        clazz : "PP00"
+    },{
+        name : "题库题目批量删除",
+        url : "api/orderformQuestion/delete.do",
+        path : "api/orderformQuestion/delete",
+        clazz : "PP00"
+    },{
+        name : "题库题型获取",
+        url : "api/orderformItemTypes/queryList.do",
+        path : "api/orderformItemTypes/queryList",
+        clazz : "PP01"
+    },{
+        name : "组卷规则新增和修改保存",
+        url : "api/orderformPaperRule/save.do",
+        path : "api/orderformPaperRule/save",
+        clazz : "PP01"
+    },{
+        name : "组卷规则列表",
+        url : "api/orderformPaperRule/queryManagePage.do",
+        path : "api/orderformPaperRule/queryManagePage",
+        clazz : "PP01"
+    },{
+        name : "组卷规则信息获取",
+        url : "api/orderformPaperRule/queryById.do",
+        path : "api/orderformPaperRule/queryById",
+        clazz : "PP01"
+    },{
+        name : "题型组卷规则新增和保存",
+        url : "api/orderformQuestionitemRule/save.do",
+        path : "api/orderformQuestionitemRule/save",
+        clazz : "PP01"
+    },{
+        name : "题型组卷规则列表",
+        url : "api/orderformQuestionitemRule/queryManageList.do",
+        path : "api/orderformQuestionitemRule/queryManageList",
+        clazz : "PP01"
+    },{
+        name : "题型组卷规则获取",
+        url : "api/orderformQuestionitemRule/queryById.do",
+        path : "api/orderformQuestionitemRule/queryById",
+        clazz : "PP01"
+    },{
+        name : "组卷",
+        url : "api/orderformPaperRule/saveGenPaper.do",
+        path : "api/orderformPaperRule/saveGenPaper",
+        clazz : "PP01"
+    },{
+        name : "测验可管理列表",
+        url : "api/orderformTest/queryPage.do",
+        path : "api/orderformTest/queryPage",
+        clazz : "PP02"
+    },{
+        name : "测验新增修改保存",
+        url : "api/orderformTest/save.do",
+        path : "api/orderformTest/save",
+        clazz : "PP02"
+    },{
+        name : "测验批量删除",
+        url : "api/orderformTest/delete.do",
+        path : "api/orderformTest/delete",
+        clazz : "PP02"
+    },{
+        name : "测验详情获取",
+        url : "api/orderformTest/queryById.do",
+        path : "api/orderformTest/queryById",
+        clazz : "PP02"
+    },{
+        name : "获取学员测试卷子",
+        url : "api/orderformStudentPaper/queryStudentPaper.do",
+        path : "api/orderformStudentPaper/queryStudentPaper",
+        clazz : "PP03"
+    },{
+        name : "学员测验-答题",
+        url : "api/orderformStudentPaper/savePaperQuestion.do",
+        path : "api/orderformStudentPaper/savePaperQuestion",
+        clazz : "PP03"
+    },{
+        name : "学员测验-交卷",
+        url : "api/orderformStudentPaper/saveStudentPaper.do",
+        path : "api/orderformStudentPaper/saveStudentPaper",
+        clazz : "PP03"
+    },{
+        name : "学员测验成绩列表",
+        url : "api/orderformStudentTest/queryUserTestings.do",
+        path : "api/orderformStudentTest/queryUserTestings",
+        clazz : "PP03"
+    },{
+        name : "学员所有测验成绩列表-带分页",
+        url : "api/orderformStudentTest/queryShowPage.do",
+        path : "api/orderformStudentTest/queryShowPage",
+        clazz : "PP03"
+    }
+];
+
+
+var tplMenus = [ '{@each menus as item}',
+    '<button class="PP ${item.clazz}" data-url="${item.url}" ',
+    ' data-path="${item.path}" data-opType=${item.opType} ',
+    ' onclick="loadForm(this)">${item.name}</button>', '{@/each}' ]
+    .join("");
+
+function loadMenus(ftClass,ftCode,ftName) {
+    try {
+        var datas = [];
+        if (ftClass || ftCode || ftName) {
+            for (var i = 0, j = menus.length; i < j; i++) {
+                var menu = menus[i];
+                if(!menu.opType)
+                    menu.opType = 0;
+                if (ftName && ftName.length > 0
+                    && menu.name.indexOf(ftName) >= 0) {
+                    datas.push(menu);
+                } else if (ftCode && ftCode.length > 0
+                    && menu.url.indexOf(ftCode) >= 0) {
+                    datas.push(menu);
+                } else if (ftClass && ftClass.length > 0
+                    && menu.clazz.indexOf(ftClass) >= 0) {
+                    datas.push(menu);
+                }
+            }
+        } else {
+            datas = menus;
+        }
+        var html = juicer(tplMenus, {
+            menus : datas
+        });
+        $("#TRAN_AREA").html(html);
+    } catch (e) {
+        alert(e);
+    }
+}

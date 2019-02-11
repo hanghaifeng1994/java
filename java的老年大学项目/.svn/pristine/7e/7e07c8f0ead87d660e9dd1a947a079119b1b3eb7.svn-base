@@ -1,0 +1,28 @@
+package com.learnyeai.base.api.client;
+
+import com.learnyeai.base.api.vo.ShAppletSettingVo;
+
+import com.learnyeai.core.support.BaseFeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+/**
+ * 小程序配置
+ *
+ * @author zhangpz
+ */
+@FeignClient(name = "BASE-SERVICE", path="/base/ShAppletSetting")
+public interface ShAppletSettingClient extends BaseFeignClient<ShAppletSettingVo> {
+
+    /**
+     * 根据小程序id、商户小程序appid查询商户小程序配置
+     * @param apltId 小程序id
+     * @param appId 商户小程序appid
+     * @return
+     */
+    @RequestMapping(value = "queryByApltIdAppid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    ShAppletSettingVo queryByApltIdAppid(@RequestParam String apltId, @RequestParam String appId);
+}

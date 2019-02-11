@@ -1,0 +1,29 @@
+package com.learnyeai.studygroup.service;
+
+import com.learnyeai.studygroup.model.SgpStudyGroupExperience;
+import com.learnyeai.studygroup.mapper.SgpStudyGroupExperienceMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class SgpStudyGroupExperienceWyService extends WeyeBaseService<SgpStudyGroupExperience> {
+
+    @Resource
+    private SgpStudyGroupExperienceMapper sgpStudyGroupExperienceMapper;
+
+    @Override
+    public BaseMapper<SgpStudyGroupExperience> getMapper() {
+        return sgpStudyGroupExperienceMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

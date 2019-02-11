@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="-详情">
+    <snd>
+        <field name="teId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="teId" desc="ID"/>
+        <field name="teStatus" desc="0未处理、1处理、2处理失败"/>
+        <field name="teExpireDate" desc="过期时间"/>
+        <field name="teServiceType" desc="业务类型"/>
+        <field name="teServiceParams" desc="逗号分割，根据具体业务类型、参数处理相关逻辑"/>
+        <field name="teObjId" desc="对象id"/>
+        <field name="teCustId" desc="客户id"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="remarks" desc="备注"/>
+    </rcv>
+</trans>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryById" desc="作业附件-详情">
+    <snd>
+        <field name="atmId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="atmId" desc="id"/>
+        <field name="objId" desc="作业id,用户作业id,老师批阅id"/>
+        <field name="type" desc="0:作业附件;1:用户作业附件;2:老师批阅附件"/>
+        <field name="fileId" desc="附件id"/>
+        <field name="fileName" desc="附件名称"/>
+        <field name="uploadTime" desc="上传时间"/>
+        <field name="delFlag" desc="删除标识"/>
+        <field name="ptName" desc="平台名称" xpath="siteId" type="ptName" />
+		<field name="ptId" desc="平台id" xpath="siteId" type="ptId" />
+		<field name="siteName" desc="站点名称" xpath="siteId" type="site" />
+    </rcv>
+</trans>

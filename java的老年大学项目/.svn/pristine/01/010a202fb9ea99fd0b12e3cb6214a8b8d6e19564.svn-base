@@ -1,0 +1,268 @@
+package com.learnyeai.resource.service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.common.utils.WeyeCons;
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.resource.mapper.ResResourceMapper;
+import com.learnyeai.resource.model.ResCategoryResourceRel;
+import com.learnyeai.resource.model.ResFile;
+import com.learnyeai.resource.model.ResResource;
+import com.learnyeai.resource.model.ResSiteResourceRel;
+import com.learnyeai.tools.common.BeanUtils;
+import com.learnyeai.tools.common.StringUtils;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class ResResourceWyService extends WeyeBaseService<ResResource> {
+
+	@Resource
+	private ResResourceMapper resResourceMapper;
+
+	@Autowired
+	private ResSiteResourceRelWyService resSiteResourceRelWyService;
+
+	@Autowired
+	private ResCategoryResourceRelWyService resCategoryResourceRelWyService;
+
+	@Autowired
+	private ResFileWyService resFileWyService;
+
+	@Override
+	public BaseMapper<ResResource> getMapper() {
+		return resResourceMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return true;
+	}
+
+	/**
+	 * status0操作成功 1操作失败 2:资源分类id不能为空
+	 * 
+	 * @param rr
+	 * @return
+	 */
+	@Transactional
+	public Map<String, Object> saveOrUpdate(ResResource rr) {
+		Map<String, Object> map = new HashMap();
+		boolean isNew = false;
+		if (StringUtils.isBlank(rr.getResId())) {
+			rr.setCreateDate(new Date());
+			rr.setResPubStatus("0");
+			rr.setResStatus("0");
+			isNew = true;
+			if (StringUtils.isBlank(rr.getCatId())) {
+				map.put("status", 2);
+				map.put("msg", "新增资源时，资源分类id不能为空");
+				return map;
+			}
+		}
+		super.save(rr);
+		// 保存关系表
+		if (isNew) {
+			ResSiteResourceRel resSiteResourceRel = new ResSiteResourceRel();
+			resSiteResourceRel.setResId(rr.getResId());
+			resSiteResourceRel.setResCrtSiteId(rr.getSiteId());
+			resSiteResourceRel.setSiteId(rr.getSiteId());
+			resSiteResourceRel = resSiteResourceRelWyService.queryOne(resSiteResourceRel);
+			if (resSiteResourceRel == null) {
+				resSiteResourceRel = new ResSiteResourceRel();
+				resSiteResourceRel.setResId(rr.getResId());
+				resSiteResourceRel.setResCrtSiteId(rr.getSiteId());
+				resSiteResourceRel.setSiteId(rr.getSiteId());
+				resSiteResourceRel.setResAsName(rr.getResName());
+				resSiteResourceRel.setResPubStatus("0");
+				resSiteResourceRel.setResManageStatus("1");
+				resSiteResourceRelWyService.save(resSiteResourceRel);
+			}
+
+			ResCategoryResourceRel rcrr = new ResCategoryResourceRel();
+			rcrr.setCatId(rr.getCatId());
+			rcrr.setResId(rr.getResId());
+			rcrr = resCategoryResourceRelWyService.queryOne(rcrr);
+			if (rcrr == null) {
+				rcrr = new ResCategoryResourceRel();
+				rcrr.setCatId(rr.getCatId());
+				rcrr.setResId(rr.getResId());
+				resCategoryResourceRelWyService.save(rcrr);
+			}
+		}
+		map.put("status", 0);
+		map.put("msg", "保存成功!");
+		return map;
+
+	}
+
+	@Transactional
+	public Map<String, Object> deleteRes(ResResource rr) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String resId : rr.getResId().split(",")) {
+			ResResource delOne = super.queryById(resId);
+			if (delOne != null) {
+				delOne.setDelFlag("1");
+				super.save(delOne);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public Map<String, Object> publish(ResResource rr) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String resId : rr.getResId().split(",")) {
+			ResSiteResourceRel resSiteResourceRel = new ResSiteResourceRel();
+			resSiteResourceRel.setResId(resId);
+			// 站点
+			String siteId = WeyeThreadContextUtils.getSiteId();
+			if (StringUtils.isNotBlank(siteId))
+				BeanUtils.setProperty(resSiteResourceRel, WeyeCons.BEAN_NAME_SITE_ID, siteId, true);
+			resSiteResourceRel = resSiteResourceRelWyService.queryOne(resSiteResourceRel);
+			if (resSiteResourceRel != null) {
+				resSiteResourceRel.setResPubStatus(rr.getResPubStatus());
+				resSiteResourceRel.setResPubDate(new Date());
+				resSiteResourceRelWyService.save(resSiteResourceRel);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public Map<String, Object> check(ResResource rr) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String resId : rr.getResId().split(",")) {
+			ResResource obj = super.queryById(resId);
+			if (obj != null) {
+				obj.setResStatus(rr.getResStatus());
+				super.save(obj);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public Map<String, Object> author(ResResource rr) {
+		Map<String, Object> result = new HashMap();
+		result.put("status", "0");
+		return result;
+	}
+
+	public static List rtnPageList4Report(MyPage page) {
+		if (page.getTotal() > -1L) {
+			ThreadContext.put("totalCount", page.getTotal());
+		}
+		return page.getList();
+	}
+
+	public Object detail(String resIds) {
+		List<ResResource> list = Lists.newArrayList();
+		for (String resId : resIds.split(",")) {
+			ResResource rr = new ResResource();
+			rr.setResId(resId);
+			ResResource resResource = super.queryOne(rr);
+			ResFile rf = new ResFile();
+			rf.setResId(resResource.getResId());
+			rf.setDelFlag("1");
+			List<ResFile> rfs = resFileWyService.queryList(rf, null);
+			resResource.setResFiles(rfs);
+			list.add(resResource);
+		}
+		return list;
+	}
+
+	@Transactional
+	public List<ResResource> queryManagePage(ResResource rr) {
+		if (rr != null && rr.getPage() != null && rr.getRows() != null) {
+			PageHelper.startPage(rr.getPage(), rr.getRows());
+		}
+		// 站点
+		String siteId = WeyeThreadContextUtils.getSiteId();
+		if (StringUtils.isNotBlank(siteId))
+			BeanUtils.setProperty(rr, WeyeCons.BEAN_NAME_SITE_ID, siteId, true);
+		List<ResResource> list = resResourceMapper.queryManagePage(rr);
+		for (ResResource resResource : list) {
+			ResFile rf = new ResFile();
+			rf.setResId(resResource.getResId());
+			rf.setDelFlag("0");
+			List<ResFile> rfs = resFileWyService.queryList(rf, null);
+			resResource.setResFiles(rfs);
+		}
+		MyPage<ResResource> page = new MyPage<ResResource>(list);
+		return rtnPageList4Report(page);
+	}
+
+	@Transactional
+	public List<ResResource> queryShowPage(ResResource rr) {
+		if (rr != null && rr.getPage() != null && rr.getRows() != null) {
+			PageHelper.startPage(rr.getPage(), rr.getRows());
+		}
+		// 站点
+		String siteId = WeyeThreadContextUtils.getSiteId();
+		if (StringUtils.isNotBlank(siteId))
+			BeanUtils.setProperty(rr, WeyeCons.BEAN_NAME_SITE_ID, siteId, true);
+		List<ResResource> list = resResourceMapper.queryShowPage(rr);
+		for (ResResource resResource : list) {
+			ResFile rf = new ResFile();
+			rf.setResId(resResource.getResId());
+			rf.setDelFlag("0");
+			List<ResFile> rfs = resFileWyService.queryList(rf, null);
+			resResource.setResFiles(rfs);
+		}
+		MyPage<ResResource> page = new MyPage<ResResource>(list);
+		return rtnPageList4Report(page);
+
+	}
+
+	@Transactional
+	public List<ResResource> queryMainPage(ResResource rr) {
+		if (rr != null && rr.getPage() != null && rr.getRows() != null) {
+			PageHelper.startPage(rr.getPage(), rr.getRows());
+		}
+		// 站点
+		String siteId = WeyeThreadContextUtils.getSiteId();
+		if (StringUtils.isNotBlank(siteId))
+			BeanUtils.setProperty(rr, WeyeCons.BEAN_NAME_SITE_ID, siteId, true);
+		List<ResResource> list = resResourceMapper.queryMainPage(rr);
+		for (ResResource resResource : list) {
+			ResFile rf = new ResFile();
+			rf.setResId(resResource.getResId());
+			rf.setDelFlag("0");
+			List<ResFile> rfs = resFileWyService.queryList(rf, null);
+			resResource.setResFiles(rfs);
+		}
+		MyPage<ResResource> page = new MyPage<ResResource>(list);
+		return rtnPageList4Report(page);
+
+	}
+}

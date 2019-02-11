@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
+<mapper namespace="com.learnyeai.quartz.mapper.JobAndTriggerMapper">
+	<resultMap id="BaseResultMap" type="com.learnyeai.quartz.model.JobAndTrigger">
+		<id property="schedName" column="SCHED_NAME" jdbcType="VARCHAR" />
+		<id property="jobName" column="JOB_NAME" jdbcType="VARCHAR" />
+		<id property="jobGroup" column="JOB_GROUP" jdbcType="VARCHAR" />
+
+		<result property="triggerName" column="TRIGGER_NAME" jdbcType="VARCHAR" />
+		<result property="triggerGrouep" column="TRIGGER_GROUP" jdbcType="VARCHAR" />
+		<result property="cronExpression" column="CRON_EXPRESSION" jdbcType="VARCHAR" />
+		<result property="timeZoneId" column="TIME_ZONE_ID" jdbcType="VARCHAR" />
+		<result property="triggerState" column="TRIGGER_STATE" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getJobAndTriggerDetails" resultMap="BaseResultMap">
+		SELECT
+				jb.JOB_NAME,
+				jb.JOB_GROUP,
+				jb.JOB_CLASS_NAME,
+				tr.TRIGGER_NAME,
+				tr.TRIGGER_GROUP,
+				tr.TRIGGER_STATE,
+				ctr.CRON_EXPRESSION,
+				ctr.TIME_ZONE_ID
+			FROM qrtz_job_details jb
+			JOIN qrtz_triggers tr ON tr.SCHED_NAME=jb.SCHED_NAME and tr.JOB_NAME=jb.JOB_NAME and tr.JOB_GROUP=jb.JOB_GROUP
+			JOIN qrtz_cron_triggers ctr ON tr.SCHED_NAME=ctr.SCHED_NAME and  tr.TRIGGER_NAME = ctr.TRIGGER_NAME AND tr.TRIGGER_GROUP = ctr.TRIGGER_GROUP
+	</select>
+    
+</mapper>

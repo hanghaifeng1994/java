@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="资源-新增/编辑">
+	<snd>
+		<field name="resId" desc="id" />
+		<field name="resCatstr" desc="资源分类id 逗号隔开" />
+		<field name="resName" desc="名称" />
+		<field name="resLabel" desc="标签" />
+		<field name="resInfo" desc="简介" />
+		<field name="resPhoto" desc="封面" />
+		<field name="resImgs" desc="配图" />
+		<field name="resAuthor" desc="作者" />
+		<field name="resPoints" desc="资源积分" type="F"/>
+		<field name="fileType" desc="文件类型" />
+		<field name="fileFormat" desc="文件格式" />
+		<field name="fileSize" desc="大小" type="F"/>
+		<field name="fileTimeLen" desc="时长" type="N"/>
+		<field name="siteId" desc="站点id"/>
+		<field name="eduCat" desc="教育大类"/>
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常,2:新增资源时，资源分类id不能为空" />
+		<field name="id" desc="id" />
+		<field name="msg" desc="msg" />
+	</rcv>
+</trans>

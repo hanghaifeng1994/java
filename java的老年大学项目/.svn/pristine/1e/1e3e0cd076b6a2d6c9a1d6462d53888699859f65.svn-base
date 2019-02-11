@@ -1,0 +1,76 @@
+package com.learnyeai.activity.service;
+
+import com.learnyeai.activity.mapper.ActSiteActivityRelMapper;
+import com.learnyeai.activity.model.ActCategory;
+import com.learnyeai.activity.mapper.ActCategoryMapper;
+import com.learnyeai.activity.model.ActSiteActivityRel;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.tools.common.MapUtil;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+import com.learnyeai.tools.common.StringUtils;
+import com.learnyeai.activity.model.ActSiteCategoryRel;
+
+import javax.annotation.Resource;
+import java.util.*;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActCategoryWyService extends WeyeBaseService<ActCategory>{
+
+    @Resource
+    private ActCategoryMapper actCategoryMapper;
+    @Resource
+    private ActSiteCategoryRelWyService actSiteCategoryRelWyService;
+    @Resource
+    private ActSiteActivityRelMapper actSiteActivityRelMapper;
+
+    @Override
+    public BaseMapper<ActCategory> getMapper() {
+        return actCategoryMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+
+    @Override
+    protected Weekend genSqlExample(ActCategory t,Map params){
+        Weekend<ActCategory> w = super.genSqlExample(t,params);
+        WeekendCriteria<ActCategory,Object> c = w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getCatId())){
+            c.andEqualTo(ActCategory::getCatId,t.getCatId());
+        }
+        w.and(c);
+        return w;
+    }
+
+    @Transactional
+    public Map<String,Object> deleteall(ActCategory ctg){
+        String[] catIds = (ctg.getCatId()).split(",");
+        String siteId;
+        ActSiteActivityRel asa = new ActSiteActivityRel();
+        int num = 0;
+        for (String id:catIds){
+            siteId = ctg.getSiteId();
+            asa.setSiteId(siteId);
+            asa.setCatId(id);
+            num += super.deleteById(id);
+            actSiteActivityRelMapper.delete(asa);
+        }
+
+        logger.info("批量删除了"+num+"条数据");
+        return MapUtil.newMap("num",num);
+    }
+
+
+
+}

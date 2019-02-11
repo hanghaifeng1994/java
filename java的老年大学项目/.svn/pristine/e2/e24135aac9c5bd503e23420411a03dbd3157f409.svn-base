@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="sendLowerPage" desc="主站下发到子站点相册列表查询" sort="true" isPage="true">
+    <snd>
+        <field name="abmCrtSiteId" desc="站点多个id用英文逗号隔开"/>
+        <field name="catId" desc="分类"/>
+        <field name="status" desc="审核状态0未审核1审核中2审核成功3审核失败"/>
+        <field name="startDate" desc="发布开始时间有这个查询是必须带审核状态为2" type="D"/>
+        <field name="endDate" desc="发布结束时间这个查询是必须带审核状态为2" type="D"/>
+        <field name="abmName" desc="名称"/>
+    </snd>
+    <rcv>
+        <filed-list name="LIST" type="E"  >
+            <field name="abmId" desc="id"/>
+            <field name="abmName" desc="名称"/>
+            <field name="abmPhoto" desc="封面"/>
+            <field name="abmWeight" desc="权重"/>
+            <field name="remarks" desc="备注"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+            <field name="siteId" desc="站点"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="abmStatus" desc="状态0未提交1提交中2审核成功3审核失败"/>
+            <field name="auditId" desc="审核状态"/>
+            <field name="posid" desc="推荐位置"/>
+            <field name="name" desc="上传人"/>
+        </filed-list>
+    </rcv>
+</trans>

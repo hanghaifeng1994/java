@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="common" title="通用检查">
+	<actions>
+		<!--<action ref="custCheckOp" title="客户有效性检查"></action>-->
+		<action ref="reqRepeatCheckOp" title="报文请求重复提交校验"></action>
+	</actions>
+</config>

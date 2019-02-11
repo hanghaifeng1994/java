@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.testing.mapper.TestingAnswerPaperQuestionMapper">
+<select id="computeScore" resultType="java.lang.Double">
+		SELECT sum(SCORE) from 
+		TESTING_ANSWER_PAPER_QUESTION WHERE AW_ID = #{awId,jdbcType=VARCHAR}
+		AND OK_STATUS = "1" 
+	</select>
+
+	<select id="starCount" parameterType="TestingAnswerPaperQuestion" resultType="CommonStar">
+			SELECT
+				CASE score
+						WHEN '1'     THEN '1'
+						WHEN '2'     THEN '2'
+						WHEN '3'     THEN '3'
+						WHEN '4'     THEN '4'
+						WHEN '5'  THEN '5'
+						ELSE '其他' END  AS starLevel ,COUNT(1) AS num
+				FROM    testing_answer_paper_question
+				WHERE 1=1
+				<if test="tsId !=null and tsId!=''" >
+				  and 	ts_id=#{tsId,jdbcType=VARCHAR}
+				</if>
+				<if test="objId !=null and objId!=''" >
+					and OBJ_ID=#{objId,jdbcType=VARCHAR}
+				</if>
+				<if test="questionId !=null and questionId!=''" >
+					and question_id=#{questionId,jdbcType=VARCHAR}
+				</if>
+		    GROUP BY score
+	</select>
+	<select  id="getAvgScore" parameterType="TestingAnswerPaperQuestion" resultType="java.lang.Double">
+		SELECT ifnull(ROUND(AVG(score),1),0) FROM testing_answer_paper_question
+		WHERE 1=1
+		<if test="tsId !=null and tsId!=''" >
+			and 	ts_id=#{tsId,jdbcType=VARCHAR}
+		</if>
+		<if test="objId !=null and objId!=''" >
+			and OBJ_ID=#{objId,jdbcType=VARCHAR}
+		</if>
+
+	</select>
+    <select id="queryCzTestNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1)  FROM (SELECT  aw_id FROM testing_answer_paper_question WHERE OBJ_ID='2' GROUP BY aw_id) t
+    </select>
+
+	<select id="getTsAvgScore" parameterType="java.util.HashMap" resultType="java.lang.Double" >
+		SELECT IFNULL(ROUND(AVG(SCORE),1),0)  FROM testing_answer_paper_question where  TS_ID=#{tsId} and OBJ_ID=#{czId}
+	</select>
+</mapper>

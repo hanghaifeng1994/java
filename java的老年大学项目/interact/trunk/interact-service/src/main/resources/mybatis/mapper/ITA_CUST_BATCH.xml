@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.interact.mapper.ItaCustExtBatchMapper">
+    <insert id="insertCustSelective" parameterType="ItaCustExt" >
+        insert into ita_cust_ext
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="custId != null" >
+                CUST_ID,
+            </if>
+            <if test="commentNum != null" >
+                COMMENT_NUM,
+            </if>
+            <if test="likedNum != null" >
+                LIKED_NUM,
+            </if>
+            <if test="collectionNum != null" >
+                COLLECTION_NUM,
+            </if>
+            <if test="starNum != null" >
+                STAR_NUM,
+            </if>
+            <if test="mchtId != null" >
+                MCHT_ID,
+            </if>
+            <if test="mchtSchmId != null" >
+                MCHT_SCHM_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="custId != null" >
+                #{custId,jdbcType=VARCHAR},
+            </if>
+            <if test="commentNum != null" >
+                #{commentNum,jdbcType=INTEGER},
+            </if>
+            <if test="likedNum != null" >
+                #{likedNum,jdbcType=INTEGER},
+            </if>
+            <if test="collectionNum != null" >
+                #{collectionNum,jdbcType=INTEGER},
+            </if>
+            <if test="starNum != null" >
+                #{starNum,jdbcType=INTEGER},
+            </if>
+            <if test="mchtId != null" >
+                #{mchtId,jdbcType=VARCHAR},
+            </if>
+            <if test="mchtSchmId != null" >
+                #{mchtSchmId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteCustByPrimaryKey" parameterType="java.lang.String" >
+    delete from ita_cust_ext
+    where CUST_ID = #{custId,jdbcType=VARCHAR}
+  </delete>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.interact.mapper.ItaCollectionBatchMapper">
+
+
+    <delete id="delbatch" parameterType="ItaCollection">
+        delete from ita_collection
+    where OBJ_ID = #{objId,jdbcType=VARCHAR} and `type`=#{type,jdbcType=VARCHAR}
+    </delete>
+    <insert id="saveBatch" parameterType="ItaCollection" >
+        insert into ita_collection
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="cltId != null" >
+                CLT_ID,
+            </if>
+            <if test="tag != null" >
+                TAG,
+            </if>
+            <if test="objId != null" >
+                OBJ_ID,
+            </if>
+            <if test="type != null" >
+                TYPE,
+            </if>
+            <if test="cltStatus != null" >
+                CLT_STATUS,
+            </if>
+            <if test="createBy != null" >
+                CREATE_BY,
+            </if>
+            <if test="createDate != null" >
+                CREATE_DATE,
+            </if>
+            <if test="mchtId != null" >
+                MCHT_ID,
+            </if>
+            <if test="mchtSchmId != null" >
+                MCHT_SCHM_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="cltId != null" >
+                #{cltId,jdbcType=VARCHAR},
+            </if>
+            <if test="tag != null" >
+                #{tag,jdbcType=VARCHAR},
+            </if>
+            <if test="objId != null" >
+                #{objId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="cltStatus != null" >
+                #{cltStatus,jdbcType=CHAR},
+            </if>
+            <if test="createBy != null" >
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="mchtId != null" >
+                #{mchtId,jdbcType=VARCHAR},
+            </if>
+            <if test="mchtSchmId != null" >
+                #{mchtSchmId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

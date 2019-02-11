@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="批次人员-详情">
+    <snd>
+        <field name="sbId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="sbId" desc="学生批次id"/>
+        <field name="custId" desc="学生id"/>
+        <field name="batchId" desc="批次id"/>
+        <field name="scId" desc="学员班级id"/>
+        <field name="czId" desc="班级id"/>
+        <field name="singupDate" desc="报名时间"/>
+    </rcv>
+</trans>

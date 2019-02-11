@@ -1,0 +1,44 @@
+package com.learnyeai.album.service;
+
+import com.learnyeai.album.model.AbmPhoto;
+import com.learnyeai.album.mapper.AbmPhotoMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class AbmPhotoWyService extends BaseService<AbmPhoto> {
+
+    @Resource
+    private AbmPhotoMapper abmPhotoMapper;
+
+    @Override
+    public BaseMapper<AbmPhoto> getMapper() {
+        return abmPhotoMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+
+    @Transactional
+    public int deleteall(AbmPhoto ap){
+        String[] phIds=(ap.getPhId()).split(",");
+        int num=0;
+        for (String id:phIds){
+          num +=  super.deleteById(id);
+        }
+        logger.info("批量删除了"+num+"条数据");
+        return num;
+    }
+
+
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="试卷使用的题目关系-详情">
+    <snd>
+        <field name="pqId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="pqId" desc="ID"/>
+        <field name="paperId" desc="对应试卷"/>
+        <field name="questionId" desc="实际题目"/>
+        <field name="queScore" desc="单题分值"/>
+        <field name="questionitemRuleId" desc="属于哪个题型出题规则记录（冗余）"/>
+        <field name="pointCoverSetId" desc="属于哪个知识点出题规则（冗余）"/>
+        <field name="orderNum" desc="题目排序"/>
+        <field name="itemTypeId" desc="题型"/>
+    </rcv>
+</trans>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="作业-新增/编辑">
+	<snd>
+		<field name="hwId" desc="作业id" />
+		<field name="hwTitle" desc="标题" />
+		<field name="hwContent" desc="内容" />
+		<field name="hwEnddate" desc="交作业截止时间" />
+		<field name="hwWorkTimeLimit" desc="交作业限制天数-单位是天" />
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常,2:新增资源时，资源分类id不能为空" />
+	</rcv>
+</trans>

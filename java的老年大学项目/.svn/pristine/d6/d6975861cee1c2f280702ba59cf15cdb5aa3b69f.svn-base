@@ -1,0 +1,24 @@
+package com.learnyeai.base.api.bean;
+
+import com.learnyeai.base.api.util.BaseCons;
+import com.learnyeai.base.api.vo.*;
+import org.springframework.cache.annotation.Cacheable;
+
+/**
+ * Created by zpz on 2018/8/4.
+ */
+public interface BaseInfoDao {
+    CustInfoVo queryCustInfo(String custId);
+    //方案
+    CfgSchemeVo queryScheme(String schmId);
+    // 方案版本
+    CfgSchemeEditionVo querySchemeEdition(String schmEdtId);
+    // 商户
+    ShMerchantVo queryMerchant(String mchtId);
+    // 商户方案
+    ShMerchantSchemeVo queryMerchantScheme(String mchtSchmId);
+    // 平台
+    PtsetPlatformVo queryPlatform(String ptId);
+    // 站点
+    PtsetSiteVo querySite(String siteId);
+}

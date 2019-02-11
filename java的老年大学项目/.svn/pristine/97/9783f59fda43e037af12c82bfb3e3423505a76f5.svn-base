@@ -1,0 +1,112 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.api.util.BaseCons;
+import com.learnyeai.base.model.PtsetSite;
+import com.learnyeai.base.mapper.PtsetSiteMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author zhangpz
+ */
+@CacheConfig(cacheNames = BaseCons.CACHE_SITE)
+@Service
+public class PtsetSiteWyService extends WeyeBaseService<PtsetSite> {
+
+    @Resource
+    private PtsetSiteMapper ptsetSiteMapper;
+
+    @Override
+    public BaseMapper<PtsetSite> getMapper() {
+        return ptsetSiteMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    @Override
+    protected Weekend genSqlExample(PtsetSite ptsetSite, Map params) {
+        Weekend weekend = super.genSqlExample(ptsetSite, params);
+        WeekendCriteria<PtsetSite, Object> c = weekend.createCriteriaAddOn();
+        weekend.and(c);
+
+        if(StringUtils.isNotBlank(ptsetSite.getSiteDomain())){
+            c.andEqualTo(PtsetSite::getSiteDomain, ptsetSite.getSiteDomain());
+        }
+        if(StringUtils.isNotBlank(ptsetSite.getPtId())){
+            c.andEqualTo(PtsetSite::getPtId, ptsetSite.getPtId());
+        }
+
+        return weekend;
+    }
+
+//    @CacheEvict(key = "#ptsetSite.siteId")
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#ptsetSite.siteId"),
+                    @CacheEvict(cacheNames = BaseCons.CACHE_PT_SITES, allEntries = true)
+            }
+    )
+    @Override
+    public int save(PtsetSite ptsetSite) {
+        return super.save(ptsetSite);
+    }
+
+    @Cacheable
+    @Override
+    public PtsetSite queryById(Object id) {
+        return super.queryById(id);
+    }
+
+//    @CacheEvict(key = "#ptsetSite.siteId")
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#ptsetSite.siteId"),
+                    @CacheEvict(cacheNames = BaseCons.CACHE_PT_SITES, allEntries = true)
+            }
+    )
+    @Override
+    public int delete(PtsetSite ptsetSite) {
+        return super.delete(ptsetSite);
+    }
+
+
+    @Caching(
+            evict = {
+                    @CacheEvict,
+                    @CacheEvict(cacheNames = BaseCons.CACHE_PT_SITES, allEntries = true)
+            }
+    )
+    @Override
+    public int deleteById(Object id) {
+        return super.deleteById(id);
+    }
+
+
+    /**
+     * 查询平台下的站点
+     * @param ptId
+     * @return
+     */
+    @Cacheable(cacheNames = BaseCons.CACHE_PT_SITES, key = "#ptId")
+    public List<PtsetSite> queryByPt(String ptId){
+        PtsetSite pp = new PtsetSite();
+        pp.setPtId(ptId);
+        return super.queryList(pp, null);
+    }
+}

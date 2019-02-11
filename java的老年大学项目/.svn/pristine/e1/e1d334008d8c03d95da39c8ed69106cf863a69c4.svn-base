@@ -1,0 +1,89 @@
+package com.learnyeai.lucene;
+
+/**
+ * Created by zpz on 2018/9/10.
+ */
+public class IndexConfig {
+    private String url;
+    private String user;
+    private String password;
+
+    private String indexName;
+    private String indexDirUrl;
+    private String createIndexMode;
+    private String sql;
+    private String documentCreatorClassName;
+    private String columns; // 字段 // 定义:字段名&字段类型_排序
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getIndexName() {
+        return indexName;
+    }
+
+    public void setIndexName(String indexName) {
+        this.indexName = indexName;
+    }
+
+    public String getIndexDirUrl() {
+        return indexDirUrl;
+    }
+
+    public void setIndexDirUrl(String indexDirUrl) {
+        this.indexDirUrl = indexDirUrl;
+    }
+
+    public String getCreateIndexMode() {
+        return createIndexMode;
+    }
+
+    public void setCreateIndexMode(String createIndexMode) {
+        this.createIndexMode = createIndexMode;
+    }
+
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
+    }
+
+    public String getDocumentCreatorClassName() {
+        return documentCreatorClassName;
+    }
+
+    public void setDocumentCreatorClassName(String documentCreatorClassName) {
+        this.documentCreatorClassName = documentCreatorClassName;
+    }
+
+    public String getColumns() {
+        return columns;
+    }
+
+    public void setColumns(String columns) {
+        this.columns = columns;
+    }
+}

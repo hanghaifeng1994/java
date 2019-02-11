@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.testing.mapper.TestingPaperQuestionMapper">
+    <resultMap id="BaseResultMap" type="TestingPaperQuestion">
+    <id property="pqId" column="PQ_ID" jdbcType="VARCHAR" />
+
+    <result property="paperId" column="PAPER_ID" jdbcType="VARCHAR" />
+    <result property="questionId" column="QUESTION_ID" jdbcType="VARCHAR" />
+    <result property="queScore" column="QUE_SCORE" jdbcType="DECIMAL" />
+    <result property="questionitemRuleId" column="QUESTIONITEM_RULE_ID" jdbcType="VARCHAR" />
+    <result property="pointCoverSetId" column="POINT_COVER_SET_ID" jdbcType="VARCHAR" />
+    <result property="orderNum" column="ORDER_NUM" jdbcType="DECIMAL" />
+    <result property="itemTypeId" column="ITEM_TYPE_ID" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        PQ_ID,PAPER_ID,QUESTION_ID,QUE_SCORE,QUESTIONITEM_RULE_ID,
+        POINT_COVER_SET_ID,ORDER_NUM,ITEM_TYPE_ID
+    </sql>
+
+
+    <sql id="TableClause"> ${}.TESTING_PAPER_QUESTION </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

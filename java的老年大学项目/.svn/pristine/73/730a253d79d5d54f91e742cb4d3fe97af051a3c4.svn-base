@@ -1,0 +1,129 @@
+package com.learnyeai.testing.service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.testing.api.vo.OptionVo;
+import com.learnyeai.testing.api.vo.QuestionVo;
+import com.learnyeai.testing.mapper.TestingAnswerPaperQuestionMapper;
+import com.learnyeai.testing.model.TestingAnswerPaperQuestion;
+import com.learnyeai.testing.model.TestingAnswerPaperQuestion;
+import com.learnyeai.testing.model.TestingQuestion;
+import com.learnyeai.testing.model.TestingQuestionOption;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class TestingAnswerPaperQuestionWyService extends WeyeBaseService<TestingAnswerPaperQuestion> {
+
+	@Resource
+	private TestingAnswerPaperQuestionMapper testingAnswerPaperQuestionMapper;
+	@Resource
+	private TestingQuestionWyService testingQuestionWyService;
+	@Resource
+	private TestingQuestionOptionWyService testingQuestionOptionWyService;
+
+	@Override
+	public BaseMapper<TestingAnswerPaperQuestion> getMapper() {
+		return testingAnswerPaperQuestionMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	/**
+	 * 通过试卷id和题型查询试卷试题详细
+	 * 
+	 * @param paperId
+	 * @param itemTypeId
+	 * @return
+	 */
+	public List<QuestionVo> queryByPaperIdAndItemTypeId(String awId, String itemTypeId) {
+		List<QuestionVo> questions = new ArrayList<QuestionVo>();
+		TestingAnswerPaperQuestion paperQuestion = new TestingAnswerPaperQuestion();
+		paperQuestion.setAwId(awId);
+		paperQuestion.setItemTypeId(itemTypeId);
+		Map<String, Object> questionOrderParam = new HashMap<String, Object>();
+		questionOrderParam.put("sorts", "orderNum=1");
+		List<TestingAnswerPaperQuestion> paperQuestions = super.queryList(paperQuestion, questionOrderParam);
+		QuestionVo questionVo = null;
+		for (TestingAnswerPaperQuestion obj : paperQuestions) {
+			TestingQuestion question = testingQuestionWyService.get(obj.getQuestionId());
+			questionVo = new QuestionVo(obj.getQuestionId(), question.getStemContent(), question.getAnswerDesc(),
+					obj.getScore(), obj.getOrderNum(), itemTypeId);
+			questionVo.setItemIds(obj.getAnswerIdValue());
+			List<OptionVo> options = new ArrayList<OptionVo>();
+			if (StringUtils.isNotBlank(obj.getItemIds())) {// 题目答案
+				OptionVo optionVo = null;
+				int orderNum = 1;
+				for (String itemId : obj.getItemIds().split(",")) {
+					TestingQuestionOption questionOption = testingQuestionOptionWyService.get(itemId);
+					String checked = "0";
+					if (StringUtils.isNotBlank(obj.getAnswerIdValue())
+							&& Arrays.asList(obj.getAnswerIdValue().split(",")).contains(itemId))
+						checked = "1";
+					optionVo = new OptionVo(itemId, questionOption.getOptionContent(), orderNum++, checked);
+					options.add(optionVo);
+				}
+			}
+			questionVo.setOptions(options);
+			questions.add(questionVo);
+		}
+		return questions;
+	}
+	
+	public double computeScore(String awId) {
+		return testingAnswerPaperQuestionMapper.computeScore(awId);
+	}
+	
+	public boolean isAnswered(String questionId, String answerIdValue) {
+		TestingQuestion question = testingQuestionWyService.get(questionId);
+		List<TestingQuestionOption> questionOptions = question.getQuestionOptions();
+		List<String> itemIds = new ArrayList<String>(Arrays.asList(answerIdValue.split(",")));
+		for(TestingQuestionOption questionOption : questionOptions) {
+			if("1".equals(questionOption.getAnswer())){
+				if(!itemIds.contains(questionOption.getItemId())) return false;
+				itemIds.remove(questionOption.getItemId());
+			}
+		}
+		if(!itemIds.isEmpty()) return false;
+		return true;
+	}
+
+	@Override
+	protected Weekend<TestingAnswerPaperQuestion> genSqlExample(TestingAnswerPaperQuestion t, Map params) {
+		Weekend<TestingAnswerPaperQuestion> w = super.genSqlExample(t, params);
+		WeekendCriteria<TestingAnswerPaperQuestion, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getAwId())) {
+			c.andEqualTo(TestingAnswerPaperQuestion::getAwId, t.getAwId());
+		}
+		if (StringUtils.isNotBlank(t.getItemTypeId())) {
+			c.andEqualTo(TestingAnswerPaperQuestion::getItemTypeId, t.getItemTypeId());
+		}
+		if (StringUtils.isNotBlank(t.getQuestionId())) {
+			c.andEqualTo(TestingAnswerPaperQuestion::getQuestionId, t.getQuestionId());
+		}
+		if (StringUtils.isNotBlank(t.getOkStatus())) {
+			c.andEqualTo(TestingAnswerPaperQuestion::getOkStatus, t.getOkStatus());
+		}
+		w.and(c);
+		return w;
+	}
+}

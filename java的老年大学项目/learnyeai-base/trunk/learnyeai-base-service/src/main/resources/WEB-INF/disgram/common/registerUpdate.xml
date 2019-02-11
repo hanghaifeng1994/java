@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="registerUpdate" desc="注册（完成）">
+    <snd>
+        <field name="LOGIN_NAME" desc="账号（手机号）" required="true" />
+        <field name="DYN_CODE" desc="手机验证码" required="true"/>
+        <field name="PASSWORD" desc="密码" required="true"/>
+        <field name="Y_LINE" desc="经度" required="false"/>
+        <field name="X_LINE" desc="纬度" required="false"/>
+        <field name="CUR_ADRESS" desc="当前地址" required="false"/>
+        <field name="AREA_NAME" desc="区县名字" required="false"/>
+        <field name="LAST_LGN_CITY_NAME" desc="登录城市" required="false"/>
+    </snd>
+    <rcv>
+        <!--<field name="CUST_ID" desc="用户编号"/>
+        <field name="LOGIN_NAME" desc="登录名"/>
+        <field name="CUST_NAME" desc="用户名称"/>
+        <field name="CUST_TYPE" desc="用户类型"/>
+        <field name="LINE_DONOT_DISTURB" desc="线路免打扰设置"/>
+        <field name="SESSION_TOKEN" desc="登录token"></field>-->
+    </rcv>
+</trans>

@@ -1,0 +1,442 @@
+package com.learnyeai.schoolclass.service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.http.client.utils.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.learnyeai.base.api.bean.BaseInfoDao;
+import com.learnyeai.base.api.vo.CustInfoVo;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.schoolclass.api.service.CtUserCertApiService;
+import com.learnyeai.schoolclass.api.vo.CtUserCertVo;
+import com.learnyeai.schoolclass.mapper.ClzStudentClazzMapper;
+import com.learnyeai.schoolclass.model.ClzClazz;
+import com.learnyeai.schoolclass.model.ClzClazzCourse;
+import com.learnyeai.schoolclass.model.ClzClazzTest;
+import com.learnyeai.schoolclass.model.ClzStudentClazz;
+import com.learnyeai.schoolclass.model.ClzUserClazzCourse;
+import com.learnyeai.tools.common.BeanUtils;
+import com.learnyeai.tools.common.StringUtils;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class ClzStudentClazzWyService extends WeyeBaseService<ClzStudentClazz> {
+	Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Resource
+	private ClzStudentClazzMapper clzStudentClazzMapper;
+	@Resource
+	private ClzClazzWyService clzClazzWyService;
+	@Resource
+	private ClzClazzCourseWyService clzClazzCourseWyService;
+	@Resource
+	private ClzUserClazzCourseWyService clzUserClazzCourseWyService;
+	@Resource
+	private ClzClazzBatchWyService clzClazzBatchWyService;
+	@Resource
+	private CtUserCertApiService ctUserCertApiService;
+	@Resource
+	private ClzClazzTestWyService clzClazzTestWyService;
+	@Autowired
+	private BaseInfoDao baseInfoDao;
+
+	@Override
+	public BaseMapper<ClzStudentClazz> getMapper() {
+		return clzStudentClazzMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	public Object signuped(ClzStudentClazz sc) {
+		List<ClzStudentClazz> list = new ArrayList<ClzStudentClazz>();
+		for (String czId : sc.getCzId().split(",")) {
+			ClzStudentClazz obj = new ClzStudentClazz();
+			obj.setNormal("1");
+			obj.setCustId(sc.getCustId());
+			obj.setCzId(czId);
+			ClzStudentClazz result = super.queryOne(obj);
+			if (result == null) {
+				obj.setNormal("0");
+				list.add(obj);
+			} else {
+				list.add(result);
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * 前台个人报名 save 开头的自动事务管理，注解好像淌起作用
+	 * 
+	 * @param params
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public Map<String, Object> saveSignup(Map params) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String custId = (String) BeanUtils.getProperty(params, "custId");
+		String czId = (String) BeanUtils.getProperty(params, "czId");
+		String csId = (String) BeanUtils.getProperty(params, "csId");
+		String addCourse = (String) BeanUtils.getProperty(params, "addCourse");//是否加入课程
+		
+		ClzClazz clazz = clzClazzWyService.queryById(czId);
+		if (clazz == null) {
+			result.put("status", "0");
+			result.put("msg", "班级不存在!");
+			return result;
+		}
+		List<ClzClazzCourse> clazzCourses = new ArrayList<ClzClazzCourse>();
+		if("1".equals(addCourse)) {
+			ClzClazzCourse clazzCourse = new ClzClazzCourse();
+			clazzCourse.setCzId(czId);
+			if(StringUtils.isNotBlank(csId)) {//没有传课程id就全选
+				clazzCourse.setCsId(csId);
+			}
+			clazzCourses = clzClazzCourseWyService.queryList(clazzCourse, null);
+			/*if (clazzCourses == null || clazzCourses.size() < 1) {//可以不报课程
+				result.put("status", "0");
+				result.put("msg", "至少选择一门课程!");
+				return result;
+			}*/
+		}
+		
+		CustInfoVo cust = baseInfoDao.queryCustInfo(custId);
+		// 前台报名 取头部站点id
+		String siteId = WeyeThreadContextUtils.getSiteId();
+		if ("1".equals(clazz.getCzChargeMode())) {// 1免费报名不生成批次
+			boolean success = this.saveStudentClazz(cust, clazz, siteId, "1"); // 学生班级报名
+			if (success) {
+				success = clzUserClazzCourseWyService.saveUserClazzCourse(cust, clazz, clazzCourses, siteId, "1");
+				if (success) {
+					clzClazzWyService.updateJoinupNum(czId, 1);
+					result.put("status", "3");
+					result.put("msg", "报名成功");
+					return result;
+				}
+			} else {
+				result.put("status", "0");
+				result.put("msg", "报名失败");
+				return result;
+			}
+		} else if ("2".equals(clazz.getCzChargeMode())) {
+			boolean success = this.saveStudentClazz(cust, clazz, siteId, "0"); // 学生班级报名
+			if (success) {
+				success = clzUserClazzCourseWyService.saveUserClazzCourse(cust, clazz, clazzCourses, siteId, "0");
+				if (success) {
+					Map<String, String> map = clzClazzBatchWyService.webSignup(cust, clazz, clazzCourses, siteId);
+					if ("1".equals(map.get("status"))) {
+						result.put("status", "1");
+						result.put("msg", "待支付");
+						result.put("orderformId", map.get("orderformId"));
+						result.put("orderNo", "订单接口还没有");
+						return result;
+					}
+				} else {
+					result.put("status", "0");
+					result.put("msg", "报名失败");
+					return result;
+				}
+			} else {
+				result.put("status", "0");
+				result.put("msg", "报名失败");
+				return result;
+			}
+		} else if ("3".equals(clazz.getCzChargeMode())) {
+			boolean success = this.saveStudentClazz(cust, clazz, siteId, "0"); // 学生班级报名
+			if (success) {
+				success = clzUserClazzCourseWyService.saveUserClazzCourse(cust, clazz, clazzCourses, siteId, "0");
+				if (success) {
+					Map<String, String> map = clzClazzBatchWyService.webSignup(cust, clazz, clazzCourses, siteId);
+					if ("1".equals(map.get("status"))) {
+						result.put("status", "1");
+						result.put("msg", "待支付");
+						result.put("orderformId", map.get("orderformId"));
+						result.put("orderNo", "订单接口还没有");
+						return result;
+					}
+				} else {
+					result.put("status", "0");
+					result.put("msg", "报名失败");
+					return result;
+				}
+			} else {
+				result.put("status", "0");
+				result.put("msg", "报名失败");
+				return result;
+			}
+		}
+
+		result.put("status", "3");
+		result.put("msg", "报名成功");
+		return result;
+	}
+
+	@Transactional
+	public boolean saveStudentClazz(CustInfoVo cust, ClzClazz clazz, String siteId, String normal) {
+		ClzStudentClazz studentClazz = new ClzStudentClazz();
+		studentClazz.setCustId(cust.getCustId());
+		studentClazz.setCzId(clazz.getCzId());
+		studentClazz = super.queryOne(studentClazz);
+		if (studentClazz == null) {
+			studentClazz = new ClzStudentClazz();
+			studentClazz.setCustId(cust.getCustId());
+			studentClazz.setCzId(clazz.getCzId());
+			studentClazz.setCustNickname(cust.getCustName());
+			studentClazz.setCzCerted(clazz.getCzCerted());
+			studentClazz.setExamScore(new BigDecimal(0d));
+			studentClazz.setStudylengthFinished("0");
+			studentClazz.setMustStudylengthFinished("0");
+			studentClazz.setSelStudylengthFinished("0");
+			studentClazz.setExamScoreFinished("0");
+			studentClazz.setFinished("0");
+			studentClazz.setProcess(BigDecimal.valueOf(0d));
+			studentClazz.setSingupDate(new Date());
+			studentClazz.setCerted("0");
+			studentClazz.setSiteId(siteId);
+			studentClazz.setNormal(normal);
+		}
+		if ("1".equals(normal)) {// 预防正式的再次报名变成非正式的了
+			studentClazz.setNormal(normal);
+		}
+		super.save(studentClazz);
+		return true;
+	}
+
+	public MyPage<ClzStudentClazz> queryShowPage(ClzStudentClazz sc) {
+		ClzStudentClazz studentClazz = new ClzStudentClazz();
+		studentClazz.setCzId(sc.getCzId());
+		studentClazz.setNormal("1");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sorts", "singupDate=0");
+		MyPage<ClzStudentClazz> page = super.queryPage(studentClazz, params);
+		return page;
+	}
+
+	public MyPage<ClzStudentClazz> queryUserClazzPage(ClzStudentClazz sc) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sorts", "singupDate=0");
+		sc.setNormal("1");
+		MyPage<ClzStudentClazz> page = super.queryPage(sc, params);
+		ClzClazz clazz = null;
+		for (ClzStudentClazz studentClazz : page.getList()) {
+			clazz = clzClazzWyService.queryById(studentClazz.getCzId());
+			studentClazz.setCzName(clazz.getCzName());
+		}
+		return page;
+	}
+
+	public Object importStudent(ClzStudentClazz sc) {
+		return null;
+	}
+
+	/**
+	 * 课程完成时更新学生班级
+	 * 
+	 * @param custId
+	 * @param czId
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public boolean saveFinishStudentClazz(String custId, String czId) {
+		logger.info("开始更新学生班级数据.custId={}|czId={}", custId, czId);
+		ClzClazz clazz = clzClazzWyService.queryById(czId);
+		ClzStudentClazz studentClazz = new ClzStudentClazz();
+		studentClazz.setCustId(custId);
+		studentClazz.setCzId(czId);
+		studentClazz.setNormal("1");
+		studentClazz = super.queryOne(studentClazz);
+		if (studentClazz == null)
+			return false;
+		if ("1".equals(studentClazz.getFinished()))
+			return true;
+		ClzUserClazzCourse ucc = new ClzUserClazzCourse();
+		ucc.setCustId(custId);
+		ucc.setCzId(czId);
+		ucc.setNormal("1");
+		List<ClzUserClazzCourse> uccs = clzUserClazzCourseWyService.queryList(ucc, null);
+		if (uccs == null || uccs.size() < 1)
+			return false;
+		logger.info("完成的学生班级课程 uccs.size={}", uccs.size());
+		double studylength = clazz.getStudylength().doubleValue();
+		double mustStudylength = clazz.getMustStudylength().doubleValue();
+		double selStudylength = clazz.getSelStudylength().doubleValue();
+		double actStudylength = 0d;// 实际学时
+		double actMustStudylength = 0d;// 实际学时
+		double actSelStudylength = 0d;// 实际学时
+		double actExamScore = studentClazz.getExamScore() == null ? 0d : studentClazz.getExamScore().doubleValue();// 实际测验得分
+		double examScore = clazz.getExamScore() == null ? 0d : studentClazz.getExamScore().doubleValue();// 班级要求学时
+		int csNum = uccs.size();
+		int finishedNum = 0;
+		for (ClzUserClazzCourse obj : uccs) {
+			if ("1".equals(obj.getLcsFinished())) {
+				actStudylength += obj.getCsStudylength().doubleValue();
+				if (obj.getCsType().intValue() == ClzUserClazzCourse.MUST_COURSE) {
+					actMustStudylength += obj.getCsStudylength().doubleValue();
+				}
+				if (obj.getCsType().intValue() == ClzUserClazzCourse.SEL_COURSE) {
+					actSelStudylength += obj.getCsStudylength().doubleValue();
+				}
+				finishedNum++;
+			}
+		}
+		logger.info("统计实际学时数据.actStudylength={}|actMustStudylength={}|actSelStudylength={}", actStudylength,
+				actMustStudylength, actSelStudylength);
+		double p = finishedNum / csNum;
+		BigDecimal process = BigDecimal.valueOf(p);
+		process.setScale(1, BigDecimal.ROUND_HALF_UP);
+		studentClazz.setProcess(process);
+		if (actStudylength >= studylength) {
+			studentClazz.setStudylengthFinished("1");
+		}
+		if (actMustStudylength >= mustStudylength) {
+			studentClazz.setMustStudylengthFinished("1");
+		}
+		if (actSelStudylength >= selStudylength) {
+			studentClazz.setSelStudylengthFinished("1");
+		}
+		if (actExamScore >= examScore) {
+			studentClazz.setExamScoreFinished("1");
+		}
+		if ("1".equals(studentClazz.getExamScoreFinished()) && "1".equals(studentClazz.getStudylengthFinished())
+				&& "1".equals(studentClazz.getMustStudylengthFinished())
+				&& "1".equals(studentClazz.getSelStudylengthFinished())) {// 学员班级完成
+			logger.info("学员班级完成");
+			studentClazz.setFinished("1");
+			studentClazz.setFinishedDate(new Date());
+			studentClazz.setProcess(BigDecimal.valueOf(1d));
+			clzStudentClazzMapper.updateByPrimaryKeySelective(studentClazz);
+			if (StringUtils.isNotEmpty(clazz.getCtId()) && "0".equals(studentClazz.getCerted())) {// 发消息生成证书
+				logger.info("班级完成，达到班级证书要求，调用生成证书接口");
+				CtUserCertVo ctUserCertVo = new CtUserCertVo();
+				ctUserCertVo.setUcUserId(studentClazz.getCustId());
+				ctUserCertVo.setCtId(clazz.getCtId());
+				ctUserCertVo.setUcProgram(clazz.getCzName());
+				ctUserCertVo.setUcScore(actStudylength + "");
+				ctUserCertVo.setUcYear(DateUtils.formatDate(new Date(), "yyyy"));
+				CustInfoVo cust = baseInfoDao.queryCustInfo(custId);
+				ctUserCertVo.setUcIdcard(cust.getIdcarNo());
+				ctUserCertVo.setUcUnit(cust.getOffice());
+				ctUserCertVo.setUcName(cust.getCustName());
+				ctUserCertVo.setSiteId(studentClazz.getSiteId());
+				ctUserCertApiService.saveUserCertApi(ctUserCertVo);
+			}
+			return true;
+		} else {
+			logger.info("学员班级未完成");
+			clzStudentClazzMapper.updateByPrimaryKeySelective(studentClazz);
+			return false;
+		}
+	}
+
+	@Transactional
+	public Map<String, Object> saveTestingQueue(String custId, String tsId, double score, Date updateDate)
+			throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		ClzClazzTest clazzTest = new ClzClazzTest();
+		clazzTest.setTsId(tsId);
+		List<ClzClazzTest> clazzTests = clzClazzTestWyService.queryList(clazzTest, null);
+		for (ClzClazzTest ct : clazzTests) {
+			ClzStudentClazz studentClazz = new ClzStudentClazz();
+			studentClazz.setCustId(custId);
+			studentClazz.setCzId(ct.getCzId());
+			studentClazz.setNormal("1");
+			studentClazz = super.queryOne(studentClazz);
+			if (studentClazz == null) {
+				continue;
+			}
+			studentClazz.setExamScore(new BigDecimal(score));
+			if ("1".equals(studentClazz.getFinished())) {// 已完成的学生班级更新下成绩就行了
+				clzStudentClazzMapper.updateByPrimaryKeySelective(studentClazz);
+				map.put("status", 1);
+				map.put("msg", "处理成功.");
+				return map;
+			}
+			ClzClazz clazz = clzClazzWyService.queryById(ct.getCzId());
+			double examScore = clazz.getExamScore() == null ? 0d : clazz.getExamScore().doubleValue();
+			if (!"1".equals(studentClazz.getExamScore()) && score >= examScore) {
+				studentClazz.setExamScoreFinished("1");
+				if ("1".equals(studentClazz.getExamScoreFinished()) && "1".equals(studentClazz.getStudylengthFinished())
+						&& "1".equals(studentClazz.getMustStudylengthFinished())
+						&& "1".equals(studentClazz.getSelStudylengthFinished())) {// 学员班级完成
+					logger.info("学员班级完成");
+					studentClazz.setFinished("1");
+					studentClazz.setFinishedDate(new Date());
+					studentClazz.setProcess(BigDecimal.valueOf(1d));
+					clzStudentClazzMapper.updateByPrimaryKeySelective(studentClazz);
+					if (StringUtils.isNotEmpty(clazz.getCtId()) && "0".equals(studentClazz.getCerted())) {// 发消息生成证书
+						double actStudylength = clzUserClazzCourseWyService.sumStudylength(custId, studentClazz.getCzId());
+						logger.info("班级完成，达到班级证书要求，调用生成证书接口");
+						CtUserCertVo ctUserCertVo = new CtUserCertVo();
+						ctUserCertVo.setUcUserId(studentClazz.getCustId());
+						ctUserCertVo.setCtId(clazz.getCtId());
+						ctUserCertVo.setUcProgram(clazz.getCzName());
+						ctUserCertVo.setUcScore(actStudylength + "");
+						ctUserCertVo.setUcYear(DateUtils.formatDate(new Date(), "yyyy"));
+						CustInfoVo cust = baseInfoDao.queryCustInfo(studentClazz.getCustId());
+						ctUserCertVo.setUcIdcard(cust.getIdcarNo());
+						ctUserCertVo.setUcUnit(cust.getOffice());
+						ctUserCertVo.setUcName(cust.getCustName());
+						ctUserCertVo.setSiteId(studentClazz.getSiteId());
+						ctUserCertApiService.saveUserCertApi(ctUserCertVo);
+					}
+				}else {
+					clzStudentClazzMapper.updateByPrimaryKeySelective(studentClazz);
+				}
+			}
+		}
+		map.put("status", 1);
+		map.put("msg", "处理成功.");
+		return map;
+	}
+
+	@Override
+	protected Weekend<ClzStudentClazz> genSqlExample(ClzStudentClazz t, Map params) {
+		Weekend<ClzStudentClazz> w = super.genSqlExample(t, params);
+		WeekendCriteria<ClzStudentClazz, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getCzId())) {
+			c.andEqualTo(ClzStudentClazz::getCzId, t.getCzId());
+		}
+		if (StringUtils.isNotBlank(t.getCustId())) {
+			c.andEqualTo(ClzStudentClazz::getCustId, t.getCustId());
+		}
+		if (StringUtils.isNotBlank(t.getCerted())) {
+			c.andEqualTo(ClzStudentClazz::getCerted, t.getCerted());
+		}
+		if (StringUtils.isNotBlank(t.getNormal())) {
+			c.andEqualTo(ClzStudentClazz::getNormal, t.getNormal());
+		}
+		if (StringUtils.isNotBlank(t.getFinished())) {
+			c.andEqualTo(ClzStudentClazz::getFinished, t.getFinished());
+		}
+		if (StringUtils.isNotBlank(t.getCzCerted())) {
+			c.andEqualTo(ClzStudentClazz::getCzCerted, t.getCzCerted());
+		}
+		w.and(c);
+		return w;
+	}
+
+}

@@ -1,0 +1,82 @@
+package com.learnyeai.activity.task;
+
+import com.learnyeai.activity.model.ActActivity;
+import com.learnyeai.activity.model.ActActivityWorks;
+import com.learnyeai.activity.model.ActResults;
+import com.learnyeai.activity.service.ActActivityWorksWyService;
+import com.learnyeai.activity.service.ActActivityWyService;
+import com.learnyeai.activity.service.ActResultsWyService;
+import com.learnyeai.mq.AuditlogMq;
+import com.learnyeai.tools.common.JsonUtils;
+import org.quartz.JobExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+@Component("auditListener")
+public class AuditListener {
+    @Value("${serviceType}")
+    private String serviceType;
+    @Value("${serviceType_work}")
+    private String serviceTypeWork;
+    @Value("${serviceType_result}")
+    private String serviceTypeResult;
+    @Autowired
+    @Qualifier(value="redisTemplateMq")
+    RedisTemplate<String,Object> redisTemplate;
+    @Autowired
+    private ActActivityWorksWyService actActivityWorksWyService;
+    @Autowired
+    private ActActivityWyService actActivityWyService;
+    @Autowired
+    private ActResultsWyService actResultsWyService;
+
+    private static final Logger logger = LoggerFactory.getLogger(AuditListener.class);
+    @Transactional
+    public void updateAuditStatus(JobExecutionContext context){
+        //获取所有的redis中处理后的所有id
+        Set<String> cachkeys=  redisTemplate.keys("*"+serviceType+"*");
+        int count=0;
+        int workNum=0;
+        int resultNum =0;
+        ActActivity act=new ActActivity();
+        ActActivityWorks wks=new ActActivityWorks();
+        ActResults ar=new ActResults();
+        for (Object cachKey:cachkeys){
+            String type =(String) cachKey;
+            Set<Object> keys =redisTemplate.opsForHash().keys(type);
+            Iterator<Object> iterator = keys.iterator();
+            while (iterator.hasNext()){
+                String auditId=(String) iterator.next();
+                String jstr=  (String) redisTemplate.opsForHash().get(type,auditId);
+                AuditlogMq obj=JsonUtils.jsonToObject(jstr,AuditlogMq.class);
+                if(serviceType.equals(type)){
+                    act.setActId(obj.getObjId());
+                    act.setActAuditId(auditId);
+                    count+= actActivityWyService.save(act);
+                }else if(serviceTypeWork.equals(type)){
+                    wks.setWksId(obj.getObjId());
+                    wks.setWksAuditId(auditId);
+                    workNum+=   actActivityWorksWyService.save(wks);
+                }else if(serviceTypeResult.equals(type)){
+                    ar.setRstId(obj.getObjId());
+                    ar.setRstAuditId(auditId);
+                    resultNum+=actResultsWyService.save(ar);
+                }
+                //操作成功后删除缓存数据
+                redisTemplate.opsForHash().delete(type,auditId);
+            }
+        }
+        logger.info("更新活动{}条数据,更新活动作品{}条数据,更新活动成果{}条数据",count,workNum,resultNum);
+    }
+}

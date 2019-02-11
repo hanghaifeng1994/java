@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="updateById" desc="图片-修改">
+    <snd>
+        <field name="phId" desc="id"/>
+        <field name="phImgNames" desc="图片名称"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

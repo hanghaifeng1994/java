@@ -1,0 +1,13 @@
+server.port=9030
+#eureka server
+eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+
+learnai.gateway.period=600000000
+learnai.gateway.jwt-secret-key=ofaffadfev1234567--090swctewst
+learnai.gateway.debug-abled=true
+
+
+debug=true
+logging.level.root=debug
+logging.level.com.learnyeai.base.mapper=trace
+#logging.config=classpath:logback-dev-spring.xml

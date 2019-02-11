@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="用户资源-详情">
+	<snd>
+		<field name="userId" desc="用户id" required="true" />
+		<field name="resId" desc="资源id" required="true" />
+	</snd>
+	<rcv>
+		<field name="id" desc="id" />
+		<field name="userId" desc="用户id"/>
+		<field name="resId" desc="资源id" />
+		<field name="lastPage" desc="最后学习时间点，秒" />
+		<field name="studyTime" desc="" />
+		<field name="appStudyTime" desc="" />
+		<field name="processPercent" desc="进度百分比*100" />
+		<field name="studyNo" desc="" />
+		<field name="startLearningDate" desc="" />
+		<field name="endLearningDate" desc="" />
+		<field name="createDate" desc="" />
+	</rcv>
+</trans>

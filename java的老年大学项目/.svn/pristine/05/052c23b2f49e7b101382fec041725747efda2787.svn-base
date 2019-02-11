@@ -1,0 +1,144 @@
+package com.learnyeai.homework.service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.common.utils.WeyeCons;
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.homework.mapper.WkHomeworkMapper;
+import com.learnyeai.homework.model.WkHomework;
+import com.learnyeai.homework.model.WkHomeworkAttachment;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.tools.common.BeanUtils;
+import com.learnyeai.tools.common.StringUtils;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class WkHomeworkWyService extends WeyeBaseService<WkHomework> {
+
+	@Resource
+	private WkHomeworkMapper wkHomeworkMapper;
+	@Resource
+	private WkHomeworkAttachmentWyService wkHomeworkAttachmentWyService;
+
+	@Override
+	public BaseMapper<WkHomework> getMapper() {
+		return wkHomeworkMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return true;
+	}
+
+	@Transactional
+	public Map<String, Object> saveOrUpdate(WkHomework wh) {
+		Map<String, Object> map = new HashMap();
+		boolean isNew = false;
+		if (StringUtils.isBlank(wh.getHwId())) {
+			wh.setDelFlag("0");
+			wh.setHwStatus("0");
+			wh.setHwSubmitNum(0l);
+			isNew = true;
+		}
+		super.save(wh);
+		map.put("status", 0);
+		map.put("msg", "保存成功!");
+		return map;
+	}
+
+	@Transactional
+	public Map<String, Object> deleteHw(WkHomework wh) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String hwId : wh.getHwId().split(",")) {
+			WkHomework delOne = super.queryById(hwId);
+			if (delOne != null) {
+				delOne.setDelFlag("1");
+				super.save(delOne);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public Map<String, Object> publish(WkHomework wh) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String hwId : wh.getHwId().split(",")) {
+			WkHomework delOne = super.queryById(hwId);
+			if (delOne != null) {
+				delOne.setHwStatus(wh.getHwStatus());
+				super.save(delOne);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	public Object detail(String hwIds) {
+		List<WkHomework> list = Lists.newArrayList();
+		for (String hwId : hwIds.split(",")) {
+			WkHomework resResource = super.queryById(hwId);
+			if (resResource == null)
+				continue;
+			// 作业附件
+			List<WkHomeworkAttachment> homeworkAttachments = wkHomeworkAttachmentWyService.queryHomeworkAttachment(hwId,
+					WkHomeworkAttachment.TYPE_HW);
+			resResource.setHomeworkAttachments(homeworkAttachments);
+			list.add(resResource);
+		}
+		return list;
+	}
+
+	@Transactional
+	public MyPage<WkHomework> queryManagePage(WkHomework wh) {
+		if (wh != null && wh.getPage() != null && wh.getRows() != null) {
+			PageHelper.startPage(wh.getPage(), wh.getRows());
+		}
+		// 站点
+		String siteId = WeyeThreadContextUtils.getSiteId();
+		if (StringUtils.isNotBlank(siteId))
+			BeanUtils.setProperty(wh, WeyeCons.BEAN_NAME_SITE_ID, siteId, true);
+		MyPage<WkHomework> page = super.queryPage(wh, null);
+		return page;
+	}
+
+	@Override
+	protected Weekend<WkHomework> genSqlExample(WkHomework t, Map params) {
+		Weekend<WkHomework> w = super.genSqlExample(t, params);
+		WeekendCriteria<WkHomework, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getHwStatus())) {
+			c.andEqualTo(WkHomework::getHwStatus, t.getHwStatus());
+		}
+		if (StringUtils.isNotBlank(t.getHwTitle())) {
+			c.andLike(WkHomework::getHwTitle, "%" + t.getHwTitle() + "%");
+		}
+		w.and(c);
+		w.setOrderByClause("CREATE_DATE desc");
+		return w;
+	}
+}

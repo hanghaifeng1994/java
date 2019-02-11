@@ -1,0 +1,58 @@
+package com.learnyeai.activity.web;
+
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.activity.model.ActActivityWorks;
+import com.learnyeai.activity.service.ActActivityWorksWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.learnai.support.MyPage;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ActActivityWorksController extends BaseController<ActActivityWorks> {
+
+    @Autowired
+    private ActActivityWorksWyService actActivityWorksWyService;
+
+    @Autowired
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    protected BaseService<ActActivityWorks> getService() {
+        return actActivityWorksWyService;
+    }
+
+
+
+    @Override
+    public Object execute(IBusinessContext ctx){
+        ActActivityWorks wks = actActivityWorksWyService.convert2Bean(ctx.getParamMap());
+        String method = CtxHeadUtil.getControllerMethod();
+        Map<String,Object> map = new HashMap<>();
+        if("delete".equals(method)){
+            return  actActivityWorksWyService.deleteall(wks);
+        }
+        if("queryPage".equals(method)){
+            MyPage<ActActivityWorks> page = actActivityWorksWyService.queryPage(wks,new HashMap());
+            return super.rtnPageList4Report(page);
+        }
+        if("save".equals(method)){
+            return actActivityWorksWyService.saveData(wks);
+        }
+
+        return super.execute(ctx);
+    }
+}

@@ -1,0 +1,29 @@
+package com.learnyeai.course.service;
+
+import com.learnyeai.course.model.CrsCustLearnChapter;
+import com.learnyeai.course.mapper.CrsCustLearnChapterMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class CrsCustLearnChapterWyService extends WeyeBaseService<CrsCustLearnChapter> {
+
+    @Resource
+    private CrsCustLearnChapterMapper crsCustLearnChapterMapper;
+
+    @Override
+    public BaseMapper<CrsCustLearnChapter> getMapper() {
+        return crsCustLearnChapterMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

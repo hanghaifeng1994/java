@@ -1,0 +1,34 @@
+package com.learnyeai.audit.web;
+
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.audit.model.AdtReportUp;
+import com.learnyeai.audit.service.AdtReportUpWyService;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ *
+ * @author zhangpz
+ */
+@RestController
+@RequestMapping("${adminPath}" + AdtReportUpController.BASE_URL)
+public class AdtReportUpController extends BaseController<AdtReportUp> {
+    public static final String BASE_URL = "/AdtReportUp/";
+
+    @Autowired
+    private AdtReportUpWyService adtReportUpWyService;
+
+    @Override
+    protected BaseService<AdtReportUp> getService() {
+        return adtReportUpWyService;
+    }
+    @RequestMapping("audit")
+    public String  audit(AdtReportUp adtReportUp) throws WeyeRabbitException {
+//        adtReportUpWyService.audit(adtReportUp);
+        return adtReportUp.getRpId();
+    }
+}

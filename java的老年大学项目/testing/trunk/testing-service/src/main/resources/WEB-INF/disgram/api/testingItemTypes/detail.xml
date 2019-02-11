@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="创建题库的时候，判断是否有本商户的题型，否则都要初始化一个，支持单选，多选，判断，填空-详情">
+	<snd>
+		<field name="itemTypeId" desc="id" />
+	</snd>
+	<rcv>
+		<field name="itemTypeId" desc="题型ID" />
+		<field name="name" desc="题型名称" />
+		<field name="itemType" desc="题型code(dx:单选;ms:多选;pd:判断;tk:填空)" />
+		<field name="mchtId" desc="商户id" />
+	</rcv>
+</trans>

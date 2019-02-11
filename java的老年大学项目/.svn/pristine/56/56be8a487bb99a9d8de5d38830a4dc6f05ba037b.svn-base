@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="图片-保存">
+    <snd>
+        <field name="phId" desc="id"/>
+        <field name="phTitle" desc="标题"/>
+        <field name="phPhoto" desc="封面"/>
+        <field name="phImgs" desc="图片ids"/>
+        <field name="phImgNames" desc="图片名称"/>
+        <field name="phContent" desc="内容"/>
+        <field name="abmId" desc="相册id"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+       <field name="status" desc="0操作成功 1已提交不能修改"/>
+    </rcv>
+</trans>

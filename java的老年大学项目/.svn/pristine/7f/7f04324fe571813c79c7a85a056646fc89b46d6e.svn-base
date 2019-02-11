@@ -1,0 +1,103 @@
+package com.learnyeai.learnai.consts;
+
+
+import com.learnyeai.learnai.context.ThreadContextUtil;
+import com.learnyeai.learnai.session.Session;
+
+/**
+ * 存放基础的Session命名
+ *
+ * @author yaoym
+ */
+public class SessR {
+
+    public static final String APP_ID = "mbank";// 应用ID
+    public static final String TRUE = "true";// true为已登录；其它为未登录
+
+    public static final String SESSION_ID = "SESSION_ID";//会话ID
+    public static final String IMAGE_CODE = "IMAGE_CODE";//图形码
+    public static final String LOGIN_FLAG = "LOGIN_FLAG";// true为已登录；其它为未登录
+    public static final String LOGIN_ID = "LOGIN_ID"; //登录号
+    public static final String ACCTS = "ACCTS";//附属账号集
+    public static final String CLIENT_NEED_SIGN = "CLIENT_SIGN"; //需设备绑定标记
+    public static final String LOGIN_PWD_NEED_RESET = "LOGIN_PWD_RESET"; //需强制修改登录密码
+
+    public static final String USER_INFO = "userInfo";//	用户信息
+    public static final String CLIENT_IP = "CLIENT_IP";//	客户端IP地址
+    public static final String CLIENT_VER_NO = "CLIENT_VER_NO";//	客户端版本
+    public static final String CLIENT_TYPE = "CLIENT_TYPE";//	客户端类型： IP: IPHONE PD: IPAD  AD: ANDROID  AP: ANDROID PAD OT:OTHER
+    public static final String CLIENT_OS = "CLIENT_OS";//	客户端操作系统 I:IOS  A:ANDROID O:OTHER
+    public static final String CLIENT_INFO = "CLIENT_INFO";//	客户端详细信息  如魅族  小米等信息
+    public static final String CLIENT_NO = "CLIENT_NO";//	设备号
+    public static final String X_LINE = "X_LINE";//	经度
+    public static final String Y_LINE = "Y_LINE";//	纬度
+
+    // 客户与用户关系： 一个客户 可以有多个用户 共用，其中一个主用户
+    public static final String CUST_NO = "CUST_NO";// 用户编号
+    public static final String CUST_ID="CUST_ID";//用户id
+    public static final String CUST_NAME = "CUST_NAME";//用户名称
+    public static final String CUST_TYPE = "CUST_TYPE";// 个性签名
+    public static final String USER_SHORTNAME="USER_SHORTNAME";//用户昵称
+    public static final String CUST_SEX = "CUST_SEX";// 性别
+    public static final String MOBILE_NO = "MOBILE_NO";//手机号
+    public static final String IS_BIND_MOBILE_AGAIN = "IS_BIND_MOBILE_AGAIN";//支付手机号
+    public static final String USER_SIGN = "USER_SIGN";// 个性签名
+    public static final String AUTH_STATUS="AUTH_STATUS";//认证状态
+    public static final String IDT_NO = "IDT_NO";// 用户证件号
+    public static final String IDT_TYPE = "IDT_TYPE";// 用户证件类型
+    public static final String LOGIN_SUCC_NUM = "LOGIN_SUCC_NUM";// 登录次数
+    public static final String LAST_LGN_TIME = "LAST_LGN_TIME";//上次登陆时间
+    public static final String LAST_LGN_ADDR = "LAST_LGN_ADDR";//上次登录地址
+    public static final String CUST_LGN_TYP = "CUST_LGN_TYP";//客户登陆类型
+    public static final String CUST_LGN = "CUST_LGN";//客户登陆账号
+    public static final String CUST_EMAIL = "CUST_EMAIL";//邮箱
+    public static final String TRANS_CODE = "TRANS_CODE";//交易编号
+
+
+    public static final String CIFN = "CIFN";// 核心用户号
+
+    // TOKEN
+    public static final String TOKEN_CODE = "TOKEN";//单次会话检查，随机会话字符串
+    public static final String TOKEN_TIME = "TOKEN_TIME";// TOKEN生成时间
+    public static final int TOKEN_TIME_OUT = 120000;// TOKEN生成时间
+
+    // 动态验证码
+    public static final String DYN_CODE = "DYN_CODE";//动态验证码检查，随机会话字符串
+    public static final String DYN_TIME = "DYN_TIME";// 动态验证码生成时间
+    public static final String DYN_NO = "DYN_NO";//获取验证码的手机号
+    public static final int DYN_TIME_OUT = 180000;// 动态验证码有效时间
+
+    //邮箱验证码
+    public static final String EMAIL_DYN_CODE = "EMAIL_DYN_CODE";//动态验证码检查，随机会话字符串
+    public static final String EMAIL_DYN_TIME = "EMAIL_DYN_TIME";// 动态验证码生成时间
+    public static final int EMAIL_DYN_TIME_OUT = 180000;// 动态验证码有效时间
+
+    public static final int FREEZE_TIME_OUT=180000;//用户账号被冻结时间
+
+    // 报文请求防重放 & 重复提交
+    public static final String REQ_TIME = "REQ_TIME";    // 报文请求时间戳（时间戳格式：YYYYMMDDHHmmss）
+    public static final int REQ_REPLAY_TIME = 2000;    // 报文请求防重放验证码容错时间（单位：秒）
+    public static final int REQ_REPEAT_TIME = 1000;    // 报文请求重复提交时间,此时间间隔内相同交易视为重复提交（单位：毫秒）
+
+    // 微信登录，在request中添加标识
+    public static final String WEIXIN_LGN = "WEIXIN_LGN";
+
+
+
+    /**
+     * 是否登录
+     * @return
+     */
+    public static boolean isLogined(){
+        Session session = ThreadContextUtil.getSession(false);
+        if(null == session)
+            return false;
+
+        Object flag = session.getAttribute(SessR.LOGIN_FLAG);
+        if (SessR.TRUE.equals(flag))
+            return true;
+
+        return false;
+    }
+
+}

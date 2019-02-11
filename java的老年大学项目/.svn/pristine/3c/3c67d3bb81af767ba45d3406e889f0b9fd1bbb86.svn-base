@@ -1,0 +1,76 @@
+package com.learnyeai.auth.action;
+
+import com.learnyeai.auth.domain.BaseResponse;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
+import org.jsets.shiro.config.ShiroProperties;
+import org.jsets.shiro.token.JwtToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
+import static org.jsets.shiro.config.MessageConfig.REST_CODE_AUTH_UNAUTHORIZED;
+
+/**
+ * Created by zpz on 2018/8/2.
+ */
+@RestController
+public class CheckPermissionsAction {
+
+//    @Autowired
+//    private CacheManager cacheManager;
+
+    /**
+     * 检查所有接口权限
+     * @return
+     */
+    @RequestMapping(value = "/**/*.do")
+    public BaseResponse check(String account){
+        /*String host = request.getRemoteHost();
+        String jwt = request.getParameter(ShiroProperties.PARAM_JWT);
+        if(null != jwt){
+            try {
+                JwtToken token = new JwtToken(host, jwt);
+                Subject subject = SecurityUtils.getSubject();
+                subject.login(token);
+            }catch (Exception e){
+                return BaseResponse.fail(REST_CODE_AUTH_UNAUTHORIZED, e.getMessage());
+            }
+        }*/
+
+        Subject sub = SecurityUtils.getSubject();
+        Session sess = sub.getSession();
+        if(sub.getPrincipal().equals(account)) {
+            return BaseResponse.ok()
+                    .add("startTime", sess.getStartTimestamp())
+                    .add("timeout", sess.getTimeout());
+        }else {
+            return BaseResponse.fail("用户信息不一致 :" + sub.getPrincipal() + "_" + account);
+        }
+    }
+
+    // 检查是否拥有权限
+    @RequestMapping(value = "/perm/hasPermission")
+    public BaseResponse hasPermission(String perm){
+        Subject sub = SecurityUtils.getSubject();
+        boolean b = sub.isPermitted(perm);
+        return b? BaseResponse.ok("拥有权限") : BaseResponse.fail("错误！没有权限");
+    }
+
+
+    // 检查是否拥有权限
+    @RequestMapping("/perm/permissions")
+    public BaseResponse hasPermissions(@RequestBody String[] perms){
+        Subject sub = SecurityUtils.getSubject();
+        boolean[] b = sub.isPermitted(perms);
+
+        return BaseResponse.ok().add("perms", b);
+    }
+}

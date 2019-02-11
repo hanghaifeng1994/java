@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="员工-查询员工站点角色" custIdKey="custId">
+    <snd>
+        <field name="custId" desc="用户id" required="true"/>
+    </snd>
+    <rcv>
+        <field name="siteIds" desc="站点id" comment="多个站点id，用逗号分割"/>
+        <field name="roleIds" desc="角色id" comment="多个角色id，用逗号分割"/>
+    </rcv>
+</trans>

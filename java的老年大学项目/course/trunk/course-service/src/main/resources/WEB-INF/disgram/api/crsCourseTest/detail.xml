@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="课程-测验-详情">
+    <snd>
+        <field name="ctId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="ctId" desc="ID"/>
+        <field name="csId" desc="课程id"/>
+        <field name="tsId" desc="测验id"/>
+    </rcv>
+</trans>

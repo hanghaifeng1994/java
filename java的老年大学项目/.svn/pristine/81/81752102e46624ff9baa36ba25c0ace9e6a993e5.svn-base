@@ -1,0 +1,131 @@
+package com.learnyeai.resource.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
+
+/**
+ * 
+ *
+ * @author twang
+ */
+public class ResUserResourceRecord extends BaseEntity {
+
+    /**
+    * 
+    */
+    @Id
+    @Column(name = "ID")
+    private String id;
+
+    /**
+     * 
+     */
+    @Column(name = "USER_RESOURCE_ID")
+    private String userResourceId;
+    /**
+     * 
+     */
+    @Column(name = "STUDY_TIME")
+    private Integer studyTime;
+    /**
+     * 
+     */
+    @Column(name = "APP_STUDY_TIME")
+    private Integer appStudyTime;
+    /**
+     * 
+     */
+    @Column(name = "STUDY_DAY")
+    private String studyDay;
+    /**
+     * 
+     */
+    @Column(name = "HOUR")
+    private Integer hour;
+    /**
+     * 
+     */
+    @Column(name = "START_LEARNING_DATE")
+    private Date startLearningDate;
+    /**
+     * 
+     */
+    @Column(name = "END_LEARNING_DATE")
+    private Date endLearningDate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getUserResourceId() {
+        return userResourceId;
+    }
+
+    public void setUserResourceId(String userResourceId) {
+        this.userResourceId = userResourceId;
+    }
+    public Integer getStudyTime() {
+        return studyTime;
+    }
+
+    public void setStudyTime(Integer studyTime) {
+        this.studyTime = studyTime;
+    }
+    public Integer getAppStudyTime() {
+        return appStudyTime;
+    }
+
+    public void setAppStudyTime(Integer appStudyTime) {
+        this.appStudyTime = appStudyTime;
+    }
+    public String getStudyDay() {
+        return studyDay;
+    }
+
+    public void setStudyDay(String studyDay) {
+        this.studyDay = studyDay;
+    }
+    public Integer getHour() {
+        return hour;
+    }
+
+    public void setHour(Integer hour) {
+        this.hour = hour;
+    }
+    public Date getStartLearningDate() {
+        return startLearningDate;
+    }
+
+    public void setStartLearningDate(Date startLearningDate) {
+        this.startLearningDate = startLearningDate;
+    }
+    public Date getEndLearningDate() {
+        return endLearningDate;
+    }
+
+    public void setEndLearningDate(Date endLearningDate) {
+        this.endLearningDate = endLearningDate;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "RES_USER_RESOURCE_RECORD";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("");   // 库名
+
+        public static String id = "ID";  // 
+        public static String userResourceId = "USER_RESOURCE_ID";  // 
+        public static String studyTime = "STUDY_TIME";  // 
+        public static String appStudyTime = "APP_STUDY_TIME";  // 
+        public static String studyDay = "STUDY_DAY";  // 
+        public static String hour = "HOUR";  // 
+        public static String startLearningDate = "START_LEARNING_DATE";  // 
+        public static String endLearningDate = "END_LEARNING_DATE";  // 
+
+    }
+}

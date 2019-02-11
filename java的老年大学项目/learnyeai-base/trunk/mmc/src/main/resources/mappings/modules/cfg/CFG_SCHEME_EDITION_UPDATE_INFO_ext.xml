@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgSchemeEditionUpdateInfoDao">
+    <resultMap id="BaseResultMapExt" type="CfgSchemeEditionUpdateInfoVo">
+        <id property="edtUpId" column="EDT_UP_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtId" column="SCHM_EDT_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtCode" column="SCHM_EDT_CODE" jdbcType="DECIMAL" />
+        <result property="edtUpVerName" column="EDT_UP_VER_NAME" jdbcType="VARCHAR" />
+        <result property="edtUpVerDate" column="EDT_UP_VER_DATE" jdbcType="TIMESTAMP" />
+        <result property="edtUpContent" column="EDT_UP_CONTENT" jdbcType="VARCHAR" />
+        <result property="edtUpType" column="EDT_UP_TYPE" jdbcType="CHAR" />
+        <result property="edtUpObjId" column="EDT_UP_OBJ_ID" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+
+
+        <result property="schmEdtName" column="SCHM_EDT_NAME" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="queryByCriteriaExt" resultMap="BaseResultMapExt" parameterType="CriteriaQuery">
+        select
+        u.*
+        ,e.SCHM_EDT_NAME
+        from ${schema.interPlat}.CFG_SCHEME_EDITION_UPDATE_INFO u
+        INNER JOIN ${schema.interPlat}.CFG_SCHEME_EDITION e on e.SCHM_EDT_ID=u.SCHM_EDT_ID
+        <include refid="public.WhereClause4Query" />
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+</mapper>

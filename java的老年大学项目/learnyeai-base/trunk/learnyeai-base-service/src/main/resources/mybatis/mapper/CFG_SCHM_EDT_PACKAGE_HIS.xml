@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.base.mapper.CfgSchmEdtPackageHisMapper">
+    <resultMap id="BaseResultMap" type="CfgSchmEdtPackageHis">
+    <id property="edtPkgHisId" column="EDT_PKG_HIS_ID" jdbcType="VARCHAR" />
+
+    <result property="edtPkgId" column="EDT_PKG_ID" jdbcType="VARCHAR" />
+    <result property="pkgId" column="PKG_ID" jdbcType="VARCHAR" />
+    <result property="pkgName" column="PKG_NAME" jdbcType="VARCHAR" />
+    <result property="schmEdtHisId" column="SCHM_EDT_HIS_ID" jdbcType="VARCHAR" />
+    <result property="edtPkgType" column="EDT_PKG_TYPE" jdbcType="CHAR" />
+    <result property="edtPkgYearPrice" column="EDT_PKG_YEAR_PRICE" jdbcType="DECIMAL" />
+    <result property="edtPkgMonthPrice" column="EDT_PKG_MONTH_PRICE" jdbcType="DECIMAL" />
+    <result property="mdlId" column="MDL_ID" jdbcType="VARCHAR" />
+    <result property="mdlName" column="MDL_NAME" jdbcType="VARCHAR" />
+    <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        EDT_PKG_HIS_ID,EDT_PKG_ID,PKG_ID,PKG_NAME,SCHM_EDT_HIS_ID,
+        EDT_PKG_TYPE,EDT_PKG_YEAR_PRICE,EDT_PKG_MONTH_PRICE,MDL_ID,MDL_NAME,
+        CREATE_BY,CREATE_DATE
+    </sql>
+
+
+    <sql id="TableClause"> ${schema.interPlat}.CFG_SCHM_EDT_PACKAGE_HIS </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

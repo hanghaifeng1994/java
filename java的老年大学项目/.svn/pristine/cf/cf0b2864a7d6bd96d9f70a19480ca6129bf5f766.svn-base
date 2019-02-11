@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="班级课程-详情">
+    <snd>
+        <field name="ccId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="ccId" desc="班级课程id"/>
+        <field name="czId" desc="班级id"/>
+        <field name="csId" desc="课程id"/>
+        <field name="csType" desc="1选修课、2必修课"/>
+        <field name="csStudylength" desc="学时"/>
+        <field name="csAmount" desc="金额"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="siteId" desc="站点"/>
+    </rcv>
+</trans>

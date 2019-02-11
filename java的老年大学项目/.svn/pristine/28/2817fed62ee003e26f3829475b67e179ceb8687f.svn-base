@@ -1,0 +1,29 @@
+package com.learnyeai.course.service;
+
+import com.learnyeai.course.model.CrsCourseHomework;
+import com.learnyeai.course.mapper.CrsCourseHomeworkMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class CrsCourseHomeworkWyService extends WeyeBaseService<CrsCourseHomework> {
+
+    @Resource
+    private CrsCourseHomeworkMapper crsCourseHomeworkMapper;
+
+    @Override
+    public BaseMapper<CrsCourseHomework> getMapper() {
+        return crsCourseHomeworkMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

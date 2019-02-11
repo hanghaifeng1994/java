@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="updateById" desc="评论-修改">
+    <snd>
+        <field name="cmtId" desc="评论id"/>
+        <field name="content" desc="内容"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

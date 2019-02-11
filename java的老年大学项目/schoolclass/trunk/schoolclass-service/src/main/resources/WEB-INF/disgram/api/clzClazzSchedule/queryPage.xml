@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="班级日程-列表"  sorts="true">
+    <snd>
+        <field name="czId" desc="班级id" />
+        <field name="isEnd" desc="0未开始1进行中2已结束" />
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="班级日程列表" type="E">
+            <field name="date" desc="日期"/>
+            <field-list name="info" desc="info" type="E">
+                <field name="czScId" desc="班级日程id"/>
+                <field name="czId" desc="班级id"/>
+                <field name="scStatus" desc="0未开始1进行中2已结束"/>
+                <field name="scContent" desc="日程内容"/>
+                <field name="scName" desc="日程名称"/>
+                <field name="timeParse" desc="时间"/>
+                <field name="scTearcher" desc="辅导老师id"/>
+                <field name="scTearcherName" desc="辅导老师名称" xpath="scTearcher" type="user"/>
+                <field name="startDate" desc="活动开始时间"/>
+                <field name="endDate" desc="活动结束时间"/>
+            </field-list>
+        </field-list>
+    </rcv>
+</trans>

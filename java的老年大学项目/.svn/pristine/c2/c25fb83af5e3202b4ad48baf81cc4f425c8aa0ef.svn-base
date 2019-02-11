@@ -1,0 +1,60 @@
+package com.learnyeai.activity.service;
+
+import com.learnyeai.activity.model.ActActivityWorks;
+import com.learnyeai.activity.model.ActMarking;
+import com.learnyeai.activity.mapper.ActMarkingMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.apache.commons.lang.StringUtils;
+import org.omg.CORBA.Current;
+import org.springframework.stereotype.Service;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+
+import javax.annotation.Resource;
+
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Date;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActMarkingWyService extends WeyeBaseService<ActMarking> {
+
+    @Resource
+    private  CurrentUserInfoIml currentUserInfoIml;
+
+    @Resource
+    private ActMarkingMapper actMarkingMapper;
+
+    @Resource
+    private ActActivityWorksWyService actActivityWorksWyService;
+
+    @Override
+    public BaseMapper<ActMarking> getMapper() {
+        return actMarkingMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+
+
+    public void saveData(ActMarking mk){
+        String userId = currentUserInfoIml.getId();
+        mk.setMkId(userId);
+        String userName = currentUserInfoIml.getLoginName();
+        mk.setMkUserName(userName);
+        mk.setUpdateDate(new Date());
+        super.save(mk);
+        //修改活动平均分
+        ActActivityWorks aw=new ActActivityWorks();
+        aw.setWksId(mk.getWksId());
+        int MkScoreAvg = actMarkingMapper.selectMkScore(mk.getMkId());
+        aw.setWksAvgScore(MkScoreAvg);
+        actActivityWorksWyService.save(aw);
+    }
+}

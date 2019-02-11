@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryByResId" desc="根据多个资源id获取统计列表">
+	<snd>
+		<field name="objId" desc="对象id 多个逗号隔开" required="true" />
+		<field name="type" desc="1资源、2课程" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="客户学习资源列表">
+			<field name="sosId" desc="id" />
+			<field name="objId" desc="对象id" />
+			<field name="type" desc="1资源、2课程" />
+			<field name="studyTime" desc="学习时长" />
+			<field name="studyNum" desc="学习次数" />
+			<field name="createDate" desc="创建时间" />
+			<field name="updateDate" desc="更新时间" />
+			<field name="siteId" desc="站点" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+		</field-list>
+	</rcv>
+</trans>

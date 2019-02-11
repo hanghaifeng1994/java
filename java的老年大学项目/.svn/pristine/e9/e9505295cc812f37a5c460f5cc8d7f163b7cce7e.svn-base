@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="userRegist" desc="登录-用户注册">
+    <snd>
+        <field name="loginName" desc="登录名" required="true"/>
+        <field name="password" desc="登录密码" required="true" />
+        <field name="email" desc="邮箱"/>
+        <field name="shortName" desc="用户昵称"/>
+        <field name="custName" desc="姓名"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

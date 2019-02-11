@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPageByIds" desc="审核日志-列表">
+    <snd>
+        <field name="objId" desc="对象id 多个对象id 用英文逗号隔开"/>
+        <field name="serviceType" desc="业务类型"/>
+    </snd>
+    <rcv>
+        <field name="adIds" desc="查询出所有审核的id，多个id之间用英文逗号隔开"/>
+    </rcv>
+</trans>

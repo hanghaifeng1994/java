@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="商户订单-详情">
+    <snd>
+        <field name="ordId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="ordId" desc="订单id"/>
+        <field name="ordNum" desc="订单号"/>
+        <field name="schmEdtHisId" desc="方案版本历史id"/>
+        <field name="edtPrcId" desc="方案版本价格id"/>
+        <field name="schmEdtPayType" desc="1月付、2年付"/>
+        <field name="schmEdtPrice" desc="方案价格"/>
+        <field name="schmEdtIncreasePrice" desc="增值包价格"/>
+        <field name="ordBuyNum" desc="购买数量"/>
+        <field name="serviceStartDate" desc="开始时间"/>
+        <field name="serviceEndDate" desc="结束时间"/>
+        <field name="ordTotalAmount" desc="总金额"/>
+        <field name="ordPayStatus" desc="交费状态0未付费、1已付费、欠费"/>
+        <field name="ordDiscountAmount" desc="优惠金额"/>
+        <field name="ordRealAmount" desc="实际金额"/>
+        <field name="actId" desc="活动id"/>
+        <field name="ordStatus" desc="0正常1作废2系统作废"/>
+        <field name="ordType" desc="1购买、2升级"/>
+        <field name="ordOldId" desc="原订单id"/>
+        <field name="clientManagerId" desc="客户经理id"/>
+        <field name="clientManagerName" desc="客户经理名称"/>
+        <field name="mchtSchmId" desc="商家方案id"/>
+        <field name="mchtId" desc="商家id"/>
+        <field name="ordPayType" desc="1线上交、2线下交"/>
+        <field name="ordPayDate" desc="交费时间"/>
+        <field name="ordPayUsername" desc="交费人名称"/>
+        <field name="ordSaleType" desc="1线上、2线下"/>
+        <field name="ordCancelDate" desc="作废时间"/>
+        <field name="ordCancelUsername" desc="作废人名称"/>
+        <field name="ordCancelCause" desc="作废人原因"/>
+        <field name="createUserName" desc="创建人名称"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="remarks" desc="备注"/>
+    </rcv>
+</trans>

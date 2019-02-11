@@ -1,0 +1,27 @@
+package com.learnyeai.servicebase.conf;
+
+import cn.com.zhisou.resource.GainRuleServlet;
+import cn.com.zhisou.resource.SetRuleServlet;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * Created by zpz on 2018/5/16.
+ */
+@Configuration
+public class WebConfig {
+
+    @Bean
+    public ServletRegistrationBean setRuleServletRegistration() {
+        ServletRegistrationBean registration = new ServletRegistrationBean(new SetRuleServlet());
+        registration.addUrlMappings("/setRules");
+        return registration;
+    }
+    @Bean
+    public ServletRegistrationBean gainRuleServletRegistration() {
+        ServletRegistrationBean registration = new ServletRegistrationBean(new GainRuleServlet());
+        registration.addUrlMappings("/gainRules");
+        return registration;
+    }
+}

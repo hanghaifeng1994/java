@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryByUserId" desc="多个用户id对应用户学习统计列表">
+	<snd>
+		<field name="custId" desc="用户id 多个逗号隔开" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="客户学习资源列表">
+			<field name="custId" desc="用户id" />
+			<field name="studyTime" desc="学习时长" />
+			<field name="studyNum" desc="学习次数" />
+			<field name="curCourseId" desc="当前课程id" />
+			<field name="curChapterId" desc="当前章节id" />
+			<field name="curResourceId" desc="当前资源id" />
+			<field name="studyBreakpoint" desc="学习断点" />
+			<field name="createDate" desc="创建时间" />
+			<field name="updateDate" desc="更新时间" />
+			<field name="siteId" desc="站点" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+		</field-list>
+	</rcv>
+</trans>

@@ -1,0 +1,149 @@
+package com.learnyeai.learnai.session.util;
+
+import com.learnyeai.core.config.ConfigUtils;
+import com.learnyeai.learnai.consts.ConfigName;
+import com.learnyeai.learnai.session.Session;
+import com.learnyeai.learnai.session.SessionListener;
+import com.learnyeai.learnai.session.SessionManager;
+import com.learnyeai.core.utils.SpringContextUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Session管理工具类
+ *
+ * @author 李超（lc3@yitong.com.cn）
+ */
+public class SessionManagerUtils {
+
+    private static Logger logger = LoggerFactory.getLogger(SessionManagerUtils.class);
+
+    private final static List<SessionListener> SESSION_LISTENERS =
+            new LinkedList<SessionListener>();
+
+    /**
+     * 注册session监听器
+     * @param listener
+     */
+    public static void resigerListener(SessionListener listener) {
+        if(null == listener) {
+            return;
+        }
+        SESSION_LISTENERS.add(listener);
+    }
+
+    /**
+     * session创建时代理处理函数
+     * @param session
+     */
+    public static void onSessionStarted(Session session) {
+        if(null == session) {
+            return;
+        }
+        if(logger.isDebugEnabled()) {
+            logger.debug("SessionStarted: [{}]", session.toString());
+        }
+        for (SessionListener listener : SESSION_LISTENERS) {
+            listener.onStart(session);
+        }
+    }
+
+    /**
+     * session停用代理处理函数，// 与onSessionExpiration是一个意思 // 张配忠 20170223
+     * @param session
+     */
+    /*public static void onSessionStoped(Session session) {
+        if(null == session) {
+            return;
+        }
+        if(logger.isDebugEnabled()) {
+            logger.debug("SessionStoped: [{}]", session.toString());
+        }
+        for (SessionListener listener : SESSION_LISTENERS) {
+            listener.onStop(session);
+        }
+        getDefaultManager().getSessionDao().delete(session);
+    }*/
+
+    /**
+     * session销毁代理处理函数
+     * @param session
+     */
+    public static void onSessionExpiration(Session session) {
+        if(null == session) {
+            return;
+        }
+        if(logger.isDebugEnabled()) {
+            logger.debug("SessionExpiration: [{}]", session.toString());
+        }
+        for (SessionListener listener : SESSION_LISTENERS) {
+            listener.onExpiration(session);
+        }
+        getDefaultManager().getSessionDao().delete(session);
+    }
+
+    /**
+     * 触发创建事件的接口
+     * @param session
+     */
+    public static void onCreate(Session session) {
+        SessionManagerUtils.onSessionStarted(session);
+    }
+
+    /**
+     * 触发销毁事件的接口
+     * @param session
+     */
+    public static void onInvalidate(Session session) {
+        getDefaultManager().getSessionDao().delete(session);
+        SessionManagerUtils.onSessionExpiration(session);
+    }
+
+    /**
+     * 触发改变事件的接口
+     * @param session
+     */
+    public static void onChange(Session session) {
+        // 扩展用
+        for (SessionListener listener : SESSION_LISTENERS) {
+            listener.onUpdate(session);
+        }
+        // 不用每次修改都提交，在请求结束后，统一提交，减少缓存请求 // zhangpz 20180809
+//        getDefaultManager().getSessionDao().update(session);
+    }
+
+    public static void login(Session session){
+        getDefaultManager().submit(session);
+        for (SessionListener listener : SESSION_LISTENERS) {
+            listener.onLogin(session);
+        }
+    }
+
+    private static SessionManager sessionManager;
+    /**
+     * 得到默认的AresSession管理类，找不到时报异常
+     * @return
+     */
+    public static SessionManager getDefaultManager() throws RuntimeException {
+        if(null != sessionManager) {
+            return sessionManager;
+        }
+        synchronized (SessionManagerUtils.class) {
+            if(null != sessionManager) {
+                return sessionManager;
+            }
+            sessionManager = SpringContextUtils.getBean(SessionManager.class);
+            int isValidate = ConfigUtils.getValue(ConfigName.SESSION_VALIDATION_ON, ConfigName.SESSION_VALIDATION_ON_DEFVAL);
+            // 如果缓存是redis，改成quarts定时器，现还没有做 zzzzzzzzzzzz，
+//                if(!(cacheManager instanceof org.springframework.data.redis.cache.RedisCacheManager))
+            sessionManager.setEnableSessionValidation(isValidate == 1);
+        }
+        if (null == sessionManager) {
+            throw new RuntimeException("获取默认的Session管理类失败");
+        }
+        return sessionManager;
+    }
+}

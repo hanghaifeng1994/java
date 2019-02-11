@@ -1,0 +1,44 @@
+package com.learnyeai.learnbehavior.service;
+
+import com.learnyeai.learnbehavior.model.StdCustLearnRecord;
+import com.learnyeai.learnbehavior.mapper.StdCustLearnRecordMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class StdCustLearnRecordWyService extends BaseService<StdCustLearnRecord> {
+
+    @Resource
+    private StdCustLearnRecordMapper stdCustLearnRecordMapper;
+
+    @Override
+    public BaseMapper<StdCustLearnRecord> getMapper() {
+        return stdCustLearnRecordMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Override
+    protected Weekend genSqlExample(StdCustLearnRecord t, Map params) {
+        Weekend w=super.genSqlExample(t,params);
+        WeekendCriteria<StdCustLearnRecord,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getStudyUserId())){
+            c.andEqualTo(StdCustLearnRecord::getStudyUserId,t.getStudyUserId());
+        }
+        w.and(c);
+        w.setOrderByClause("START_DATE desc");
+        return w;
+    }
+}

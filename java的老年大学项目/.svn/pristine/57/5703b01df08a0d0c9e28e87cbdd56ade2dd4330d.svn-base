@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="signIn" desc="学员下课签到">
+    <snd>
+        <field name="czSignId" desc="签到id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="签到id"/>
+    </rcv>
+</trans>

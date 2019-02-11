@@ -1,0 +1,56 @@
+package com.learnyeai.learnai.support.iml;
+
+import com.learnyeai.learnai.context.ThreadContextUtil;
+import com.learnyeai.learnai.consts.SessR;
+import com.learnyeai.learnai.support.CurrentUserInfoDao;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
+/**
+ * Created by zpz on 2016/4/28.
+ */
+public class CurrentUserInfoIml implements CurrentUserInfoDao {
+    @Override
+    public String getId() {
+        String userId = ThreadContextUtil.getSessionRequired().getUserId();
+        return userId;
+    }
+
+    @Override
+    public String getLoginName() {
+        Object userName = ThreadContextUtil.getSessionRequired().getAttribute(SessR.CUST_LGN);
+        return userName==null?"":userName.toString();
+    }
+
+    @Override
+    public String getPhone() {
+        Object phone = ThreadContextUtil.getSessionRequired().getAttribute(SessR.MOBILE_NO);
+        return phone==null?"":phone.toString();
+    }
+
+    @Override
+    public String getCustName() {
+        Object custName = ThreadContextUtil.getSessionRequired().getAttribute(SessR.CUST_NAME);
+        return custName==null?"":custName.toString();
+    }
+
+    @Override
+    public String getCustType() {
+        Object custType = ThreadContextUtil.getSessionRequired().getAttribute(SessR.CUST_TYPE);
+        return custType==null?"":custType.toString();
+    }
+
+    @Override
+    public String getSex() {
+        Object sex = ThreadContextUtil.getSessionRequired().getAttribute(SessR.CUST_SEX);
+        return sex==null?"":sex.toString();
+    }
+
+    @Override
+    public Map getUserInfo() {
+        Object o = ThreadContextUtil.getSessionRequired().getAttribute(SessR.USER_INFO);
+        return o == null? null : (Map)o;
+    }
+}

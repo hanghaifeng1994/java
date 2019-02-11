@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="小组成员-列表" isPage="true">
+    <snd>
+        <field name="sgpId" desc="id" required="true"/>
+    </snd>
+    <rcv>
+        <field name="custId" desc="客户id"/>
+    </rcv>
+</trans>

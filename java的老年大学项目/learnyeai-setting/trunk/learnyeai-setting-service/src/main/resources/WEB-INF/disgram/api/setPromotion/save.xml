@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="推广-保存">
+    <snd>
+        <field name="serviceType" desc="业务类型" required="true"/>
+        <field name="title" desc="标题" required="true"/>
+        <field name="imgs" desc="图片"/>
+        <field name="url" desc="url"/>
+        <field name="sort" desc="排序"/>
+        <field name="remarks" desc="备注"/>
+        <field name="siteId" desc="站点" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

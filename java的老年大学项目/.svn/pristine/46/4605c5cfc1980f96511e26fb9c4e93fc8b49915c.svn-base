@@ -1,0 +1,607 @@
+package com.learnyeai.course.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 课程
+ *
+ * @author twang
+ */
+public class CrsCourse extends BaseEntity {
+
+	/**
+	 * id
+	 */
+	@Id
+	@Column(name = "CS_ID")
+	private String csId;
+
+	/**
+	 * 名称
+	 */
+	@Column(name = "CS_NAME")
+	private String csName;
+	/**
+	 * 课程编号
+	 */
+	@Column(name = "CS_SERIAL_NO")
+	private String csSerialNo;
+	/**
+	 * 标签
+	 */
+	@Column(name = "CS_TAG")
+	private String csTag;
+	/**
+	 * 简介
+	 */
+	@Column(name = "CS_INFO")
+	private String csInfo;
+	/**
+	 * 封面
+	 */
+	@Column(name = "CS_PHOTO")
+	private String csPhoto;
+	/**
+	 * 配图
+	 */
+	@Column(name = "CS_IMGS")
+	private String csImgs;
+	/**
+	 * 积分
+	 */
+	@Column(name = "CS_POINTS")
+	private Integer csPoints;
+	/**
+	 * 价格
+	 */
+	@Column(name = "CS_PRICE")
+	private BigDecimal csPrice;
+	/**
+	 * 学分/学时
+	 */
+	@Column(name = "CS_STUDYLENGTH")
+	private BigDecimal csStudylength;
+	/**
+	 * 讲师
+	 */
+	@Column(name = "CS_LECTURER")
+	private String csLecturer;
+	/**
+	 * 有效期开始时间
+	 */
+	@Column(name = "CS_COPYRIGHT_STARTDATE")
+	private Date csCopyrightStartdate;
+	/**
+	 * 有效期结束时间
+	 */
+	@Column(name = "CS_COPYRIGHT_ENDDATE")
+	private Date csCopyrightEnddate;
+	/**
+	 * 总时长
+	 */
+	@Column(name = "CS_TOTAL_TIME")
+	private Long csTotalTime;
+	/**
+	 * 课程类型1:公需课;2:专业课;3:开放课
+	 */
+	@Column(name = "CS_MODEL")
+	private Short csModel;
+	/**
+	 * 分类字符串
+	 */
+	@Column(name = "CS_CATSTR")
+	private String csCatstr;
+	/**
+	 * 是否要求学习时长
+	 */
+	@Column(name = "CS_STUDYNEED")
+	private String csStudyneed;
+	/**
+	 * 要求学习时长(分钟) 数据库中保存为秒
+	 */
+	@Column(name = "CS_STUDY_TIME")
+	private Long csStudyTime;
+	/**
+	 * 是否要求作业成绩
+	 */
+	@Column(name = "CS_HOMEWORKNEED")
+	private String csHomeworkneed;
+	/**
+	 * 要求作业成绩
+	 */
+	@Column(name = "CS_HOMEWORK_SCORE")
+	private BigDecimal csHomeworkScore;
+	/**
+	 * 是否要求测验成绩
+	 */
+	@Column(name = "CS_EXAMNEED")
+	private String csExamneed;
+	/**
+	 * 要求测验成绩
+	 */
+	@Column(name = "CS_EXAM_SCORE")
+	private BigDecimal csExamScore;
+	/**
+	 * 是否要求总成绩
+	 */
+	@Column(name = "CS_SCORENEED")
+	private String csScoreneed;
+	/**
+	 * 要求总成绩
+	 */
+	@Column(name = "CS_SCORE")
+	private BigDecimal csScore;
+	/**
+	 * 0未发布、1已发布
+	 */
+	@Column(name = "CS_PUB_STATUS")
+	private String csPubStatus;
+	/**
+	 * 发布时间
+	 */
+	@Column(name = "CS_PUB_DATE")
+	private Date csPubDate;
+	/**
+	 * 推荐状态
+	 */
+	@Column(name = "CS_TJ_STATUS")
+	private String csTjStatus;
+	/**
+	 * 推荐时间
+	 */
+	@Column(name = "CS_TJ_DATE")
+	private Date csTjDate;
+	/**
+	 * 状态：0未提交、1审核中、2审核通过、3审核失败、4不需要审核
+	 */
+	@Column(name = "CS_STATUS")
+	private String csStatus;
+	/**
+	 * 审核id
+	 */
+	@Column(name = "CS_AUDIT_ID")
+	private String csAuditId;
+	/**
+	 * 创建人
+	 */
+	@Column(name = "CREATE_BY")
+	private String createBy;
+	/**
+	 * 创建时间
+	 */
+	@Column(name = "CREATE_DATE")
+	private Date createDate;
+	/**
+	 * 更新人
+	 */
+	@Column(name = "UPDATE_BY")
+	private String updateBy;
+	/**
+	 * 更新时间
+	 */
+	@Column(name = "UPDATE_DATE")
+	private Date updateDate;
+	/**
+	 * 删除标记
+	 */
+	@Column(name = "DEL_FLAG")
+	private String delFlag;
+	/**
+	 * 站点
+	 */
+	@Column(name = "SITE_ID")
+	private String siteId;
+	/**
+	 * 商户id
+	 */
+	@Column(name = "MCHT_ID")
+	private String mchtId;
+	/**
+	 * 商户方案id
+	 */
+	@Column(name = "MCHT_SCHM_ID")
+	private String mchtSchmId;
+
+	@Transient
+	private Date csPubStartDate;// 发布查询开始时间
+
+	@Transient
+	private Date csPubEndDate;// 发布查询结束时间
+
+	@Transient
+	private int orderType;// 排序方式 0:置顶排序; 1:发布时间倒序;2:发布时间正序
+
+	@Transient
+	private List<String> siteIds;// 站点id列表
+
+	public String getCsId() {
+		return csId;
+	}
+
+	public void setCsId(String csId) {
+		this.csId = csId;
+	}
+
+	public String getCsName() {
+		return csName;
+	}
+
+	public void setCsName(String csName) {
+		this.csName = csName;
+	}
+
+	public String getCsSerialNo() {
+		return csSerialNo;
+	}
+
+	public void setCsSerialNo(String csSerialNo) {
+		this.csSerialNo = csSerialNo;
+	}
+
+	public String getCsTag() {
+		return csTag;
+	}
+
+	public void setCsTag(String csTag) {
+		this.csTag = csTag;
+	}
+
+	public String getCsInfo() {
+		return csInfo;
+	}
+
+	public void setCsInfo(String csInfo) {
+		this.csInfo = csInfo;
+	}
+
+	public String getCsPhoto() {
+		return csPhoto;
+	}
+
+	public void setCsPhoto(String csPhoto) {
+		this.csPhoto = csPhoto;
+	}
+
+	public String getCsImgs() {
+		return csImgs;
+	}
+
+	public void setCsImgs(String csImgs) {
+		this.csImgs = csImgs;
+	}
+
+	public Integer getCsPoints() {
+		return csPoints;
+	}
+
+	public void setCsPoints(Integer csPoints) {
+		this.csPoints = csPoints;
+	}
+
+	public BigDecimal getCsPrice() {
+		return csPrice;
+	}
+
+	public void setCsPrice(BigDecimal csPrice) {
+		this.csPrice = csPrice;
+	}
+
+	public BigDecimal getCsStudylength() {
+		return csStudylength;
+	}
+
+	public void setCsStudylength(BigDecimal csStudylength) {
+		this.csStudylength = csStudylength;
+	}
+
+	public String getCsLecturer() {
+		return csLecturer;
+	}
+
+	public void setCsLecturer(String csLecturer) {
+		this.csLecturer = csLecturer;
+	}
+
+	public Date getCsCopyrightStartdate() {
+		return csCopyrightStartdate;
+	}
+
+	public void setCsCopyrightStartdate(Date csCopyrightStartdate) {
+		this.csCopyrightStartdate = csCopyrightStartdate;
+	}
+
+	public Date getCsCopyrightEnddate() {
+		return csCopyrightEnddate;
+	}
+
+	public void setCsCopyrightEnddate(Date csCopyrightEnddate) {
+		this.csCopyrightEnddate = csCopyrightEnddate;
+	}
+
+	public Long getCsTotalTime() {
+		return csTotalTime;
+	}
+
+	public void setCsTotalTime(Long csTotalTime) {
+		this.csTotalTime = csTotalTime;
+	}
+
+	public Short getCsModel() {
+		return csModel;
+	}
+
+	public void setCsModel(Short csModel) {
+		this.csModel = csModel;
+	}
+
+	public String getCsCatstr() {
+		return csCatstr;
+	}
+
+	public void setCsCatstr(String csCatstr) {
+		this.csCatstr = csCatstr;
+	}
+
+	public String getCsStudyneed() {
+		return csStudyneed;
+	}
+
+	public void setCsStudyneed(String csStudyneed) {
+		this.csStudyneed = csStudyneed;
+	}
+
+	public Long getCsStudyTime() {
+		return csStudyTime;
+	}
+
+	public void setCsStudyTime(Long csStudyTime) {
+		this.csStudyTime = csStudyTime;
+	}
+
+	public String getCsHomeworkneed() {
+		return csHomeworkneed;
+	}
+
+	public void setCsHomeworkneed(String csHomeworkneed) {
+		this.csHomeworkneed = csHomeworkneed;
+	}
+
+	public BigDecimal getCsHomeworkScore() {
+		return csHomeworkScore;
+	}
+
+	public void setCsHomeworkScore(BigDecimal csHomeworkScore) {
+		this.csHomeworkScore = csHomeworkScore;
+	}
+
+	public String getCsExamneed() {
+		return csExamneed;
+	}
+
+	public void setCsExamneed(String csExamneed) {
+		this.csExamneed = csExamneed;
+	}
+
+	public BigDecimal getCsExamScore() {
+		return csExamScore;
+	}
+
+	public void setCsExamScore(BigDecimal csExamScore) {
+		this.csExamScore = csExamScore;
+	}
+
+	public String getCsScoreneed() {
+		return csScoreneed;
+	}
+
+	public void setCsScoreneed(String csScoreneed) {
+		this.csScoreneed = csScoreneed;
+	}
+
+	public BigDecimal getCsScore() {
+		return csScore;
+	}
+
+	public void setCsScore(BigDecimal csScore) {
+		this.csScore = csScore;
+	}
+
+	public String getCsPubStatus() {
+		return csPubStatus;
+	}
+
+	public void setCsPubStatus(String csPubStatus) {
+		this.csPubStatus = csPubStatus;
+	}
+
+	public Date getCsPubDate() {
+		return csPubDate;
+	}
+
+	public void setCsPubDate(Date csPubDate) {
+		this.csPubDate = csPubDate;
+	}
+
+	public String getCsTjStatus() {
+		return csTjStatus;
+	}
+
+	public void setCsTjStatus(String csTjStatus) {
+		this.csTjStatus = csTjStatus;
+	}
+
+	public Date getCsTjDate() {
+		return csTjDate;
+	}
+
+	public void setCsTjDate(Date csTjDate) {
+		this.csTjDate = csTjDate;
+	}
+
+	public String getCsStatus() {
+		return csStatus;
+	}
+
+	public void setCsStatus(String csStatus) {
+		this.csStatus = csStatus;
+	}
+
+	public String getCsAuditId() {
+		return csAuditId;
+	}
+
+	public void setCsAuditId(String csAuditId) {
+		this.csAuditId = csAuditId;
+	}
+
+	public String getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getUpdateBy() {
+		return updateBy;
+	}
+
+	public void setUpdateBy(String updateBy) {
+		this.updateBy = updateBy;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public String getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(String delFlag) {
+		this.delFlag = delFlag;
+	}
+
+	public String getSiteId() {
+		return siteId;
+	}
+
+	public void setSiteId(String siteId) {
+		this.siteId = siteId;
+	}
+
+	public String getMchtId() {
+		return mchtId;
+	}
+
+	public void setMchtId(String mchtId) {
+		this.mchtId = mchtId;
+	}
+
+	public String getMchtSchmId() {
+		return mchtSchmId;
+	}
+
+	public void setMchtSchmId(String mchtSchmId) {
+		this.mchtSchmId = mchtSchmId;
+	}
+
+	public static class TF {
+
+		public static String TABLE_NAME = "CRS_COURSE"; // 表名
+
+		// public static String TABLE_SCHEMA = ConfigUtils.getValue(""); // 库名
+
+		public static String csId = "CS_ID"; // id
+		public static String csName = "CS_NAME"; // 名称
+		public static String csSerialNo = "CS_SERIAL_NO"; // 课程编号
+		public static String csTag = "CS_TAG"; // 标签
+		public static String csInfo = "CS_INFO"; // 简介
+		public static String csPhoto = "CS_PHOTO"; // 封面
+		public static String csImgs = "CS_IMGS"; // 配图
+		public static String csPoints = "CS_POINTS"; // 积分
+		public static String csPrice = "CS_PRICE"; // 价格
+		public static String csStudylength = "CS_STUDYLENGTH"; // 学分/学时
+		public static String csLecturer = "CS_LECTURER"; // 讲师
+		public static String csCopyrightStartdate = "CS_COPYRIGHT_STARTDATE"; // 有效期开始时间
+		public static String csCopyrightEnddate = "CS_COPYRIGHT_ENDDATE"; // 有效期结束时间
+		public static String csTotalTime = "CS_TOTAL_TIME"; // 总时长
+		public static String csModel = "CS_MODEL"; // 课程类型1:公需课;2:专业课;3:开放课
+		public static String csCatstr = "CS_CATSTR"; // 分类字符串
+		public static String csStudyneed = "CS_STUDYNEED"; // 是否要求学习时长
+		public static String csStudyTime = "CS_STUDY_TIME"; // 要求学习时长(分钟)
+		public static String csHomeworkneed = "CS_HOMEWORKNEED"; // 是否要求作业成绩
+		public static String csHomeworkScore = "CS_HOMEWORK_SCORE"; // 要求作业成绩
+		public static String csExamneed = "CS_EXAMNEED"; // 是否要求测验成绩
+		public static String csExamScore = "CS_EXAM_SCORE"; // 要求测验成绩
+		public static String csScoreneed = "CS_SCORENEED"; // 是否要求总成绩
+		public static String csScore = "CS_SCORE"; // 要求总成绩
+		public static String csPubStatus = "CS_PUB_STATUS"; // 0未发布、1已发布
+		public static String csPubDate = "CS_PUB_DATE"; // 发布时间
+		public static String csTjStatus = "CS_TJ_STATUS"; // 推荐状态
+		public static String csTjDate = "CS_TJ_DATE"; // 推荐时间
+		public static String csStatus = "CS_STATUS"; // 状态：0未提交、1审核中、2审核通过、3审核失败、4不需要审核
+		public static String csAuditId = "CS_AUDIT_ID"; // 审核id
+		public static String createBy = "CREATE_BY"; // 创建人
+		public static String createDate = "CREATE_DATE"; // 创建时间
+		public static String updateBy = "UPDATE_BY"; // 更新人
+		public static String updateDate = "UPDATE_DATE"; // 更新时间
+		public static String delFlag = "DEL_FLAG"; // 删除标记
+		public static String siteId = "SITE_ID"; // 站点
+		public static String mchtId = "MCHT_ID"; // 商户id
+		public static String mchtSchmId = "MCHT_SCHM_ID"; // 商户方案id
+
+	}
+
+	public List<String> getSiteIds() {
+		return siteIds;
+	}
+
+	public void setSiteIds(List<String> siteIds) {
+		this.siteIds = siteIds;
+	}
+
+	public Date getCsPubStartDate() {
+		return csPubStartDate;
+	}
+
+	public void setCsPubStartDate(Date csPubStartDate) {
+		this.csPubStartDate = csPubStartDate;
+	}
+
+	public Date getCsPubEndDate() {
+		return csPubEndDate;
+	}
+
+	public void setCsPubEndDate(Date csPubEndDate) {
+		this.csPubEndDate = csPubEndDate;
+	}
+
+	public int getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(int orderType) {
+		this.orderType = orderType;
+	}
+
+}

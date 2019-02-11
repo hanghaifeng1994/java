@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.sh.dao.ShOrderDao">
+    <resultMap id="BaseResultMapExt" type="ShOrderExt">
+        <id property="ordId" column="ORD_ID" jdbcType="VARCHAR" />
+        <result property="ordNum" column="ORD_NUM" jdbcType="VARCHAR" />
+        <result property="schmEdtHisId" column="SCHM_EDT_HIS_ID" jdbcType="VARCHAR" />
+        <result property="edtPrcId" column="EDT_PRC_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtPayType" column="SCHM_EDT_PAY_TYPE" jdbcType="CHAR" />
+        <result property="schmEdtPrice" column="SCHM_EDT_PRICE" jdbcType="DECIMAL" />
+        <result property="schmEdtIncreasePrice" column="SCHM_EDT_INCREASE_PRICE" jdbcType="DECIMAL" />
+        <result property="ordBuyNum" column="ORD_BUY_NUM" jdbcType="DECIMAL" />
+        <result property="serviceStartDate" column="SERVICE_START_DATE" jdbcType="TIMESTAMP" />
+        <result property="serviceEndDate" column="SERVICE_END_DATE" jdbcType="TIMESTAMP" />
+        <result property="ordTotalAmount" column="ORD_TOTAL_AMOUNT" jdbcType="DECIMAL" />
+        <result property="ordPayStatus" column="ORD_PAY_STATUS" jdbcType="CHAR" />
+        <result property="ordDiscountAmount" column="ORD_DISCOUNT_AMOUNT" jdbcType="DECIMAL" />
+        <result property="ordRealAmount" column="ORD_REAL_AMOUNT" jdbcType="DECIMAL" />
+        <result property="actId" column="ACT_ID" jdbcType="VARCHAR" />
+        <result property="ordStatus" column="ORD_STATUS" jdbcType="CHAR" />
+        <result property="ordType" column="ORD_TYPE" jdbcType="CHAR" />
+        <result property="ordOldId" column="ORD_OLD_ID" jdbcType="VARCHAR" />
+        <result property="clientManagerId" column="CLIENT_MANAGER_ID" jdbcType="VARCHAR" />
+        <result property="clientManagerName" column="CLIENT_MANAGER_NAME" jdbcType="VARCHAR" />
+        <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+        <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+        <result property="ordPayType" column="ORD_PAY_TYPE" jdbcType="CHAR" />
+        <result property="ordPayDate" column="ORD_PAY_DATE" jdbcType="TIMESTAMP" />
+        <result property="ordPayUsername" column="ORD_PAY_USERNAME" jdbcType="VARCHAR" />
+        <result property="ordSaleType" column="ORD_SALE_TYPE" jdbcType="CHAR" />
+        <result property="ordCancelDate" column="ORD_CANCEL_DATE" jdbcType="TIMESTAMP" />
+        <result property="ordCancelUsername" column="ORD_CANCEL_USERNAME" jdbcType="VARCHAR" />
+        <result property="ordCancelCause" column="ORD_CANCEL_CAUSE" jdbcType="VARCHAR" />
+        <result property="createUserName" column="CREATE_USER_NAME" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="remarks" column="REMARKS" jdbcType="VARCHAR" />
+
+        <!--拓展字段-->
+        <result property="mchtName" column="MCHT_NAME" jdbcType="VARCHAR" />
+        <result property="schmEdtName" column="SCHM_EDT_NAME" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="queryByCriteriaExt" parameterType="CriteriaQuery" resultMap="BaseResultMapExt">
+        SELECT e.`SCHM_EDT_NAME`,m.`MCHT_NAME`,s.* FROM  ${schema.interPlat}.sh_order s
+        JOIN  ${schema.interPlat}.SH_MERCHANT m ON s.`MCHT_ID`=m.`MCHT_ID`
+        JOIN  ${schema.interPlat}.SH_MERCHANT_SCHEME ms ON ms.`MCHT_SCHM_ID`=s.`MCHT_SCHM_ID`
+        JOIN  ${schema.interPlat}.CFG_SCHEME_EDITION e ON e.`SCHM_EDT_ID`=ms.`SCHM_EDT_ID`
+        <include refid="public.WhereClause4Query" />
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+</mapper>

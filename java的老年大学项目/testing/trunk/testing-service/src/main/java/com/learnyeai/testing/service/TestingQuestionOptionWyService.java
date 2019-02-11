@@ -1,0 +1,64 @@
+package com.learnyeai.testing.service;
+
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import com.learnyeai.tools.common.MapUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.testing.mapper.TestingQuestionOptionMapper;
+import com.learnyeai.testing.model.TestingQuestionOption;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class TestingQuestionOptionWyService extends WeyeBaseService<TestingQuestionOption> {
+
+	@Resource
+	private TestingQuestionOptionMapper testingQuestionOptionMapper;
+
+	@Override
+	public BaseMapper<TestingQuestionOption> getMapper() {
+		return testingQuestionOptionMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	@Cacheable(cacheNames="testing_questionOption", key="#itemId")
+	public TestingQuestionOption get(String itemId) {
+		return testingQuestionOptionMapper.selectByPrimaryKey(itemId);
+	}
+
+	@Override
+	protected Weekend<TestingQuestionOption> genSqlExample(TestingQuestionOption t, Map params) {
+		Weekend<TestingQuestionOption> w = super.genSqlExample(t, params);
+		WeekendCriteria<TestingQuestionOption, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getQuestionId())) {
+			c.andEqualTo(TestingQuestionOption::getQuestionId, t.getQuestionId());
+		}
+		w.and(c);
+		//查询题目详情是选项排序
+		String orderBy= MapUtil.singleNodeText(params,"orderBy");
+		if(StringUtils.isNotBlank(orderBy)){
+			w.setOrderByClause("ORDER_NUM asc");
+		}
+		return w;
+	}
+
+	public void deleteByQtId(String id){
+		testingQuestionOptionMapper.deleteByQtId(id);
+	}
+}

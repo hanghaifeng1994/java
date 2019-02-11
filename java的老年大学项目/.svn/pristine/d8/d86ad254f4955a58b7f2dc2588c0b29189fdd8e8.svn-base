@@ -1,0 +1,57 @@
+package com.learnyeai.base.api.client;
+
+import com.learnyeai.base.api.vo.CustInfoVo;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Map;
+
+/**
+ * Created by zpz on 2018/5/7.
+ */
+@FeignClient(name = "BASE-SERVICE", path="/base/login")
+public interface LoginClient {
+
+    /**
+     * 密码登录，可以是任意客户端登录
+     * 参数：LOGIN_NAME 登录名
+     *  PASSWORD 密码
+     *  CUST_TYPE 可为空
+     *  MCHT_ID 商户方案id
+     * @return
+     */
+    @RequestMapping(value = "/passwdLogin",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    CustInfoVo passwdLogin(Map<String, Object> params);
+
+    /**
+     * 登录名检查登录，用于短信、邮箱验证码登录
+     *  LOGIN_NAME
+     *  MCHT_ID 商户方案id
+     *  CUST_TYPE(可为空)
+     * @return
+     */
+    @RequestMapping(value = "/loginNameCheckLogin",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    CustInfoVo loginNameCheckLogin(Map<String, Object> params);
+
+
+
+    /***
+     * 小程序登录，如果用户不存在，添加用户
+     *  OPEN_ID
+     *  PHOTO
+     * @return
+     */
+    @RequestMapping(value = "/appltLogin",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    CustInfoVo appltLogin(Map<String, Object> params);
+
+    /**
+     * 用户检查登录，检查用户状态，保存登录信息。(android ios登录后，下次启动时，检查完设备状态，调用此接口)
+     *  输入：
+     *      CUST_ID
+     * @return
+     */
+    @RequestMapping(value = "/userCheckLogin",method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    CustInfoVo userCheckLogin(Map<String, Object> params);
+}

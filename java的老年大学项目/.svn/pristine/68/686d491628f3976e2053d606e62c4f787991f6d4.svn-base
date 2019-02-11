@@ -1,0 +1,165 @@
+package com.learnyeai.base.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+import java.util.Date;
+
+/**
+ * 用户设备
+ *
+ * @author zhangpz
+ */
+public class UrDeviceVo extends BaseVo {
+
+    /**
+    * ID
+    */
+    private String devId;
+
+    /**
+     * UUID
+     */
+    private String uuid;
+    /**
+     * 客户id
+     */
+    private String custId;
+    /**
+     * 1登录、2退出登录、3在其它设备登录
+     */
+    private String devStatus;
+    /**
+     * 绑定时间
+     */
+    private Date bindDate;
+    /**
+     * IP: IPHONE PD: IPAD AD: ANDROID AP: ANDROID PAD
+     */
+    private String clientType;
+    /**
+     * 客户端版本
+     */
+    private String clientVerNo;
+    /**
+     * 客户端详情
+     */
+    private String clientInfo;
+    /**
+     * I:IOS A:ANDROID
+     */
+    private String clientOs;
+    /**
+     * 创建人
+     */
+    private String createBy;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
+    /**
+     * 更新时间
+     */
+    private Date updateDate;
+
+    public String getDevId() {
+        return devId;
+    }
+
+    public void setDevId(String devId) {
+        this.devId = devId;
+    }
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+    public String getCustId() {
+        return custId;
+    }
+
+    public void setCustId(String custId) {
+        this.custId = custId;
+    }
+    public String getDevStatus() {
+        return devStatus;
+    }
+
+    public void setDevStatus(String devStatus) {
+        this.devStatus = devStatus;
+    }
+    public Date getBindDate() {
+        return bindDate;
+    }
+
+    public void setBindDate(Date bindDate) {
+        this.bindDate = bindDate;
+    }
+    public String getClientType() {
+        return clientType;
+    }
+
+    public void setClientType(String clientType) {
+        this.clientType = clientType;
+    }
+    public String getClientVerNo() {
+        return clientVerNo;
+    }
+
+    public void setClientVerNo(String clientVerNo) {
+        this.clientVerNo = clientVerNo;
+    }
+    public String getClientInfo() {
+        return clientInfo;
+    }
+
+    public void setClientInfo(String clientInfo) {
+        this.clientInfo = clientInfo;
+    }
+    public String getClientOs() {
+        return clientOs;
+    }
+
+    public void setClientOs(String clientOs) {
+        this.clientOs = clientOs;
+    }
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public static class CF {
+        public static String devId = "devId";  // ID
+        public static String uuid = "uuid";  // UUID
+        public static String custId = "custId";  // 客户id
+        public static String devStatus = "devStatus";  // 1登录、2退出登录、3在其它设备登录
+        public static String bindDate = "bindDate";  // 绑定时间
+        public static String clientType = "clientType";  // IP: IPHONE PD: IPAD AD: ANDROID AP: ANDROID PAD
+        public static String clientVerNo = "clientVerNo";  // 客户端版本
+        public static String clientInfo = "clientInfo";  // 客户端详情
+        public static String clientOs = "clientOs";  // I:IOS A:ANDROID
+        public static String createBy = "createBy";  // 创建人
+        public static String createDate = "createDate";  // 创建时间
+        public static String updateDate = "updateDate";  // 更新时间
+        public static String delFlag = "delFlag";  // 删除标记
+
+    }
+
+}

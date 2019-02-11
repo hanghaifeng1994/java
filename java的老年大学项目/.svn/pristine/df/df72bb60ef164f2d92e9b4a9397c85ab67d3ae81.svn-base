@@ -1,0 +1,81 @@
+package com.learnyeai.lucene.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.IController;
+import com.learnyeai.lucene.index.LuceneConf;
+import com.learnyeai.lucene.index.LuceneConfUtil;
+import com.learnyeai.lucene.index.LuceneIndexPropUtils;
+import com.learnyeai.lucene.utils.*;
+import com.learnyeai.lucene.vo.IndexQueryPara;
+import com.learnyeai.tools.common.BeanMapUtils;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+/**
+ * Created by zpz on 2018/9/10.
+ */
+@Component
+public class PageQueryController implements IController{
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        IndexQueryPara indexQueryPara = null;
+        try {
+            indexQueryPara = (IndexQueryPara)BeanMapUtils.convertMap(IndexQueryPara.class, ctx.getParamMap());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            throw new AresRuntimeException();
+        }
+        String indexName = indexQueryPara.getIndexName();
+        Page<Object> page = new Page<>(indexQueryPara.getPageNo(), indexQueryPara.getPageSize());
+        page.setTotal(indexQueryPara.getTotal());
+
+        // 从参数中获取要查询的索引
+        LuceneConf luceneConf = LuceneIndexPropUtils.getConf(indexName);
+        if(null == luceneConf){
+            throw AresRuntimeException.build(null).iniCauseMsg("索引不存在");
+        }
+
+        // 解析query
+        Query query = null;
+        try {
+            query = luceneConf.getBuildQuery().buildQuery(indexQueryPara.getQueryType(),indexQueryPara.getQueryParams());
+        } catch (ParseException e) {
+            throw AresRuntimeException.build(null).iniCauseMsg(e.getMessage());
+        }
+        HighlighterParam highlighter = new HighlighterParam();
+        highlighter.setHighlight(indexQueryPara.getHightLighter() == 1);
+        highlighter.setPrefix(indexQueryPara.getHlPrefix());
+        highlighter.setSuffix(indexQueryPara.getHlSuffix());
+        highlighter.setFieldName(indexQueryPara.getHlFiledId());
+
+        logger.debug("{} 开始查询", indexName);
+        Sort sort = LuceneConfUtil.getSort(luceneConf.getAsName(),indexQueryPara.getSorts(), indexQueryPara.getSortTypes());
+        try{
+            LuceneManager manage = LuceneManagerUtils.getLuceneManager(luceneConf.getIndexDir());
+            IndexSearcher search = manage.getIndexSearcher();
+            LuceneUtils.pageQuery(search, sort, query, page, highlighter);
+            List<Document> list = page.getDocList();
+            List rst = luceneConf.getDoc2ObjectMapper().mapDocumentsToObject(list);
+            logger.debug("{}查询成功", indexName);
+            CtxHeadUtil.setReportDataDealType("1");
+            return rst;
+        }catch (Exception e){
+            logger.error(indexName + "查询失败", e);
+            throw AresRuntimeException.build("Query.searchFail", "查询失败").iniCauseMsg(e.getMessage());
+        }
+    }
+
+}

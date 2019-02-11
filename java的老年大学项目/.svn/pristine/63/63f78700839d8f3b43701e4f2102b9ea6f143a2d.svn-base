@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="客户学习课程-列表">
+    <snd>
+        <field name="csId" desc="课程id 多个课程id 用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" type="E"  desc="客户学习课程-详情">
+            <field name="lcsId" desc="id"/>
+            <field name="csId" desc="课程id"/>
+            <field name="studyLen" desc="学习时长"/>
+            <field name="studyNum" desc="学习次数"/>
+            <field name="curCptId" desc="当前章节id"/>
+            <field name="studyUserId" desc="学习人id"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateDate" desc="更新时间"/>
+        </field-list>
+    </rcv>
+</trans>

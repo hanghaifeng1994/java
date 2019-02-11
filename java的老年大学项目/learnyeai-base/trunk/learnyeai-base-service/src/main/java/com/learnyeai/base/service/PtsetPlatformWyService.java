@@ -1,0 +1,59 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.api.util.BaseCons;
+import com.learnyeai.base.model.PtsetPlatform;
+import com.learnyeai.base.mapper.PtsetPlatformMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author zhangpz
+ */
+@CacheConfig(cacheNames = BaseCons.CACHE_PLATFORM)
+@Service
+public class PtsetPlatformWyService extends WeyeBaseService<PtsetPlatform> {
+
+    @Resource
+    private PtsetPlatformMapper ptsetPlatformMapper;
+
+    @Override
+    public BaseMapper<PtsetPlatform> getMapper() {
+        return ptsetPlatformMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+
+    @CacheEvict(key = "#ptsetPlatform.ptId")
+    @Override
+    public int save(PtsetPlatform ptsetPlatform) {
+        return super.save(ptsetPlatform);
+    }
+
+    @Cacheable
+    @Override
+    public PtsetPlatform queryById(Object id) {
+        return super.queryById(id);
+    }
+
+    @CacheEvict
+    @Override
+    public int deleteById(Object id) {
+        return super.deleteById(id);
+    }
+
+    @CacheEvict(key = "#ptsetPlatform.ptId")
+    @Override
+    public int delete(PtsetPlatform ptsetPlatform) {
+        return super.delete(ptsetPlatform);
+    }
+
+}

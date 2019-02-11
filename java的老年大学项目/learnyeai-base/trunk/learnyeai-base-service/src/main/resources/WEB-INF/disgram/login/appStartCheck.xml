@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="appStartCheck" desc="登录-员工小程序启动检查">
+	<snd>
+		<!--<field name="CLIENT_TYPE" desc="操作类型" required="true" comment="IP: IPHONE PD: IPAD  AD: ANDROID  AP: ANDROID PAD"/>
+		<field name="CLIENT_VER_NO" desc="客户端版本" required="true"/>
+		<field name="CLIENT_INFO" desc="客户端详情" required="true"/>
+		<field name="Y_LINE" desc="经度" required="false"/>
+		<field name="X_LINE" desc="纬度" required="false"/>
+		<field name="CUR_ADRESS" desc="当前地址" required="false"/>
+		<field name="AREA_NAME" desc="区县名字" required="false"/>
+		<field name="LAST_LGN_CITY_NAME" desc="登录城市" required="false"/>-->
+	</snd>
+	<!-- 响应报文，可过滤响应信息，并对数据字典进行解析 -->
+	<rcv>
+		<field name="CUST_LOGIN_STATUS" desc="用户登录状态" required="true" comment="1登录、2未登录、3在其它设备登录 4新设备上登录"/>
+		<field name="CUST_ID" desc="用户id"/>
+		<field name="CUST_NAME" desc="姓名"/>
+		<field name="SHORT_NAME" desc="用户昵称"/>
+		<field name="LOGIN_NAME" desc="登录名"/>
+		<field name="CUST_TYPE" desc="客户类型" comment="1客户、2员工"/>
+		<field name="SIGN" desc="个性签名"/>
+		<field name="PHONE" desc="手机号"/>
+		<field name="EMAIL" desc="邮箱"/>
+		<field name="SEX" desc="性别"/>
+		<field name="BIRTHDAY" desc="用户生日"/>
+		<field name="PHOTO" desc="头像"/>
+		<field name="CUST_IS_ADMIN" desc="0否、1是"/>
+		<field name="MCHT_ID" desc="商户id"/>
+		<field name="MCHT_SCHM_ID" desc="商户版本id"/>
+
+		<field name="siteId" desc="站点id"/>
+		<field name="SESSION_TOKEN" desc="登录token"/>
+	</rcv>
+</trans>

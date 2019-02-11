@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delete" desc="学习小组分类分类-删除">
+    <snd>
+        <field name="catId" desc="id多个id用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="批量删除的数目"/>
+    </rcv>
+</trans>

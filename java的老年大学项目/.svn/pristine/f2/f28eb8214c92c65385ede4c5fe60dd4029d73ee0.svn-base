@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="insert" desc="动态-新增">
+    <snd>
+        <field name="content" desc="内容"/>
+        <field name="imgs" desc="图片"/>
+        <field name="type" desc="业务类型"/>
+        <field name="objId" desc="对象id"/>
+        <field name="templateCode" desc="模板编码"/>
+        <field name="rcvUserIds" desc="接收人ids"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+
+    </rcv>
+</trans>

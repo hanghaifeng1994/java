@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weyeyun.rabbitmq.mapper.RabMsgTempTableMapper">
+    <delete id="deleteAll"  >
+        delete from rab_msg_temp_table
+    </delete>
+    <insert id="insertToRabMsg"  >
+        INSERT INTO rab_msg_table (
+        MSG_ID,
+        SERVER_NAME,
+        EXCHANGE,
+        ROUTING_KEY,
+        PAYLOAD,
+        MSG_STATUS,
+        FAIL_TIMES,
+        RETURN_DATE,
+        DEAL_RESULT,
+        DEAL_DATE,
+        CREATE_DATE,
+        LAST_SEND_DATE,
+        LAST_DEAL_Msg_DATE,
+        DEAL_STATUS
+        )
+        SELECT
+        MSG_ID,
+        SERVER_NAME,
+        EXCHANGE,
+        ROUTING_KEY,
+        PAYLOAD,
+        MSG_STATUS,
+        FAIL_TIMES,
+        RETURN_DATE,
+        DEAL_RESULT,
+        DEAL_DATE,
+        CREATE_DATE,
+        LAST_SEND_DATE,
+        LAST_DEAL_Msg_DATE,
+        DEAL_STATUS
+        FROM
+        rab_msg_temp_table
+    </insert>
+</mapper>

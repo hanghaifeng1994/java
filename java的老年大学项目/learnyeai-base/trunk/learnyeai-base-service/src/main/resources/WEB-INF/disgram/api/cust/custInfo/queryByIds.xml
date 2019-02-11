@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryByIds" desc="客户-根据ids查询多个用户(通用)" isCommon="true">
+    <snd>
+        <field name="ids" desc="用户id" requried="true" comment="多个id用逗号分割"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="客户-列表" type="E">
+            <field name="custId" desc="用户id"/>
+            <field name="custName" desc="姓名"/>
+            <field name="shortName" desc="用户昵称"/>
+            <!--<field name="loginName" desc="登录名"/>-->
+            <!--<field name="userStatus" desc="用户状态" comment="N: 正常 D: 普通冻结 C: 注销 E:人工冻结"/>-->
+            <!--<field name="userStatusDesc" xpath="userStatus" type="cons" dictType="CUST_INFO_STATUS"  desc="用户状态描述"/>-->
+            <!--<field name="sign" desc="个性签名"/>-->
+            <field name="phone" desc="手机号"/>
+            <field name="email" desc="邮箱"/>
+            <field name="qq" desc="qq"/>
+            <field name="sex" desc="性别"/>
+            <!--<field name="birthday" desc="用户生日"/>-->
+            <field name="photo" desc="头像" type="res"/>
+        </field-list>
+
+    </rcv>
+</trans>

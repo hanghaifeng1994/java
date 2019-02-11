@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.sh.dao.ShAppletSettingDao">
+    <resultMap id="BaseResultMapExt" type="ShAppletSettingExt">
+        <id property="apltSetId" column="APLT_SET_ID" jdbcType="VARCHAR" />
+        <result property="appId" column="APP_ID" jdbcType="VARCHAR" />
+        <result property="appSecret" column="APP_SECRET" jdbcType="VARCHAR" />
+        <result property="appName" column="APP_NAME" jdbcType="VARCHAR" />
+        <result property="appSigns" column="APP_SIGNS" jdbcType="VARCHAR" />
+        <result property="appAuthRefreshToken" column="APP_AUTH_REFRESH_TOKEN" jdbcType="VARCHAR" />
+        <result property="appAuthInfo" column="APP_AUTH_INFO" jdbcType="VARCHAR" />
+        <result property="wechatMerchantName" column="WECHAT_MERCHANT_NAME" jdbcType="VARCHAR" />
+        <result property="wechatMerchantNum" column="WECHAT_MERCHANT_NUM" jdbcType="VARCHAR" />
+        <result property="wechatMerchantPasswod" column="WECHAT__MERCHANT_PASSWOD" jdbcType="VARCHAR" />
+        <result property="publicNumName" column="PUBLIC_NUM_NAME" jdbcType="VARCHAR" />
+        <result property="publicNumAppid" column="PUBLIC_NUM_APPID" jdbcType="VARCHAR" />
+        <result property="publicNumAppsecrete" column="PUBLIC_NUM_APPSECRETE" jdbcType="VARCHAR" />
+        <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+        <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+        <result property="apltId" column="APLT_ID" jdbcType="VARCHAR" />
+        <result property="apltVerId" column="APLT_VER_ID" jdbcType="VARCHAR" />
+        <result property="appExtJson" column="APP_EXT_JSON" jdbcType="VARCHAR" />
+        <result property="appCodeUploadStatus" column="APP_CODE_UPLOAD_STATUS" jdbcType="CHAR" />
+        <result property="appAuditId" column="APP_AUDIT_ID" jdbcType="VARCHAR" />
+        <result property="appAuditStatus" column="APP_AUDIT_STATUS" jdbcType="CHAR" />
+        <result property="appPubStatus" column="APP_PUB_STATUS" jdbcType="CHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+
+        <result property="mchtName" column="MCHT_NAME" jdbcType="VARCHAR" />
+        <result property="schmEdtName" column="SCHM_EDT_NAME" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="queryByCriteriaExt" parameterType="CriteriaQuery" resultMap="BaseResultMapExt">
+        SELECT sm.`MCHT_NAME`,e.SCHM_EDT_NAME  , a.* FROM   ${schema.interPlat}.SH_APPLET_SETTING a
+        JOIN ${schema.interPlat}.SH_MERCHANT_SCHEME s
+        ON s.`MCHT_SCHM_ID`=a.`MCHT_SCHM_ID`
+        JOIN ${schema.interPlat}.CFG_SCHEME_EDITION e ON e.SCHM_EDT_ID=s.`SCHM_EDT_ID`
+        JOIN ${schema.interPlat}.SH_MERCHANT sm
+        ON sm.`MCHT_ID` =a.`MCHT_ID`
+        <include refid="public.WhereClause4Query" />
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="queryCodeList" resultType="map">
+        SELECT a.APLT_NAME, m.MCHT_NAME
+        ,e.SCHM_EDT_NAME
+        ,sa.APLT_VER_ID
+        ,av.APLT_VER_NAME
+        ,nav.APLT_VER_ID APLT_LAST_VER_ID
+        ,nav.APLT_VER_NAME APLT_LAST_VER_NAME
+        ,sa.APLT_SET_ID
+        ,sa.APP_CODE_UPLOAD_STATUS
+        ,SA.APP_AUDIT_STATUS
+        ,sa.APP_PUB_STATUS
+        ,sa.APP_ID
+        ,nav.APLT_VER_AUTO_ONLINE
+ from ${schema.interPlat}.sh_applet_setting sa
+INNER JOIN ${schema.interPlat}.sh_merchant m ON m.MCHT_ID=sa.MCHT_ID
+INNER JOIN ${schema.interPlat}.sh_merchant_scheme ms on ms.MCHT_SCHM_ID=sa.MCHT_SCHM_ID
+INNER JOIN ${schema.interPlat}.cfg_scheme_edition e ON e.SCHM_EDT_ID=ms.SCHM_EDT_ID
+INNER JOIN ${schema.interPlat}.cfg_applet a on a.APLT_ID=sa.APLT_ID
+LEFT JOIN ${schema.interPlat}.cfg_applet_version nav ON nav.APLT_VER_ID=a.APLT_VER_ID
+LEFT JOIN ${schema.interPlat}.cfg_applet_version av ON av.APLT_VER_ID=sa.APLT_VER_ID
+WHERE m.MCHT_STATUS='1'
+and ms.MCHT_SCHM_STATUS='1'
+        <if test="APLT_ID!=null"> and sa.APLT_ID=#{APLT_ID}</if>
+        <if test="APLT_VER_ID!=null"> and sa.APLT_VER_ID=#{APLT_VER_ID}</if>
+    </select>
+</mapper>

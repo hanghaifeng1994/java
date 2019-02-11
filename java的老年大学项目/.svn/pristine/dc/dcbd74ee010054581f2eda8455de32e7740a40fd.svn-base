@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="班级-资讯-列表" isPage="true" >
+    <snd>
+        <field name="createBy" desc="创建人"/>
+    </snd>
+    <rcv>
+            <field name="articleIds" desc="资讯ids"/>
+    </rcv>
+</trans>

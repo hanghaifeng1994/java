@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="myQueryPage" desc="我的评论-列表" sort="true" isPage="true">
+    <snd>
+
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="对象评论列表" type="E">
+            <field name="cmtId" desc="评论id"/>
+            <field name="objId" desc="对象id"/>
+            <field name="type" desc="类型course资源 resource经验 experience小组 group班级 class证书 cert咨讯 news "/>
+            <field name="content" desc="内容"/>
+            <field name="cmtDate" desc="评论时间"/>
+            <field name="cmtUserName" desc="评论人名称"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="siteId" desc="站点id"/>
+            <field name="photo" desc="用户头像" type="res"/>
+            <field name="createByName" desc="创建人名称" xpath="createBy" type="user"/>
+            <field name="userAuth" desc="用户身份1专家2学员"/>
+        </field-list>
+    </rcv>
+</trans>

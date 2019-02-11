@@ -1,0 +1,29 @@
+package com.learnyeai.activity.service;
+
+import com.learnyeai.activity.model.ActActivityMemer;
+import com.learnyeai.activity.mapper.ActActivityMemerMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActActivityMemerWyService extends BaseService<ActActivityMemer> {
+
+    @Resource
+    private ActActivityMemerMapper actActivityMemerMapper;
+
+    @Override
+    public BaseMapper<ActActivityMemer> getMapper() {
+        return actActivityMemerMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

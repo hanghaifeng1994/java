@@ -1,0 +1,43 @@
+package com.learnyeai.lucene.conf;
+
+/**
+ * Created by zpz on 2018/9/11.
+ */
+public class IndexColumn {
+    private String fieldName; // 字段名
+    private int fieldType; // 字段类型 1long 2double 3string
+    private boolean sort = false; // 是否排序
+    private boolean analy = false; // 是否分词
+
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public int getFieldType() {
+        return fieldType;
+    }
+
+    public void setFieldType(int fieldType) {
+        this.fieldType = fieldType;
+    }
+
+    public boolean isSort() {
+        return sort;
+    }
+
+    public void setSort(boolean sort) {
+        this.sort = sort;
+    }
+
+    public boolean isAnaly() {
+        return analy;
+    }
+
+    public void setAnaly(boolean analy) {
+        this.analy = analy;
+    }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryShowPage" desc="用户所有测验列表 分页的" isPage="true">
+	<snd>
+		<field name="studentUserId" desc="学习人id" required="true" />
+		<field name="testinginfo" desc="是否需要测验信息  0/1" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="用户测验列表">
+			<field name="id" desc="ID" />
+			<field name="studentUserId" desc="学员" />
+			<field name="tsId" desc="测验" />
+			<field name="name" desc="测验名称" />
+			<field name="score" desc="得分" type="F" dolt="1"/>
+			<field name="testNum" desc="测验总次数" />
+			<field name="updateDate" desc="更新时间" />
+		</field-list>
+	</rcv>
+</trans>

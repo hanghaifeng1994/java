@@ -1,0 +1,25 @@
+package com.learnyeai.base.web;
+
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.base.model.CfgFunction;
+import com.learnyeai.base.service.CfgFunctionWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Component
+public class CfgFunctionController extends BaseController<CfgFunction> {
+
+    @Autowired
+    private CfgFunctionWyService cfgFunctionWyService;
+
+    @Override
+    protected BaseService<CfgFunction> getService() {
+        return cfgFunctionWyService;
+    }
+}

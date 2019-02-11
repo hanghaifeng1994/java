@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="userRegist" desc="登录-用户注册">
+    <snd>
+        <field name="REGIST_TYPE" desc="注册类型" required="true" comment="1：物业 2：维保"/>
+        <field name="BUSINESS_NAME" desc="企业名称" required="true"/>
+        <field name="BUSINESS_ADR" desc="公司地址" required="true"/>
+        <field name="BUSINESS_CONTACT" desc="联系人" required="true"/>
+        <field name="BUSINESS_PHONE" desc="联系方式" required="true"/>
+        <field name="EMAIL" desc="邮箱"/>
+        <field name="BUSINESS_CODE" desc="营业执照号码" required="true"/>
+        <field name="BUSINESS_PIC" desc="营业执照照片"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

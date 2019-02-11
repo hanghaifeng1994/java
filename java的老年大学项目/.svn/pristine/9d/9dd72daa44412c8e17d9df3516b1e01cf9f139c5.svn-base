@@ -1,0 +1,432 @@
+package com.learnyeai.learnai.support;
+
+import com.learnyeai.core.consts.ConfigEnum;
+import com.learnyeai.core.utils.CtxCommonUtils;
+import com.learnyeai.learnai.key.KeyFactory;
+import com.learnyeai.learnai.mybatis.DBQuery;
+import com.learnyeai.learnai.mybatis.impl.CriteriaQuery;
+import com.learnyeai.tools.common.BeanMapUtils;
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.tools.common.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ResolvableType;
+import tk.mybatis.mapper.entity.EntityColumn;
+import tk.mybatis.mapper.entity.EntityTable;
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.mapperhelper.EntityHelper;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+
+
+/**
+ * Created by zpz on 2018/4/4.
+ */
+public abstract class BaseService<T extends BaseEntity> {
+
+    protected Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    protected SqlSessionTemplate sqlSessionTemplate;
+
+    @Autowired
+    private CurrentUserInfoDao currentUserInfoDao;
+
+    public abstract BaseMapper<T> getMapper();
+
+    /**
+     * 添加通用的条件
+     * @param t
+     */
+    protected Weekend<T> genSqlExample(T t){
+        Weekend<T> weekend = Weekend.of(getEntityClass());
+        WeekendCriteria<T, Object> criteria = weekend.weekendCriteria();
+        if(isLogicDelete())
+            criteria.andEqualTo(ConfigEnum.BEAN_FIELD_DEL_FLAG, "0");
+        return weekend;
+    }
+
+    protected Weekend<T> genSqlExample(T t, Map params){
+        Weekend<T> weekend = genSqlExample(t);
+        // 添加排序
+        if(params != null){
+            // 格式：a=1&b=0,说明1：升序、0倒序
+            Map<String, String> sortMap = CtxCommonUtils.getSorts(params);
+            for(Iterator<Map.Entry<String, String>> it = sortMap.entrySet().iterator();it.hasNext();){
+                Map.Entry<String, String> o = it.next();
+                if(o.getKey() == null || o.getKey().length()==0)
+                    continue;
+                if("1".equals(o.getValue())) {
+                    weekend.orderBy(o.getKey()).asc();
+                }else {
+                    weekend.orderBy(o.getKey()).desc();
+                }
+            }
+
+        }
+        return weekend;
+    }
+
+    protected CriteriaQuery genSqlQuery(String mainTableAs) {
+        String as = mainTableAs == null?"":mainTableAs + ".";
+        CriteriaQuery c = new CriteriaQuery();
+        if(this.isLogicDelete()) {
+            c.createAndCriteria().equalTo(as + "DEL_FLAG", "0");
+        }
+
+        return c;
+    }
+
+    protected boolean isLogicDelete(){
+        return false;
+    }
+
+    protected void initDelVal(Object entity, boolean isDel){
+
+        if(null == entity)
+            return;
+        if(!isLogicDelete())
+            return;
+
+        String val = isDel ? ConfigEnum.DEL_FLAG_DELETE : ConfigEnum.DEL_FLAG_NORMAL;
+        if(entity instanceof Map){
+            ((Map)entity).put(ConfigEnum.FIELD_DEL_FLAG, val);
+        }else {
+            BeanUtils.setProperty(entity, ConfigEnum.BEAN_FIELD_DEL_FLAG, val, false);
+        }
+    }
+
+    private EntityColumn idCol;
+    private Class entityClass;
+    private EntityTable entityTable;
+
+    private EntityColumn getIdCol(){
+        if(null == entityClass){
+            entityClass = getEntityClass();
+        }
+        Set<EntityColumn> cols = entityTable.getEntityClassPKColumns();
+        if(cols.size() != 1) // 没有主键，或多个主键没办法处理
+            return null;
+        // 获取主键值
+        idCol = cols.iterator().next();
+        return idCol;
+    }
+
+    protected String getIdKey(){
+        if(null == idCol){
+            idCol = getIdCol();
+        }
+        return idCol.getColumn();
+    }
+
+    protected String getIdProp(){
+        if(null == idCol){
+            idCol = getIdCol();
+        }
+        return idCol.getProperty();
+    }
+    protected String getTableName(){
+        if(null == entityClass){
+            entityClass = getEntityClass();
+        }
+        if(null == entityTable.getSchema())
+            return entityTable.getName();
+
+        return entityTable.getSchema()+"." + entityTable.getName();
+    }
+
+    public Class getEntityClass(){
+        if(entityClass != null)
+            return entityClass;
+
+        ResolvableType resolvableType = ResolvableType.forClass(getClass());
+        entityClass = resolvableType.as(BaseService.class).getGenerics()[0].resolve();
+        entityTable = EntityHelper.getEntityTable(entityClass);
+        return entityClass;
+    }
+
+    public Object getId(Object t){
+        String idp = getIdProp();
+        if(null == idp) // 找不到主键属性
+            return null;
+
+        if(t instanceof Map) {
+            if(((Map) t).containsKey(idp))
+                return ((Map) t).get(idp);
+            else
+                return ((Map) t).get("id");
+        } else {
+            try {
+                return PropertyUtils.getProperty(t, idp);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+    }
+
+    public T queryOne(T t) {
+        initDelVal(t,false);
+        T o =  getMapper().selectOne(t);
+        if(null == o)
+            return null;
+        String delVal = BeanUtils.getProperty(o, ConfigEnum.BEAN_FIELD_DEL_FLAG);
+
+        if(ConfigEnum.DEL_FLAG_DELETE.equals(delVal)){
+            return null;
+        }
+        return o;
+    }
+
+    /**
+     * 基本查询，简单使用“等号”查询
+     * @param t
+     * @return
+     */
+    public List<T> queryList4Simple(T t) {
+        // 判断是否是逻辑删除
+        initDelVal(t, false);
+        return getMapper().select(t);
+    }
+
+    /**
+     * 自定义查询条件，
+     * @param t
+     * @param params
+     * @return
+     */
+    public List<T> queryList(T t, Map params) {
+        if(t == null){
+            t = convert2Bean(params);
+        }
+        if(t != null && t.getPage() != null && t.getRows() != null){
+            PageHelper.startPage(t.getPage(),t.getRows());
+        }
+        return queryByExample(t, params);
+    }
+
+    public List<T> queryListPage(T t, Map params) {
+        if(t == null){
+            t = convert2Bean(params);
+        }
+        if(t != null) {
+            t.initPage();
+            PageHelper.startPage(t.getPage(),t.getRows());
+        }
+        return queryByExample(t, params);
+    }
+
+    public MyPage<T> queryPage(T t, Map params) {
+        List<T> list = queryListPage(t, params);
+        MyPage page = new MyPage(list);
+        return page;
+    }
+
+    public int getCount(T t) {
+        initDelVal(t, false);
+        return getMapper().selectCount(t);
+    }
+
+    public List<T> queryAll() {
+//        return getMapper().selectAll();
+        try {
+            T t = (T)getEntityClass().newInstance();
+            return queryList4Simple(t);
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public T queryById(Object id) {
+        T o =  getMapper().selectByPrimaryKey(id);;
+        if(null == o)
+            return null;
+        String delVal = BeanUtils.getProperty(o, ConfigEnum.BEAN_FIELD_DEL_FLAG);
+
+        if(ConfigEnum.DEL_FLAG_DELETE.equals(delVal)){
+            return null;
+        }
+        return o;
+    }
+
+    public boolean exists(Object id) {
+        return getMapper().existsWithPrimaryKey(id);
+    }
+
+    /**
+     * 根据id修改不为空的字段
+     * @param t
+     * @return
+     */
+    public int updateBySelect(T t){
+        return this.getMapper().updateByPrimaryKeySelective(t);
+    }
+    public int save(T t) {
+        int ret = 0;
+
+        Date nowDate = new Date();
+        String curUserCode = currentUserInfoDao.getId();
+
+        updateUpdateEntity(t,nowDate, curUserCode);
+
+        Object id = getId(t);
+
+        if (id == null || id.toString().length() == 0) {
+            // 生成主键
+            id = genId();
+
+            BeanUtils.setProperty(t, getIdProp(), id, true);
+//                initDelVal(t, "0");
+            updateCreateEntity(t, nowDate, curUserCode);
+
+            ret =getMapper().insert(t);
+        } else {
+            ret = getMapper().updateByPrimaryKeySelective(t);
+        }
+        return ret;
+    }
+    public String genId() {
+        getEntityClass();
+        return KeyFactory.getKeyGenerator(entityTable.getSchema()+entityTable.getName()).genNextKey();
+    }
+
+    public int delete(T t) {
+        if(isLogicDelete()){
+            try {
+                initDelVal(t, true);
+                return getMapper().updateByPrimaryKey(t);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
+            }
+        }else {
+            return getMapper().delete(t);
+        }
+    }
+
+    public int deleteById(Object id) {
+        if(isLogicDelete()){
+            T t = null;
+            try {
+                t = (T)getEntityClass().newInstance();
+                BeanUtils.setProperty(t, getIdProp(), id, false);
+                return delete(t);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0;
+            }
+
+        }else {
+            return getMapper().deleteByPrimaryKey(id);
+        }
+    }
+
+    protected List<T> queryByExample(T t, Map params) {
+        if(t == null){
+            t = convert2Bean(params);
+        }
+        Example example = genSqlExample(t, params);
+
+        return getMapper().selectByExample(example);
+    }
+
+    /**
+     * 修改实例的更新人、更新时间
+     * @param entity
+     * @param nowDate
+     * @param curUserCode
+     */
+    protected void updateUpdateEntity(Object entity, Date nowDate, String curUserCode) {
+        if(entity instanceof Map){
+            Map o = ((Map) entity);
+
+            o.put(ConfigEnum.FILED_NAME_UPDATE_DATE, nowDate);
+            if(null != curUserCode) {
+                o.put(ConfigEnum.FILED_NAME_UPDATE_BY, curUserCode);
+            }
+        }else {
+            BeanUtils.setProperty(entity, ConfigEnum.BEAN_FILED_NAME_UPDATE_DATE, nowDate, false);
+            if(null != curUserCode) {
+                BeanUtils.setProperty(entity, ConfigEnum.BEAN_FILED_NAME_UPDATE_BY, curUserCode, false);
+            }
+        }
+
+    }
+    /**
+     * 更新新创建的实体
+     * @param entity 新实体
+     * @param createDate 创建时间
+     * @param curUserCode   创建人
+     */
+    protected void updateCreateEntity(Object entity, Date createDate, String curUserCode) {
+        if(entity instanceof Map){
+            Map o = ((Map) entity);
+
+            o.put(ConfigEnum.FILED_NAME_CREATE_DATE, createDate);
+            if(null != curUserCode) {
+                o.put(ConfigEnum.FILED_NAME_CREATE_BY, curUserCode);
+            }
+            o.put(ConfigEnum.FIELD_DEL_FLAG, ConfigEnum.DEL_FLAG_NORMAL);
+        }else {
+            BeanUtils.setProperty(entity, ConfigEnum.BEAN_FILED_NAME_CREATE_DATE, createDate, false);
+            if(null != curUserCode) {
+                BeanUtils.setProperty(entity, ConfigEnum.BEAN_FILED_NAME_CREATE_BY, curUserCode, false);
+            }
+            BeanUtils.setProperty(entity, ConfigEnum.BEAN_FIELD_DEL_FLAG, ConfigEnum.DEL_FLAG_NORMAL, false);
+        }
+    }
+
+
+    public T convert2Bean(Map params){
+        try {
+            return (T) BeanMapUtils.convertMap(getEntityClass(), params);
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 批量查询
+     * @param ids
+     * @return
+     */
+    public List<T> queryByIds(Object ...ids){
+        List<T> rstList = new ArrayList<T>();
+        for(Object id : ids){
+            T t = this.queryById(id);
+            if(null == t)
+                continue;
+
+            rstList.add(t);
+        }
+        return rstList;
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    public void deleteByids(Object ...ids){
+        for (Object id : ids){
+            deleteById(id);
+        }
+    }
+
+}

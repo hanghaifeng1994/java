@@ -1,0 +1,149 @@
+package com.learnyeai.interact.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+
+/**
+ * 互动次数
+ *
+ * @author yl
+ */
+public class ItaInteractionTimesExt extends BaseEntity {
+
+    /**
+    * id
+    */
+    private String tmId;
+
+    /**
+     * 对象id
+     */
+    private String objId;
+    /**
+     * 类型
+     */
+    private String type;
+    /**
+     * 点赞数
+     */
+    private Long lkNum;
+    /**
+     * 评论数
+     */
+    private Long cmtNum;
+    /**
+     * 收藏数
+     */
+    private Long favNum;
+    /**
+     * 浏览数
+     */
+    private Long browseNum;
+    /**
+     * 商户id
+     */
+    private String mchtId;
+    /**
+     * 商户方案id
+     */
+    private String mchtSchmId;
+
+    private String isLikeStatus;
+
+    private String  isCollStatus;
+
+
+    public String getTmId() {
+        return tmId;
+    }
+
+    public String getIsCollStatus() {
+        return isCollStatus;
+    }
+
+    public void setIsCollStatus(String isCollStatus) {
+        this.isCollStatus = isCollStatus;
+    }
+
+    public String getIsLikeStatus() {
+
+        return isLikeStatus;
+    }
+
+    public void setIsLikeStatus(String isLikeStatus) {
+        this.isLikeStatus = isLikeStatus;
+    }
+
+    public void setTmId(String tmId) {
+        this.tmId = tmId;
+    }
+    public String getObjId() {
+        return objId;
+    }
+
+    public void setObjId(String objId) {
+        this.objId = objId;
+    }
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    public Long getLkNum() {
+        return lkNum;
+    }
+
+    public void setLkNum(Long lkNum) {
+        this.lkNum = lkNum;
+    }
+    public Long getCmtNum() {
+        return cmtNum;
+    }
+
+    public void setCmtNum(Long cmtNum) {
+        this.cmtNum = cmtNum;
+    }
+    public Long getFavNum() {
+        return favNum;
+    }
+
+    public void setFavNum(Long favNum) {
+        this.favNum = favNum;
+    }
+    public Long getBrowseNum() {
+        return browseNum;
+    }
+
+    public void setBrowseNum(Long browseNum) {
+        this.browseNum = browseNum;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+
+    public static class TF {
+        public static String tmId = "tmId";  // id
+        public static String objId = "objId";  // 对象id
+        public static String type = "type";  // 类型
+        public static String lkNum = "lkNum";  // 点赞数
+        public static String cmtNum = "cmtNum";  // 评论数
+        public static String favNum = "favNum";  // 收藏数
+        public static String browseNum = "browseNum";  // 浏览数
+        public static String mchtId = "mchtId";  // 商户id
+        public static String mchtSchmId = "mchtSchmId";  // 商户方案id
+
+    }
+
+}

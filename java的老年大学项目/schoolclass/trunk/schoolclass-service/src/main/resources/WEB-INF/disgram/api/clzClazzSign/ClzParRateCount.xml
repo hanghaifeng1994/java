@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="ClzParRateCount" desc="班级-出勤率统计(饼图)">
+    <snd>
+        <field name="czId" desc="班级id"  required="true"/>
+    </snd>
+    <rcv>
+        <field name="msg" desc="提示"/>
+        <field-list name="result" desc="" type="E">
+            <field name="num" desc="数量"/>
+            <field name="persent" desc="等级"/>
+        </field-list>
+    </rcv>
+</trans>

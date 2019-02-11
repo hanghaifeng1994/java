@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="publish" desc="资讯-发布取消发布">
+    <snd>
+        <field name="articleId" desc="多个咨讯id用英文逗号隔开" required="true"/>
+        <field name="siteId" desc="站点" required="true"/>
+        <field name="pubStatus" desc="0取消发布、1发布" required="true"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="批量操作数量"/>
+        <field name="status" desc="状态0操作成功，1 该站点这条咨讯没有权限管理"/>
+    </rcv>
+</trans>

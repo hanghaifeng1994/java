@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="订单明细-详情">
+    <snd>
+        <field name="ordDetailId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="ordDetailId" desc="订单明细id"/>
+        <field name="orderId" desc="订单id"/>
+        <field name="itemId" desc="项目ID"/>
+        <field name="itemType" desc="项目类型(1:课程;2:商品)"/>
+        <field name="itemname" desc="项目名称"/>
+        <field name="itemnum" desc="项目数量"/>
+        <field name="price" desc="项目单价"/>
+        <field name="totalPrice" desc="项目总价"/>
+        <field name="discount" desc="折扣"/>
+    </rcv>
+</trans>

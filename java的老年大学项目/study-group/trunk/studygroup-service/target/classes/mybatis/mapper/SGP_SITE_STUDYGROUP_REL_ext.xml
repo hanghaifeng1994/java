@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.studygroup.mapper.SgpSiteStudygroupRelMapper">
+        <select id="queryPageManger" parameterType="SgpStudyGroup" resultMap="BaseResultMap">
+            SELECT
+              *
+            FROM
+              SGP_SITE_STUDYGROUP_REL r
+            WHERE 1=1 and EXISTS
+              (SELECT
+                1
+              FROM
+                SGP_CATEGORY_GROUP_REL g
+              WHERE r.`SGP_ID` = g.`SGP_ID`
+            <if test="catId !=null and catId !=''">
+                AND g.`CAT_ID`= #{catId,jdbcType=VARCHAR}
+            </if>
+              )
+            <if test="siteId !=null and siteId !=''">
+                AND   r.`SITE_ID` =#{siteId,jdbcType=VARCHAR}
+            </if>
+                AND r.`MANAGE_STATUS`='1'
+        </select>
+
+        <select id="sendLowerPage" parameterType="SgpStudyGroup" resultMap="BaseResultMap">
+            SELECT
+              *
+            FROM
+              sgp_site_studygroup_rel
+            WHERE CRT_SITE_ID != SITE_ID
+              AND MANAGE_STATUS != '1'
+        </select>
+
+    <select id="queryPageUse" parameterType="SgpSiteStudygroupRel" resultMap="BaseResultMap">
+        SELECT * FROM  sgp_site_studygroup_rel  s
+        WHERE EXISTS(
+        SELECT 1 FROM SGP_CATEGORY_GROUP_REL  c  WHERE c.`SGP_ID`=s.SGP_ID
+        )
+        <if test="siteId !=null" >
+           and site_id=#{siteId,jdbcType=VARCHAR}
+        </if>
+        order by PUB_DATE desc
+    </select>
+</mapper>

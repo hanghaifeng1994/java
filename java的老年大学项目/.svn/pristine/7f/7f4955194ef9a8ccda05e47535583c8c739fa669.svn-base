@@ -1,0 +1,46 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.model.PtsetSite;
+import com.learnyeai.base.mapper.PtsetSiteMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Service
+public class PtsetSiteWyService extends BaseService<PtsetSite> {
+
+    @Resource
+    private PtsetSiteMapper ptsetSiteMapper;
+
+    @Override
+    public BaseMapper<PtsetSite> getMapper() {
+        return ptsetSiteMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    @Override
+    protected Weekend genSqlExample(PtsetSite ptsetSite, Map params) {
+        Weekend weekend = super.genSqlExample(ptsetSite, params);
+        WeekendCriteria<PtsetSite, Object> c = weekend.createCriteriaAddOn();
+        weekend.and(c);
+
+        if(StringUtils.isNotBlank(ptsetSite.getSiteDomain())){
+            c.andEqualTo(PtsetSite::getSiteDomain, ptsetSite.getSiteDomain());
+        }
+
+        return weekend;
+    }
+}

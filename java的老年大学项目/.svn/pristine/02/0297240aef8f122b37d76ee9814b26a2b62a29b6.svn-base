@@ -1,0 +1,39 @@
+package com.learnyeai.album.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.album.model.AbmPhoto;
+import com.learnyeai.album.service.AbmPhotoWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.tools.common.MapUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class AbmPhotoController extends BaseController<AbmPhoto> {
+
+    @Autowired
+    private AbmPhotoWyService abmPhotoWyService;
+
+    @Override
+    protected BaseService<AbmPhoto> getService() {
+        return abmPhotoWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        AbmPhoto ap = abmPhotoWyService.convert2Bean(ctx.getParamMap());
+        String method = CtxHeadUtil.getControllerMethod();
+        if("delete".equals(method)){
+              int  num  =   abmPhotoWyService.deleteall(ap);
+              return MapUtil.newMap("num",num);
+        }
+        return super.execute(ctx);
+    }
+
+}

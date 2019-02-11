@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="insert" desc="班级-资讯-新增">
+    <snd>
+        <field name="czId" desc="班级id" required="true"/>
+        <field name="articleId" desc="资讯id" required="true"/>
+        <field name="createBy" desc="创建人" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

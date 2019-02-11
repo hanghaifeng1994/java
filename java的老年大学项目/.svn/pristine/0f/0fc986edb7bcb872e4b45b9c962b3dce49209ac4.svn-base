@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryManageList" desc="组卷规则的题型出题规则-列表" >
+	<snd>
+		<field name="paperRuleId" desc="所属组卷规则" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="组卷规则-出题规则列表">
+			<field name="questionitemRuleId" desc="id" />
+			<field name="paperRuleId" desc="所属组卷规则" />
+			<field name="itemTypeId" desc="题型"/>
+			<field name="name" desc="题型名称" />
+			<field name="itemType" desc="题型code(ms:单选/dx:多选/pd:判断/tk:填空)" />
+			<field name="orderNum" desc="题型排序" />
+			<field name="queNum" desc="出题数量" />
+			<field name="queScore" desc="单题分值" type="F" dolt="1"/>
+		</field-list>
+	</rcv>
+</trans>

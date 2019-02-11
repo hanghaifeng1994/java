@@ -1,0 +1,587 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="content-type" content="text/html; charset=UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" />
+	<title>报文接口</title>
+	<link rel="stylesheet" href="css/all.css">
+	<script src="js/jquery-1.8.2.js"></script>
+	<script src="js/jquery.easing.1.3.js"></script>
+	<script src="js/plus.js"></script>
+	<script src="js/menu.js"></script>
+	<script src="js/juicer-min.js"></script>
+	<style type="text/css">
+		body {
+			background: #eee;
+		}
+		input{
+			padding-left:4px;
+			line-height: 25px;
+		}
+		H1{
+			font-size:16px;
+		}
+		.hiden{
+			display:none;
+		}
+		#TRAN_AREA button{
+			width: 100%;
+			text-align:left;
+			padding: 4px 4px;
+			overflow-x: hidden;
+			text-overflow :ellipsis ;
+		}
+		.container{
+			display:-moz-box; display:-webkit-box; display:box;
+		}
+		.left-menus{
+			width:200px;
+			margin-left:5px;
+			margin-right:10px;
+		}
+		.main-area{
+			-moz-box-flex:1; -webkit-box-flex:1; box-flex:1;
+		}
+		button.selected{
+			background: #fff;
+		}
+		.form *{
+			line-height: 25px;
+			text-valign: middle;
+		}
+		.label{
+			min-width:150px;
+			display:inline-block;
+		}
+		.label2{
+			min-width:150px;
+			display:inline-block;
+		}
+		#imgCode{
+			width:100px;
+			height:40px;
+		}
+	</style>
+</head>
+<body>
+<div id="TEST_PANEL" align="center">
+	<div align="left" style="padding:10px 0px 0px 10px;height:25px;">
+		<div style="float:left;width:100px"><b>前端应用</b></div>
+		<ul class="group trans_model" data-name="MODO_TYPE" data-group="MODO_TYPE" data-label="模塊">
+			<li data-value="PP">证书服务</li>
+			<li data-value="PP00">证书模板接口</li>
+			<li data-value="PP01">证书接口</li>
+			<li data-value="PP02">用户证书接口</li>
+		</ul>
+	</div>
+	<hr>
+	<div class="container" align="left" style="min-width:1024px;">
+		<div id="TRAN_AREA" class="left-menus" align="center"></div>
+		<div class="main-area">
+			<div align="left">
+				<b>交易路径:</b><input id="TRAN_URL" type="text" size="40" value="" placeholder="请选择交易">&nbsp;&nbsp;
+				<button onclick="test()">測試</button>
+				<button onclick="query()" title="查找交易">查找</button>
+				<button onclick="clean()" title="清理响应">清理</button>
+				<img id="imgCode" src="../common/ImageCode.do" onclick="refreshCode()">
+			</div>
+			<hr>
+			<div align="left">
+				<b>测试数据:</b>
+				<input type="text" id="fileName" size="15" placeholder="输入保存的名称" ><button onclick="save()">保存</button>
+				<select id="testData" onchange="showData(this)"></select>
+				<b>是否是真数据:</b>
+				<input type="checkbox" id="chkIsTrueData" checked>
+			</div>
+			<hr>
+			<div align="left">
+				<h1>交易请求</h1>
+				<div id="REQ_FORM" class="bg01"></div>
+				<table>
+					<tr>
+						<th align="left"><b>请求报文</b></th>
+						<th align="left"><b>响应报文</b></th>
+					</tr>
+					<tr>
+						<td><textarea id="REQ_DATA" rows="10" cols="60">{"ORG_PAR_ID":""}</textarea></td>
+						<td><textarea id="RSP_DATA" rows="10" cols="60"></textarea></td>
+					</tr>
+				</table>
+				<h1>交易响应</h1>
+				<div id="RSP_FORM" class="bg01"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+    /**
+     * 請在此處設置會話創建時需要的客戶號及登錄號
+     */
+    var ctx="";
+
+    // 生成token
+    var sessionToken = Math.floor(Math.random() * 10000000000) + "" ;
+    var uuid = sessionToken;
+    var clientOs = "O";
+
+    function showTimeOut() {
+        alert("session time out");
+    }
+
+    // 更新图片
+    function refreshCode(){
+        var imgCode=document.getElementById("imgCode");
+        imgCode.src= getContextPath() + "/common/ImageCode.do?a="+(new Date().getTime());
+    }
+
+    var showRspDefines=document.getElementById("showRspDefines");
+    var lastBtn=null;
+
+    function loadForm(obj) {
+    	console.log(obj);
+        if(lastBtn){
+            $(lastBtn).removeClass("selected");
+        }
+        lastBtn = obj;
+        var trans = $(obj).addClass("selected");
+        $("#TRAN_URL").val(trans.attr("data-url"));
+        var transConfPath=trans.attr("data-path");
+        $("#RSP_DATA").val("");
+        $("#RSP_FORM").html("");
+        $("#REQ_FORM").html("");
+        $("#REQ_DATA").val("{}");
+        if(transConfPath==""){
+            $("#REQ_FORM").html("*************无报文定义***************");
+            return;
+        }
+        var url = getContextPath() + "/test/transConf.do";
+        var data = { "fullTransId" : transConfPath };
+        var ajax = new TransAjax();
+        ajax.sendPostData(url, JsonToStr(data), function(rpdata) {
+            var data={conf:rpdata};
+            var formTpl=$("#formTpl").html();
+            var html=juicer(formTpl, data);
+            html=html.replace(/null/g,"");
+            $("#REQ_FORM").html(html);
+            $('#SESSION_TOKEN').val(sessionToken);
+            $('#UUID').val(uuid);
+            $('#CLIENT_OS').val(clientOs);
+
+            var rspTpl=$("#rspTpl").html();
+            html=juicer(rspTpl, data);
+            $("#RSP_FORM").html(html);
+            try{
+                afterLoadTransConf();
+            }catch(e){
+                alert(e);
+            }
+        });
+        loadTestData();
+    }
+
+    function afterLoadTransConf(){
+        var form=$("#form");
+        var reqData=$("#REQ_DATA");
+        $("#form .formInput").bind("keyup",function(){
+            initFormJson(form,reqData);
+        });
+        $("#SESSION_TOKEN").bind("keyup",function(){
+            sessionToken = $("#SESSION_TOKEN").val();
+            initFormJson(form,reqData);
+        });
+        $("#CLIENT_OS").bind("keyup",function(){
+            clientOs = $("#CLIENT_OS").val();
+            initFormJson(form,reqData);
+        });
+
+        $("#UUID").bind("keyup",function(){
+            uuid = $("#UUID").val();
+            initFormJson(form,reqData);
+        });
+
+        initFormJson(form,reqData);
+    }
+
+    function initFormJson(form,reqData){
+        var data = getFormJson(form, {});
+        var curDate = new Date();
+
+        var rst = {
+            header:{
+                SESSION_TOKEN: sessionToken,
+                UUID: uuid,
+                CLIENT_OS:clientOs,
+                REQ_TIME:curDate.getTime()
+                //SITE_ID:1
+            },
+            payload: data,
+        };
+        var str = JsonToStr(rst, "\n ");
+        reqData.val(str);
+    }
+
+    function clean() {
+        $("#RSP_DATA").val("");
+    }
+    function getContextPath(){
+        var pathName = document.location.pathname;
+        var index = pathName.substr(1).indexOf("/");
+        var result = pathName.substr(0,index+1);
+        return result;
+    }
+
+    function test() {
+        var reqData=$("#REQ_DATA");
+//		initFormJson($("#form"),reqData);
+        var url = getContextPath() + "/" + $("#TRAN_URL").val();
+        var data = $("#REQ_DATA").val();
+        var isTrue = $('#chkIsTrueData').attr("checked");
+        if(!isTrue){
+            url = getContextPath() + "/data/json/" + $("#TRAN_URL").val();
+            url = url.replace('\.do','\.json');
+        }
+        data = eval("(" + data + ")");
+        /*if(!data.header){
+         data.header = {
+         SESSION_TOKEN: sessionToken,
+         UUID: uuid,
+         CLIENT_OS:clientOs,
+         REQ_TIME:new Date().getTime()
+         };
+         }*/
+
+        data = JsonToStr(data, "\n ");
+        $("#REQ_DATA").val(data);
+        var ajax = new TransAjax();
+        ajax.sendPostData(url, data, function(rpdata) {
+            //alert("-------test callback-----\n" + JsonToStr(rpdata));
+            if(rpdata && rpdata.data && rpdata.data.SESSION_TOKEN)
+                sessionToken = rpdata.data.SESSION_TOKEN;
+            var rst = JsonToStr(rpdata, "\n ");//.replace(/\}/g, "}\n").replace(/\[/g, "[\n");
+            $("#RSP_DATA").val(rst);
+        });
+    }
+
+    //显示历史数据
+    function showData(o) {
+        var value = o.value;
+        $("#REQ_DATA").val(value);
+        var json = eval("(" + value + ")")
+        $(".formInput").each(function() {
+            var name = this.name;
+            $(this).val(json[name] || "");
+        });
+    }
+
+    function save() {
+        var data = $("#REQ_DATA").val();
+        var transCode = $("#TRAN_URL").val();
+        if (data == '' || transCode == '') {
+            alert("没有需要保存的信息");
+        }
+        var url = getContextPath() + "/test/qdzhSave.do?transCode=" + transCode + "&fileName="
+            + $("#fileName").val();
+        var ajax = new TransAjax();
+        ajax.sendPostData(url, data, function(rpdata) {
+            if (rpdata.STATUS == "1") {
+                alert("保存成功！");
+                loadTestData();
+            } else {
+                alert(rpdata.MSG || "保存失败！");
+            }
+        });
+    }
+
+    //加载测试shuj
+    function loadTestData() {
+        var transCode = $("#TRAN_URL").val();
+        var url = getContextPath() + "/test/qdzhFind.do?transCode=" + transCode;
+        var ajax = new TransAjax();
+        ajax.sendPostData(url, "{}", function(rpdata) {
+            var list = rpdata.LIST;
+            var sb = [];
+            sb[sb.length] = "<option></option>";
+            for (var i = 0; i < list.length; i++) {
+                var map = list[i];
+                sb[sb.length] = "<option value="+map.CONTENT+">" + map.NAME
+                    + "</option>";
+            }
+            $("#testData").html(sb.join());
+        });
+
+    }
+
+    function stringLength(str) {
+        return str.replace(/[^\x00-\xff]/g, "**").length;
+    }
+
+    function query(){
+        var filter = $("#TRAN_URL").val();
+        var len2 = stringLength(filter);
+        if(filter.length==len2){
+            loadMenus(null,filter,null);
+        }else{
+            loadMenus(null,null,filter);
+        }
+    }
+
+    $(function() {
+        var panel = $("#TEST_PANEL");
+        var group = panel.find("ul.trans_model>li");
+        group.each(function(index) {
+            $(this).bind("click", function() {
+                $(this).parent().find("li").removeClass("selected");
+                $(this).addClass("selected");
+                var model = $(this).attr("data-value");
+                loadMenus(model);
+            });
+        });
+        if (menus.length < 20) {
+            group.eq(0).click();
+        } else {
+            group.eq(1).click();
+        }
+    });
+
+
+    /**
+     * 时间对象格式化
+     * @param {} mask
+     * @return {}
+     */
+
+    Date.prototype.format = function(mask) {
+        var d = this;
+        var zeroize = function(value, length) {
+            if (!length) length = 2;
+            value = String(value);
+            for (var i = 0, zeros = ''; i < (length - value.length); i++) {
+                zeros += '0';
+            }
+            return zeros + value;
+        };
+        return mask.replace(/"[^"]*"|'[^']*'|\b(?:d{1,4}|M{1,4}|yy(?:yy)?|([hHmMstT])\1?|[lLZ])\b/g, function($0) {
+            switch($0) {
+                case 'd':
+                    return d.getDate();
+                case 'dd':
+                    return zeroize(d.getDate());
+                case 'ddd':
+                    return ['Sun','Mon','Tue','Wed','Thr','Fri','Sat'][d.getDay()];
+                case 'dddd':
+                    return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()];
+                case 'M':
+                    return d.getMonth() + 1;
+                case 'MM':
+                    return zeroize(d.getMonth() + 1);
+                case 'MMM':
+                    return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()];
+                case 'MMMM':
+                    return ['January','February','March','April','May','June','July','August','September','October','November','December'][d.getMonth()];
+                case 'yy':
+                    return String(d.getFullYear()).substr(2);
+                case 'yyyy':
+                    return d.getFullYear();
+                case 'h':
+                    return d.getHours() % 12 || 12;
+                case 'hh':
+                    return zeroize(d.getHours() % 12 || 12);
+                case 'H':
+                    return d.getHours();
+                case 'HH':
+                    return zeroize(d.getHours());
+                case 'm':
+                    return d.getMinutes();
+                case 'mm':
+                    return zeroize(d.getMinutes());
+                case 's':
+                    return d.getSeconds();
+                case 'ss':
+                    return zeroize(d.getSeconds());
+                case 'l':
+                    return zeroize(d.getMilliseconds(), 3);
+                case 'L':
+                    var m = d.getMilliseconds();
+                    if (m > 99)
+                        m = Math.round(m / 10);
+                    return zeroize(m);
+                case 'tt':
+                    return d.getHours() < 12 ? 'am' : 'pm';
+                case 'TT':
+                    return d.getHours() < 12 ? 'AM' : 'PM';
+                case 'Z':
+                    return d.toUTCString().match(/[A-Z]+$/);
+                default:
+                    return $0.substr(1, $0.length - 2);
+            }
+        });
+    };
+</script>
+
+<script type="text/juicer" id="formTpl">
+	<div>
+		<div><b>接口名称：${conf.name } <br>接口描述：${conf.desc } </b></div>
+		<div id="headForm" class="form">
+			<div>
+				<label class="label">token</label>
+				<label class="label2">[SESSION_TOKEN]:</label>
+				<label><input id="SESSION_TOKEN" name="SESSION_TOKEN" data-type="text" class="formInput"
+							data-required="true"> </label>
+						<label>必需项[true]; 最大长度[]; 字典[];</label>
+			</div>
+			<div>
+				<label class="label">设备号</label>
+				<label class="label2">[UUID]:</label>
+				<label><input id="UUID" name="SESSION_TOKEN" data-type="text" class="formInput"
+							data-required="true"></label>
+						<label>必需项[true]; 最大长度[]; 字典[];</label>
+			</div>
+			<div>
+				<label class="label">客户端操作系统</label>
+				<label class="label2">[CLIENT_OS]:</label>
+				<label > <input id="CLIENT_OS" name="SESSION_TOKEN" data-type="text" class="formInput"
+							data-required="true"></label>
+						<label>必需项[true]; 最大长度[]; 字典[I:IOS  A:ANDROID WA小程序 O:OTHER];</label>
+			</div>
+		</div>
+		<hr>
+		<div id="form" class="form">
+		{@each conf.req as item}
+		<div>
+			<label class="label">${item.desc}</label>
+			<label class="label2">[${item.name}]:</label>
+				<label><input name="${item.name}" data-type="text" class="formInput"
+					data-maxlength="${item.length }" data-minlength=""
+					value="${item.defaultValue }"
+					data-required="${item['requred']}"> </label>
+				<label>必需项[${item["requred"]}]; 最大长度[${item.length }]; 字典[${item["comment"]}];</label>
+
+			{@if item.type=='E' || item.type=='OE'}
+				{@each item.children as child}
+           		{@if child.type=="E" || child.type=="OE"}
+           			<div>
+						<label class="label">${child.desc}</label>
+						<label class="label2">---->[${child.name}]:</label>
+						<label>必需项[${child["requred"]}]; </label>
+						<label><b>列表结构${child["type"]}</b></label>
+						<label>字典[${child.comment}]</label>
+		 			 </div>
+		 			 {@each child.children as son}
+		 			 	{@if son.type=="E" || son.type=="OE"}
+           					<div>
+								<label class="label">${son.desc}</label>
+								<label class="label2">-------->[${son.name}]:</label>
+								<label>必需项[${son["requred"]}]; </label>
+								<label><b>列表结构${son["type"]}</b></label>
+								<label>字典[${son.comment}]</label>
+		 			 		</div>
+		 			 		{@each son.children as littleson}
+		 			 			<div>
+			    					<label class="label">${littleson.desc} </label>
+			    					<label class="label2">------------>[${littleson.name}]:</label>
+			    					<label>必需项[${littleson["requred"]}]; </label>
+			    					<label>最大长度[${littleson.length }]; 字典[${littleson["comment"]}];  </label>
+		     					</div>
+		 			 		{@/each}
+           				{@else}
+           					<div>
+			    				<label class="label">${son.desc} </label>
+			    				<label class="label2">-------->[${son.name}]:</label>
+			    				<label>必需项[${son["requred"]}]; </label>
+			    				<label>最大长度[${son.length }]; 字典[${son["comment"]}];  </label>
+		     				</div>
+           				{@/if}
+		 			 {@/each}
+           		{@else}
+           			<div>
+			    		<label class="label">${child.desc} </label>
+			    		<label class="label2">---->[${child.name}]:</label>
+			    		<label>必需项[${child["requred"]}]; </label>
+			    		<label>最大长度[${child.length }]; 字典[${child["comment"]}];  </label>
+		     		</div>
+           		{@/if}
+	        {@/each}
+			{@/if}
+		</div>
+		{@/each}
+		</div>
+	</div>
+</script>
+<script type="text/juicer" id="rspTpl">
+	{@each conf.rsp as item}
+		{@if item.type=="E" || item.type=="OE"}
+		  <div>
+			<label class="label">${item.desc}</label>
+			<label class="label2">[${item.name}]:</label>
+			<label>必需项[${item["requred"]}]; </label>
+			<label><b>列表结构${item["type"]}</b></label>
+			<label>字典[${item.comment}]</label>
+		  </div>
+           {@each item.children as child}
+           		{@if child.type=="E" || child.type=="OE"}
+           			<div>
+						<label class="label">${child.desc}</label>
+						<label class="label2">---->[${child.name}]:</label>
+						<label>必需项[${child["requred"]}]; </label>
+						<label><b>列表结构${child["type"]}</b></label>
+						<label>字典[${child.comment}]</label>
+		 			 </div>
+		 			 {@each child.children as son}
+		 			 	{@if son.type=="E" || son.type=="OE"}
+           					<div>
+								<label class="label">${son.desc}</label>
+								<label class="label2">-------->[${son.name}]:</label>
+								<label>必需项[${son["requred"]}]; </label>
+								<label><b>列表结构${son["type"]}</b></label>
+								<label>字典[${son.comment}]</label>
+		 			 		</div>
+		 			 		{@each son.children as littleson}
+		 			 			<div>
+			    					<label class="label">${littleson.desc} </label>
+			    					<label class="label2">------------>[${littleson.name}]:</label>
+			    					<label>必需项[${littleson["requred"]}]; </label>
+			    					<label>最大长度[${littleson.length }]; 字典[${littleson["comment"]}];  </label>
+		     					</div>
+		 			 		{@/each}
+           				{@else}
+           					<div>
+			    				<label class="label">${son.desc} </label>
+			    				<label class="label2">-------->[${son.name}]:</label>
+			    				<label>必需项[${son["requred"]}]; </label>
+			    				<label>最大长度[${son.length }]; 字典[${son["comment"]}];  </label>
+		     				</div>
+           				{@/if}
+		 			 {@/each}
+           		{@else}
+           			<div>
+			    		<label class="label">${child.desc} </label>
+			    		<label class="label2">---->[${child.name}]:</label>
+			    		<label>必需项[${child["requred"]}]; </label>
+			    		<label>最大长度[${child.length }]; 字典[${child["comment"]}];  </label>
+		     		</div>
+           		{@/if}
+	        {@/each}
+		{@else}
+		  <div>
+			<label class="label">${item.desc}</label>
+			<label class="label2">[${item.name}]:</label>
+			<label>必需项[${item["requred"]}]; </label>
+			<label>最大长度[${item.length }]; 字典[${item["comment"]}];  </label>
+		  </div>
+		{@/if}
+	{@/each}
+</script>
+
+<script type="text/javascript">
+    /* $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', function(_result) {
+     if (remote_ip_info.ret == '1') {
+     alert('国家：' + remote_ip_info.country + ',省：' + remote_ip_info.province + ',市：' + remote_ip_info.city + ',区：' + remote_ip_info.district + ',ISP：' + remote_ip_info.isp + ',类型：' + remote_ip_info.type + ',其他：' + remote_ip_info.desc);
+     } else {
+     alert('没有找到匹配的IP地址信息！');
+     }
+     }); */
+</script>
+</body>
+</html>

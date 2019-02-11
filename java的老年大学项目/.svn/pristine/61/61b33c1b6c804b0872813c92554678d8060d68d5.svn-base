@@ -1,0 +1,29 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.model.CfgFunction;
+import com.learnyeai.base.mapper.CfgFunctionMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Service
+public class CfgFunctionWyService extends WeyeBaseService<CfgFunction> {
+
+    @Resource
+    private CfgFunctionMapper cfgFunctionMapper;
+
+    @Override
+    public BaseMapper<CfgFunction> getMapper() {
+        return cfgFunctionMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="publish" desc="学习小组-发布">
+    <snd>
+        <field name="siteId" desc="id"/>
+        <field name="pubStatus" desc="发布状态"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

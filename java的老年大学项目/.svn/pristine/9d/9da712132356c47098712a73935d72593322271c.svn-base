@@ -1,0 +1,10 @@
+site.one.name=ahstudy
+site.two.name=wxdigital
+site.three.name=test
+
+webservice.site.one.callback.url=http://localhost:8080/ahstudy-webapp
+webservice.site.two.callback.url=http://localhost:8080/digital-webapp
+webservice.site.three.callback.url=
+webservice.exam.callback.url=http://localhost:8081/exam-webapp
+webservice.homework.callback.url=http://localhost:8081/drclHomework
+webservice.course.callback.url=http://localhost:8083/epcourse

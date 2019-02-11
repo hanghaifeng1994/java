@@ -1,0 +1,67 @@
+package com.learnyeai.base.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+
+/**
+ * 短信模板
+ *
+ * @author zhangpz
+ */
+public class SmsTmplVo extends BaseVo {
+
+    /**
+    * ID
+    */
+    private String stId;
+
+    /**
+     * 模板类型
+     */
+    private String stType;
+    /**
+     * 模板编号
+     */
+    private String stNo;
+    /**
+     * 模板内容
+     */
+    private String stCont;
+
+    public String getStId() {
+        return stId;
+    }
+
+    public void setStId(String stId) {
+        this.stId = stId;
+    }
+    public String getStType() {
+        return stType;
+    }
+
+    public void setStType(String stType) {
+        this.stType = stType;
+    }
+    public String getStNo() {
+        return stNo;
+    }
+
+    public void setStNo(String stNo) {
+        this.stNo = stNo;
+    }
+    public String getStCont() {
+        return stCont;
+    }
+
+    public void setStCont(String stCont) {
+        this.stCont = stCont;
+    }
+
+    public static class TF {
+        public static String stId = "stId";  // ID
+        public static String stType = "stType";  // 模板类型
+        public static String stNo = "stNo";  // 模板编号
+        public static String stCont = "stCont";  // 模板内容
+
+    }
+
+}

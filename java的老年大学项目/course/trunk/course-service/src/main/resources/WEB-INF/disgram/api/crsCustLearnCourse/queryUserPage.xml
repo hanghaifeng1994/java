@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryShowPage" desc="课程-课程最近学习人员" isPage="true">
+	<snd>
+		<field name="csId" desc="课程id" required="true"/>
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="用户列表">
+			<field name="studyUserId" desc="用户id" />
+			<!-- <field name="studyUserName" desc="用户名称" /> -->
+			<field name="createDate" desc="学习时间"/>
+		</field-list>
+	</rcv>
+</trans>

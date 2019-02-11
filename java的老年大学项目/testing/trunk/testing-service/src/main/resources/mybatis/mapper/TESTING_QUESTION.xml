@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.testing.mapper.TestingQuestionMapper">
+    <resultMap id="BaseResultMap" type="TestingQuestion">
+    <id property="questionId" column="QUESTION_ID" jdbcType="VARCHAR" />
+
+    <result property="twoSectionId" column="TWO_SECTION_ID" jdbcType="VARCHAR" />
+    <result property="oneSectionId" column="ONE_SECTION_ID" jdbcType="VARCHAR" />
+    <result property="threeSectionId" column="THREE_SECTION_ID" jdbcType="VARCHAR" />
+    <result property="stemContent" column="STEM_CONTENT" jdbcType="VARCHAR" />
+    <result property="answerDesc" column="ANSWER_DESC" jdbcType="VARCHAR" />
+    <result property="sectionId" column="SECTION_ID" jdbcType="VARCHAR" />
+    <result property="qpId" column="QP_ID" jdbcType="VARCHAR" />
+    <result property="itemTypeId" column="ITEM_TYPE_ID" jdbcType="VARCHAR" />
+    <result property="onlyCode" column="ONLY_CODE" jdbcType="VARCHAR" />
+    <result property="version" column="VERSION" jdbcType="DECIMAL" />
+    <result property="newversion" column="NEWVERSION" jdbcType="CHAR" />
+    <result property="disabled" column="DISABLED" jdbcType="CHAR" />
+    <result property="itemPubStatus" column="ITEM_PUB_STATUS" jdbcType="CHAR" />
+    <result property="itemPubDate" column="ITEM_PUB_DATE" jdbcType="TIMESTAMP" />
+    <result property="itemAuditId" column="ITEM_AUDIT_ID" jdbcType="VARCHAR" />
+    <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        QUESTION_ID,TWO_SECTION_ID,ONE_SECTION_ID,THREE_SECTION_ID,STEM_CONTENT,
+        ANSWER_DESC,SECTION_ID,QP_ID,ITEM_TYPE_ID,ONLY_CODE,
+        VERSION,NEWVERSION,DISABLED,ITEM_PUB_STATUS,ITEM_PUB_DATE,
+        ITEM_AUDIT_ID,DEL_FLAG,CREATE_BY,CREATE_DATE,UPDATE_BY,
+        UPDATE_DATE
+    </sql>
+
+
+    <sql id="TableClause"> ${}.TESTING_QUESTION </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

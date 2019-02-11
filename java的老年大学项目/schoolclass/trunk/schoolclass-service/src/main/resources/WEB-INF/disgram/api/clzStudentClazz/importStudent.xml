@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="importStudent" desc="批量导入学员">
+	<snd>
+		<field name="fileId" desc="导入的文件id" required="true" />
+		<field name="czId" desc="班级id" required="true" />
+		<field name="normal" desc="0不直接成功报名、1 直接报名成功" required="true" />
+	</snd>
+	<rcv>
+		<field name="status" desc="0:失败，1:成功" />
+	</rcv>
+</trans>

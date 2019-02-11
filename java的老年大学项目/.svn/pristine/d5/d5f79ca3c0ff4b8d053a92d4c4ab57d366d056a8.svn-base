@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="sendLowerPage" desc="学习小组-下发列表" sorts="true" isPage="true">
+    <snd>
+        <field name="siteIds" desc="站点"/>
+        <field name="catId" desc="分类id"/>
+        <field name="sgpName" desc="小组名称"/>
+        <field name="startDate" desc="开始日期"/>
+        <field name="endDate" desc="结束日期"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="主站下发子站列表" type="E">
+            <field name="sgpId" desc="id"/>
+            <field name="sgpName" desc="小组名称"/>
+            <field name="sgpInfo" desc="简介"/>
+            <field name="sgpContent" desc="小组介绍"/>
+            <field name="sgpPhoto" desc="封面"/>
+            <field name="sgpQq" desc="qq群"/>
+            <field name="sgpStatus" desc="0提交、1审核中、2审核通过、3审核失败"/>
+            <field name="auditId" desc="审核id"/>
+            <field name="sgpUserNum" desc="加入人数"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+            <field name="siteId" desc="站点"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="talentNum" desc="才艺数"/>
+            <field name="experienceNum" desc="经验数"/>
+        </field-list>
+    </rcv>
+</trans>

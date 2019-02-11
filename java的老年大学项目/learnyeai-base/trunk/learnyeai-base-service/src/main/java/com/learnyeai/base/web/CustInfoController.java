@@ -1,0 +1,211 @@
+package com.learnyeai.base.web;
+
+import com.learnyeai.base.api.util.BaseCons;
+import com.learnyeai.base.api.vo.CustInfoVo;
+import com.learnyeai.base.model.CustInfo;
+import com.learnyeai.base.service.CfgFunctionWyService;
+import com.learnyeai.base.service.CustInfoWyService;
+import com.learnyeai.base.utils.DtHelps;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.learnai.support.*;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 客户
+ * @author zhangpz
+ */
+@Component
+public class CustInfoController extends BaseController<CustInfo> {
+    @Autowired
+    private CustInfoWyService custInfoService;
+    @Autowired
+    private CfgFunctionWyService functionWyService;
+
+    @Override
+    protected BaseService<CustInfo> getService() {
+        return custInfoService;
+    }
+
+    @Override
+    protected Object doDispached(IBusinessContext context, String method) {
+        Object rst = null;
+        rst = super.doDispached(context, method);
+
+        if(method.equals("enableUser"))
+            this.enableUser(context);
+        else if(method.equals("freezeUser"))
+            this.freezeUser(context);
+        else if(method.equals("queryStaffPage"))
+            rst = this.queryStaffPage(context);
+        else if(method.equals("saveStaff"))
+            rst = this.saveStaff(context);
+        else if(method.equals("saveStaffSiteRole"))
+            this.saveStaffSiteRole(context);
+        else if(method.equals("queryCustPage"))
+            rst = this.queryCustPage(context);
+        else if(method.equals("saveCust"))
+            rst = this.saveCust(context);
+        else if (method.equals("resetPassword"))
+            this.resetPassword(context);
+        else if(method.equals("queryStaffSiteRole"))
+            rst = this.queryStaffSiteRole(context);
+        else if(method.equals("queryUserMngMenuTree"))
+            rst = this.queryUserMngMenuTree(context);
+        else if(method.equals("queryByIds"))
+            rst = this.queryByIds(context);
+        return rst;
+    }
+
+
+    public List queryStaffPage(IBusinessContext ctx) {
+        // 添加客户类型
+        ctx.setParam(CustInfoVo.CF.custType, BaseCons.CUST_INFO_TYPE.YG.getVal());
+
+        MyPage rstPage = custInfoService.queryStaffPage(ctx.getParamMap());
+        return rtnPageList4Report(rstPage);
+    }
+
+    /**
+     * 保存员工信息
+     * @param ctx
+     */
+    public Object saveStaff(IBusinessContext ctx) {
+        CustInfo t = this.getService().convert2Bean(ctx.getParamMap());
+        if(t.getCustId() == null) {
+            if(t.getLoginName() == null || t.getPassword() == null){
+                throw AresRuntimeException.build("custinfo.add.loginName_password_empty").iniMessage("用户名密码不能为空");
+            }
+            // 添加客户类型
+            t.setCustType(BaseCons.CUST_INFO_TYPE.YG.getVal());
+            t.setUserStatus(BaseCons.CUST_INFO_STATUS.N.getVal());
+            // 加密
+            String pass = t.getPassword();
+            if(null != pass){
+                pass = DtHelps.entryptPassword(pass);
+            }
+            t.setPassword(pass);
+        }else {
+            t.setLoginName(null);
+            t.setPassword(null);
+            t.setCustType(null);
+            t.setUserStatus(null);
+        }
+        custInfoService.save(t);
+        return t;
+    }
+
+    public Map queryStaffSiteRole(IBusinessContext ctx){
+        String custId = ctx.getParam("custId");
+        Map rst = new HashMap();
+        List<String> roleIdList = custInfoService.queryStaffRoleIds(custId);
+        List<String> siteIdList = custInfoService.queryStaffMngSiteIds(custId);
+        String roleIds = StringUtils.join(roleIdList, ",");
+        String siteIds = StringUtils.join(siteIdList, ",");
+
+        rst.put("roleIds", roleIds);
+        rst.put("siteIds", siteIds);
+        return rst;
+    }
+
+    /**
+     * 保存员工站点、角色
+     * @param ctx
+     */
+    public void saveStaffSiteRole(IBusinessContext ctx){
+        String siteIds= ctx.getParam("siteIds");
+        String roleIds = ctx.getParam("roleIds");
+        String custId = ctx.getParam("custId");
+        String[] siteIdArr = siteIds.split(",");
+        String[] roleIdArr = roleIds.split(",");
+        custInfoService.saveStaffSiteRole(custId,roleIdArr, siteIdArr);
+    }
+
+
+    public List queryCustPage(IBusinessContext ctx) {
+        // 添加客户类型
+        ctx.setParam(CustInfoVo.CF.custType, BaseCons.CUST_INFO_TYPE.KH.getVal());
+        return super.queryPage(ctx);
+    }
+
+    public Object saveCust(IBusinessContext ctx) {
+        CustInfo t = this.getService().convert2Bean(ctx.getParamMap());
+        if(t.getCustId() == null) {
+            if(t.getLoginName() == null || t.getPassword() == null){
+                throw AresRuntimeException.build("custinfo.add.loginName_password_empty").iniMessage("用户名密码不能为空");
+            }
+            // 添加客户类型
+            t.setCustType(BaseCons.CUST_INFO_TYPE.KH.getVal());
+            t.setUserStatus(BaseCons.CUST_INFO_STATUS.N.getVal());
+            // 加密
+            String pass = t.getPassword();
+            if(null != pass){
+                pass = DtHelps.entryptPassword(pass);
+            }
+            t.setPassword(pass);
+
+        }else {
+            t.setPassword(null);
+            t.setCustType(null);
+            t.setUserStatus(null);
+            t.setLoginName(null);
+        }
+
+        custInfoService.save(t);
+        return t;
+    }
+
+
+    @Override
+    public List queryPage(IBusinessContext ctx) {
+        // 添加客户类型
+        ctx.setParam(CustInfoVo.CF.custType, BaseCons.CUST_INFO_TYPE.KH.getVal());
+        return super.queryPage(ctx);
+    }
+
+    @Override
+    public Object save(IBusinessContext ctx) {
+        // 添加客户类型
+        ctx.setParam(CustInfoVo.CF.custType, BaseCons.CUST_INFO_TYPE.KH.getVal());
+        return super.save(ctx);
+    }
+    //
+    public void enableUser(IBusinessContext ctx){
+        String custIds = ctx.getParam("custIds");
+        String arr[] = custIds.split(",");
+        for(String ss : arr) {
+            custInfoService.enableUser(ss);
+        }
+    }
+
+    public void freezeUser(IBusinessContext ctx){
+
+        String custIds = ctx.getParam("custIds");
+        String arr[] = custIds.split(",");
+        for(String ss : arr) {
+            custInfoService.freezeUser4Sys(ss);
+        }
+    }
+    public void resetPassword(IBusinessContext ctx){
+        String custId = ctx.getParam(CustInfoVo.CF.custId);
+        String password = ctx.getParam(CustInfoVo.CF.password);
+        custInfoService.resetPassword(custId, password);
+    }
+
+    /**
+     * 查询用户后管菜单
+     * @param ctx
+     * @return
+     */
+    public Object queryUserMngMenuTree(IBusinessContext ctx){
+        String custId = ctx.getParam("custId");
+        return functionWyService.queryUserMngMenuTree(custId);
+    }
+
+}

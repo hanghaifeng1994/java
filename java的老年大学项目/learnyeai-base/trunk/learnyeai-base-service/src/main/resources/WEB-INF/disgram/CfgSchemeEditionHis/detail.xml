@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="方案版本历史-详情">
+    <snd>
+        <field name="schmEdtHisId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="schmEdtHisId" desc="方案版本历史id"/>
+        <field name="schmEdtHisStatus" desc="版本状态：0未添加升级信息 1已添加升级信息"/>
+        <field name="schmEdtHisRemark" desc="版本升级备注"/>
+        <field name="schmEdtModStatus" desc="编辑状态0未编辑、1修改版本信息、2修改功能包、3版本信息功能包都修改了"/>
+        <field name="schmEdtId" desc="方案版本id"/>
+        <field name="schmEdtName" desc="方案版本名称"/>
+        <field name="schmEdtDesc" desc="版本描述"/>
+        <field name="schmEdtPhoto" desc="图片"/>
+        <field name="schmEdtGrade" desc="版本级别"/>
+        <field name="schmId" desc="方案id"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+    </rcv>
+</trans>

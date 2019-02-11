@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="modifyStatus" desc="证书模板-批量启用/取消启用">
+	<snd>
+		<field name="tpId" desc="证书模板id 多个id用英文逗号隔开" required="true" />
+		<field name="tpStatus" desc="是否启用" required="true" />
+	</snd>
+	<rcv>
+		<field name="status" desc="状态 0:成功，1:失败" />
+		<field name="num" desc="数量" />
+	</rcv>
+</trans>

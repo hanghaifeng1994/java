@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryManagePage" desc="订单-可管理列表" isPage="true">
+	<snd>
+		<field name="sites" desc="站点id 多个id逗号分开" />
+		<field name="userId" desc="下单人id" />
+		<field name="name" desc="订单名称" />
+		<field name="sn" desc="订单号" />
+		<field name="userName" desc="下单人姓名" />
+		<field name="idcard" desc="下单人身份证" />
+		<field name="type" desc="订单类型1:个人订单;2:集体订单" />
+		<field name="status" desc="状态" />
+		<!-- <field name="createStartDate" desc="生成开始时间" /> <field name="createEndDate" 
+			desc="生成结束时间" /> <field name="payStartDate" desc="支付开始时间" /> <field name="payEndDate" 
+			desc="支付结束时间" /> -->
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="订单列表">
+			<field name="orderId" desc="订单id" />
+			<field name="name" desc="名称" />
+			<field name="sn" desc="订单号" />
+			<field name="userId" desc="下单人id" />
+			<field name="czId" desc="班级id" />
+			<field name="userName" desc="下单人姓名" />
+			<field name="idcard" desc="下单人身份证" />
+			<field name="batchId" desc="批次id" />
+			<field name="type" desc="订单类型1:个人订单;2:集体订单" />
+			<field name="orderType" desc="订单类型1:购买课程;2:班级报名" />
+			<field name="status" desc="订单状态1:待付状态;2:过期作废;3:完成订单;6:退单" />
+			<field name="needPrice" desc="订单应收" type="F" dolt="1"/>
+			<field name="realPrice" desc="订单实收" type="F" dolt="1"/>
+			<field name="discount" desc="折扣" type="F" dolt="1"/>
+			<field name="payType" desc="支付方式1:线上;2:线下" />
+			<field name="xyk" desc="是否信用卡" />
+			<field name="payAppType" desc="下单应用类型（web/app/wxmapp）" />
+			<field name="factPayAppType" desc="支付应用类型（web/app/wxmapp）" />
+			<field name="fqStatus" desc="是否废弃订单" />
+			<field name="payPath" desc="支付平台(wx/ali/union)" />
+			<field name="paySource" desc="支付途径1:银行付款;2:现场支付;3:在线支付" />
+			<field name="remark" desc="订单付款备注" />
+			<field name="payOperator" desc="支付操作者" />
+			<field name="endTime" desc="订单结束时间" />
+			<field name="upopTime" desc="到支付平台的订单时间" />
+			<field name="fqTime" desc="废弃时间或失效时间" />
+			<field name="payDate" desc="支付时间" />
+			<field name="createDate" desc="创建时间" />
+			<field name="updateDate" desc="更新时间" />
+			<field name="siteId" desc="站点" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+		</field-list>
+	</rcv>
+</trans>

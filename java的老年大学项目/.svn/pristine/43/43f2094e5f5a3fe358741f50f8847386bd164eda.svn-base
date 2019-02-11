@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.learnbehavior.mapper.StdStudyObjectStatisticsMapper">
+    <resultMap id="BaseResultMap" type="StdStudyObjectStatistics">
+    <id property="sosId" column="SOS_ID" jdbcType="VARCHAR" />
+
+    <result property="objId" column="OBJ_ID" jdbcType="VARCHAR" />
+    <result property="type" column="TYPE" jdbcType="VARCHAR" />
+    <result property="studyTime" column="STUDY_TIME" jdbcType="DECIMAL" />
+    <result property="studyNum" column="STUDY_NUM" jdbcType="DECIMAL" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        SOS_ID,OBJ_ID,TYPE,STUDY_TIME,STUDY_NUM,
+        CREATE_DATE,UPDATE_DATE,SITE_ID,MCHT_ID,MCHT_SCHM_ID
+    </sql>
+
+
+    <sql id="TableClause"> ${}.STD_STUDY_OBJECT_STATISTICS </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.schoolclass.mapper.ClzStudentClazzMapper">
+    <resultMap id="BaseResultMap" type="ClzStudentClazz">
+    <id property="scId" column="SC_ID" jdbcType="VARCHAR" />
+
+    <result property="custId" column="CUST_ID" jdbcType="VARCHAR" />
+    <result property="czId" column="CZ_ID" jdbcType="VARCHAR" />
+    <result property="czCerted" column="CZ_CERTED" jdbcType="CHAR" />
+    <result property="custNickname" column="CUST_NICKNAME" jdbcType="VARCHAR" />
+    <result property="normal" column="NORMAL" jdbcType="CHAR" />
+    <result property="singupDate" column="SINGUP_DATE" jdbcType="TIMESTAMP" />
+    <result property="process" column="PROCESS" jdbcType="DECIMAL" />
+    <result property="examScore" column="EXAM_SCORE" jdbcType="DECIMAL" />
+    <result property="certed" column="CERTED" jdbcType="CHAR" />
+    <result property="ucId" column="UC_ID" jdbcType="VARCHAR" />
+    <result property="studylengthFinished" column="STUDYLENGTH_FINISHED" jdbcType="CHAR" />
+    <result property="mustStudylengthFinished" column="MUST_STUDYLENGTH_FINISHED" jdbcType="CHAR" />
+    <result property="selStudylengthFinished" column="SEL_STUDYLENGTH_FINISHED" jdbcType="CHAR" />
+    <result property="examScoreFinished" column="EXAM_SCORE_FINISHED" jdbcType="CHAR" />
+    <result property="finished" column="FINISHED" jdbcType="CHAR" />
+    <result property="finishedDate" column="FINISHED_DATE" jdbcType="TIMESTAMP" />
+    <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+    <result property="userAuth" column="USER_AUTH" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        SC_ID,CUST_ID,CZ_ID,CZ_CERTED,CUST_NICKNAME,
+        NORMAL,SINGUP_DATE,PROCESS,EXAM_SCORE,CERTED,
+        UC_ID,STUDYLENGTH_FINISHED,MUST_STUDYLENGTH_FINISHED,SEL_STUDYLENGTH_FINISHED,EXAM_SCORE_FINISHED,
+        FINISHED,FINISHED_DATE,SITE_ID,USER_AUTH
+    </sql>
+
+
+    <sql id="TableClause"> ${}.CLZ_STUDENT_CLAZZ </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

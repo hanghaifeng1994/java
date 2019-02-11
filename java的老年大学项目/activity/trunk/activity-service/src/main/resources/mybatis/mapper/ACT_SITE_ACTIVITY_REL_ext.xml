@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.activity.mapper.ActSiteActivityRelMapper">
+    <delete id="deleteBySiteIdAndActId" parameterType="ActActivity">
+        DELETE
+        FROM
+          act_site_activity_rel
+        WHERE site_id = #{siteId}
+          AND act_id =#{actId}
+    </delete>
+    <update id="updateBySelective" parameterType="ActCategoryActivity" >
+        update act_site_activity_rel
+        <set >
+            <if test="actAsName != null" >
+                ACT_AS_NAME = #{actAsName,jdbcType=VARCHAR},
+            </if>
+            <if test="actManageStatus != null" >
+                ACT_MANAGE_STATUS = #{actManageStatus,jdbcType=CHAR},
+            </if>
+            <if test="actPubStatus != null" >
+                ACT_PUB_STATUS = #{actPubStatus,jdbcType=CHAR},
+            </if>
+            <if test="actPubDate != null" >
+                ACT_PUB_DATE = #{actPubDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actCrtSiteId != null" >
+                ACT_CRT_SITE_ID = #{actCrtSiteId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where SITE_ID = #{siteId,jdbcType=VARCHAR}
+        and ACT_ID = #{actId,jdbcType=VARCHAR}
+    </update>
+    <select id="queryPageByUse" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        SELECT
+          *
+        FROM
+          act_site_activity_rel r
+        WHERE EXISTS
+          (SELECT
+            *
+          FROM
+            act_category_activity a
+          WHERE r.`ACT_ID` = a.`ACT_ID`
+           <if test="t.catId !=null and t.catId !=''">
+            and   a.CAT_ID =#{t.catId,jdbcType=VARCHAR}
+           </if>
+          )
+        <if test="siteIds !=null">
+            <foreach collection="siteIds" item="siteId" open="and r.SITE_ID in(" separator="," close=")">
+                '${siteId}'
+            </foreach>
+        </if>
+        ORDER BY ACT_PUB_DATE DESC
+    </select>
+</mapper>

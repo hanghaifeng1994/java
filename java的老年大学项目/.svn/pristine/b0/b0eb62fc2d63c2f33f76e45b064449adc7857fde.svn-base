@@ -1,0 +1,333 @@
+package com.learnyeai.news.service;
+
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.mq.NewsMq;
+import com.learnyeai.news.mapper.NewsNewsSiteRelMapper;
+import com.learnyeai.news.model.NewsArticle;
+import com.learnyeai.news.mapper.NewsArticleMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.news.model.NewsCategory;
+import com.learnyeai.news.model.NewsNewsSiteRel;
+import com.learnyeai.news.util.NewsUtil;
+import com.learnyeai.rabbitmq.bean.RabbitMetaMessage;
+import com.learnyeai.rabbitmq.sender.RabbitSender;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import com.learnyeai.tools.common.JsonMapper;
+import com.learnyeai.tools.common.JsonUtils;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.*;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class NewsArticleWyService extends BaseService<NewsArticle> {
+
+    @Resource
+    private NewsArticleMapper newsArticleMapper;
+
+    @Autowired
+    private RabbitSender rabbitSender;
+
+    @Resource
+    private NewsNewsSiteRelMapper newsNewsSiteRelMapper;
+    @Resource
+    private NewsNewsSiteRelWyService newsNewsSiteRelWyService;
+
+    @Override
+    public BaseMapper<NewsArticle> getMapper() {
+        return newsArticleMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    @Override
+    protected Weekend genSqlExample(NewsArticle t, Map params) {
+        Weekend w=super.genSqlExample(t,params);
+        WeekendCriteria<NewsArticle,Object> c =w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getArticleId())){
+            String[] articleIds=(t.getArticleId()).split(",");
+           c.andIn(NewsArticle::getArticleId,Arrays.asList(articleIds));
+        }
+        if(StringUtils.isNotBlank(t.getTitle())){
+            c.andEqualTo(NewsArticle::getTitle,t.getTitle());
+        }
+        if(StringUtils.isNotBlank(t.getPubStatus())){
+            c.andEqualTo(NewsArticle::getPubStatus,t.getPubStatus());
+        }
+        if(t.getWeight()!=null){
+            c.andEqualTo(NewsArticle::getWeight,t.getWeight());
+        }
+        if(StringUtils.isNotBlank(t.getPosid())){
+            c.andEqualTo(NewsArticle::getPosid,t.getPosid());
+        }
+        if(StringUtils.isNotBlank(t.getSiteId())){
+            c.andEqualTo(NewsArticle::getSiteId,t.getSiteId());
+        }
+        w.and(c);
+        w.setOrderByClause("WEIGHT asc");
+        return w;
+    }
+
+    /**
+     * 查询 管理员管理的所有咨讯
+     * @param na
+     * @return
+     */
+    public List<NewsArticle> queryPageByCriteria(NewsArticle na){
+        String[] catIds=(na.getCatId()).split(",");
+        na.setCatIds(catIds);
+        List<NewsArticle> list=newsArticleMapper.queryPageByCriteria(na);
+        MyPage<NewsArticle> page=new MyPage<>(list);
+        return rtnPageList4Report(page);
+    }
+
+    /**
+     * 需要查询出每条咨讯的管理状态
+     * 使用n+1 查询
+     * @param na
+     * @return
+     */
+    public List<NewsArticle> queryPageExt(NewsArticle na){
+        MyPage<NewsArticle> page=super.queryPage(na,new HashMap());
+        List<NewsArticle> list=page.getList();
+        for (NewsArticle newsa:list ){
+            NewsNewsSiteRel nnsr=new NewsNewsSiteRel();
+            List<NewsNewsSiteRel> nnsrList= newsNewsSiteRelWyService.queryList(nnsr,new HashMap());
+            //n+1 查询
+            if(nnsrList.size()>0){
+                newsa.setNewsManageStatus((nnsrList.get(0)).getNewsManageStatus());
+            }else{
+                newsa.setNewsManageStatus("0");
+            }
+        }
+        page.setList(list);
+        return rtnPageList4Report(page);
+    }
+
+    /**
+     * 咨讯新增或者保存
+     * @return 0 操作成功，1 咨讯提交后不能修改
+     */
+    public Map<String,Object> saveDate(NewsArticle na){
+        Map<String,Object> map=new HashMap();
+        if(StringUtils.isNotBlank(na.getAuditId())){
+            NewsArticle newsArticle=super.queryById(na.getArticleId());
+            if(("0".equals(newsArticle.getStatus())||("3".equals(newsArticle.getStatus())))){
+                map.put("status","1");
+                return map;
+            }
+        }else{
+            na.setStatus("0");
+        }
+        super.save(na);
+        map.put("status","1");
+        return map;
+    }
+
+    public static List rtnPageList4Report(MyPage page) {
+        if (page.getTotal() > -1L) {
+            ThreadContext.put("totalCount", page.getTotal());
+        }
+        return page.getList();
+    }
+
+    /**
+     * 批量删除
+     * @return num 删除成功的数量，
+     */
+    @Transactional
+    public Map<String,Object> deleteBatch(NewsArticle na){
+        String articleIds=na.getArticleId();
+        String[] articleIdArr=articleIds.split(",");
+        Map<String ,Object> map=new HashMap<>();
+        int num=0;
+        try{
+            for (String articleId:articleIdArr){
+                NewsArticle newsA=super.queryById(articleId);
+                super.deleteById(articleId);
+                num++;
+            }
+        }catch (Exception e){
+            e.getMessage();
+            e.printStackTrace();
+        }
+        logger.info("批量删除了"+num +"条数据");
+        map.put("num",num);
+        return map;
+    }
+
+    /**
+     * 提交审核
+     * @param ctx
+     * @return
+     */
+    @Transactional
+    public String audit(IBusinessContext ctx) throws WeyeRabbitException {
+        String jstr=  JsonUtils.objectToJson(ctx.getParamMap());
+        NewsMq newsMq=JsonUtils.jsonToObject(jstr,NewsMq.class);
+        NewsArticle na=new NewsArticle();
+        na.setAuditId(newsMq.getObjId());
+        na.setStatus(newsMq.getStatus());
+        super.save(na);
+        //获取消息发送对象
+        RabbitMetaMessage message=NewsUtil.toParseRabbitMetaMessage(newsMq);
+        rabbitSender.send(message);
+        return na.getArticleId();
+    }
+
+    /**
+     * 批量发布/取消发布
+     * status 0 操作成功 1操作失败
+     * @return
+     */
+    @Transactional
+    public Map<String ,Object> publishBatch(NewsArticle na){
+        Map<String,Object> map=new HashMap<>();
+        //0取消发布 1发布
+        String pubStatus=na.getPubStatus();
+        String[] articleIds=(na.getArticleId()).split(",");
+        String[] siteIds=(na.getSiteId()).split(",");
+        NewsArticle newsArticle= new NewsArticle();
+        newsArticle.setPubStatus(na.getPubStatus());
+        for(int i =0;i<articleIds.length;i++){
+            newsArticle.setSiteId(siteIds[i]);
+            newsArticle.setArticleId(articleIds[i]);
+            if("1".equals(pubStatus)){
+                publish(newsArticle);
+            }else if("0".equals(pubStatus)){
+              boolean flag=  cancelPublish(newsArticle);
+              if(flag=false){
+                   map.put("status","1");
+                   return map;
+              }
+            }
+        }
+        map.put("status",0);
+        map.put("num",articleIds.length);
+        return  map;
+    }
+    /**
+     * 发布
+     * @param na
+     * @return
+     */
+    public void  publish(NewsArticle na){
+        //此站点为创建的站点
+        String siteId=na.getSiteId();
+        String pubStatus=na.getPubStatus();
+        List<String> siteIds= NewsUtil.GetPriSite(siteId);
+       //查询出该站点所有的子站点及本身，长度大于1 表示为主站点，否则为子站点
+        try{
+                for (String sId:siteIds) {
+                    NewsNewsSiteRel nnsr=new NewsNewsSiteRel();
+                    nnsr.setSiteId(sId);
+                    nnsr.setArtId(na.getArticleId());
+                    nnsr.setNewsCrtSiteId(siteId);
+                    if(sId.equals(siteId)){
+                        nnsr.setNewsManageStatus("1");
+                    }else{
+                        nnsr.setNewsManageStatus("0");
+                    }
+                    nnsr.setNewsPubStatus(na.getPubStatus());
+                    nnsr.setNewsPubDate(new Date());
+                    newsNewsSiteRelMapper.insertSelective(nnsr);
+                }
+                //修改此资讯的发布状态
+                super.save(na);
+        }catch (Exception e){
+            logger.error("咨讯发布失败！请联系管理员");
+            e.getMessage();
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 取消发布
+     * @param na
+     */
+    public boolean  cancelPublish(NewsArticle na)  {
+        try{
+            //修改咨讯表中的状态
+            super.save(na);
+            //咨讯的管理状态为0时不能取消发布，为1可以
+            NewsNewsSiteRel nnsr=new NewsNewsSiteRel();
+            nnsr.setArtId(na.getArticleId());
+            List<NewsNewsSiteRel> nList=newsNewsSiteRelWyService.queryList(nnsr,new HashMap());
+            NewsNewsSiteRel sr=nList.get(0);
+            String mStatus=sr.getNewsManageStatus();
+            List<String> siteIds= NewsUtil.GetPriSite(na.getSiteId());
+            for (String siteId :siteIds){
+                nnsr.setSiteId(siteId);
+                newsNewsSiteRelMapper.deleteBySiteAndArtId(nnsr);
+            }
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getMessage();
+            return false;
+        }
+    }
+    /**
+     * 批量推荐
+     */
+    @Transactional
+    public Map<String,Object> recommend(NewsArticle na){
+        String[] articleIds=(na.getArticleId()).split(",");
+        String[] posids=(na.getPosid()).split(",");
+        String status=na.getStatus();
+        NewsArticle news=new NewsArticle();
+        //0为推荐1 为取消推荐
+            for (int i=0; i<articleIds.length;i++){
+                news.setArticleId(articleIds[i]);
+                news.setPosid(posids[i]);
+                if("1".equals(status)){
+                    news.setPosid("");
+                }else{
+                    news.setPosid(posids[i]);
+        }
+                super.save(news);
+            }
+        return MapUtil.newMap("num",articleIds.length);
+    }
+    @Transactional
+    public Map<String,Object> top(NewsArticle na){
+        String[] articleIds=(na.getArticleId()).split(",");
+        NewsArticle news=new NewsArticle();
+        news.setWeight(999);
+        for (String articleId:articleIds){
+            news.setArticleId(articleId);
+            super.save(news);
+        }
+        return MapUtil.newMap("num",articleIds.length);
+    }
+
+    /**
+     * 主站下发到子站
+     * @param na
+     * @return
+     */
+    public List<NewsArticle> lowerSendList(NewsArticle na){
+        List<NewsArticle> list=newsArticleMapper.lowerSendList(na);
+        //主站的所有管理状态都是1
+        for(NewsArticle news:list){
+            news.setNewsManageStatus("1");
+        }
+        MyPage<NewsArticle> page=new MyPage(list);
+        return rtnPageList4Report(page);
+    }
+}

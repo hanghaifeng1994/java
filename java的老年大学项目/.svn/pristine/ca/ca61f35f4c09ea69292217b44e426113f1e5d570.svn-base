@@ -1,0 +1,42 @@
+package com.learnyeai.learnai.session.util;
+
+import com.learnyeai.learnai.session.Session;
+import com.learnyeai.core.cache.CacheDelegate;
+import com.learnyeai.core.cache.CacheNames;
+import com.learnyeai.core.config.ConfigUtils;
+import com.learnyeai.core.cache.CacheUtils;
+import com.learnyeai.tools.common.StringUtils;
+
+import java.util.Collection;
+/**
+ * Created by zpz on 2017/3/17.
+ */
+public class SessionUtils {
+    private static CacheDelegate cache = CacheUtils.getCache(CacheNames.SESSION_CACHE_NAME);
+    private static final String SESSION_VALIDATION_KEY = "session.validation_interval";
+    public static Session getSession(String id) {
+        if(StringUtils.isEmpty(id)) {
+            return null;
+        }
+        return cache.get(id);
+    }
+
+    public static void saveSession(Session session) {
+        if(null == session || StringUtils.isEmpty(session.getId())) {
+            return;
+        }
+        int expiretime = ConfigUtils.getValue(SESSION_VALIDATION_KEY, 2*60*60);
+        cache.put(session.getId(), session, expiretime);
+    }
+
+    public static void deleteSession(String id) {
+        if(StringUtils.isEmpty(id)) {
+            return;
+        }
+        cache.evict(id);
+    }
+    public static Collection<Session> getAllSession() {
+
+        return cache.getAll();
+    }
+}

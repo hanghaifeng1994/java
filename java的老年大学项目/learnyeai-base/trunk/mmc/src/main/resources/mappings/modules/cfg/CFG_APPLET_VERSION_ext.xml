@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgAppletVersionDao">
+    <resultMap id="BaseResultMapExt" type="CfgAppletVersionVo">
+        <id property="apltVerId" column="APLT_VER_ID" jdbcType="VARCHAR" />
+        <result property="apltId" column="APLT_ID" jdbcType="VARCHAR" />
+        <result property="apltAppId" column="APLT_APP_ID" jdbcType="VARCHAR" />
+        <result property="apltAppSecret" column="APLT_APP_SECRET" jdbcType="VARCHAR" />
+        <result property="apltName" column="APLT_NAME" jdbcType="VARCHAR" />
+        <result property="apltVerCode" column="APLT_VER_CODE" jdbcType="DECIMAL" />
+        <result property="apltVerName" column="APLT_VER_NAME" jdbcType="VARCHAR" />
+        <result property="apltVerDesc" column="APLT_VER_DESC" jdbcType="VARCHAR" />
+        <result property="apltVerStatus" column="APLT_VER_STATUS" jdbcType="CHAR" />
+        <result property="apltVerZipPath" column="APLT_VER_ZIP_PATH" jdbcType="VARCHAR" />
+        <result property="apltVerAutoOnline" column="APLT_VER_AUTO_ONLINE" jdbcType="CHAR" />
+        <result property="apltVerTemplateId" column="APLT_VER_TEMPLATE_ID" jdbcType="VARCHAR" />
+        <result property="apltVerUploadNum" column="APLT_VER_UPLOAD_NUM" jdbcType="DECIMAL" />
+        <result property="apltVerAuditNum" column="APLT_VER_AUDIT_NUM" jdbcType="DECIMAL" />
+        <result property="apltVerPubNum" column="APLT_VER_PUB_NUM" jdbcType="DECIMAL" />
+        <result property="schmId" column="SCHM_ID" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+
+
+        <result property="schmName" column="SCHM_NAME" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="queryByCriteriaExt" resultMap="BaseResultMapExt" parameterType="CriteriaQuery">
+        select
+        a.*
+        ,e.SCHM_NAME
+        from ${schema.interPlat}.CFG_APPLET_VERSION a
+        INNER JOIN ${schema.interPlat}.CFG_SCHEME e on e.SCHM_ID=a.SCHM_ID
+        <include refid="public.WhereClause4Query" />
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+</mapper>

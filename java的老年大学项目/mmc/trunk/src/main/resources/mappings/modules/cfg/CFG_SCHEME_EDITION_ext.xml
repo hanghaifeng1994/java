@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgSchemeEditionDao">
+    <resultMap id="BaseResultMapExt" type="CfgSchemeEditionExt">
+        <id property="schmEdtId" column="SCHM_EDT_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtName" column="SCHM_EDT_NAME" jdbcType="VARCHAR" />
+        <result property="schmEdtDesc" column="SCHM_EDT_DESC" jdbcType="VARCHAR" />
+        <result property="schmEdtPhoto" column="SCHM_EDT_PHOTO" jdbcType="VARCHAR" />
+        <result property="schmEdtStatus" column="SCHM_EDT_STATUS" jdbcType="CHAR" />
+        <result property="schmEnableStatus" column="SCHM_ENABLE_STATUS" jdbcType="CHAR" />
+        <result property="schmEdtModStatus" column="SCHM_EDT_MOD_STATUS" jdbcType="CHAR" />
+        <result property="schmEdtGrade" column="SCHM_EDT_GRADE" jdbcType="DECIMAL" />
+        <result property="schmEdtCode" column="SCHM_EDT_CODE" jdbcType="DECIMAL" />
+        <result property="schmId" column="SCHM_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtHisId" column="SCHM_EDT_HIS_ID" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+
+        <!--拓展字段 -->
+        <result property="schmId" column="SCHM_ID" jdbcType="VARCHAR" />
+        <result property="schmName" column="SCHM_NAME" jdbcType="VARCHAR" />
+    </resultMap>
+    <!--查询使用此小程序的版本列表-->
+    <select id="queryApletEditionList" resultMap="BaseResultMap" parameterType="string">
+        SELECT * FROM
+        ${schema.interPlat}.cfg_scheme_edition e
+        WHERE EXISTS(
+        SELECT 1 FROM ${schema.interPlat}.CFG_SCHEME_EDITION_APLT_REL r WHERE r.SCHM_EDT_ID = e.SCHM_EDT_ID
+        and r.APLT_ID=#{apltId}
+        )
+    </select>
+
+    <!--删除选择的小程序-->
+    <delete id="deleteAplt">
+        DELETE from ${schema.interPlat}.CFG_SCHEME_EDITION_APLT_REL WHERE SCHM_EDT_ID=#{schmEdtId}
+    </delete>
+    <!--添加选择的小程序-->
+    <insert id="insertAplt">
+        INSERT INTO ${schema.interPlat}.CFG_SCHEME_EDITION_APLT_REL(SCHM_EDT_ID, APLT_ID)
+        <foreach collection="apltIds" item="apltId" separator=" union all ">
+            SELECT #{schmEdtId}, #{apltId}
+            <if test="dbName != 'mssql'">
+                FROM dual
+            </if>
+        </foreach>
+    </insert>
+    <select id="queryAllSchemeByCriteriaExt" resultMap="BaseResultMapExt">
+            SELECT
+              e.SCHM_EDT_ID as SCHM_EDT_ID ,
+              e.SCHM_EDT_NAME as SCHM_EDT_NAME
+            FROM
+              ${schema.interPlat}.cfg_scheme_edition e
+            WHERE EXISTS
+              (SELECT
+                1
+              FROM
+                ${schema.interPlat}.sh_order s
+              WHERE e.SCHM_EDT_HIS_ID = s.SCHM_EDT_HIS_ID)
+    </select>
+</mapper>

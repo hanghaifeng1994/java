@@ -1,0 +1,236 @@
+package com.learnyeai.studygroup.service;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.base.api.util.CurrentBaseInfoUtil;
+import com.learnyeai.base.api.vo.PtsetSiteVo;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.mq.AuditlogMq;
+import com.learnyeai.mq.ParseRabbitMsg;
+import com.learnyeai.rabbitmq.bean.RabbitMetaMessage;
+import com.learnyeai.rabbitmq.sender.RabbitSender;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import com.learnyeai.studygroup.mapper.SgpCategoryGroupRelMapper;
+import com.learnyeai.studygroup.mapper.SgpSiteStudygroupRelMapper;
+import com.learnyeai.studygroup.model.SgpCategoryGroupRel;
+import com.learnyeai.studygroup.model.SgpSiteStudygroupRel;
+import com.learnyeai.studygroup.model.SgpStudyGroup;
+import com.learnyeai.studygroup.mapper.SgpStudyGroupMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.tools.common.BeanMapUtils;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.studygroup.model.SgpMember;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+import com.learnyeai.studygroup.mapper.SgpMemberMapper;
+
+import org.springframework.transaction.annotation.Transactional;
+
+
+
+import javax.annotation.Resource;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
+
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class SgpStudyGroupWyService extends WeyeBaseService<SgpStudyGroup> {
+
+    @Resource
+    private SgpStudyGroupMapper sgpStudyGroupMapper;
+    @Resource
+    private SgpSiteStudygroupRelMapper sgpSiteStudygroupRelMapper;
+
+    @Resource
+    private SgpMemberMapper sgpMemberMapper;
+
+
+
+
+    @Resource
+    private SgpCategoryGroupRelMapper sgpCategoryGroupRelMapper;
+
+
+
+    @Autowired
+    private RabbitSender rabbitSender;
+    @Override
+    public BaseMapper<SgpStudyGroup> getMapper() {
+        return sgpStudyGroupMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    public List<SgpStudyGroup> queryPageExt(IBusinessContext ctx){
+        SgpStudyGroup ssg=super.convert2Bean(ctx.getParamMap());
+        if (ssg != null) {
+            ssg.initPage();
+            PageHelper.startPage(ssg.getPage(), ssg.getRows());
+        }
+        //先通过SGP_SITE_STUDYGROUP_REL，SGP_CATEGORY_GROUP_REL关联查询出所有可管理小组的id
+        List<SgpSiteStudygroupRel> a =sgpSiteStudygroupRelMapper.queryPageManger(ssg);
+        MyPage page=new MyPage(a);
+        //根据小组id查询出所有小组内容
+       List<SgpStudyGroup> list=new ArrayList<>();
+        for (SgpSiteStudygroupRel sssr:a){
+            SgpStudyGroup s=  super.queryById(sssr.getSgpId());
+            list.add(s);
+        }page.setList(list);
+        return rtnPageList4Report(page);
+    }
+    @Transactional
+    public Map<String,Object> delBatch(IBusinessContext ctx){
+       SgpStudyGroup g= super.convert2Bean(ctx.getParamMap());
+       String[] ids=(g.getSgpId()).split(",");
+       for (String id:ids){
+           super.deleteById(id);
+       }
+
+        return  null;
+    }
+
+    /**
+     * 学习小组保存
+     * @param ctx
+     * @return
+     */
+    public void saveData(IBusinessContext ctx){
+        SgpStudyGroup g= super.convert2Bean(ctx.getParamMap());
+        boolean flag=false;
+        if(StringUtils.isBlank(g.getSgpId())){
+            flag=true;
+        }
+        super.save(g);
+        if(flag){
+            SgpCategoryGroupRel sc=new SgpCategoryGroupRel();
+            sc.setCatId(g.getCatId());
+            sc.setSgpId(g.getSgpId());
+            //在活动关联表中存入数据
+            sgpCategoryGroupRelMapper.insertSelective(sc);
+        }
+    }
+
+    /**
+     * 审核
+     * @param ctx
+     * @return
+     * @throws WeyeRabbitException
+     */
+    @Transactional
+    public Map<String,Object> audit(IBusinessContext ctx) throws WeyeRabbitException {
+        SgpStudyGroup g=new SgpStudyGroup();
+        AuditlogMq mq= toParseAuditLog(ctx);
+        String[] sgpIds=(mq.getObjId()).split(",");
+        int num =0;
+        g.setSgpStatus(mq.getStatus());
+        for(String sgpId:sgpIds){
+            g.setSgpId(sgpId);
+            //活动表中保存
+            num+=  super.save(g);
+            mq.setObjId(sgpId);
+            RabbitMetaMessage msg=ParseRabbitMsg.toParseRabbitMetaMessage(mq);
+            rabbitSender.send(msg);
+        }
+        return MapUtil.newMap("num",num);
+    }
+
+    public static List rtnPageList4Report(MyPage page) {
+        if (page.getTotal() > -1L) {
+            ThreadContext.put("totalCount", page.getTotal());
+        }
+
+        return page.getList();
+    }
+
+
+    @Override
+    protected Weekend genSqlExample(SgpStudyGroup s,Map params){
+        Weekend<SgpStudyGroup> weekend = super.genSqlExample(s,params);
+        WeekendCriteria<SgpStudyGroup,Object> c = weekend.weekendCriteria();
+        if(StringUtils.isNotBlank(s.getSgpId())){
+            c.andEqualTo(SgpStudyGroup::getSgpId,s.getSgpId());
+        }
+        if(StringUtils.isNotBlank(s.getSgpStatus())){
+           c.andEqualTo(SgpStudyGroup::getSgpStatus,s.getSgpStatus());
+        }
+        weekend.and(c);
+        return weekend;
+    }
+
+
+
+
+    @Transactional
+    public Map<String,Object> deleteall(SgpStudyGroup ssg){
+        String[] sgpIds = (ssg.getSgpId()).split(",");
+        int num = 0;
+        for (String id:sgpIds){
+            num += super.deleteById(id);
+            sgpMemberMapper.deleteMemberbySgpIds(id);
+        }
+        logger.info("批量删除了"+num+"条数");
+        return MapUtil.newMap("num",num);
+    }
+
+
+
+
+    @Transactional
+    public Map<String,Object> sumbitAudit(SgpStudyGroup ssg){
+        String[] sgpIds = (ssg.getSgpId()).split(",");
+        SgpStudyGroup sgpStudyGroup = new SgpStudyGroup();
+        int num = 0;
+        for (String sgpId:sgpIds){
+            sgpStudyGroup.setSgpId(sgpId);
+            sgpStudyGroup.setSgpStatus(ssg.getSgpStatus());
+            num = super.save(sgpStudyGroup);
+        }
+        return MapUtil.newMap("num",num);
+    }
+
+
+
+
+    /**
+     * 将入参转为审核日志对象
+     */
+    public AuditlogMq toParseAuditLog(IBusinessContext ctx){
+        try {
+            AuditlogMq a= (AuditlogMq)BeanMapUtils.convertMap(AuditlogMq.class, ctx.getParamMap());
+            return a;
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
+}

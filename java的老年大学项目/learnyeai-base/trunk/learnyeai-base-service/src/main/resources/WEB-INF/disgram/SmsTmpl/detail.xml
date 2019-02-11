@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="短信模板-详情">
+    <snd>
+        <field name="stId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="stId" desc="ID"/>
+        <field name="stType" desc="模板类型"/>
+        <field name="stNo" desc="模板编号"/>
+        <field name="stCont" desc="模板内容"/>
+    </rcv>
+</trans>

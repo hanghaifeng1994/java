@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="收藏-详情">
+    <snd>
+        <field name="cltId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="cltId" desc="id"/>
+        <field name="title" desc="主题"/>
+        <field name="type" desc="类型"/>
+        <field name="objId" desc="对象id"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

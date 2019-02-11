@@ -1,0 +1,12 @@
+package com.learnyeai.learnbehavior.mapper;
+
+import com.learnyeai.learnbehavior.model.StdStudyObjectStatistics;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyBatisDao;
+/**
+ * @Description: 学习对象统计
+ * @author yl
+ */
+@MyBatisDao
+public interface StdStudyObjectStatisticsMapper extends BaseMapper<StdStudyObjectStatistics> {
+}

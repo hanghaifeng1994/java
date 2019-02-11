@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="custGroupList" desc="客户-客户组列表">
+    <snd>
+    </snd>
+    <rcv>
+    	 <field-list name="LIST" desc="客户-客户组列表" type="E">
+        <field name="GP_ID" desc="分组id"/>
+        <field name="GP_NAME" desc="分组名称"/>
+        </field-list>
+    </rcv>
+</trans>

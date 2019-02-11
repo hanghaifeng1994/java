@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-详情">
+    <snd>
+        <field name="siteId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="siteId" desc="id"/>
+        <field name="siteName" desc="名称"/>
+        <field name="siteCode" desc="编码"/>
+        <field name="siteLogo" desc="logo"/>
+        <field name="pageHeadImg" desc="头部图片"/>
+        <field name="pageSiteCopyright" desc="站点版权"/>
+        <field name="siteDomain" desc="域名"/>
+        <field name="areaId" desc="区域"/>
+        <field name="sort" desc="排序"/>
+        <field name="ptId" desc="平台ID"/>
+        <field name="siteType" desc="1主站、2子站"/>
+        <field name="status" desc="0未启用、1启用"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+        <field name="extCol1" desc="扩展字段1"/>
+        <field name="extCol2" desc="扩展字段2"/>
+        <field name="extCol3" desc="扩展字段3"/>
+        <field name="extCol4" desc="扩展字段4"/>
+        <field name="extCol5" desc="扩展字段5"/>
+    </rcv>
+</trans>

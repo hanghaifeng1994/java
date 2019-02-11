@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="资源分类-新增/编辑">
+    <snd>
+       <field name="catId" desc="id"/>
+        <field name="catName" desc="分类名称"/>
+        <field name="catSort" desc="排序"/>
+        <field name="parentId" desc="父id"/>
+        <field name="showStatus" desc="是否显示  0/1"/>
+        <!-- <field name="siteId" desc="站点id"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/> -->
+    </snd>
+    <rcv>
+        <field name="status" desc="状态为0时操作成功，1 操作异常"/>
+    </rcv>
+</trans>

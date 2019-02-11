@@ -1,0 +1,53 @@
+package com.learnyeai.base.action.login;
+
+import com.learnyeai.base.api.client.LoginClient;
+import com.learnyeai.base.api.util.BaseReportErrorKey;
+import com.learnyeai.base.api.vo.CustInfoVo;
+import com.learnyeai.core.IBusinessContext;
+import com.learnyeai.core.consts.ConfigEnum;
+import com.learnyeai.core.flow.IAresSerivce;
+import com.learnyeai.core.support.ApiResult;
+import com.learnyeai.core.utils.CtxCommonUtils;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.core.exception.BusinessException;
+import com.learnyeai.learnai.support.BaseClientService;
+import com.learnyeai.tools.common.BeanMapUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created by zpz on 2018/5/10.
+ */
+@Service
+public class UserCheckLoginOp implements IAresSerivce {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private LoginClient loginClient;
+    @Override
+    public int execute(IBusinessContext ctx) {
+        String uuid = CtxCommonUtils.getUUID(ctx.getParamMap());
+        if(CtxCommonUtils.getClientOs() == ConfigEnum.CLIENT_OS.WA) {
+            ctx.setParam(CtxCommonUtils.OPEN_ID, uuid);
+        }
+        CustInfoVo cust = loginClient.userCheckLogin(ctx.getParamMap());
+
+        if(null == cust){
+            throw new AresRuntimeException(BaseReportErrorKey.login_UserNotFound);
+        }
+        ctx.getParamMap().put(LoginCons.CUST_INFO_KEY, cust);
+        try {
+            ctx.getParamMap().putAll(BeanMapUtils.convertBean(cust));
+        } catch (RuntimeException e){
+            ApiResult rst = BaseClientService.getBusiExceptionResult(e);
+            if(null == rst)
+                throw (RuntimeException)e;
+            throw (BusinessException)e.getCause();
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return NEXT;
+    }
+}

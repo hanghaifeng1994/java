@@ -1,0 +1,64 @@
+package com.learnyeai.studygroup.service;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.studygroup.mapper.SgpSiteStudygroupRelMapper;
+import com.learnyeai.studygroup.model.SgpSiteStudygroupRel;
+import com.learnyeai.studygroup.model.SgpStudyGroup;
+import com.learnyeai.studygroup.mapper.SgpStudyGroupMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class SgpStudyGroupWyService extends WeyeBaseService<SgpStudyGroup> {
+
+    @Resource
+    private SgpStudyGroupMapper sgpStudyGroupMapper;
+    @Resource
+    private SgpSiteStudygroupRelMapper sgpSiteStudygroupRelMapper;
+
+    @Override
+    public BaseMapper<SgpStudyGroup> getMapper() {
+        return sgpStudyGroupMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    public List<SgpStudyGroup> queryPageExt(IBusinessContext ctx){
+        SgpStudyGroup ssg=super.convert2Bean(ctx.getParamMap());
+        if (ssg != null) {
+            ssg.initPage();
+            PageHelper.startPage(ssg.getPage(), ssg.getRows());
+        }
+        //先通过SGP_SITE_STUDYGROUP_REL，SGP_CATEGORY_GROUP_REL关联查询出所有可管理小组的id
+        List<SgpSiteStudygroupRel> a =sgpSiteStudygroupRelMapper.queryPageManger(ssg);
+        MyPage page=new MyPage(a);
+        //根据小组id查询出所有小组内容
+       List<SgpStudyGroup> list=new ArrayList<>();
+        for (SgpSiteStudygroupRel sssr:a){
+            SgpStudyGroup s=  super.queryById(sssr.getSgpId());
+            list.add(s);
+        }page.setList(list);
+        return rtnPageList4Report(page);
+    }
+    public static List rtnPageList4Report(MyPage page) {
+        if (page.getTotal() > -1L) {
+            ThreadContext.put("totalCount", page.getTotal());
+        }
+
+        return page.getList();
+    }
+}

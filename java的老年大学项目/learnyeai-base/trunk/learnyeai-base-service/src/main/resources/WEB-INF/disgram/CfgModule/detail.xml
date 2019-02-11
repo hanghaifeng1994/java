@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="模块-详情">
+    <snd>
+        <field name="mdlId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="mdlId" desc="模块id"/>
+        <field name="mdlCode" desc="模块编码"/>
+        <field name="mdlName" desc="模块名称"/>
+        <field name="mdlStatus" desc="0禁用、1启用"/>
+        <field name="mdlStaffTableName" desc="员工扩展表名"/>
+        <field name="mdlUserTableName" desc="用户表扩展名"/>
+        <field name="mdlServerContext" desc="模块上下文"/>
+        <field name="mdlVerName" desc="版本号"/>
+        <field name="mdlVerCode" desc="版本编码"/>
+        <field name="mdlVerId" desc="版本id"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

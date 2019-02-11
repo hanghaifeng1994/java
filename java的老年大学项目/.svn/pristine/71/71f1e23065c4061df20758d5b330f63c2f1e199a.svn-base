@@ -1,0 +1,60 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.model.ShAppletSetting;
+import com.learnyeai.base.mapper.ShAppletSettingMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Service
+public class ShAppletSettingWyService extends BaseService<ShAppletSetting> {
+
+    @Resource
+    private ShAppletSettingMapper shAppletSettingMapper;
+
+    @Override
+    public BaseMapper<ShAppletSetting> getMapper() {
+        return shAppletSettingMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+
+    @Override
+    protected Weekend genSqlExample(ShAppletSetting shAppletSetting) {
+        Weekend<ShAppletSetting> weekend = super.genSqlExample(shAppletSetting);
+        WeekendCriteria<ShAppletSetting, Object> c = weekend.createCriteriaAddOn();
+        if(StringUtils.isNotBlank(shAppletSetting.getApltId())){
+            c.andEqualTo(ShAppletSetting::getApltId, shAppletSetting.getApltId());
+        }
+
+        if(StringUtils.isNotBlank(shAppletSetting.getAppId())){
+            c.andEqualTo(ShAppletSetting::getAppId, shAppletSetting.getAppId());
+        }
+        weekend.and(c);
+        return weekend;
+    }
+
+    // 查询指定小程序授权的，商户小程序配置
+    public ShAppletSetting queryByApltId_appid(String apltId, String appId){
+        if(StringUtils.isBlank(apltId) || StringUtils.isBlank(appId)){
+            return null;
+        }
+        ShAppletSetting set = new ShAppletSetting();
+        set.setApltId(apltId);
+        set.setAppId(appId);
+        List<ShAppletSetting> list = queryByExample(set, null);
+        return list.size() == 0? null: list.get(0);
+    }
+}

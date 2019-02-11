@@ -1,0 +1,29 @@
+package com.learnyeai.resource.service;
+
+import com.learnyeai.resource.model.ResCategoryResourceRel;
+import com.learnyeai.resource.mapper.ResCategoryResourceRelMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class ResCategoryResourceRelWyService extends BaseService<ResCategoryResourceRel> {
+
+    @Resource
+    private ResCategoryResourceRelMapper resCategoryResourceRelMapper;
+
+    @Override
+    public BaseMapper<ResCategoryResourceRel> getMapper() {
+        return resCategoryResourceRelMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

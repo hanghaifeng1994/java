@@ -1,0 +1,43 @@
+package com.learnyeai.audit.consumer;
+
+import com.learnyeai.audit.model.AdtAuditLog;
+import com.learnyeai.audit.service.AdtAuditLogWyService;
+import com.learnyeai.mq.NewsMq;
+import com.learnyeai.rabbitmq.bean.MqVo;
+import com.learnyeai.rabbitmq.listener.AbstractMessageListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+
+@Component
+public class BizMessageListener extends AbstractMessageListener {
+	
+	Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Autowired
+	AdtAuditLogWyService adtAuditLogWyService;
+	@Override
+	public boolean receiveMessage(MqVo mqVo, Object[] objects) {
+		NewsMq vo = (NewsMq)mqVo;
+		logger.info("get message success:");
+		AdtAuditLog aal=parse(vo);
+		adtAuditLogWyService.save(aal);
+		return true;
+	}
+	//将消息对象转为日志对象
+	public AdtAuditLog parse(NewsMq vo){
+		AdtAuditLog aal=new AdtAuditLog();
+		aal.setObjId(vo.getObjId());
+		aal.setObjLogId(vo.getObjLogId());
+		aal.setAdUserId(vo.getAdUserId());
+		aal.setAdContent(vo.getAdContent());
+		aal.setAdDate(vo.getAdTime());
+		aal.setAdStatus(vo.getStatus());
+		aal.setAdUserName(vo.getAdUserName());
+		aal.setServiceType(vo.getServiceType());
+		return  aal;
+	}
+
+}

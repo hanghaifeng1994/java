@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="推广-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="id"/>
+        <field name="serviceType" desc="业务类型"/>
+        <field name="status" desc="0禁用、1启用"/>
+        <field name="title" desc="标题"/>
+        <field name="imgs" desc="图片"/>
+        <field name="url" desc="url"/>
+        <field name="sort" desc="排序"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="remarks" desc="备注"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="siteId" desc="站点"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

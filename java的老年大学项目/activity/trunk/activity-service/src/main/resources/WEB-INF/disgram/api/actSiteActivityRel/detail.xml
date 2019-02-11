@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-活动-详情">
+    <snd>
+        <field name="siteId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="siteId" desc="站点id"/>
+        <field name="actId" desc="活动id"/>
+        <field name="actAsName" desc="活动别名"/>
+        <field name="actManageStatus" desc="管理状态"/>
+        <field name="actPubStatus" desc="发布状态"/>
+        <field name="actCrtSiteId" desc="创建站点id"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

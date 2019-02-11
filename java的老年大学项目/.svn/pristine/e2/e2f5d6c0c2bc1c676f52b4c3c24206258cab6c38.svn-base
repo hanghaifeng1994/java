@@ -1,0 +1,137 @@
+package com.learnyeai.common.support;
+
+import com.learnyeai.common.utils.WeyeCons;
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.learnai.support.BaseEntity;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.CurrentUserInfoDao;
+import com.learnyeai.tools.common.BeanHelper;
+import com.learnyeai.tools.common.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by zpz on 2018/8/7.
+ */
+public abstract class WeyeBaseService<T extends BaseEntity> extends BaseService<T> {
+    @Autowired
+    private CurrentUserInfoDao currentUserInfoDao;
+
+    @Override
+    protected Weekend<T> genSqlExample(T t, Map params) {
+        Weekend<T> weekend = super.genSqlExample(t, params);
+        WeekendCriteria<T, Object> c = weekend.createCriteriaAddOn();
+
+        // 添加商户、商户方案查询条件
+        if(BeanHelper.hasField(t, WeyeCons.BEAN_NAME_MCHT_ID)
+                && BeanHelper.hasField(t,WeyeCons.BEAN_NAME_MCHT_SCHM_ID)){
+            String mchtId = WeyeThreadContextUtils.getMerchantId();
+            String mchtSchmId = WeyeThreadContextUtils.getMerchantSchemeId();
+            if(StringUtils.isNotBlank(mchtId)  && StringUtils.isNotBlank(mchtSchmId)) {
+                c.andEqualTo(WeyeCons.BEAN_NAME_MCHT_ID, mchtId);
+                c.andEqualTo(WeyeCons.BEAN_NAME_MCHT_SCHM_ID, mchtSchmId);
+            }
+        }
+
+        // 站点，存在站点id，就不添加站点条件了
+        if(BeanHelper.hasField(t, WeyeCons.BEAN_NAME_SITE_ID)){
+            Object siteId = BeanUtils.getProperty(t, WeyeCons.BEAN_NAME_SITE_ID);
+            if(null == siteId){
+                siteId = WeyeThreadContextUtils.getSiteId();
+            }
+
+            if(siteId != null) {
+                c.andEqualTo(WeyeCons.BEAN_NAME_SITE_ID, siteId);
+            }
+        }
+
+        weekend.and(c);
+        return weekend;
+    }
+
+
+    private void initEntityBaseInfo(T t){
+        if(null == t)
+            return;
+
+        if(BeanHelper.hasField(t, WeyeCons.BEAN_NAME_MCHT_ID)
+                && BeanHelper.hasField(t,WeyeCons.BEAN_NAME_MCHT_SCHM_ID)){
+            String mchtId = WeyeThreadContextUtils.getMerchantId();
+            String mchtSchmId = WeyeThreadContextUtils.getMerchantSchemeId();
+            if(StringUtils.isNotBlank(mchtId)  && StringUtils.isNotBlank(mchtSchmId)) {
+                BeanUtils.setProperty(t,WeyeCons.BEAN_NAME_MCHT_ID, mchtId, false);
+                BeanUtils.setProperty(t,WeyeCons.BEAN_NAME_MCHT_SCHM_ID, mchtSchmId, false);
+            }
+        }
+
+        // 站点，存在站点id，就不添加站点条件了
+        if(BeanHelper.hasField(t, WeyeCons.BEAN_NAME_SITE_ID)){
+            Object siteId = BeanUtils.getProperty(t, WeyeCons.BEAN_NAME_SITE_ID);
+            if(null == siteId){
+                siteId = WeyeThreadContextUtils.getSiteId();
+                if(null != siteId){
+                    BeanUtils.setProperty(t, WeyeCons.BEAN_NAME_SITE_ID, siteId, false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public int getCount(T t) {
+        initEntityBaseInfo(t);
+        return super.getCount(t);
+    }
+
+    @Override
+    public List<T> queryList4Simple(T t) {
+        initEntityBaseInfo(t);
+        return super.queryList4Simple(t);
+    }
+
+    @Override
+    public int save(T t) {
+        int ret = 0;
+
+        Date nowDate = new Date();
+        String curUserCode = currentUserInfoDao.getId();
+
+        updateUpdateEntity(t,nowDate, curUserCode);
+
+        Object id = getId(t);
+
+        if (id == null || id.toString().length() == 0) {
+            // 生成主键
+            id = genId();
+
+            BeanUtils.setProperty(t, getIdProp(), id, true);
+//                initDelVal(t, "0");
+            updateCreateEntity(t, nowDate, curUserCode);
+
+            // 添加商户、商户方案、站点
+            String mchtId = WeyeThreadContextUtils.getMerchantId();
+            if(StringUtils.isNotBlank(mchtId))
+                BeanUtils.setProperty(t, WeyeCons.BEAN_NAME_MCHT_ID, mchtId,false);
+
+            // 商户方案
+            String mchtSchmId = WeyeThreadContextUtils.getMerchantSchemeId();
+            if(StringUtils.isNotBlank(mchtSchmId))
+                BeanUtils.setProperty(t, WeyeCons.BEAN_NAME_MCHT_SCHM_ID,mchtSchmId, false);
+
+            // 站点
+            String siteId = WeyeThreadContextUtils.getSiteId();
+            if(StringUtils.isNotBlank(siteId))
+                BeanUtils.setProperty(t, WeyeCons.BEAN_NAME_SITE_ID, siteId, false);
+
+            ret =getMapper().insert(t);
+        } else {
+            ret = getMapper().updateByPrimaryKeySelective(t);
+        }
+        return ret;
+    }
+}

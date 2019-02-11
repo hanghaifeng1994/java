@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="证书-详情">
+    <snd>
+        <field name="ctId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="ctId" desc="证书id"/>
+        <field name="tpId" desc="证书模板id"/>
+        <field name="ctName" desc="证书名称"/>
+        <field name="ctCode" desc="证书编号开头"/>
+        <field name="serialNum" desc=""/>
+        <field name="ctUnit" desc="发证单位"/>
+        <field name="ctTpText" desc="对应的模板文本字段"/>
+        <field name="ctTpImage" desc="对应的模板图片字段"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="ctStatus" desc="状态：0未提交、1审核中、2审核通过、3审核失败、4不需要审核"/>
+        <field name="ctAuditId" desc="审核id"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="siteId" desc="站点"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

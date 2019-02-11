@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryById" desc="学习小组分类分类-详情(通用)" isCommon="1">
+    <snd>
+        <field name="catId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="catId" desc="id"/>
+        <field name="catName" desc="分类名"/>
+        <field name="createBy" desc="创建人"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateBy" desc="更新人"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="delFlag" desc="删除标记"/>
+        <field name="siteId" desc="站点"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+        <field name="ptName" desc="平台名称" xpath="siteId"  type="ptName"/>
+        <field name="ptId" desc="平台id" xpath="siteId"  type="ptId"/>
+        <field name="siteName" desc="站点名称" xpath="siteId"  type="site"/>
+        <field name="createByName" desc="创建人名称" xpath="createBy"  type="user"/>
+    </rcv>
+</trans>

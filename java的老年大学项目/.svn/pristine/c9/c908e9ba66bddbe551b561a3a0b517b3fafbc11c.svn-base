@@ -1,0 +1,58 @@
+package com.learnyeai.album.task;
+
+import com.learnyeai.album.model.AbmPhoto;
+import com.learnyeai.album.service.AbmPhotoWyService;
+import com.learnyeai.mq.AuditlogMq;
+import com.learnyeai.tools.common.JsonUtils;
+import org.quartz.JobExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+@Component("auditTask")
+public class AuditTask {
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+    @Value("${serviceType}")
+    private String serviceType;
+    @Autowired
+    private AbmPhotoWyService abmPhotoWyService;
+
+    private static final Logger Logger = LoggerFactory.getLogger(AuditTask.class);
+    /**
+     * 将缓存中的数据同步到数据库中
+     * @param context
+     */
+    @Transactional
+    public void updatePhotoAudit(JobExecutionContext context) {
+        Logger.info("----定时同步互动统计开始----");
+      Set<Object> cachkeys=  redisTemplate.opsForHash().keys(serviceType);
+      //根据cachkeys获取所有的对象
+        Iterator<Object> iterator = cachkeys.iterator();
+        AbmPhoto abmPhoto=new AbmPhoto();
+        int count=0;
+        while (iterator.hasNext()){
+            String key=(String) iterator.next();
+            //从redis中获取对象数据
+            String jstr=  (String) redisTemplate.opsForHash().get(serviceType,key);
+            AuditlogMq obj=JsonUtils.jsonToObject(jstr,AuditlogMq.class);
+            abmPhoto.setPhId(obj.getObjId());
+            abmPhoto.setAuditId(key);
+            count+= abmPhotoWyService.save(abmPhoto);
+            //操作成功后删除缓存数据
+            redisTemplate.opsForHash().delete(serviceType,key);
+        }
+        Logger.info("共更新"+count+"条审核数据");
+    }
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       ">
+
+	<bean id="channelEngineFactory" class="com.learnyeai.learnai.engine.ChannelEngineFactory">
+		<constructor-arg index="0">
+			<map>
+				<entry key="common">
+					<bean class="com.learnyeai.learnai.engine.CommonChannelEngine"></bean>
+				</entry>
+				<entry key="wechat">
+					<bean class="com.learnyeai.learnai.engine.OtherChannelEngine"></bean>
+				</entry>
+			</map>
+		</constructor-arg>
+		<constructor-arg index="1" value="common">	</constructor-arg>
+	</bean>
+
+	<!-- HTTP通道-报文编/码工厂-->
+	<bean id="httpChannelMessageCodecFactory" class="com.learnyeai.learnai.codec.MessageCodecFactory">
+		<!-- 编码/解码器 -->
+		<constructor-arg index="0">
+			<map>
+				<!-- ARES -->
+				<entry key="ares">
+					<bean class="com.learnyeai.learnai.codec.MessageCoder">
+						<!-- 请求报文解码器 -->
+						<property name="decoder">
+							<list>
+								<!-- 三段式解密 -->
+								<bean class="com.learnyeai.learnai.codec.RequestMessageDecoder">
+								</bean>
+								<!-- 反序列化为Ares请求报文（RequestMessageVO） -->
+								<bean class="com.learnyeai.learnai.codec.RequestMessageDecoder" />
+							</list>
+						</property>
+
+						<!-- 响应报文编码器 -->
+						<property name="encoder">
+							<list>
+								<!-- 序列化Ares响应报文（ResponseMessageVO） -->
+								<bean class="com.learnyeai.learnai.codec.ResponseMessageEncoder" />
+							</list>
+						</property>
+					</bean>
+				</entry>
+				<!-- ... ... -->
+			</map>
+		</constructor-arg>
+		<!-- 默认编码/解码器（key） -->
+		<constructor-arg index="1" value="ares"/>
+	</bean>
+</beans>

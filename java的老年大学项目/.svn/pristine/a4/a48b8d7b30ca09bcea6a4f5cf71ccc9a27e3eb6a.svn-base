@@ -1,0 +1,70 @@
+package com.learnyeai.resource.service;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.http.client.utils.DateUtils;
+import org.springframework.stereotype.Service;
+
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.resource.mapper.ResUserResourceRecordMapper;
+import com.learnyeai.resource.model.ResUserResourceRecord;
+import com.learnyeai.tools.common.DateHelper;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class ResUserResourceRecordWyService extends BaseService<ResUserResourceRecord> {
+
+	@Resource
+	private ResUserResourceRecordMapper resUserResourceRecordMapper;
+
+	@Override
+	public BaseMapper<ResUserResourceRecord> getMapper() {
+		return resUserResourceRecordMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	public boolean learnSave(String urId, boolean isApp, int sec) {
+		try {
+			Date nowDate = new Date();
+			String studyDay = DateFormatUtils.format(nowDate, "yyyyMMdd");
+			int hour = DateHelper.curHour(Calendar.getInstance());
+			ResUserResourceRecord urr = new ResUserResourceRecord();
+			urr.setUserResourceId(urId);
+			urr.setStudyDay(studyDay);
+			urr.setHour(hour);
+			ResUserResourceRecord resUserResourceRecord = super.queryOne(urr);
+			if (resUserResourceRecord == null) {
+				resUserResourceRecord = new ResUserResourceRecord();
+				resUserResourceRecord.setUserResourceId(urId);
+				resUserResourceRecord.setStartLearningDate(new Date(nowDate.getTime() - sec*1000));
+				resUserResourceRecord.setStudyDay(studyDay);
+				resUserResourceRecord.setHour(hour);
+				resUserResourceRecord.setAppStudyTime(0);
+				resUserResourceRecord.setStudyTime(0);
+			}
+			if (isApp) {
+				resUserResourceRecord.setAppStudyTime(resUserResourceRecord.getAppStudyTime() + sec);
+			}
+			resUserResourceRecord.setStudyTime(resUserResourceRecord.getStudyTime() + sec);
+			resUserResourceRecord.setEndLearningDate(nowDate);
+			super.save(resUserResourceRecord);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+}

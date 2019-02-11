@@ -1,0 +1,29 @@
+package com.learnyeai.news.service;
+
+import com.learnyeai.news.model.NewsCategoryArticleRel;
+import com.learnyeai.news.mapper.NewsCategoryArticleRelMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class NewsCategoryArticleRelWyService extends BaseService<NewsCategoryArticleRel> {
+
+    @Resource
+    private NewsCategoryArticleRelMapper newsCategoryArticleRelMapper;
+
+    @Override
+    public BaseMapper<NewsCategoryArticleRel> getMapper() {
+        return newsCategoryArticleRelMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+}

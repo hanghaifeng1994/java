@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="add" desc="客户-添加客户">
+    <snd>
+        <field name="CUST_NAME" desc="姓名" required="true"/>
+        <field name="PHONE" desc="手机号" required="true"/>
+        <field name="EMAIL" desc="邮箱" required="true"/>
+        <field name="GP_ID" desc="分组" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

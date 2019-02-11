@@ -1,0 +1,77 @@
+package com.learnyeai.interact.service;
+
+import com.learnyeai.interact.model.ItaVote;
+import com.learnyeai.interact.mapper.ItaVoteMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ItaVoteWyService extends WeyeBaseService<ItaVote> {
+
+    @Resource
+    private ItaVoteMapper itaVoteMapper;
+    @Resource
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    public BaseMapper<ItaVote> getMapper() {
+        return itaVoteMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Override
+    protected Weekend genSqlExample(ItaVote t, Map params) {
+        Weekend w=super.genSqlExample(t,params);
+        WeekendCriteria<ItaVote,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getObjId())){
+            c.andEqualTo(ItaVote::getObjId,t.getObjId());
+        }if(StringUtils.isNotBlank(t.getType())){
+            c.andEqualTo(ItaVote::getType,t.getType());
+        }
+        if(StringUtils.isNotBlank(t.getVtUserId())){
+            c.andEqualTo(ItaVote::getVtUserId,t.getVtUserId());
+        }
+        w.and(c);
+        return w;
+    }
+    public Map<String,Object> queryListByObjId(ItaVote iv){
+        if (iv.getList()!=null){
+            List<ItaVote> list=iv.getList();
+            List<Map<String,Object>> result=new ArrayList<>();
+            Map<String,Object> map=new HashMap();
+            for (ItaVote ita:list){
+                ita.setVtUserId(currentUserInfoIml.getId());
+                map.put("objId",ita.getObjId());
+                map.put("type",ita.getType());
+              List<ItaVote> l=  super.queryList(ita ,new HashMap());
+              if(l.size()>0){
+                  map.put("status","0");
+              }else{
+                  map.put("status","1");
+              }
+                result.add(map);
+            }
+
+            return  MapUtil.newMap("LIST",result);
+        }
+        return null;
+    }
+}

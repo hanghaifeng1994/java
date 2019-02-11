@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delete" desc="收藏-删除">
+    <snd>
+        <field name="cltId" desc="收藏id"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="删除数量"/>
+    </rcv>
+</trans>

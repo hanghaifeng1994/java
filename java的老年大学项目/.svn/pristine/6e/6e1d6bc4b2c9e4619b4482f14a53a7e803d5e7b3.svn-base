@@ -1,0 +1,29 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.model.CfgSchemeEdition;
+import com.learnyeai.base.mapper.CfgSchemeEditionMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Service
+public class CfgSchemeEditionWyService extends BaseService<CfgSchemeEdition> {
+
+    @Resource
+    private CfgSchemeEditionMapper cfgSchemeEditionMapper;
+
+    @Override
+    public BaseMapper<CfgSchemeEdition> getMapper() {
+        return cfgSchemeEditionMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+}

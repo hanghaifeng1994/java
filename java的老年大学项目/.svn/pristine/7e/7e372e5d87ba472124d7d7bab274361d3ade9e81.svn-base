@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="signup" desc="报名">
+	<snd>
+		<field name="custId" desc="学生id" required="true"/>
+		<field name="czId" desc="班级id" required="true"/>
+		<field name="csId" desc="课程id 多个逗号隔开"/>
+		<field name="addCourse" desc="是否参加课程  0:不报课程 1:所有课程 2:所有必修课程"/>
+		<field name="userAuth" desc="用户角色1学员2专家"/>
+	</snd>
+	<rcv>
+		<field name="status" desc="0:报名失败，1:待支付   2:已有待付订单 3:报名成功" />
+		<field name="orderId" desc="订单id" />
+		<field name="orderNo" desc="订单号" />
+		<field name="msg" desc="信息" />
+	</rcv>
+</trans>

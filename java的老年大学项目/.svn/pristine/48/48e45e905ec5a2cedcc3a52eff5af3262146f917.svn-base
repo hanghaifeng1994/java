@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="homeworkList" desc="课程作业-列表">
+	<snd>
+		<field name="csId" desc="课程id" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="课程作业列表">
+			<field name="csId" desc="课程id" />
+			<field name="hwId" desc="作业id" />
+			<field name="hwTitle" desc="标题" />
+		</field-list>
+	</rcv>
+</trans>

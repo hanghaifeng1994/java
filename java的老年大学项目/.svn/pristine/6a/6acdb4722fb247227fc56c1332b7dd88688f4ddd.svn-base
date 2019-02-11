@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="平台站点列表">
+    <snd>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="平台列表" type="E">
+            <field name="ptId" desc="id"/>
+            <field name="ptName" desc="平台名称"/>
+            <field name="ptCode" desc="平台编码"/>
+            <field name="siteId" desc="主站点id"/>
+            <field-list name="siteList" desc="站点列表" type="E">
+                <field name="siteId" desc="id"/>
+                <field name="siteName" desc="名称"/>
+                <field name="siteCode" desc="编码"/>
+                <field name="siteLogo" desc="logo"/>
+                <field name="pageHeadImg" desc="头部图片"/>
+                <field name="siteDomain" desc="域名"/>
+                <field name="ptId" desc="平台ID"/>
+                <field name="siteType" desc="站点类型" comment="1主站、2子站"/>
+                <field name="siteTypeDesc" desc="站点类型描述" xpath="siteType" type="cons" dictType="PTSET_SITE_TYPE"/>
+            </field-list>
+        </field-list>
+    </rcv>
+</trans>

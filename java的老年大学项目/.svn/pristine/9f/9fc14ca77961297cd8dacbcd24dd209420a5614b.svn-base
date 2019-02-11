@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="appStartCheck" title="app登录检查流程">
+    <actions>
+        <!--<action ref="userCheckLoginOp" title="uuid检查登录"></action>-->
+        <action ref="weye_AppletCheckOp" title="检验appid"></action>
+        <!--检查用户状态-->
+        <action ref="loginCheckOp" title="用户检查"></action>
+        <!--检查商户-->
+        <action ref="weye_CheckMerchantOp" title="检查商户版本、商户状态"></action>
+
+        <action ref="loginInfoGetOp" title="获取登录信息"></action>
+        <action ref="loginInfoSaveOp" title="保存登录信息"></action>
+
+
+
+        <action ref="loginSessionCreateOp" title="创建用户会话"></action>
+        <!--商户-->
+        <action ref="weye_SessionAddMerchantInfoOp" title="向session中添加商户、商户版本、程序信息"></action>
+    </actions>
+</config>

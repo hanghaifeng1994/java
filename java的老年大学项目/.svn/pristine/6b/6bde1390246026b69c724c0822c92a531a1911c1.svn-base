@@ -1,0 +1,29 @@
+package com.learnyeai.base.service;
+
+import com.learnyeai.base.model.CustRole;
+import com.learnyeai.base.mapper.CustRoleMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author zhangpz
+ */
+@Service
+public class CustRoleWyService extends WeyeBaseService<CustRole> {
+
+    @Resource
+    private CustRoleMapper custRoleMapper;
+
+    @Override
+    public BaseMapper<CustRole> getMapper() {
+        return custRoleMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.studygroup.mapper.SgpStudyGroupExperienceMapper">
+    <delete id="deleteByExpId" parameterType="SgpStudyGroupExperience">
+        DELETE FROM sgp_study_group_experience  WHERE SGP_ID=#{sgpId,jdbcType=VARCHAR} and EPC_ID=#{epcId,jdbcType=VARCHAR}
+    </delete>
+</mapper>

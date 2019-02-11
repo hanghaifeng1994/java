@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.sh.dao.ShMerchantDao">
+    <resultMap id="BaseResultMapExt" type="ShMerchant">
+        <id property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+        <result property="mchtName" column="MCHT_NAME" jdbcType="VARCHAR" />
+        <result property="mchtShortname" column="MCHT_SHORTNAME" jdbcType="VARCHAR" />
+        <result property="mchtCode" column="MCHT_CODE" jdbcType="VARCHAR" />
+        <result property="mchtLinkman" column="MCHT_LINKMAN" jdbcType="VARCHAR" />
+        <result property="mchtPhone" column="MCHT_PHONE" jdbcType="VARCHAR" />
+        <result property="mchtTelephone" column="MCHT_TELEPHONE" jdbcType="VARCHAR" />
+        <result property="mchtStatus" column="MCHT_STATUS" jdbcType="CHAR" />
+        <result property="mchtAdress" column="MCHT_ADRESS" jdbcType="VARCHAR" />
+        <result property="mchtIndustry" column="MCHT_INDUSTRY" jdbcType="VARCHAR" />
+        <result property="clientManagerId" column="CLIENT_MANAGER_ID" jdbcType="VARCHAR" />
+        <result property="clientManagerName" column="CLIENT_MANAGER_NAME" jdbcType="VARCHAR" />
+        <result property="mchtAddType" column="MCHT_ADD_TYPE" jdbcType="CHAR" />
+        <result property="mchtLogo" column="MCHT_LOGO" jdbcType="VARCHAR" />
+        <result property="createUserName" column="CREATE_USER_NAME" jdbcType="VARCHAR" />
+        <result property="updateUserName" column="UPDATE_USER_NAME" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="remarks" column="REMARKS" jdbcType="VARCHAR" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+    </resultMap>
+    <update id="startOrForbiddenUse" parameterType="cn.com.weye.modules.sh.entity.ShMerchant">
+        UPDATE
+        ${schema.interPlat}.sh_merchant
+        SET
+        <if test="mchtStatus != 1">
+            MCHT_STATUS = '1'
+        </if>
+        <if test="mchtStatus != 0">
+            MCHT_STATUS = '0'
+        </if>
+        WHERE  MCHT_ID = #{mchtId,jdbcType=VARCHAR}
+    </update>
+    <select id="queryByCriteriaExt" resultMap="BaseResultMapExt" parameterType="cn.com.weye.modules.sh.entity.ShMerchant">
+        select
+        a.*
+        from ${schema.interPlat}.sh_merchant a
+        <include refid="public.WhereClause4Query" />
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+</mapper>

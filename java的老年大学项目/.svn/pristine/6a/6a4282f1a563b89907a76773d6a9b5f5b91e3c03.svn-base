@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="班级报名批次-详情">
+    <snd>
+        <field name="batchId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="batchId" desc="id"/>
+        <field name="czId" desc="班级id"/>
+        <field name="batchName" desc="批次名称"/>
+        <field name="batchType" desc="0:个人报名 1:后台集体报名 2:前台集体报名"/>
+        <field name="custId" desc="报名人"/>
+        <field name="singupDate" desc="报名时间"/>
+        <field name="orderformId" desc="订单id"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

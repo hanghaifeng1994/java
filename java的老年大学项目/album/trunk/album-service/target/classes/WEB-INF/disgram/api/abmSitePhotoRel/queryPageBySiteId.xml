@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPageBySiteId" desc="站点-图片列表">
+    <snd>
+        <field name="siteId" desc="id多个站点可用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="id多个站点可用英文逗号隔开" type="E" >
+            <field name="phId" desc="id"/>
+            <field name="phTitle" desc="标题"/>
+            <field name="phPhoto" desc="封面"/>
+            <field name="phImgs" desc="图片ids"/>
+            <field name="phImgNames" desc="图片名称"/>
+            <field name="phContent" desc="内容"/>
+            <field name="abmId" desc="相册id"/>
+            <field name="phAddUsername" desc="客户名称"/>
+            <field name="phStatus" desc="0未提交、1审核中、2审核通过、3审核失败"/>
+            <field name="auditId" desc="审核id"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+            <field name="siteId" desc="站点"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+        </field-list>
+    </rcv>
+</trans>

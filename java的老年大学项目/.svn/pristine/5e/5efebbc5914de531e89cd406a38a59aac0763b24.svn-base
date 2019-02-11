@@ -1,0 +1,89 @@
+package com.learnyeai.lucene.index;
+
+import com.learnyeai.lucene.document.BuildQuery;
+import com.learnyeai.lucene.document.Doc2ObjectMapper;
+import com.learnyeai.lucene.document.impl.CommonBuildQuery;
+import com.learnyeai.lucene.document.impl.CommonDoc2ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
+
+/**
+ * Created by zpz on 2018/9/10.
+ */
+public class LuceneConf {
+    private String asName;
+    private String indexName;
+    private String indexDir;
+    private String doc2ObjectClassName;
+    private String buildQueryClassName;
+    public Doc2ObjectMapper getDoc2ObjectMapper(){
+        if(StringUtils.isBlank(doc2ObjectClassName)){
+            return new CommonDoc2ObjectMapper();
+        }
+
+        try {
+            Class<?> cs = Class.forName(doc2ObjectClassName);
+            Object o = cs.newInstance();
+            if(o instanceof CommonDoc2ObjectMapper){
+                return (CommonDoc2ObjectMapper)o;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new CommonDoc2ObjectMapper();
+    }
+    public BuildQuery getBuildQuery(){
+        if(StringUtils.isBlank(buildQueryClassName)){
+            return new CommonBuildQuery();
+        }
+        try{
+            Class<?> cs = Class.forName(buildQueryClassName);
+            Object o = cs.newInstance();
+            if(o instanceof BuildQuery){
+                return (BuildQuery) o;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new CommonBuildQuery();
+    }
+
+    public String getAsName() {
+        return asName;
+    }
+
+    public void setAsName(String asName) {
+        this.asName = asName;
+    }
+
+    public String getIndexName() {
+        return indexName;
+    }
+
+    public void setIndexName(String indexName) {
+        this.indexName = indexName;
+    }
+
+    public String getIndexDir() {
+        return indexDir;
+    }
+
+    public void setIndexDir(String indexDir) {
+        this.indexDir = indexDir;
+    }
+
+    public String getDoc2ObjectClassName() {
+        return doc2ObjectClassName;
+    }
+
+    public void setDoc2ObjectClassName(String doc2ObjectClassName) {
+        this.doc2ObjectClassName = doc2ObjectClassName;
+    }
+
+    public String getBuildQueryClassName() {
+        return buildQueryClassName;
+    }
+
+    public void setBuildQueryClassName(String buildQueryClassName) {
+        this.buildQueryClassName = buildQueryClassName;
+    }
+}

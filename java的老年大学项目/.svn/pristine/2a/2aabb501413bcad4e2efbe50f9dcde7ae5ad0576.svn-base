@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="活动作品打分-我的列表">
+    <snd>
+
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="我的列表" type="E">
+            <field name="mkId" desc="ID"/>
+            <field name="wksId" desc="作品id"/>
+            <field name="mkScore" desc="打分"/>
+            <field name="mkUserId" desc="打分人id"/>
+            <field name="mkUserName" desc="打分人名称"/>
+            <field name="mkDate" desc="打分时间"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+        </field-list>
+    </rcv>
+</trans>

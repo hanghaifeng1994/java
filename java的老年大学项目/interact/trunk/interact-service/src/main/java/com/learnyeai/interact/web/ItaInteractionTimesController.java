@@ -1,0 +1,48 @@
+package com.learnyeai.interact.web;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.common.support.WeyeBaseService;
+
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.service.ItaInteractionTimesWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ItaInteractionTimesController extends BaseController<ItaInteractionTimes> {
+    public static final String BASE_URL = "/ItaInteractionTimes/";
+
+    @Autowired
+    private ItaInteractionTimesWyService itaInteractionTimesWyService;
+
+    @Override
+    protected WeyeBaseService<ItaInteractionTimes> getService() {
+        return itaInteractionTimesWyService;
+    }
+
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        ItaInteractionTimes ita =itaInteractionTimesWyService.convert2Bean(ctx.getParamMap());
+        String method = CtxHeadUtil.getControllerMethod();
+        if("queryByObjIdExt".equals(method)){
+            return   itaInteractionTimesWyService.queryByObjIdExt(ita);
+        }
+        if("queryPage".equals(method)){
+            return itaInteractionTimesWyService.queryPageData(ctx);
+        }
+        if("addReadTimes".equals(method)){
+             itaInteractionTimesWyService.addReadTimes(ctx);
+        }
+        return super.execute(ctx);
+    }
+}

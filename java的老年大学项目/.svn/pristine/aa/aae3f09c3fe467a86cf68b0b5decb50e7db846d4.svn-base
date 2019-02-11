@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPageUse" desc="站点可用相册列表查询" sorts="true" isPage="true">
+    <snd>
+        <field name="siteIds" desc="站点id多个站点用英文逗号隔开"/>
+        <field name="posid" desc="推荐位置"/>
+        <field name="catId" desc="分类id多个分类用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <filed-list name="LIST" type="E"  >
+            <field name="abmId" desc="id"/>
+            <field name="abmName" desc="名称"/>
+            <field name="abmPhoto" desc="封面"/>
+            <field name="abmWeight" desc="权重"/>
+            <field name="remarks" desc="备注"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="delFlag" desc="删除标记"/>
+            <field name="siteId" desc="站点"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+            <field name="abmStatus" desc="状态0未提交1提交中2审核成功3审核失败"/>
+            <field name="auditId" desc="审核状态"/>
+            <field name="posid" desc="推荐位置"/>
+        </filed-list>
+    </rcv>
+</trans>

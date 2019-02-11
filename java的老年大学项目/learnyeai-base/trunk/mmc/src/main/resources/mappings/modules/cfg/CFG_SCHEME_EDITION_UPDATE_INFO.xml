@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgSchemeEditionUpdateInfoDao">
+    <resultMap id="BaseResultMap" type="CfgSchemeEditionUpdateInfo">
+        <id property="edtUpId" column="EDT_UP_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtId" column="SCHM_EDT_ID" jdbcType="VARCHAR" />
+        <result property="schmEdtCode" column="SCHM_EDT_CODE" jdbcType="DECIMAL" />
+        <result property="edtUpVerName" column="EDT_UP_VER_NAME" jdbcType="VARCHAR" />
+        <result property="edtUpVerDate" column="EDT_UP_VER_DATE" jdbcType="TIMESTAMP" />
+        <result property="edtUpContent" column="EDT_UP_CONTENT" jdbcType="VARCHAR" />
+        <result property="edtUpType" column="EDT_UP_TYPE" jdbcType="CHAR" />
+        <result property="edtUpObjId" column="EDT_UP_OBJ_ID" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        EDT_UP_ID,SCHM_EDT_ID,SCHM_EDT_CODE,EDT_UP_VER_NAME,EDT_UP_VER_DATE,
+        EDT_UP_CONTENT,EDT_UP_TYPE,EDT_UP_OBJ_ID,CREATE_BY,CREATE_DATE
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{edtUpId},#{schmEdtId},#{schmEdtCode},#{edtUpVerName},#{edtUpVerDate},
+        #{edtUpContent},#{edtUpType},#{edtUpObjId},#{createBy},#{createDate}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.CFG_SCHEME_EDITION_UPDATE_INFO </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            EDT_UP_ID = #{edtUpId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="CfgSchemeEditionUpdateInfo">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="CfgSchemeEditionUpdateInfo">
+        update <include refid="TableClause" />
+        <set>
+        SCHM_EDT_ID=#{schmEdtId},
+        SCHM_EDT_CODE=#{schmEdtCode},
+        EDT_UP_VER_NAME=#{edtUpVerName},
+        EDT_UP_VER_DATE=#{edtUpVerDate},
+        EDT_UP_CONTENT=#{edtUpContent},
+        EDT_UP_TYPE=#{edtUpType},
+        EDT_UP_OBJ_ID=#{edtUpObjId},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="CfgSchemeEditionUpdateInfo">
+            update <include refid="TableClause" />
+            <set>
+                <if test="schmEdtId!=null">SCHM_EDT_ID=#{schmEdtId},</if>
+                <if test="schmEdtCode!=null">SCHM_EDT_CODE=#{schmEdtCode},</if>
+                <if test="edtUpVerName!=null">EDT_UP_VER_NAME=#{edtUpVerName},</if>
+                <if test="edtUpVerDate!=null">EDT_UP_VER_DATE=#{edtUpVerDate},</if>
+                <if test="edtUpContent!=null">EDT_UP_CONTENT=#{edtUpContent},</if>
+                <if test="edtUpType!=null">EDT_UP_TYPE=#{edtUpType},</if>
+                <if test="edtUpObjId!=null">EDT_UP_OBJ_ID=#{edtUpObjId},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

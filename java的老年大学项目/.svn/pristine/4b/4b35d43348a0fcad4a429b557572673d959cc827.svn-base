@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.base.mapper.CustRoleMapper">
+    <resultMap id="BaseResultMap" type="CustRole">
+    <id property="roleId" column="ROLE_ID" jdbcType="VARCHAR" />
+
+    <result property="roleName" column="ROLE_NAME" jdbcType="VARCHAR" />
+    <result property="userable" column="USERABLE" jdbcType="CHAR" />
+    <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+    <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+    <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    <result property="remarks" column="REMARKS" jdbcType="VARCHAR" />
+    <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        ROLE_ID,ROLE_NAME,USERABLE,CREATE_BY,CREATE_DATE,
+        UPDATE_BY,UPDATE_DATE,REMARKS,DEL_FLAG
+    </sql>
+
+
+    <sql id="TableClause"> ${schema.interPlat}.CUST_ROLE </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

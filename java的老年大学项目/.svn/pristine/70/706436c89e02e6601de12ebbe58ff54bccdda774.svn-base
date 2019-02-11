@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="testList" desc="班级测验-列表">
+	<snd>
+		<field name="czId" desc="班级id" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="班级测验列表">
+			<field name="czId" desc="班级id" />
+			<field name="tsId" desc="测验id" />
+			<field name="name" desc="测验名称" />
+		</field-list>
+	</rcv>
+</trans>

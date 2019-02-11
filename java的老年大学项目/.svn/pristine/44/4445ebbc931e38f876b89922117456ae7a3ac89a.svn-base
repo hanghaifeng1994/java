@@ -1,0 +1,101 @@
+package com.learnyeai.interact.web;
+
+import com.learnyeai.interact.model.ItaInteractionTimes;
+import com.learnyeai.interact.service.ItaInteractionTimesWyService;
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.interact.model.ItaCollection;
+import com.learnyeai.interact.service.ItaCollectionWyService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.tools.common.MapUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class ItaCollectionController extends BaseController<ItaCollection> {
+    public static final String BASE_URL = "/ItaCollection/";
+
+    @Autowired
+    private ItaCollectionWyService itaCollectionWyService;
+    @Autowired
+    private ItaInteractionTimesWyService itaInteractionTimesWyService;
+
+    @Autowired
+    @Qualifier(value = "redisTemplateMq")
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Value("${spring.application.name}")
+    private String aplicationName;
+
+    @Value("${schema.interPlat}")
+    private String interPlat;
+
+    @Value("${collect_key}")
+    private String collectKey;
+
+    @Override
+    protected BaseService<ItaCollection> getService() {
+        return itaCollectionWyService;
+    }
+    @Override
+    public Object execute(IBusinessContext ctx) {
+        String transCode = ctx.getTransCode();
+        String method = CtxHeadUtil.getControllerMethod();
+        ItaCollection ic=itaCollectionWyService.convert2Bean(ctx.getParamMap());
+        ItaInteractionTimes it=new ItaInteractionTimes();
+        it.setObjId(ic.getObjId());
+        it.setType(ic.getType());
+        //该对象的收藏列表存在数据，将收藏数量拿出和新增的收藏数量相加放入缓存
+        List<ItaInteractionTimes> list= itaInteractionTimesWyService.queryList(it ,new HashMap());
+        int num=0;
+        //加入缓存
+        String cachKey=aplicationName+":"+interPlat;
+        String key=collectKey+","+ic.getObjId()+","+ic.getType();
+        Integer numstr=0;
+        //缓存中存在去缓存中取值，不存在去数据库中取值
+        if(redisTemplate.opsForHash().hasKey(cachKey,key)){
+            numstr  = (Integer)redisTemplate.opsForHash().get(cachKey,key);
+        }else{
+            if(list.size()>0){
+                ItaInteractionTimes i=list.get(0);
+                if(i.getFavNum()!=null){
+                    num+=i.getFavNum();
+                }
+            }
+        }
+        if(numstr!=null){
+            num+=numstr;
+        }
+        if("queryPage".equals(method)){
+            return itaCollectionWyService.listPage(ctx);
+        }
+        if("insert".equals(method)){
+            ic.setCltStatus("1");
+            num+=itaCollectionWyService.saveData(ic);
+            redisTemplate.opsForHash().put(cachKey,key,num);
+            return MapUtil.newMap("cltId",ic.getCltId());
+        }
+        if("delete".equals(method)){
+            int deletenum =itaCollectionWyService.deleteData(ic);
+            num+=deletenum;
+            redisTemplate.opsForHash().put(cachKey,key,num);
+            return MapUtil.newMap("num",deletenum);
+        }
+        return super.execute(ctx);
+    }
+}

@@ -1,0 +1,137 @@
+var menus = [
+    // 00基础服务
+    {
+        name : "资源分类-新增和修改",
+        url : "api/resCategory/save.do",
+        path : "api/resCategory/save",
+        clazz : "PP00"
+    },{
+        name : "资源分类-批量删除",
+        url : "api/resCategory/deleteById.do",
+        path : "api/resCategory/deleteById",
+        clazz : "PP00"
+    },{
+        name : "资源分类-详情",
+        url : "api/resCategory/queryById.do",
+        path : "api/resCategory/queryById",
+        clazz : "PP00"
+    },{
+        name : "资源分类-可管理列表查询",
+        url : "api/resCategory/queryManagePage.do",
+        path : "api/resCategory/queryManagePage",
+        clazz : "PP00"
+    },{
+        name : "资源分类-可用分类列表查询",
+        url : "api/resCategory/queryShowPage.do",
+        path : "api/resCategory/queryShowPage",
+        clazz : "PP00"
+    },{
+        name : "资源-新增和修改",
+        url : "api/resResource/save.do",
+        path : "api/resResource/save",
+        clazz : "PP01"
+    },{
+        name : "资源-批量删除",
+        url : "api/resResource/deleteById.do",
+        path : "api/resResource/deleteById",
+        clazz : "PP01"
+    },{
+        name : "资源-批量发布/取消发布",
+        url : "api/resResource/publish.do",
+        path : "api/resResource/publish",
+        clazz : "PP01"
+    },{
+        name : "资源-批量修改审核状态",
+        url : "api/resResource/check.do",
+        path : "api/resResource/check",
+        clazz : "PP01"
+    },{
+        name : "资源-详情",
+        url : "api/resResource/detail.do",
+        path : "api/resResource/detail",
+        clazz : "PP01"
+    },{
+        name : "资源-可管理列表查询",
+        url : "api/resResource/queryManagePage.do",
+        path : "api/resResource/queryManagePage",
+        clazz : "PP01"
+    },{
+        name : "资源-可用列表查询",
+        url : "api/resResource/queryShowPage.do",
+        path : "api/resResource/queryShowPage",
+        clazz : "PP01"
+    },{
+        name : "资源-主站下发列表查询",
+        url : "api/resResource/queryMainPage.do",
+        path : "api/resResource/queryMainPage",
+        clazz : "PP01"
+    },{
+        name : "资源文件-新增和修改",
+        url : "api/resFile/save.do",
+        path : "api/resFile/save",
+        clazz : "PP01"
+    },{
+        name : "资源文件-批量删除",
+        url : "api/resFile/deleteById.do",
+        path : "api/resFile/deleteById",
+        clazz : "PP01"
+    },{
+        name : "资源文件-详情",
+        url : "api/resFile/detail.do",
+        path : "api/resFile/detail",
+        clazz : "PP01"
+    },{
+        name : "用户资源-新增",
+        url : "api/resUserResource/save.do",
+        path : "api/resUserResource/save",
+        clazz : "PP02"
+    },{
+        name : "用户资源-学习",
+        url : "api/resUserResource/learnSave.do",
+        path : "api/resUserResource/learnSave",
+        clazz : "PP02"
+    },{
+        name : "用户资源-详细信息",
+        url : "api/resUserResource/detail.do",
+        path : "api/resUserResource/detail",
+        clazz : "PP02"
+    }
+];
+
+
+var tplMenus = [ '{@each menus as item}',
+    '<button class="PP ${item.clazz}" data-url="${item.url}" ',
+    ' data-path="${item.path}" data-opType=${item.opType} ',
+    ' onclick="loadForm(this)">${item.name}</button>', '{@/each}' ]
+    .join("");
+
+function loadMenus(ftClass,ftCode,ftName) {
+    try {
+        var datas = [];
+        if (ftClass || ftCode || ftName) {
+            for (var i = 0, j = menus.length; i < j; i++) {
+                var menu = menus[i];
+                if(!menu.opType)
+                    menu.opType = 0;
+                if (ftName && ftName.length > 0
+                    && menu.name.indexOf(ftName) >= 0) {
+                    datas.push(menu);
+                } else if (ftCode && ftCode.length > 0
+                    && menu.url.indexOf(ftCode) >= 0) {
+                    datas.push(menu);
+                } else if (ftClass && ftClass.length > 0
+                    && menu.clazz.indexOf(ftClass) >= 0) {
+                    datas.push(menu);
+                }
+            }
+        } else {
+            datas = menus;
+        }
+        var html = juicer(tplMenus, {
+            menus : datas
+        });
+        $("#TRAN_AREA").html(html);
+    } catch (e) {
+        alert(e);
+    }
+}

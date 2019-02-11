@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.album.mapper.AbmSitePhotoRelMapper">
+    <resultMap id="BaseResultMapExt" type="AbmSitePhotoRel">
+        <id property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+        <id property="abmId" column="ABM_ID" jdbcType="VARCHAR" />
+
+        <result property="abmAsName" column="ABM_AS_NAME" jdbcType="VARCHAR" />
+        <result property="abmManageStatus" column="ABM_MANAGE_STATUS" jdbcType="CHAR" />
+        <result property="abmPubStatus" column="ABM_PUB_STATUS" jdbcType="CHAR" />
+        <result property="abmPubDate" column="ABM_PUB_DATE" jdbcType="TIMESTAMP" />
+        <result property="abmWeight" column="ABM_WEIGHT" jdbcType="INTEGER" />
+        <result property="abmCrtSiteId" column="ABM_CRT_SITE_ID" jdbcType="VARCHAR" />
+        <result property="catId" column="CAT_ID" jdbcType="VARCHAR" />
+    </resultMap>
+    <update id="updateByPrimaryKeySelectiveExt" parameterType="AbmSitePhotoRel" >
+        update abm_site_photo_rel
+        <set >
+            <if test="phAsName != null" >
+                PH_AS_NAME = #{phAsName,jdbcType=VARCHAR},
+            </if>
+            <if test="phManageStatus != null" >
+                PH_MANAGE_STATUS = #{phManageStatus,jdbcType=CHAR},
+            </if>
+            <if test="phPubStatus != null" >
+                PH_PUB_STATUS = #{phPubStatus,jdbcType=CHAR},
+            </if>
+            <if test="phPubDate != null" >
+                PH_PUB_DATE = #{phPubDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="phCrtSiteId != null" >
+                PH_CRT_SITE_ID = #{phCrtSiteId,jdbcType=VARCHAR},
+            </if>
+            <if test="mchtId != null" >
+                MCHT_ID = #{mchtId,jdbcType=VARCHAR},
+            </if>
+            <if test="mchtSchmId != null" >
+                MCHT_SCHM_ID = #{mchtSchmId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where SITE_ID = #{siteId,jdbcType=VARCHAR}
+        and PH_ID = #{phId,jdbcType=VARCHAR}
+    </update>
+    <select id="queryPageExt" parameterType="AbmSitePhotoRel" resultMap="BaseResultMapExt">
+        SELECT
+          sr.*,cr.cat_id as CAT_ID
+        FROM
+          ABM_CATEGORY_PHOTO_REL cr
+          JOIN ABM_SITE_PHOTO_REL sr
+            ON cr.ABM_ID = sr.ABM_ID
+        where 1=1
+            <if test="siteIds !=null">
+                <foreach collection="siteIds" item="item" open="and sr.SITE_ID in (" separator="," close=")">
+                        '${item}'
+                </foreach>
+            </if>
+            <if test="catIds !=null">
+                <foreach collection="catIds" item="item" open="and cr.CAT_ID in (" separator="," close=")">
+                    '${item}'
+                </foreach>
+            </if>
+            <if test="abmWeight !=null" >
+              and  sr.ABM_WEIGHT=#{abmWeight,jdbcType=VARCHAR}
+            </if>
+        order by sr.ABM_PUB_DATE desc
+    </select>
+    <delete id="deleteByAbmId" parameterType="java.lang.String" >
+        delete from abm_site_photo_rel  where abm_id =#{abmId,jdbcType=VARCHAR}
+    </delete>
+    <update id="updateByAbmId" parameterType="AbmAlbum" >
+        update abm_site_photo_rel set ABM_PUB_STATUS=#{abmStatus} where abm_id =#{abmId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updatePubStatusByAbmId" parameterType="AbmSitePhotoRel" >
+        update abm_site_photo_rel
+        <set >
+            <if test="abmAsName != null" >
+                ABM_AS_NAME = #{abmAsName,jdbcType=VARCHAR},
+            </if>
+            <if test="abmManageStatus != null" >
+                ABM_MANAGE_STATUS = #{abmManageStatus,jdbcType=CHAR},
+            </if>
+            <if test="abmPubStatus != null" >
+                ABM_PUB_STATUS = #{abmPubStatus,jdbcType=CHAR},
+            </if>
+            <if test="abmPubDate != null" >
+                ABM_PUB_DATE = #{abmPubDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="abmWeight != null" >
+                ABM_WEIGHT = #{abmWeight,jdbcType=INTEGER},
+            </if>
+            <if test="abmCrtSiteId != null" >
+                ABM_CRT_SITE_ID = #{abmCrtSiteId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where SITE_ID = #{siteId,jdbcType=VARCHAR}
+        and ABM_ID = #{abmId,jdbcType=VARCHAR}
+    </update>
+</mapper>

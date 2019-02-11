@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="login_cust_manage.define" title="员工后台管理登录流程">
+    <actions>
+        <!--<action ref="imageCodeCheckOp" title="图形验证码检查"></action>-->
+        <action ref="loginCheckOp" title="用户检查"></action>
+
+        <action ref="loginInfoGetOp" title="获取登录信息"></action>
+        <action ref="loginPwdCheckOp" title="密码检查"></action>
+        <action ref="loginInfoSaveOp" title="保存登录信息"></action>
+        <action ref="loginDeviceSaveOp" title="保存设备信息"></action>
+        <action ref="loginSessionCreateOp" title="创建用户会话"></action>
+        <!--商户-->
+        <action ref="weye_SessionAddMerchantInfoOp" title="向session中添加商户、商户版本、程序信息"></action>
+
+        <!--<action ref="sessionAnsyOp" title="单点登录检查"></action>-->
+    </actions>
+</config>

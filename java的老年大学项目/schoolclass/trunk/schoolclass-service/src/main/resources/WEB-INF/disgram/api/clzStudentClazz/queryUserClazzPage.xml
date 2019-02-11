@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryUserClazzPage" desc="学员班级列表（我的班级）" isPage="true">
+	<snd>
+		<field name="custId" desc="学生id" required="true" />
+		<field name="czCerted" desc="是否是证书班级" required="true" />
+		<field name="czId" desc="班级id 逗号隔开" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="班级学员列表">
+			<field name="scId" desc="id" />
+			<field name="custId" desc="学生id" />
+			<field name="czId" desc="班级id" />
+			<field name="czName" desc="班级名称" />
+			<field name="custNickname" desc="昵称" />
+			<field name="normal" desc="状态：0报名中、1报名成功" />
+			<field name="singupDate" desc="报名时间" />
+			<field name="process" desc="学习进度" type="F" dolt="1" />
+			<field name="examScore" desc="测验成绩" type="F" dolt="1" />
+			<field name="certed" desc="是否生成证书" />
+			<field name="finished" desc="是否完成" />
+			<field name="siteId" desc="站点" />
+			<field name="userAuth" desc="身份1专家2学员"/>
+		</field-list>
+	</rcv>
+</trans>

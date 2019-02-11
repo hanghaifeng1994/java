@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="员工-详情">
+    <snd>
+        <field name="custId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="custId" desc="用户id"/>
+        <field name="custName" desc="姓名"/>
+        <field name="shortName" desc="用户昵称"/>
+        <field name="loginName" desc="登录名"/>
+        <field name="password" desc="密码"/>
+        <field name="custType" desc="客户类型"/>
+        <field name="userStatus" desc="N: 正常 D: 普通冻结 C: 注销 E:人工冻结"/>
+        <field name="freezeDate" desc="冻结时间"/>
+        <field name="sign" desc="个性签名"/>
+        <field name="phone" desc="手机号"/>
+        <field name="email" desc="邮箱"/>
+        <field name="sex" desc="性别"/>
+        <field name="birthday" desc="用户生日"/>
+        <field name="photo" desc="头像"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="custIsAdmin" desc="0否、1是"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="delFlag" desc="删除标记"/>
+    </rcv>
+</trans>

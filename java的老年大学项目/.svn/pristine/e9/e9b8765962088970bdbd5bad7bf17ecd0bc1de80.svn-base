@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="友情链接-详情">
+    <snd>
+        <field name="name" desc="名称" required="true"/>
+        <field name="icon" desc="图标"/>
+        <field name="url" desc="链接url"/>
+        <field name="sort" desc="排序"/>
+        <field name="remarks" desc="备注"/>
+        <field name="siteId" desc="站点" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="updatePassword" desc="修改密码">
+    <snd>
+        <field name="OLD_PWD" desc="原来的密码" required="true"/>
+        <field name="NEW_PWD" desc="新的密码" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

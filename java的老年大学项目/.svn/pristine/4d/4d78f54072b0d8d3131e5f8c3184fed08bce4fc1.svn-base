@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="作业-根据ids获取作业对象列表">
+	<snd>
+		<field name="hwId" desc="作业id 多个用逗号隔开" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="作业列表">
+			<field name="hwId" desc="作业id" />
+			<field name="hwTitle" desc="标题" />
+			<field name="hwContent" desc="内容" />
+			<field name="hwStatus" desc="0未发布、1已发布" />
+			<field name="hwEnddate" desc="交作业截止时间" />
+			<field name="hwWorkTimeLimit" desc="单位是天" />
+			<field name="hwSubmitNum" desc="交作业人数" />
+			<field name="createBy" desc="创建人" />
+			<field name="createDate" desc="创建时间" />
+			<field name="updateBy" desc="更新人" />
+			<field name="updateDate" desc="更新时间" />
+			<field name="delFlag" desc="删除标记" />
+			<field name="siteId" desc="站点" />
+			<field name="mchtId" desc="商户id" />
+			<field name="mchtSchmId" desc="商户方案id" />
+			<field-list name="homeworkAttachments" type="E" desc="作业附件">
+				<field name="atmId" desc="id" />
+				<field name="objId" desc="作业id,用户作业id,老师批阅id" />
+				<field name="type" desc="0:作业附件;1:用户作业附件;2:老师批阅附件" />
+				<field name="fileId" desc="附件id" />
+				<field name="fileName" desc="附件名称" />
+				<field name="uploadTime" desc="上传时间" />
+				<field name="delFlag" desc="删除标识" />
+			</field-list>
+		</field-list>
+	</rcv>
+</trans>

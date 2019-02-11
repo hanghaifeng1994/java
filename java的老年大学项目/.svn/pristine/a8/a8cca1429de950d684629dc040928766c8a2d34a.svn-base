@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="投票-详情">
+    <snd>
+        <field name="vtId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="vtId" desc="ID"/>
+        <field name="objId" desc="对像id"/>
+        <field name="type" desc="类型"/>
+        <field name="vtUserId" desc="投票人id"/>
+        <field name="vtUserName" desc="投标人名称"/>
+        <field name="vtDate" desc="投票时间"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

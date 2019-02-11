@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgSchemeDao">
+    <!-- 删除用户和角色关联表数据 -->
+    <delete id="deleteSchmMdl">
+        DELETE FROM ${schema.interPlat}.cfg_schm_mdl_rel WHERE SCHM_ID = #{id}
+    </delete>
+
+    <!-- 插入用户和角色关联表数据 -->
+    <insert id="insertSchmMdl">
+        INSERT INTO ${schema.interPlat}.cfg_schm_mdl_rel(SCHM_ID, MDL_ID)
+        <foreach collection="idList" item="mdlId" separator=" union all ">
+            SELECT #{SCHM_ID}, #{mdlId}
+            <if test="dbName != 'mssql'">
+                FROM dual
+            </if>
+        </foreach>
+    </insert>
+
+    <!-- 插入用户和角色关联表数据 -->
+    <update id="updateSchemeMdlSort">
+        UPDATE ${schema.interPlat}.cfg_schm_mdl_rel
+            set sort=#{sort} WHERE MDL_ID=#{mdlId} and SCHM_ID=#{schmId}
+    </update>
+    <!--删除方案模块-->
+    <delete id="delSchemeMdl">
+        DELETE FROM ${schema.interPlat}.cfg_schm_mdl_rel
+         WHERE MDL_ID=#{mdlId} and SCHM_ID=#{schmId}
+    </delete>
+    <!--判断方案模块是否已经使用-->
+    <select id="countSchemeEdtMdl" resultType="int" parameterType="string">
+        SELECT COUNT(1) from ${schema.interPlat}.cfg_scheme_edition e
+INNER JOIN ${schema.interPlat}.cfg_schm_edt_package p on p.SCHM_EDT_ID=e.SCHM_EDT_ID
+where p.MDL_ID=#{mdlId} AND e.SCHM_ID=#{schmId}
+    </select>
+</mapper>

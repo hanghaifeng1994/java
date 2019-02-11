@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.audit.mapper.AdtReportUpMapper">
+    <resultMap id="BaseResultMap" type="AdtReportUp">
+    <id property="rpId" column="RP_ID" jdbcType="VARCHAR" />
+
+    <result property="rpTitle" column="RP_TITLE" jdbcType="VARCHAR" />
+    <result property="objId" column="OBJ_ID" jdbcType="VARCHAR" />
+    <result property="serviceType" column="SERVICE_TYPE" jdbcType="VARCHAR" />
+    <result property="detailUrl" column="DETAIL_URL" jdbcType="VARCHAR" />
+    <result property="auditStatus" column="AUDIT_STATUS" jdbcType="CHAR" />
+    <result property="auditUserId" column="AUDIT_USER_ID" jdbcType="VARCHAR" />
+    <result property="auditUserName" column="AUDIT_USER_NAME" jdbcType="VARCHAR" />
+    <result property="auditContent" column="AUDIT_CONTENT" jdbcType="VARCHAR" />
+    <result property="auditDate" column="AUDIT_DATE" jdbcType="TIMESTAMP" />
+    <result property="reportSiteId" column="REPORT_SITE_ID" jdbcType="VARCHAR" />
+    <result property="reportSiteName" column="REPORT_SITE_NAME" jdbcType="VARCHAR" />
+    <result property="ptId" column="PT_ID" jdbcType="VARCHAR" />
+    <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+    <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+</resultMap>
+
+    <sql id="BaseColumnList">
+        RP_ID,RP_TITLE,OBJ_ID,SERVICE_TYPE,DETAIL_URL,
+        AUDIT_STATUS,AUDIT_USER_ID,AUDIT_USER_NAME,AUDIT_CONTENT,AUDIT_DATE,
+        REPORT_SITE_ID,REPORT_SITE_NAME,PT_ID,MCHT_ID,MCHT_SCHM_ID
+    </sql>
+
+
+    <sql id="TableClause"> ${schema.interPlat}.ADT_REPORT_UP </sql>
+
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

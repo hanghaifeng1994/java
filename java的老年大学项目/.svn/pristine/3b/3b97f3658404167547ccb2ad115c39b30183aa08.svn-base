@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="学员-班级-详情">
+    <snd>
+        <field name="scId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="scId" desc="id"/>
+        <field name="custId" desc="学生id"/>
+        <field name="czId" desc="班级id"/>
+        <field name="czCerted" desc="是否是证书班级"/>
+        <field name="custNickname" desc="昵称"/>
+        <field name="normal" desc="状态：0报名中、1报名成功"/>
+        <field name="singupDate" desc="报名时间"/>
+        <field name="process" desc="学习进度"/>
+        <field name="examScore" desc="测验成绩"/>
+        <field name="certed" desc="是否生成证书"/>
+        <field name="ucId" desc="已生成的证书id"/>
+        <field name="studylengthFinished" desc="总学时是否完成"/>
+        <field name="mustStudylengthFinished" desc="必修改课是否完成"/>
+        <field name="selStudylengthFinished" desc="选修课是否完成"/>
+        <field name="examScoreFinished" desc="测验成绩是否完成"/>
+        <field name="finished" desc="是否完成"/>
+        <field name="finishedDate" desc="完成时间"/>
+        <field name="siteId" desc="站点"/>
+    </rcv>
+</trans>

@@ -1,0 +1,90 @@
+package com.learnyeai.interact.service;
+
+import com.learnyeai.interact.mapper.ItaCustExtMapper;
+import com.learnyeai.interact.model.IsItaLiked;
+import com.learnyeai.interact.model.ItaCustExt;
+import com.learnyeai.interact.model.ItaLiked;
+import com.learnyeai.interact.mapper.ItaLikedMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.tools.common.StringUtils;
+import org.omg.CORBA.Current;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ItaLikedWyService extends BaseService<ItaLiked> {
+
+    @Resource
+    private ItaLikedMapper itaLikedMapper;
+    @Resource
+    private ItaCustExtWyService itaCustExtWyService;
+    @Resource
+    private ItaCustExtMapper itaCustExtMapper;
+
+    @Resource
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    public BaseMapper<ItaLiked> getMapper() {
+        return itaLikedMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+    @Override
+    protected Weekend genSqlExample(ItaLiked t, Map params) {
+        Weekend w=super.genSqlExample(t);
+        Weekend week=new Weekend(this.getEntityClass());
+        WeekendCriteria<ItaLiked,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getObjId())){
+            c.andEqualTo(ItaLiked::getObjId,t.getObjId());
+        }
+        if(StringUtils.isNotBlank(t.getType())){
+            c.andEqualTo(ItaLiked::getType,t.getType());
+        }
+        if(StringUtils.isNotBlank(t.getCreateBy())){
+            c.andEqualTo(ItaLiked::getCreateBy,t.getCreateBy());
+        }
+        if((t.getList()).size()>0){
+            List<ItaLiked> list=t.getList();
+            for (ItaLiked i:list){
+                WeekendCriteria<ItaLiked,Object> criteria=week.weekendCriteria();
+                criteria.andEqualTo(ItaLiked::getObjId,i.getObjId());
+                criteria.andEqualTo(ItaLiked::getType,i.getType());
+                w.or(criteria);
+            }
+        }
+        w.and(c);
+        w.setOrderByClause("CREATE_DATE desc");
+        return w;
+    }
+    public List<IsItaLiked> isItaLike(ItaLiked t, Map<String,Object> map){
+        String objIds=t.getObjId();
+        String[] types=(t.getType()).split(",");
+        String[] objArr=objIds.split(",");
+        String userId=currentUserInfoIml.getId();
+        List<Map<String,Object>> list=new ArrayList<>();
+        for (int i=0 ;i<objArr.length;i++){
+            map.put("objId",objArr[i]);
+            map.put("userId",userId);
+            map.put("type",types[i]);
+            list.add(map);
+        }
+        return itaLikedMapper.isItaLike(list);
+    }
+
+}

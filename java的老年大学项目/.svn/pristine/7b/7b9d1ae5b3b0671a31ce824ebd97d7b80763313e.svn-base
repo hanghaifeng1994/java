@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc=""/>
+        <field name="userResourceId" desc=""/>
+        <field name="studyTime" desc=""/>
+        <field name="appStudyTime" desc=""/>
+        <field name="studyDay" desc=""/>
+        <field name="hour" desc=""/>
+        <field name="startLearningDate" desc=""/>
+        <field name="endLearningDate" desc=""/>
+    </rcv>
+</trans>

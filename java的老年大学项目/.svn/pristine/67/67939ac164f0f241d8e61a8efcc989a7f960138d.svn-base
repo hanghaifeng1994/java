@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.weye.modules.cfg.dao.CfgAddedServiceDao">
+    <resultMap id="BaseResultMap" type="CfgAddedService">
+        <id property="asId" column="AS_ID" jdbcType="VARCHAR" />
+        <result property="asName" column="AS_NAME" jdbcType="VARCHAR" />
+        <result property="asPrice" column="AS_PRICE" jdbcType="DECIMAL" />
+        <result property="asCode" column="AS_CODE" jdbcType="VARCHAR" />
+        <result property="asStatus" column="AS_STATUS" jdbcType="CHAR" />
+        <result property="asDesc" column="AS_DESC" jdbcType="VARCHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        AS_ID,AS_NAME,AS_PRICE,AS_CODE,AS_STATUS,
+        AS_DESC,CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE
+    </sql>
+
+    <sql id="BaseColumnValueList">
+        #{asId},#{asName},#{asPrice},#{asCode},#{asStatus},
+        #{asDesc},#{createBy},#{createDate},#{updateBy},#{updateDate}
+    </sql>
+
+    <sql id="TableClause"> ${schema.interPlat}.CFG_ADDED_SERVICE </sql>
+
+    <sql id="WhereClause4Id">
+        <where>
+            AS_ID = #{asId}
+        </where>
+    </sql>
+
+    <insert id="insert" parameterType="CfgAddedService">
+        insert into <include refid="TableClause" /> (
+        <include refid="BaseColumnList" />
+        ) values (
+        <include refid="BaseColumnValueList" />
+        )
+    </insert>
+
+    <select id="queryById" parameterType="string" resultMap="BaseResultMap">
+        <include refid="public.SelectById" />
+    </select>
+
+    <update id="updateById" parameterType="CfgAddedService">
+        update <include refid="TableClause" />
+        <set>
+        AS_NAME=#{asName},
+        AS_PRICE=#{asPrice},
+        AS_CODE=#{asCode},
+        AS_STATUS=#{asStatus},
+        AS_DESC=#{asDesc},
+        CREATE_BY=#{createBy},
+        CREATE_DATE=#{createDate},
+        UPDATE_BY=#{updateBy},
+        UPDATE_DATE=#{updateDate}
+        </set> <include refid="WhereClause4Id" />
+    </update>
+
+     <update id="updateByIdSelective" parameterType="CfgAddedService">
+            update <include refid="TableClause" />
+            <set>
+                <if test="asName!=null">AS_NAME=#{asName},</if>
+                <if test="asPrice!=null">AS_PRICE=#{asPrice},</if>
+                <if test="asCode!=null">AS_CODE=#{asCode},</if>
+                <if test="asStatus!=null">AS_STATUS=#{asStatus},</if>
+                <if test="asDesc!=null">AS_DESC=#{asDesc},</if>
+                <if test="createBy!=null">CREATE_BY=#{createBy},</if>
+                <if test="createDate!=null">CREATE_DATE=#{createDate},</if>
+                <if test="updateBy!=null">UPDATE_BY=#{updateBy},</if>
+                <if test="updateDate!=null">UPDATE_DATE=#{updateDate}</if>
+            </set> <include refid="WhereClause4Id" />
+     </update>
+
+
+    <delete id="deleteById" parameterType="string">
+        <include refid="public.DeleteById" />
+    </delete>
+
+    <update id="logicDeleteById" parameterType="string">
+        <include refid="public.LogicDeleteById" />
+    </update>
+
+    <select id="queryByCriteria" resultMap="BaseResultMap" parameterType="CriteriaQuery">
+        <include refid="public.Select4Query" />
+    </select>
+
+    <select id="countByCriteria" resultType="int" parameterType="CriteriaQuery">
+        <include refid="public.Count4Query" />
+    </select>
+
+    <delete id="deleteByCriteria" parameterType="CriteriaQuery">
+        <include refid="public.Delete4Query" />
+    </delete>
+</mapper>

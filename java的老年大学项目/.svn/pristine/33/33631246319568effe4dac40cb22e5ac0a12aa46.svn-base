@@ -1,0 +1,15 @@
+package com.learnyeai.base.api.client;
+
+import com.learnyeai.base.api.vo.CfgSchmEdtPackageVo;
+
+import com.learnyeai.core.support.BaseFeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
+
+/**
+ * 方案版本功能包
+ *
+ * @author zhangpz
+ */
+@FeignClient(name = "BASE-SERVICE", path="/base/CfgSchmEdtPackage")
+public interface CfgSchmEdtPackageClient extends BaseFeignClient<CfgSchmEdtPackageVo> {
+}

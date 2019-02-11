@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="登录信息-详情">
+    <snd>
+        <field name="lgnId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="lgnId" desc="ID"/>
+        <field name="userId" desc="客户ID"/>
+        <field name="firstLgnFlag" desc="Y：首次登陆 N：非首次登陆"/>
+        <field name="firstLgnDate" desc="第一次登录时间"/>
+        <field name="lgnErrNum" desc="错误登录次数"/>
+        <field name="lgnDate" desc="登录日期"/>
+        <field name="lgnTime" desc="登录时间"/>
+        <field name="lgnDatetime" desc="登录日期时间"/>
+        <field name="lgnType" desc="1APP、2网页"/>
+        <field name="lgnIp" desc="登录IP"/>
+        <field name="yLine" desc="经度"/>
+        <field name="xLine" desc="纬度"/>
+        <field name="curAdress" desc="当前地址"/>
+        <field name="areaName" desc="区县名称"/>
+        <field name="areaId" desc="区县id"/>
+        <field name="lastLgnCityId" desc="登录城市id"/>
+        <field name="lastLgnCityName" desc="登录城市名称"/>
+        <field name="isOnline" desc="是否在线"/>
+    </rcv>
+</trans>

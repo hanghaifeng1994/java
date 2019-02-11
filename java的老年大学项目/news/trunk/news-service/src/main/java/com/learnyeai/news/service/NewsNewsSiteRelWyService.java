@@ -1,0 +1,48 @@
+package com.learnyeai.news.service;
+
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.news.model.NewsNewsSiteRel;
+import com.learnyeai.news.mapper.NewsNewsSiteRelMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class NewsNewsSiteRelWyService extends WeyeBaseService<NewsNewsSiteRel> {
+
+    @Resource
+    private NewsNewsSiteRelMapper newsNewsSiteRelMapper;
+
+    @Override
+    public BaseMapper<NewsNewsSiteRel> getMapper() {
+        return newsNewsSiteRelMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+
+    @Override
+    protected Weekend genSqlExample(NewsNewsSiteRel t, Map params) {
+        Weekend w=super.genSqlExample(t,params);
+        WeekendCriteria<NewsNewsSiteRel,Object> c=w.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getArtId())){
+            c.andEqualTo(NewsNewsSiteRel::getArtId,t.getArtId());
+        }
+        if(StringUtils.isNotBlank(t.getSiteId())){
+            c.andEqualTo(NewsNewsSiteRel::getSiteId,t.getSiteId());
+        }
+        w.and(c);
+        return w;
+    }
+}

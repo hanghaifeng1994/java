@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="audit" desc="相册-修改审核状态">
+    <snd>
+        <field name="objId" desc="对象id多个id用英文逗号隔开"/>
+        <field name="objLogId" desc="对象快照id"/>
+        <field name="serviceType" desc="服务类型 类型为album_service" />
+        <field name="adContent" desc="审核内容"/>
+        <field name="status" desc="审核状态"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

@@ -1,0 +1,140 @@
+package com.learnyeai.resource.service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.common.utils.WeyeCons;
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.resource.mapper.ResCategoryMapper;
+import com.learnyeai.resource.model.ResCategory;
+import com.learnyeai.resource.model.ResSiteCategoryRel;
+import com.learnyeai.tools.common.BeanUtils;
+import com.learnyeai.tools.common.StringUtils;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class ResCategoryWyService extends WeyeBaseService<ResCategory> {
+
+	@Resource
+	private ResCategoryMapper resCategoryMapper;
+
+	@Autowired
+	private ResSiteCategoryRelWyService resSiteCategoryRelWyService;
+
+	@Override
+	public BaseMapper<ResCategory> getMapper() {
+		return resCategoryMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return true;
+	}
+
+	/**
+	 * status0操作成功 1操作失败
+	 * 
+	 * @param rc
+	 * @return
+	 */
+	@Transactional
+	public Map<String, Object> saveOrUpdate(ResCategory rc) {
+		Map<String, Object> map = new HashMap();
+		String parentId = rc.getParentId();
+		String parentIds;
+		int catLevel = 1;
+		if (StringUtils.isNotBlank(parentId)) {
+			ResCategory parent = super.queryById(parentId);
+			parentIds = (parent.getParentIds() == null ? "" : parent.getParentIds()) + parentId + ",";
+			catLevel = parent.getCatLevel() + 1;
+			rc.setParentIds(parentIds);
+			rc.setCatLevel(catLevel);
+		}
+
+		if (StringUtils.isBlank(rc.getCatId())) {
+			if (StringUtils.isBlank(parentId)) {
+				rc.setCatLevel(1);
+			}
+			if (rc.getCatSort() == null) {
+				long catNum = resCategoryMapper.countByParent(rc.getSiteId(), parentId);
+				rc.setCatSort(catNum + 1);
+			}
+		}
+		super.save(rc);
+
+		// 保存关系表
+		ResSiteCategoryRel resSiteCategoryRel = new ResSiteCategoryRel();
+		resSiteCategoryRel.setCatId(rc.getCatId());
+		resSiteCategoryRel.setCatCrtSiteId(rc.getSiteId());
+		resSiteCategoryRel.setSiteId(rc.getSiteId());
+		resSiteCategoryRel = resSiteCategoryRelWyService.queryOne(resSiteCategoryRel);
+		if (resSiteCategoryRel == null) {
+			resSiteCategoryRel = new ResSiteCategoryRel();
+			resSiteCategoryRel.setCatId(rc.getCatId());
+			resSiteCategoryRel.setCatCrtSiteId(rc.getSiteId());
+			resSiteCategoryRel.setSiteId(rc.getSiteId());
+			resSiteCategoryRel.setCatSort(0l);
+			resSiteCategoryRel.setShowStatus("1");
+		}
+		if (rc.getShowStatus() != null) {
+			resSiteCategoryRel.setShowStatus(rc.getShowStatus());
+		}
+		if (resSiteCategoryRel.getCatSort() != null) {
+			resSiteCategoryRel.setCatSort(rc.getCatSort());
+		}
+		resSiteCategoryRelWyService.save(resSiteCategoryRel);
+		map.put("status", 0);
+		return map;
+
+	}
+
+	@Transactional
+	public Map<String, Object> deleteCat(ResCategory rc) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String catId : rc.getCatId().split(",")) {
+			ResCategory delOne = super.queryById(catId);
+			if (delOne != null) {
+				delOne.setDelFlag("1");
+				super.save(delOne);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public MyPage<ResCategory> queryManagePage(ResCategory rc) {
+		if (rc != null && rc.getPage() != null && rc.getRows() != null) {
+			PageHelper.startPage(rc.getPage(), rc.getRows());
+		}
+		MyPage<ResCategory> page = new MyPage<ResCategory>(resCategoryMapper.queryManagePage(rc));
+		return page;
+
+	}
+
+	@Transactional
+	public MyPage<ResCategory> queryShowPage(ResCategory rc) {
+		if (rc != null && rc.getPage() != null && rc.getRows() != null) {
+			PageHelper.startPage(rc.getPage(), rc.getRows());
+		}
+		MyPage<ResCategory> page = new MyPage<ResCategory>(resCategoryMapper.queryShowPage(rc));
+		return page;
+
+	}
+}

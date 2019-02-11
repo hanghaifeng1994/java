@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="员工-详情">
+    <snd>
+
+        <field name="custId" desc="用户id"/>
+        <field name="custName" desc="姓名"/>
+        <field name="shortName" desc="用户昵称"/>
+        <field name="loginName" desc="登录名"/>
+        <field name="password" desc="密码"/>
+        <field name="sign" desc="个性签名"/>
+        <field name="phone" desc="手机号"/>
+        <field name="email" desc="邮箱"/>
+        <field name="sex" desc="性别"/>
+        <field name="birthday" desc="用户生日"/>
+        <field name="photo" desc="头像"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="openId" desc="OPEN_ID"/>
+    </snd>
+    <rcv>
+
+    </rcv>
+</trans>

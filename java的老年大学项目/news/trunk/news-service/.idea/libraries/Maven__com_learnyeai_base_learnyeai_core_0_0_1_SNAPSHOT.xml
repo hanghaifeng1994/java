@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.learnyeai.base:learnyeai-core:0.0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/learnyeai/base/learnyeai-core/0.0.1-SNAPSHOT/learnyeai-core-0.0.1-20180810.074713-11.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/learnyeai/base/learnyeai-core/0.0.1-SNAPSHOT/learnyeai-core-0.0.1-20180810.074713-11-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/learnyeai/base/learnyeai-core/0.0.1-SNAPSHOT/learnyeai-core-0.0.1-20180810.074713-11-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

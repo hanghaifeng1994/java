@@ -1,0 +1,67 @@
+package com.learnyeai.audit.consumer;
+
+import com.learnyeai.audit.model.AdtAuditLog;
+import com.learnyeai.audit.service.AdtAuditLogWyService;
+import com.learnyeai.mq.AuditlogMq;
+import com.learnyeai.rabbitmq.bean.MqVo;
+import com.learnyeai.rabbitmq.listener.AbstractMessageListener;
+import com.learnyeai.tools.common.JsonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+
+@Component
+public class BizMessageListener extends AbstractMessageListener {
+	
+	Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Autowired
+	AdtAuditLogWyService adtAuditLogWyService;
+	@Autowired
+	@Qualifier(value = "redisTemplateMq")
+	private RedisTemplate<String, Object> redisTemplate;
+	@Override
+	public boolean receiveMessage(MqVo mqVo, Object[] objects) {
+		AuditlogMq vo = (AuditlogMq)mqVo;
+		logger.info("get message success:");
+		AdtAuditLog aal=parse(vo);
+		adtAuditLogWyService.save(aal);
+		//将日志信息放入redis中
+		String cachKey="";
+		if("news_service".equals(aal.getServiceType())){
+			cachKey="news_service";
+		}else if("activity_service".equals(aal.getServiceType())){
+			cachKey="activity_service";
+		}else if("album_service".equals(aal.getServiceType())){
+			cachKey="album_service";
+		}else if("activity_service_work".equals(aal.getServiceType())){
+		    cachKey="activity_service_work";
+        }else  if("activity_service_result".equals(aal.getServiceType())){
+            cachKey="activity_service_result";
+        }else if("studygroup_service".equals(aal.getServiceType())){
+            cachKey="studygroup_service";
+        }
+		String vostr=JsonUtils.objectToJson(vo);
+		String adId=aal.getAdId();
+		redisTemplate.opsForHash().put(cachKey,adId,vostr);
+		return true;
+	}
+	//将消息对象转为日志对象
+	public AdtAuditLog parse(AuditlogMq vo){
+		AdtAuditLog aal=new AdtAuditLog();
+		aal.setObjId(vo.getObjId());
+		aal.setObjLogId(vo.getObjLogId());
+		aal.setAdUserId(vo.getAdUserId());
+		aal.setAdContent(vo.getAdContent());
+		aal.setAdDate(vo.getAdTime());
+		aal.setAdStatus(vo.getStatus());
+		aal.setAdUserName(vo.getAdUserName());
+		aal.setServiceType(vo.getServiceType());
+		return  aal;
+	}
+
+}

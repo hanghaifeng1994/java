@@ -1,0 +1,15 @@
+package com.learnyeai.resource.api.client;
+
+import com.learnyeai.resource.api.vo.StdCustLearnResourceVo;
+
+import com.learnyeai.core.support.BaseFeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
+
+/**
+ * 客户学习资源
+ *
+ * @author twang
+ */
+@FeignClient(name = "RESOURCE-INTERFACE", path="resource/StdCustLearnResource")
+public interface StdCustLearnResourceClient extends BaseFeignClient<StdCustLearnResourceVo> {
+}

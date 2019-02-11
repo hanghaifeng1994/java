@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delete" desc="商户门店-详情">
+    <snd>
+        <field name="STORE_ID" desc="id" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

@@ -1,0 +1,13 @@
+package com.learnyeai.studygroup.mapper;
+
+import com.learnyeai.studygroup.model.SgpStudyGroupTalent;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyBatisDao;
+/**
+ * @Description: 小组才艺
+ * @author yl
+ */
+@MyBatisDao
+public interface SgpStudyGroupTalentMapper extends BaseMapper<SgpStudyGroupTalent> {
+    int deleteByTalentAndSgpId(SgpStudyGroupTalent talent);
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       ">
+
+	<!-- 公共检查 -->
+	<bean id="commonFlow" class="com.learnyeai.core.flow.AresFlowDispatch" lazy-init="true" init-method="init">
+		<property name="defineName" value="classpath:/WEB-INF/business/inte/common.define.xml"></property>
+		<property name="flowDefine" ref="aresFlowDefineByXml"></property>
+	</bean>
+</beans>

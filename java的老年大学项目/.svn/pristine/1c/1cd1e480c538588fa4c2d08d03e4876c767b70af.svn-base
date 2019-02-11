@@ -1,0 +1,144 @@
+package com.learnyeai.album.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
+
+/**
+ * 站点-图片
+ *
+ * @author yl
+ */
+public class AbmSitePhotoRel extends BaseEntity {
+
+    /**
+    * 站点id
+    */
+    @Id
+    @Column(name = "SITE_ID")
+    private String siteId;
+
+    /**
+     * 图片id
+     */
+    @Column(name = "PH_ID")
+    private String phId;
+    /**
+     * 别名
+     */
+    @Column(name = "PH_AS_NAME")
+    private String phAsName;
+    /**
+     * 管理状态
+     */
+    @Column(name = "PH_MANAGE_STATUS")
+    private String phManageStatus;
+    /**
+     * 发布状态
+     */
+    @Column(name = "PH_PUB_STATUS")
+    private String phPubStatus;
+    /**
+     * 发布时间
+     */
+    @Column(name = "PH_PUB_DATE")
+    private Date phPubDate;
+    /**
+     * 创建站点
+     */
+    @Column(name = "PH_CRT_SITE_ID")
+    private String phCrtSiteId;
+    /**
+     * 商户id
+     */
+    @Column(name = "MCHT_ID")
+    private String mchtId;
+    /**
+     * 商户方案id
+     */
+    @Column(name = "MCHT_SCHM_ID")
+    private String mchtSchmId;
+
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+    public String getPhId() {
+        return phId;
+    }
+
+    public void setPhId(String phId) {
+        this.phId = phId;
+    }
+    public String getPhAsName() {
+        return phAsName;
+    }
+
+    public void setPhAsName(String phAsName) {
+        this.phAsName = phAsName;
+    }
+    public String getPhManageStatus() {
+        return phManageStatus;
+    }
+
+    public void setPhManageStatus(String phManageStatus) {
+        this.phManageStatus = phManageStatus;
+    }
+    public String getPhPubStatus() {
+        return phPubStatus;
+    }
+
+    public void setPhPubStatus(String phPubStatus) {
+        this.phPubStatus = phPubStatus;
+    }
+    public Date getPhPubDate() {
+        return phPubDate;
+    }
+
+    public void setPhPubDate(Date phPubDate) {
+        this.phPubDate = phPubDate;
+    }
+    public String getPhCrtSiteId() {
+        return phCrtSiteId;
+    }
+
+    public void setPhCrtSiteId(String phCrtSiteId) {
+        this.phCrtSiteId = phCrtSiteId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "ABM_SITE_PHOTO_REL";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("schema.interPlat");   // 库名
+
+        public static String siteId = "SITE_ID";  // 站点id
+        public static String phId = "PH_ID";  // 图片id
+        public static String phAsName = "PH_AS_NAME";  // 别名
+        public static String phManageStatus = "PH_MANAGE_STATUS";  // 管理状态
+        public static String phPubStatus = "PH_PUB_STATUS";  // 发布状态
+        public static String phPubDate = "PH_PUB_DATE";  // 发布时间
+        public static String phCrtSiteId = "PH_CRT_SITE_ID";  // 创建站点
+        public static String mchtId = "MCHT_ID";  // 商户id
+        public static String mchtSchmId = "MCHT_SCHM_ID";  // 商户方案id
+
+    }
+}

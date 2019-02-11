@@ -1,0 +1,115 @@
+package com.learnyeai.album.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+
+/**
+ * 站点-图片
+ *
+ * @author yl
+ */
+public class AbmSitePhotoRelVo extends BaseVo {
+
+    /**
+    * 站点id
+    */
+    private String siteId;
+
+    /**
+     * 图片id
+     */
+    private String phId;
+    /**
+     * 别名
+     */
+    private String phAsName;
+    /**
+     * 管理状态
+     */
+    private String phManageStatus;
+    /**
+     * 发布状态
+     */
+    private String phPubStatus;
+    /**
+     * 创建站点
+     */
+    private String phCrtSiteId;
+    /**
+     * 商户id
+     */
+    private String mchtId;
+    /**
+     * 商户方案id
+     */
+    private String mchtSchmId;
+
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+    public String getPhId() {
+        return phId;
+    }
+
+    public void setPhId(String phId) {
+        this.phId = phId;
+    }
+    public String getPhAsName() {
+        return phAsName;
+    }
+
+    public void setPhAsName(String phAsName) {
+        this.phAsName = phAsName;
+    }
+    public String getPhManageStatus() {
+        return phManageStatus;
+    }
+
+    public void setPhManageStatus(String phManageStatus) {
+        this.phManageStatus = phManageStatus;
+    }
+    public String getPhPubStatus() {
+        return phPubStatus;
+    }
+
+    public void setPhPubStatus(String phPubStatus) {
+        this.phPubStatus = phPubStatus;
+    }
+    public String getPhCrtSiteId() {
+        return phCrtSiteId;
+    }
+
+    public void setPhCrtSiteId(String phCrtSiteId) {
+        this.phCrtSiteId = phCrtSiteId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+
+    public static class CF {
+        public static String siteId = "siteId";  // 站点id
+        public static String phId = "phId";  // 图片id
+        public static String phAsName = "phAsName";  // 别名
+        public static String phManageStatus = "phManageStatus";  // 管理状态
+        public static String phPubStatus = "phPubStatus";  // 发布状态
+        public static String phCrtSiteId = "phCrtSiteId";  // 创建站点
+        public static String mchtId = "mchtId";  // 商户id
+        public static String mchtSchmId = "mchtSchmId";  // 商户方案id
+
+    }
+
+}

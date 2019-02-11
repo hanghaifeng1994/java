@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPage" desc="小组经验-列表" isPage="true">
+    <snd>
+        <field name="sgpId" desc="小组id"/>
+    </snd>
+    <rcv>
+        <field name="epcId" desc="返回以英文,隔开的经验id字符串"/>
+    </rcv>
+</trans>

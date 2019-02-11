@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="学分帐单-详情">
+    <snd>
+        <field name="creditId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="creditId" desc="id"/>
+        <field name="creditNum" desc="学分"/>
+        <field name="incomeType" desc="收入类型"/>
+        <field name="tag" desc="标签"/>
+        <field name="remark" desc="备注"/>
+        <field name="custId" desc="用户id"/>
+        <field name="serviceType" desc="业务类型"/>
+        <field name="objId" desc="对象id"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

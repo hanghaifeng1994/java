@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<display-name>weyeManage</display-name>
+	<!-- Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔
+		此参数用于后面的Spring Context Loader -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:/applicationContext.xml
+		</param-value>
+	</context-param>
+
+	<!-- Filter 定义  -->
+	<!-- Character Encoding filter -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	
+	<!-- Hibernate Open Session In View filter-->
+	<!-- <filter>
+		<filter-name>hibernateOpenSessionInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+	</filter> -->
+
+	<!-- SpringSecurity filter-->
+	<!-- <filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter> -->
+
+	<filter>
+		<filter-name>struts2Filter</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	
+	<!-- 自我主动登录filter -->
+	<!-- <filter>
+		<filter-name>activeLoginFilter</filter-name>
+		<filter-class>cn.common.lib.web.filter.ActiveLoginFilter</filter-class>
+	</filter>
+		
+	<filter>
+		<filter-name>curUrlFilter</filter-name>
+		<filter-class>cn.common.lib.web.filter.CurUrlFilter</filter-class>
+	</filter> -->
+	
+	<!-- cas Filters 用于单点退出 -->
+	<!-- <filter>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<filter-class>
+			org.jasig.cas.client.session.SingleSignOutFilter
+		</filter-class>
+	</filter> -->
+	<!--  增加访问量过滤器   --> 
+	<!-- <filter>
+	<filter-name>visitcountFilter</filter-name> 
+	<filter-class>com.drcl.traincore.web.filter.VisitcountFilter</filter-class> 
+	</filter> -->
+
+	<!-- Filter 映射 -->
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 此位置前不能放除encodingFilter之外其它过滤器，否则不能正常退出  -->
+	<!-- <filter-mapping>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
+	
+	<!-- before remembermeFilter for login success -->
+	<!-- <filter-mapping>
+		<filter-name>curUrlFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>curUrlFilter</filter-name>
+		<url-pattern>/auth_check</url-pattern>
+	</filter-mapping>	
+	<filter-mapping>
+		<filter-name>curUrlFilter</filter-name>
+		<url-pattern>/logoutSuccess.jsp</url-pattern>
+	</filter-mapping> -->
+
+	<!-- <filter-mapping>
+	  <filter-name>visitcountFilter</filter-name> 
+	  <url-pattern>*.action</url-pattern> 
+	</filter-mapping> -->
+
+	<!-- <filter-mapping>
+		<filter-name>hibernateOpenSessionInViewFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>hibernateOpenSessionInViewFilter</filter-name>
+		<url-pattern>*.excsec</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>hibernateOpenSessionInViewFilter</filter-name>
+		<url-pattern>/auth_check</url-pattern>
+	</filter-mapping> -->
+	
+	<!-- <filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/auth_check</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>*.action</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping> -->
+	
+	<!--一定要放权限下面，否则主动登录过滤器中的是否登录判断取不到登录用户 -->
+	<!-- <filter-mapping>
+		<filter-name>activeLoginFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping> -->
+
+	<filter-mapping>
+		<filter-name>struts2Filter</filter-name>
+		<url-pattern>*.action</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>struts2Filter</filter-name>
+		<url-pattern>*.excsec</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>	
+
+
+    <!-- ckfinder -->
+	<servlet>
+		<servlet-name>ConnectorServlet_ck</servlet-name>
+		<servlet-class>com.ckfinder.connector.ConnectorServlet</servlet-class>
+		<init-param>
+			<param-name>XMLConfig</param-name>
+			<param-value>/WEB-INF/ckfinder_config.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ConnectorServlet_ck</servlet-name>
+		<url-pattern>
+			/ckfinder/core/connector/java/connector.java
+		</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>FileUploadFilter</filter-name>
+		<filter-class>com.ckfinder.connector.FileUploadFilter</filter-class>
+        <init-param>
+            <param-name>sessionCookieName</param-name>
+            <param-value>JSESSIONID</param-value>
+        </init-param>
+        <init-param>
+            <param-name>sessionParameterName</param-name>
+            <param-value>jsessionid</param-value>
+        </init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>FileUploadFilter</filter-name>
+		<url-pattern>
+			/ckfinder/core/connector/java/connector.java
+     	 </url-pattern>
+	</filter-mapping>
+    <!-- fckeditor servlet -->
+	<servlet>
+		<servlet-name>ConnectorServlet</servlet-name>
+		<servlet-class>net.fckeditor.connector.ConnectorServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- fckeditor servlet end-->
+	<!--Spring的ApplicationContext 载入 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Spring 刷新Introspector防止内存泄露 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	
+	<!-- 主动登录session 
+	<listener>
+		<listener-class>cn.common.lib.web.listener.ActiveLoginSessionListener</listener-class>
+	</listener>
+	-->
+	<!--web应用启动监听器 -->
+	<listener>
+		<listener-class>com.drcl.traincore.web.listener.StartupListener</listener-class>
+	</listener>
+	<!-- cas 单点退出 -->
+	<!-- <listener>
+		<listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+	</listener> -->
+
+	<!-- session超时定义,单位为分钟 -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<welcome-file-list>
+       <welcome-file>index.jsp</welcome-file>
+       <welcome-file>index.action</welcome-file>
+    </welcome-file-list>
+	<!-- 出错页面定义 -->
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/common/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/common/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/common/404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/common/403.jsp</location>
+	</error-page>
+	<distributable/>
+</web-app>

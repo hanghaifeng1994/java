@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="站点-学习小组关联表-详情">
+    <snd>
+        <field name="siteId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="siteId" desc="站点id"/>
+        <field name="sgpId" desc="学习小组id"/>
+        <field name="manageStatus" desc="管理状态"/>
+        <field name="pubStatus" desc="发布状态"/>
+        <field name="pubDate" desc="发布时间"/>
+        <field name="crtSiteId" desc="创建站点"/>
+    </rcv>
+</trans>

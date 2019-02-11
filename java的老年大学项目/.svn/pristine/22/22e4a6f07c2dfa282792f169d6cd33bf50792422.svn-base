@@ -1,0 +1,78 @@
+package com.learnyeai.learnai.action;
+
+import com.learnyeai.core.IBusinessContext;
+import com.learnyeai.core.flow.IAresSerivce;
+import com.learnyeai.learnai.consts.SessR;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import com.learnyeai.tools.common.MapUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
+/**
+ * 报文请求重复提交校验
+ * 
+ * @author LQ
+ * 
+ */
+@Component
+public class ReqRepeatCheckOp implements IAresSerivce {
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	public int execute(IBusinessContext context) {
+		com.learnyeai.learnai.support.IBusinessContext ctx = (com.learnyeai.learnai.support.IBusinessContext) context;
+		logger.debug("--run---");
+		Map headMap = ctx.getReqHead();
+		String CHECK_REPEAT = MapUtil.singleNodeValue(headMap,"_REPEAT/CHECK_REPEAT");	// 校验是否重复提交标识
+		String reqTime = MapUtil.singleNodeText(headMap, SessR.REQ_TIME);	// 报文请求发送时间
+
+		long code = 0;
+		try {
+			code= Long.parseLong(reqTime);
+		}catch (Exception e){
+			logger.error("reqTime 时间格式有误");
+			throw new AresRuntimeException("006");
+		}
+		headMap.remove("_REPEAT");
+		headMap.remove(SessR.REQ_TIME);
+
+		String transCode = ctx.getTransCode();	// 报文请求交易码
+		
+		if("N".equals(CHECK_REPEAT)){
+			ctx.saveSessionObject(SessR.REQ_TIME, reqTime);
+			ctx.saveSessionObject(SessR.TRANS_CODE, transCode);
+			return NEXT;
+		}
+
+		String REQ_TIME = ctx.getSessionObject(SessR.REQ_TIME);
+		String TRANS_CODE = ctx.getSessionObject(SessR.TRANS_CODE);
+		
+		if (StringUtils.isEmpty(REQ_TIME)) {
+			ctx.saveSessionObject(SessR.REQ_TIME, reqTime);
+			ctx.saveSessionObject(SessR.TRANS_CODE, transCode);
+			return NEXT;
+		}
+
+		long oldTime = Long.parseLong(REQ_TIME);
+		// 同一个用户时间是递增的。不是递增说明是恶意请求
+		if(code <= oldTime)
+			throw new AresRuntimeException("006");
+
+		// 同一个交易 && （客户端防重放码 - 服务器防重放码 < 重复提交时间段）
+		if(transCode.equals(TRANS_CODE) && (code - oldTime < SessR.REQ_REPEAT_TIME)){
+			logger.warn("security.req_repeat_code:{}", reqTime);
+			throw new AresRuntimeException("006");
+		}
+		// 只有请求重放码 > session存储重放码时，更新重放码
+//		if(code >= oldTime) // 前面已经做了判断
+		{
+			ctx.saveSessionObject(SessR.REQ_TIME, reqTime);
+			ctx.saveSessionObject(SessR.TRANS_CODE, transCode);
+		}
+		return NEXT;
+	}
+
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryList" desc="题库章节目录-目录树">
+    <snd>
+        <field name="sectionId" desc="章节id" />
+        <field name="qpId" desc="题库id"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" type="E" desc="题库章节目录树">
+            <field name="sectionId" desc="ID"/>
+            <field name="qpId" desc="题库"/>
+            <field name="name" desc="名称"/>
+            <field name="parentId" desc="父章节"/>
+            <field name="parentIds" desc="所有父ids"/>
+            <field name="level" desc="目录层级"/>
+            <field name="poolName" desc="章节名称"/>
+            <field name="haveChild" desc="0否 1 是"/>
+        </field-list>
+    </rcv>
+</trans>

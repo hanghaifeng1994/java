@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryPageByUser"  desc="账单用户-几个用户参数的账单列表查询" isPage="true">
+    <snd>
+        <field name="custId" desc="id多个id用英文逗号隔开"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" type="E" desc="几个用户参数的账单列表">
+            <field name="custId" desc="客户id"/>
+            <field name="pointsNum" desc="积分"/>
+            <field name="creditNum" desc="学分"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+        </field-list>
+    </rcv>
+</trans>

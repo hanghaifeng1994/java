@@ -1,0 +1,25 @@
+package com.learnyeai.album.web;
+
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.common.support.WeyeBaseService;
+
+import com.learnyeai.album.model.AbmCategory;
+import com.learnyeai.album.service.AbmCategoryWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class AbmCategoryController extends BaseController<AbmCategory> {
+
+    @Autowired
+    private AbmCategoryWyService abmCategoryWyService;
+
+    @Override
+    protected WeyeBaseService<AbmCategory> getService() {
+        return abmCategoryWyService;
+    }
+}

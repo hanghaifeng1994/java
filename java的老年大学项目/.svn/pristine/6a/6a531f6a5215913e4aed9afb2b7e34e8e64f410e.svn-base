@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="相册-详情">
+    <snd>
+        <field name="abmId" desc="id"/>
+        <field name="abmName" desc="名称"/>
+        <field name="abmPhoto" desc="封面"/>
+        <field name="abmWeight" desc="权重"/>
+        <field name="remarks" desc="备注"/>
+        <field name="siteId" desc="站点"/>
+        <field name="catId" desc="栏目id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="相册id"/>
+    </rcv>
+</trans>

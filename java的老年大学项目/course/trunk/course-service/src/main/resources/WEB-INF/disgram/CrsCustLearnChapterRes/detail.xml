@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="客户学习章节-资源关联表-详情">
+    <snd>
+        <field name="id" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="id" desc="ID"/>
+        <field name="lcptId" desc="用户学习章节id"/>
+        <field name="resId" desc="资源id"/>
+        <field name="studyUserId" desc=""/>
+        <field name="csId" desc=""/>
+    </rcv>
+</trans>

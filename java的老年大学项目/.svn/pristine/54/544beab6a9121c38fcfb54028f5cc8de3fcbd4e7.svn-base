@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.interact.mapper.ItaLikedMapper">
+    <select id="isItaLike" parameterType="java.util.ArrayList" resultType="IsItaLiked">
+       SELECT
+      *
+    FROM
+      ITA_LIKED
+    WHERE
+      <foreach collection="list" item="item" open=" " close="" separator="or">
+          (`OBJ_ID` = '${item.objId}' and `type`='${item.type}')
+      </foreach>
+        order  by  CREATE_DATE desc
+    </select>
+</mapper>

@@ -1,0 +1,177 @@
+package com.learnyeai.resource.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+import java.util.Date;
+
+/**
+ * 资源分类
+ *
+ * @author twang
+ */
+public class ResCategoryVo extends BaseVo {
+
+    /**
+    * id
+    */
+    private String catId;
+
+    /**
+     * 分类名称
+     */
+    private String catName;
+    /**
+     * 排序
+     */
+    private Long catSort;
+    /**
+     * 级别
+     */
+    private Integer catLevel;
+    /**
+     * 父id
+     */
+    private String parentId;
+    /**
+     * 所有父ids
+     */
+    private String parentIds;
+    /**
+     * 创建人
+     */
+    private String createBy;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
+    /**
+     * 更新人
+     */
+    private String updateBy;
+    /**
+     * 更新时间
+     */
+    private Date updateDate;
+    /**
+     * 站点id
+     */
+    private String siteId;
+    /**
+     * 商户id
+     */
+    private String mchtId;
+    /**
+     * 商户方案id
+     */
+    private String mchtSchmId;
+
+    public String getCatId() {
+        return catId;
+    }
+
+    public void setCatId(String catId) {
+        this.catId = catId;
+    }
+    public String getCatName() {
+        return catName;
+    }
+
+    public void setCatName(String catName) {
+        this.catName = catName;
+    }
+    public Long getCatSort() {
+        return catSort;
+    }
+
+    public void setCatSort(Long catSort) {
+        this.catSort = catSort;
+    }
+    public Integer getCatLevel() {
+        return catLevel;
+    }
+
+    public void setCatLevel(Integer catLevel) {
+        this.catLevel = catLevel;
+    }
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+    public String getParentIds() {
+        return parentIds;
+    }
+
+    public void setParentIds(String parentIds) {
+        this.parentIds = parentIds;
+    }
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+
+    public static class TF {
+        public static String catId = "catId";  // id
+        public static String catName = "catName";  // 分类名称
+        public static String catSort = "catSort";  // 排序
+        public static String catLevel = "catLevel";  // 级别
+        public static String parentId = "parentId";  // 父id
+        public static String parentIds = "parentIds";  // 所有父ids
+        public static String createBy = "createBy";  // 创建人
+        public static String createDate = "createDate";  // 创建时间
+        public static String updateBy = "updateBy";  // 更新人
+        public static String updateDate = "updateDate";  // 更新时间
+        public static String delFlag = "delFlag";  // 删除标记
+        public static String siteId = "siteId";  // 站点id
+        public static String mchtId = "mchtId";  // 商户id
+        public static String mchtSchmId = "mchtSchmId";  // 商户方案id
+
+    }
+
+}

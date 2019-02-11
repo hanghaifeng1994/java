@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="register" title="注册流程">
+    <actions>
+        <action ref="mobileCheckOp" title="校验手机号"></action>
+        <action ref="dynCodeCheckOp" title="短信验证码检查"></action>
+        <action ref="userLoginNameOp" title="用户登录帐号是否存在"></action>
+        <action ref="userAddOp" title="用户账号注册"></action>
+        <action ref="userLoginSaveOp" title="保存用户登录信息"></action>
+        <!--<action ref="loginSessionCreateOp" title="创建用户会话"></action>-->
+    </actions>
+</config>

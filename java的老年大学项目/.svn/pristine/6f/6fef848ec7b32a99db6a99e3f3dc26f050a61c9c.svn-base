@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="帐单用户扩展表-详情">
+    <snd>
+        <field name="custId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="custId" desc="客户id"/>
+        <field name="pointsNum" desc="积分"/>
+        <field name="creditNum" desc="学分"/>
+        <field name="createDate" desc="创建时间"/>
+        <field name="updateDate" desc="更新时间"/>
+        <field name="mchtId" desc="商户id"/>
+        <field name="mchtSchmId" desc="商户方案id"/>
+    </rcv>
+</trans>

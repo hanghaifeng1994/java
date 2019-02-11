@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="员工-详情" isCommon="1">
+    <snd>
+        <field name="custId" desc="id"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

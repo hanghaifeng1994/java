@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="auditBatch" desc="图片-审核">
+    <snd>
+        <field name="objId" desc="图片id" required="true"/>
+        <field name="status" desc="2审核通过 (批量提交时所有的审核状态必须为一样)3审核不通过" />
+        <field name="objLogId" desc="对象快照id"/>
+        <field name="serviceType" desc="服务类型" required="true"/>
+        <field name="adContent" desc="审核内容"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="审核数量"/>
+    </rcv>
+</trans>

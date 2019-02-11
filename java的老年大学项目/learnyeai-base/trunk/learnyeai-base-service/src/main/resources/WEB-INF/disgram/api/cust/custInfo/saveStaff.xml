@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="员工-保存">
+    <snd>
+        <field name="custId" desc="用户id"/>
+        <field name="loginName" desc="登录名"/>
+        <field name="password" desc="密码" />
+        <field name="custName" desc="姓名"/>
+        <field name="shortName" desc="用户昵称"/>
+        <field name="sign" desc="个性签名"/>
+        <field name="phone" desc="手机号"/>
+        <field name="email" desc="邮箱"/>
+        <field name="qq" desc="qq"/>
+        <field name="weixin" desc="微信"/>
+        <field name="office" desc="所属单位"/>
+        <field name="idcarNo" desc="身份证号码"/>
+        <field name="sex" desc="性别"/>
+        <field name="birthday" desc="用户生日"/>
+        <field name="photo" desc="头像"/>
+    </snd>
+    <rcv>
+        <field name="custId" desc="用户id"/>
+    </rcv>
+</trans>

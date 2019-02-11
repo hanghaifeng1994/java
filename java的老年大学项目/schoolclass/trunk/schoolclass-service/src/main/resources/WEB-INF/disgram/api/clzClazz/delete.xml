@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delete" desc="班级-批量	删除">
+    <snd>
+        <field name="ids" desc="多个id 用英文逗号隔开,已发布不能删除按钮不可点击"/>
+    </snd>
+    <rcv>
+        <field name="errmsg" desc="取消发布异常描述"/>
+        <field name="num" desc="操作数量"/>
+    </rcv>
+</trans>

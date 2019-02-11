@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="recommend" desc="资讯-批量推荐/取消推荐">
+    <snd>
+        <field name="articleId" desc="id多个id时用英文逗号 隔开" required="true"/>
+        <field name="posid" desc="位置标识 多个id用英文逗号隔开"/>
+        <field name="status" desc="推荐状态 0批量推荐，1取消推荐" required="true"/>
+    </snd>
+    <rcv>
+        <filed name="num" desc="批量操作数量"/>
+    </rcv>
+</trans>

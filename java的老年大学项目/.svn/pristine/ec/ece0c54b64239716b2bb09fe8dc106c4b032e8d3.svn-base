@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="证书-新增/编辑">
+	<snd>
+		<field name="ctId" desc="证书id" />
+		<field name="tpId" desc="证书模板id" />
+		<field name="ctName" desc="证书名称" />
+		<field name="ctCode" desc="证书编号开头" />
+		<field name="ctUnit" desc="发证单位" />
+		<field name="ctTpText" desc="对应的模板文本字段" />
+		<field name="ctTpImage" desc="对应的模板图片字段" />
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常" />
+	</rcv>
+</trans>

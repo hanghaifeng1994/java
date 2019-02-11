@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryItemTypes" desc="题库题型类别数量获取">
+	<snd>
+		<field name="qpId" desc="题库ID" required="true"/>
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="题库题型类别数量列表">
+			<field name="itemTypeId" desc="题型" />
+			<field name="name" desc="题型名称" />
+			<field name="itemType" desc="题型code(dx:单选;ms:多选;pd:判断;tk:填空)" />
+			<field name="queNum" desc="可出题数量" />
+		</field-list>
+	</rcv>
+</trans>

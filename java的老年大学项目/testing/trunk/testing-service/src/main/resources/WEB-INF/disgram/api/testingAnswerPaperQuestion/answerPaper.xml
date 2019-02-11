@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="answerPaper" desc="研讯通答题">
+    <snd>
+        <field name="czId" desc="班级id" required="true"/>
+        <field name="tsId" desc="测试id" required="true"/>
+        <field-list name="answers" desc="答题内容列表" type="E">
+            <field name="awId" desc="学员答卷id"/>
+            <field name="questionId" desc="实际题目"/>
+            <field name="orderNum" desc="题目排序"/>
+            <field name="itemTypeId" desc="题型"/>
+            <field name="answerContentValue" desc="答题选项内容（填空题必须传）"/>
+            <field name="score" desc="本题得分（评分题必须传）"/>
+            <field name="tsId" desc="测试id"/>
+            <field name="objId" desc="对象id（此处传班级id）"/>
+        </field-list>
+    </snd>
+    <rcv>
+       <field name="msg" desc="提示"/>
+    </rcv>
+</trans>

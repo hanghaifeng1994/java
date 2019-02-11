@@ -1,0 +1,64 @@
+package com.learnyeai.testing.web;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.learnyeai.learnai.context.CtxHeadUtil;
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.testing.model.TestingPaperRule;
+import com.learnyeai.testing.service.TestingPaperRuleWyService;
+
+/**
+ *
+ * @author twang
+ */
+@RestController
+@RequestMapping("${adminPath}" + TestingPaperRuleController.BASE_URL)
+public class TestingPaperRuleController extends BaseController<TestingPaperRule> {
+	public static final String BASE_URL = "/TestingPaperRule/";
+
+	@Autowired
+	private TestingPaperRuleWyService testingPaperRuleWyService;
+
+	@Override
+	protected BaseService<TestingPaperRule> getService() {
+		return testingPaperRuleWyService;
+	}
+
+	@Override
+	public Object execute(IBusinessContext ctx) {
+		String method = CtxHeadUtil.getControllerMethod();
+		TestingPaperRule obj = testingPaperRuleWyService.convert2Bean(ctx.getParamMap());
+		if ("save".equals(method)) {
+			return testingPaperRuleWyService.saveOrUpdate(obj);
+		}
+
+		if ("queryManagePage".equals(method)) {
+			return rtnPageList4Report(testingPaperRuleWyService.queryManagePage(obj));
+		}
+		
+		if ("queryById".equals(method)) {
+			return testingPaperRuleWyService.detail(obj.getPaperRuleId());
+		}
+		
+		if ("saveGenPaper".equals(method)) {
+			Map<String, Object> map = null;
+			try {
+				map = testingPaperRuleWyService.saveGenPaper(obj);
+			} catch (Exception e) {
+				map = new HashMap<String, Object>();
+				map.put("status", 1);
+				map.put("msg", e.getMessage());
+				return map;
+			}
+			return map;
+		}
+		return super.execute(ctx);
+	}
+}

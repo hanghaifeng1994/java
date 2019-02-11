@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="deleteByIds" desc="题库-删除">
+    <snd>
+        <field name="ids" desc="多个id用英文逗号隔开"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

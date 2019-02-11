@@ -1,0 +1,18 @@
+
+CREATE TABLE ares_key_sequence (
+  CODE VARCHAR2(64) NOT NULL,
+  VALUE VARCHAR2(64) DEFAULT NULL,
+  PRIMARY KEY (CODE)
+);
+
+create table ATTACHMENT
+(
+  ID          VARCHAR2(50) not null,
+  AT_NAME     VARCHAR2(128),
+  AT_SUFFIX   VARCHAR2(20),
+  AT_TYPE     CHAR(1),
+  AT_TIME     VARCHAR2(20),
+  CREATE_BY   VARCHAR2(64),
+  CREATE_DATE timestamp,
+  AT_STATUS   CHAR(1)
+);

@@ -1,0 +1,29 @@
+package com.learnyeai.album.service;
+
+import com.learnyeai.album.model.AbmAlbum;
+import com.learnyeai.album.mapper.AbmAlbumMapper;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class AbmAlbumWyService extends BaseService<AbmAlbum> {
+
+    @Resource
+    private AbmAlbumMapper abmAlbumMapper;
+
+    @Override
+    public BaseMapper<AbmAlbum> getMapper() {
+        return abmAlbumMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+}

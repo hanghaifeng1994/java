@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryList" desc="站点-列表">
+    <snd>
+        <field name="ptId" desc="平台id" comment="多人平台id用逗号分割"/>
+    </snd>
+    <rcv>
+        <field-list name="LIST" desc="站点-列表" type="E">
+            <field name="siteId" desc="id"/>
+            <field name="siteName" desc="名称"/>
+            <field name="siteCode" desc="编码"/>
+            <field name="siteLogo" desc="logo"/>
+            <field name="pageHeadImg" desc="头部图片"/>
+            <field name="pageSiteCopyright" desc="站点版权"/>
+            <field name="siteDomain" desc="域名"/>
+            <field name="areaId" desc="区域"/>
+            <field name="sort" desc="排序"/>
+            <field name="ptId" desc="平台ID"/>
+            <field name="siteType" desc="站点类型" comment="1主站、2子站"/>
+            <field name="siteTypeDesc" desc="站点类型描述" xpath="siteType" type="cons" dictType="PTSET_SITE_TYPE"/>
+            <field name="status" desc="站点状态" comment="0未启用、1启用"/>
+            <field name="statusDesc" desc="站点状态" xpath="status" type="cons" dictType="ENABLE_DISABLE"/>
+            <field name="createBy" desc="创建人"/>
+            <field name="createDate" desc="创建时间"/>
+            <field name="updateBy" desc="更新人"/>
+            <field name="updateDate" desc="更新时间"/>
+            <field name="mchtId" desc="商户id"/>
+            <field name="mchtSchmId" desc="商户方案id"/>
+        </field-list>
+    </rcv>
+</trans>

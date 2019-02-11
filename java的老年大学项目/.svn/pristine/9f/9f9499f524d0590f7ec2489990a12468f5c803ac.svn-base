@@ -1,0 +1,237 @@
+package com.learnyeai.activity.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+import java.util.Date;
+
+/**
+ * 活动作品
+ *
+ * @author yl
+ */
+public class ActActivityWorksVo extends BaseVo {
+
+    /**
+    * id
+    */
+    private String wksId;
+
+    /**
+     * 活动id
+     */
+    private String actId;
+    /**
+     * 作品编号
+     */
+    private String wksCode;
+    /**
+     * 封面
+     */
+    private String wksPhoto;
+    /**
+     * 视频、图片
+     */
+    private String wksType;
+    /**
+     * 附件ids
+     */
+    private String wksFileIds;
+    /**
+     * 附件名称
+     */
+    private String wksFileNames;
+    /**
+     * 上传人id
+     */
+    private String wksUserId;
+    /**
+     * 上传人名称
+     */
+    private String wksUserName;
+    /**
+     * 上传时间
+     */
+    private Date wksUploadDate;
+    /**
+     * 0未提交、1已审核中、2审核通过、3审核失败
+     */
+    private String wksStatus;
+    /**
+     * 审核id
+     */
+    private String wksAuditId;
+    /**
+     * 投票数
+     */
+    private Integer wksVoteNum;
+    /**
+     * 平均分
+     */
+    private Integer wksAvgScore;
+    /**
+     * 更新人
+     */
+    private String updateBy;
+    /**
+     * 更新时间
+     */
+    private Date updateDate;
+    /**
+     * 商户id
+     */
+    private String mchtId;
+    /**
+     * 商户方案id
+     */
+    private String mchtSchmId;
+
+    public String getWksId() {
+        return wksId;
+    }
+
+    public void setWksId(String wksId) {
+        this.wksId = wksId;
+    }
+    public String getActId() {
+        return actId;
+    }
+
+    public void setActId(String actId) {
+        this.actId = actId;
+    }
+    public String getWksCode() {
+        return wksCode;
+    }
+
+    public void setWksCode(String wksCode) {
+        this.wksCode = wksCode;
+    }
+    public String getWksPhoto() {
+        return wksPhoto;
+    }
+
+    public void setWksPhoto(String wksPhoto) {
+        this.wksPhoto = wksPhoto;
+    }
+    public String getWksType() {
+        return wksType;
+    }
+
+    public void setWksType(String wksType) {
+        this.wksType = wksType;
+    }
+    public String getWksFileIds() {
+        return wksFileIds;
+    }
+
+    public void setWksFileIds(String wksFileIds) {
+        this.wksFileIds = wksFileIds;
+    }
+    public String getWksFileNames() {
+        return wksFileNames;
+    }
+
+    public void setWksFileNames(String wksFileNames) {
+        this.wksFileNames = wksFileNames;
+    }
+    public String getWksUserId() {
+        return wksUserId;
+    }
+
+    public void setWksUserId(String wksUserId) {
+        this.wksUserId = wksUserId;
+    }
+    public String getWksUserName() {
+        return wksUserName;
+    }
+
+    public void setWksUserName(String wksUserName) {
+        this.wksUserName = wksUserName;
+    }
+    public Date getWksUploadDate() {
+        return wksUploadDate;
+    }
+
+    public void setWksUploadDate(Date wksUploadDate) {
+        this.wksUploadDate = wksUploadDate;
+    }
+    public String getWksStatus() {
+        return wksStatus;
+    }
+
+    public void setWksStatus(String wksStatus) {
+        this.wksStatus = wksStatus;
+    }
+    public String getWksAuditId() {
+        return wksAuditId;
+    }
+
+    public void setWksAuditId(String wksAuditId) {
+        this.wksAuditId = wksAuditId;
+    }
+    public Integer getWksVoteNum() {
+        return wksVoteNum;
+    }
+
+    public void setWksVoteNum(Integer wksVoteNum) {
+        this.wksVoteNum = wksVoteNum;
+    }
+    public Integer getWksAvgScore() {
+        return wksAvgScore;
+    }
+
+    public void setWksAvgScore(Integer wksAvgScore) {
+        this.wksAvgScore = wksAvgScore;
+    }
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+
+    public static class CF {
+        public static String wksId = "wksId";  // id
+        public static String actId = "actId";  // 活动id
+        public static String wksCode = "wksCode";  // 作品编号
+        public static String wksPhoto = "wksPhoto";  // 封面
+        public static String wksType = "wksType";  // 视频、图片
+        public static String wksFileIds = "wksFileIds";  // 附件ids
+        public static String wksFileNames = "wksFileNames";  // 附件名称
+        public static String wksUserId = "wksUserId";  // 上传人id
+        public static String wksUserName = "wksUserName";  // 上传人名称
+        public static String wksUploadDate = "wksUploadDate";  // 上传时间
+        public static String wksStatus = "wksStatus";  // 0未提交、1已审核中、2审核通过、3审核失败
+        public static String wksAuditId = "wksAuditId";  // 审核id
+        public static String wksVoteNum = "wksVoteNum";  // 投票数
+        public static String wksAvgScore = "wksAvgScore";  // 平均分
+        public static String updateBy = "updateBy";  // 更新人
+        public static String updateDate = "updateDate";  // 更新时间
+        public static String delFlag = "delFlag";  // 删除标记
+        public static String mchtId = "mchtId";  // 商户id
+        public static String mchtSchmId = "mchtSchmId";  // 商户方案id
+
+    }
+
+}

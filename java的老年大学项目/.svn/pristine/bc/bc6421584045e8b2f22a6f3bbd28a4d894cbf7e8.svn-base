@@ -1,0 +1,153 @@
+package cn.com.weye.modules.cfg.web;
+
+import cn.com.weye.cons.PtCons;
+import cn.com.weye.core.utils.ConfigEnum;
+import cn.com.weye.modules.cfg.entity.CfgModule;
+import cn.com.weye.modules.cfg.service.CfgModuleService;
+import cn.com.weye.cons.WeyeCons;
+import cn.com.weye.core.service.mybatis.MybatisBaseService;
+
+import cn.com.weye.ares.web.MybatisBaseController;
+import cn.com.weye.modules.cfg.entity.CfgFunction;
+import cn.com.weye.modules.cfg.service.CfgFunctionService;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author zpzxskxsk@126.com
+ */
+@Controller
+@RequestMapping("${adminPath}" + CfgFunctionController.BASE_URL)
+public class CfgFunctionController extends MybatisBaseController<CfgFunction>{
+
+    public static final String BASE_URL = "/cfg/CfgFunction/";
+    private static final String BASE_PATH = "modules/cfg/CfgFunction";
+
+    @Resource
+    private CfgFunctionService cfgFunctionService;
+    @Autowired
+    private CfgModuleService cfgModuleService;
+
+    @Override
+    protected String getBaseUrl() {
+        return BASE_URL;
+    }
+
+    @Override
+    protected String getBasePath() {
+        return BASE_PATH;
+    }
+
+    @Override
+    protected String getBasePermission() {
+        return "cfg:CfgFunction";
+    }
+
+    @Override
+    protected MybatisBaseService<CfgFunction> getService() {
+        return cfgFunctionService;
+    }
+
+    @Override
+    public String form(CfgFunction entity, HttpServletRequest request, Model model) {
+
+        String ret = super.form(entity, request, model);
+        CfgFunction entry = (CfgFunction)model.asMap().get("entry");
+        if (entry.getParentId()==null){
+            entry.setParentId(CfgFunctionUtils.getRootId());
+        }
+
+        CfgFunction parent = cfgFunctionService.queryById(entry.getParentId());
+        model.addAttribute("parent", parent);
+
+        // 获取排序号，最末节点排序号+30
+        if (StringUtils.isBlank(entry.getFuncId())){
+            List<CfgFunction> list = Lists.newArrayList();
+
+            CfgFunction pp = new CfgFunction();
+            pp.setMdlId(entry.getMdlId());
+            pp.setFuncType(entry.getFuncType());
+
+            List<CfgFunction> sourcelist = cfgFunctionService.queryList(pp);
+            CfgFunctionUtils.sortList(list, sourcelist, entity.getParentId(), false);
+            if (list.size() > 0){
+                entity.setSort(list.get(list.size()-1).getSort() + 30);
+            }else {
+                entity.setSort(30);
+            }
+        }
+        return ret;
+    }
+
+    @Override
+    public String list(CfgFunction entity, HttpServletRequest request, HttpServletResponse response, Model model) {
+        List<CfgFunction> list = Lists.newArrayList();
+        List<CfgFunction> sourceList = cfgFunctionService.queryList(entity);
+        CfgFunctionUtils.sortList(list, sourceList,"1", true);
+        model.addAttribute("list", list);
+
+        CfgModule mdl = cfgModuleService.queryById(entity.getMdlId());
+        model.addAttribute("mdlName", mdl.getMdlName());
+        model.addAttribute("entity", entity);
+        return getBasePath() + "List";
+    }
+    @ResponseBody
+    @RequestMapping(value = "treeData")
+    public List<Map<String, Object>> treeData(String funcType,String mdlId, @RequestParam(required=false) String extId, HttpServletResponse response) {
+        List<Map<String, Object>> mapList = Lists.newArrayList();
+        CfgFunction func = new CfgFunction();
+        func.setFuncType(funcType);
+        List<CfgFunction> list = cfgFunctionService.queryList(func);
+        for (int i=0; i<list.size(); i++){
+            CfgFunction e = list.get(i);
+            if (StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getFuncId()) && e.getParentIds().indexOf(","+extId+",")==-1)){
+
+                Map<String, Object> map = Maps.newHashMap();
+                map.put("id", e.getFuncId());
+                map.put("pId", e.getParentId());
+                map.put("name", e.getFuncName());
+                mapList.add(map);
+            }
+        }
+        return mapList;
+    }
+    @RequestMapping(value = "updateSort")
+    public String updateSort(String[] ids, Integer[] sorts, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        for (int i = 0; i < ids.length; i++) {
+            CfgFunction func = new CfgFunction();
+            func.setFuncId(ids[i]);
+            func.setSort(sorts[i]);
+            cfgFunctionService.save(func);
+        }
+        redirectAttributes.addAllAttributes(getFixParams(request));
+        addMessage(redirectAttributes, "保存功能排序成功!");
+        return repageListPath;
+    }
+
+    @Override
+    public String save(CfgFunction entity, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        /*if(WeyeCons.CFG_FUNCTION_TYPE.FRONT.getVal().equals(entity.getFuncType())){
+            entity.setFuncMngType(WeyeCons.CFG_FUNCTION_MNG_TYPE.JK.getVal());
+        }*/
+        if(StringUtils.isNotBlank(entity.getFuncId())){
+            entity.setFuncStatus(ConfigEnum.ENABLE);
+
+        }
+        return super.save(entity, request, redirectAttributes);
+    }
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans desc="检测客户端是否被篡改">
+    <snd>
+    	<field name="CLIENT_OS" desc="客户端操作系统  I:ios  A:android"/>
+    	<field name="APP_VER" desc="应用版本号 1.0.0"/>
+        <field name="SIGN_INFO1" desc="客户端签名信息" />
+        <field name="RND_CODE1" desc="随机数"/>
+        <field name="SIGN_INFO2" desc="客户端签名信息" />
+        <field name="RND_CODE2" desc="随机数"/>
+        <field name="SIGN_INFO3" desc="客户端签名信息" />
+        <field name="RND_CODE3" desc="随机数"/>
+        <field name="SIGN_INFO4" desc="客户端签名信息" />
+        <field name="RND_CODE4" desc="随机数"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

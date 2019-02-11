@@ -1,0 +1,116 @@
+package com.learnyeai.resource.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+import java.util.Date;
+
+/**
+ * 站点资源关联表
+ *
+ * @author twang
+ */
+public class ResSiteResourceRelVo extends BaseVo {
+
+    /**
+    * id
+    */
+    private String id;
+
+    /**
+     * 站点
+     */
+    private String siteId;
+    /**
+     * 资源id
+     */
+    private String resId;
+    /**
+     * 别名
+     */
+    private String resAsName;
+    /**
+     * 管理状态
+     */
+    private Boolean resManageStatus;
+    /**
+     * 发布状态
+     */
+    private Boolean resPubStatus;
+    /**
+     * 创建站点
+     */
+    private String resCrtSiteId;
+    /**
+     * 
+     */
+    private Date resPubDate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+    public String getResId() {
+        return resId;
+    }
+
+    public void setResId(String resId) {
+        this.resId = resId;
+    }
+    public String getResAsName() {
+        return resAsName;
+    }
+
+    public void setResAsName(String resAsName) {
+        this.resAsName = resAsName;
+    }
+    public Boolean getResManageStatus() {
+        return resManageStatus;
+    }
+
+    public void setResManageStatus(Boolean resManageStatus) {
+        this.resManageStatus = resManageStatus;
+    }
+    public Boolean getResPubStatus() {
+        return resPubStatus;
+    }
+
+    public void setResPubStatus(Boolean resPubStatus) {
+        this.resPubStatus = resPubStatus;
+    }
+    public String getResCrtSiteId() {
+        return resCrtSiteId;
+    }
+
+    public void setResCrtSiteId(String resCrtSiteId) {
+        this.resCrtSiteId = resCrtSiteId;
+    }
+    public Date getResPubDate() {
+        return resPubDate;
+    }
+
+    public void setResPubDate(Date resPubDate) {
+        this.resPubDate = resPubDate;
+    }
+
+    public static class TF {
+        public static String id = "id";  // id
+        public static String siteId = "siteId";  // 站点
+        public static String resId = "resId";  // 资源id
+        public static String resAsName = "resAsName";  // 别名
+        public static String resManageStatus = "resManageStatus";  // 管理状态
+        public static String resPubStatus = "resPubStatus";  // 发布状态
+        public static String resCrtSiteId = "resCrtSiteId";  // 创建站点
+        public static String resPubDate = "resPubDate";  // 
+
+    }
+
+}

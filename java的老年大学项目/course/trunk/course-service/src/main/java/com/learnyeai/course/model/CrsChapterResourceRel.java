@@ -1,0 +1,121 @@
+package com.learnyeai.course.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+/**
+ * 
+ *
+ * @author twang
+ */
+public class CrsChapterResourceRel extends BaseEntity {
+
+    /**
+    * ID
+    */
+    @Id
+    @Column(name = "ID")
+    private String id;
+
+    /**
+     * 章节id
+     */
+    @Column(name = "CPT_ID")
+    private String cptId;
+    /**
+     * 资源id
+     */
+    @Column(name = "RES_ID")
+    private String resId;
+    /**
+     * 资源类型0:pc 1:手机
+     */
+    @Column(name = "RES_TYPE")
+    private String resType;
+    /**
+     * 文件类型
+     */
+    @Column(name = "FILE_TYPE")
+    private String fileType;
+    
+    /**
+     * 名称
+     */
+    @Transient
+    private String resName;
+    /**
+     * 时长
+     */
+    @Transient
+    private Long fileTimeLen;
+    
+    
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getCptId() {
+        return cptId;
+    }
+
+    public void setCptId(String cptId) {
+        this.cptId = cptId;
+    }
+    public String getResId() {
+        return resId;
+    }
+
+    public void setResId(String resId) {
+        this.resId = resId;
+    }
+    public String getResType() {
+        return resType;
+    }
+
+    public void setResType(String resType) {
+        this.resType = resType;
+    }
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "CRS_CHAPTER_RESOURCE_REL";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("");   // 库名
+
+        public static String id = "ID";  // ID
+        public static String cptId = "CPT_ID";  // 章节id
+        public static String resId = "RES_ID";  // 资源id
+        public static String resType = "RES_TYPE";  // 资源类型0:pc 1:手机
+        public static String fileType = "FILE_TYPE";  // 文件类型
+
+    }
+
+	public String getResName() {
+		return resName;
+	}
+
+	public void setResName(String resName) {
+		this.resName = resName;
+	}
+
+	public Long getFileTimeLen() {
+		return fileTimeLen;
+	}
+
+	public void setFileTimeLen(Long fileTimeLen) {
+		this.fileTimeLen = fileTimeLen;
+	}
+}

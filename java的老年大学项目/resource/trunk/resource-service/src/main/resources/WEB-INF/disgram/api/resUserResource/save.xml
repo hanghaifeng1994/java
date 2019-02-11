@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="用户资源-新增">
+	<snd>
+		<field name="userId" desc="用户id" required="true"/>
+        <field name="resId" desc="资源id" required="true"/>
+	</snd>
+	<rcv>
+		<field name="status" desc="0:操作成功，1:操作异常" />
+		<field name="msg" desc="msg" />
+	</rcv>
+</trans>

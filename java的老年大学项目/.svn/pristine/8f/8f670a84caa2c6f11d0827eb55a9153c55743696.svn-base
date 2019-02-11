@@ -1,0 +1,20 @@
+package com.learnyeai.learnai.config;
+
+import com.learnyeai.learnai.support.CurrentUserInfoDao;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * Created by zpz on 2018/8/4.
+ */
+@Configuration
+public class LearnaiBeanConfig {
+
+    @Bean
+    @ConditionalOnMissingBean(value = CurrentUserInfoDao.class)
+    CurrentUserInfoIml getCurrentUserInfoIml(){
+        return new CurrentUserInfoIml();
+    }
+}

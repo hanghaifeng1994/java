@@ -1,0 +1,56 @@
+# \u56FA\u5B9A\u524D\u7F00org.quartz
+# \u4E3B\u8981\u5206\u4E3Ascheduler\u3001threadPool\u3001jobStore\u3001plugin\u7B49\u90E8\u5206
+
+
+#==============================================================
+#Configure Main Scheduler Properties
+#==============================================================
+# \u5047\u5982\u4F60\u7528\u5230\u4E86\u96C6\u7FA4\u7279\u6027\uFF0C\u4F60\u5C31\u5FC5\u987B\u4E3A\u96C6\u7FA4\u4E2D\u7684\u6BCF\u4E00\u4E2A\u5B9E\u4F8B\u4F7F\u7528\u76F8\u540C\u7684\u540D\u79F0\uFF0C\u4EE5\u4F7F\u5B83\u4EEC\u6210\u4E3A\u201C\u903B\u8F91\u4E0A\u201D \u662F\u540C\u4E00\u4E2A Scheduler
+org.quartz.scheduler.instanceName = zzzQuartzScheduler
+org.quartz.scheduler.instanceId = AUTO
+
+
+org.quartz.scheduler.rmi.export = false
+org.quartz.scheduler.rmi.proxy = false
+org.quartz.scheduler.wrapJobExecutionInUserTransaction = false
+
+#==============================================================
+#Configure JobStore
+#==============================================================
+org.quartz.jobStore.isClustered = true
+org.quartz.jobStore.misfireThreshold = 5000
+#org.quartz.jobStore.clusterCheckinInterval =20000
+# \u9ED8\u8BA4\u5B58\u50A8\u5728\u5185\u5B58\u4E2D
+#org.quartz.jobStore.class = org.quartz.simpl.RAMJobStore
+#\u6301\u4E45\u5316
+org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+
+org.quartz.jobStore.tablePrefix = QRTZ_
+
+org.quartz.jobStore.dataSource = qzDS
+
+#==============================================================
+#Configure DataSource
+#==============================================================
+org.quartz.dataSource.qzDS.provider = hikaricp
+org.quartz.dataSource.qzDS.driver = com.mysql.jdbc.Driver
+
+org.quartz.dataSource.qzDS.URL = jdbc:mysql://localhost:3306/quartz-test?useUnicode=true&characterEncoding=UTF-8
+
+org.quartz.dataSource.qzDS.user = root
+
+org.quartz.dataSource.qzDS.password =
+
+org.quartz.dataSource.qzDS.maxConnections = 10
+
+#==============================================================
+#Configure ThreadPool
+#==============================================================
+# \u5B9E\u4F8B\u5316ThreadPool\u65F6\uFF0C\u4F7F\u7528\u7684\u7EBF\u7A0B\u7C7B\u4E3ASimpleThreadPool
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+# threadCount\u548CthreadPriority\u5C06\u4EE5setter\u7684\u5F62\u5F0F\u6CE8\u5165ThreadPool\u5B9E\u4F8B
+# \u5E76\u53D1\u4E2A\u6570
+org.quartz.threadPool.threadCount = 5
+# \u4F18\u5148\u7EA7
+org.quartz.threadPool.threadPriority = 5
+org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread = true

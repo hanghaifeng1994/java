@@ -1,0 +1,116 @@
+package com.learnyeai.base.action.login;
+
+import com.learnyeai.base.api.util.BaseReportErrorKey;
+import com.learnyeai.base.api.vo.CustInfoVo;
+import com.learnyeai.base.model.CustInfo;
+import com.learnyeai.base.model.CustLgnInfo;
+import com.learnyeai.base.service.CustInfoWyService;
+import com.learnyeai.base.service.CustLgnInfoWyService;
+import com.learnyeai.base.utils.DtHelps;
+import com.learnyeai.core.IBusinessContext;
+import com.learnyeai.core.config.ConfigUtils;
+import com.learnyeai.core.consts.ConfigEnum;
+import com.learnyeai.core.exception.BusinessException;
+import com.learnyeai.core.flow.IAresSerivce;
+import com.learnyeai.core.utils.CtxCommonUtils;
+import com.learnyeai.learnai.error.AresRuntimeException;
+import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
+
+/**
+ * 登录密码检查，并保存登录信息，如果错误超限冻结用户
+ * 输入CUST_ID
+ *  CLIENT_OS
+ *  PASSWORD
+ */
+@Service
+public class LoginPwdCheckOp implements IAresSerivce {
+
+	@Resource
+	private CustLgnInfoWyService lgnInfoService;
+	@Resource
+	CustInfoWyService userService;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public int execute(IBusinessContext ctx) {
+        //获取用户输入的登录密码
+        String passwd = ctx.getParam(CustInfoVo.CF.password);
+        String custId = ctx.getParam(CustInfoVo.CF.custId);
+		ConfigEnum.CLIENT_OS clientOs = CtxCommonUtils.getClientOs();
+
+		//登录错误次数
+		int errTimes = 0;
+		//登录错误次数限制
+		int errTimesLimit = Integer.parseInt(ConfigUtils.getValue("SYS_LOGIN_PWD_ERR_LMT"));
+
+		//查询用户信息
+		CustInfo userInfo = userService.queryById(custId);
+
+		//根据用户ID获取最后一次登录信息
+        CustLgnInfo loginMap = LoginInfoGetOp.getLoginInfo(ctx);
+
+		if (loginMap.getLgnErrNum() != null)
+			errTimes = loginMap.getLgnErrNum();
+
+		//输入密码不正确
+//		if (!lngPwd.equalsIgnoreCase(userInfo.get(User.password).toString())) {
+		if(!DtHelps.validatePassword(passwd, userInfo.getPassword())){
+			//保存登录信息
+			if (errTimes + 1 < errTimesLimit) {
+				loginMap.setLgnErrNum(errTimes + 1);
+				this.lgnInfoService.save(loginMap);
+				throw new AresRuntimeException(BaseReportErrorKey.login_IncorrectUserOrPwd,(errTimesLimit - (errTimes + 1)));
+			} else {
+				//锁定用户
+				//N: 正常 D: 普通冻结 C: 注销 E:人工冻结
+				this.userService.freezeUser(userInfo.getCustId());
+				throw new AresRuntimeException(BaseReportErrorKey.login_IncorrectPwdUpLimit,errTimesLimit);
+			}
+		}
+
+		// 检验成功，保存登录信息
+		//登录信息
+		// 登录正常，登录错误次数修改为0
+		loginMap.setLgnErrNum(0);
+		//登录状态（0未登录，1已登录）
+		loginMap.setIsOnline("1");
+		this.lgnInfoService.save(loginMap);
+		return NEXT;
+	}
+
+	/*private CustLgnInfo getLgnInfo(String custId, String clientOs, IBaseBusinessContext ctx){
+		CustLgnInfo lgnInfo = this.lgnInfoService.queryByUserId(custId);
+
+		//登录信息
+		String lgnIp = F5ipUtil.getIpAddr(ctx.getRequest());
+		String todayStr = DateFormatUtils.format(new Date(),
+				"yyyy-MM-dd HH:mm:ss");
+
+		if(lgnInfo!=null) {
+//            loginMap.putAll(ctx.getParamMap());
+			lgnInfo.setFirstLgnFlag("N");
+		}else {
+			lgnInfo = new CustLgnInfo();
+			//首次登录标记：Y:首次登录 N：非首次登录
+			lgnInfo.setFirstLgnFlag("Y");
+			//首次登录时间
+			lgnInfo.setFirstLgnDate(todayStr);
+			lgnInfo.setUserId(custId);
+		}
+
+		lgnInfo.setLgnDate(DateHelper.getDate());
+		lgnInfo.setLgnTime(DateHelper.getTime());
+		lgnInfo.setLgnIp(lgnIp);
+		lgnInfo.setLgnDatetime(new Date());
+
+
+		BaseCons.CLIENT_OS clientType = ConsTools.getCons(BaseCons.CLIENT_OS.class, clientOs);
+		if(clientType == BaseCons.CLIENT_OS.O){
+			lgnInfo.setLgnType(BaseCons.LGN_TYPE.WY.getVal());
+		}else{
+			lgnInfo.setLgnType(BaseCons.LGN_TYPE.APP.getVal());
+		}
+		return lgnInfo;
+	}*/
+}

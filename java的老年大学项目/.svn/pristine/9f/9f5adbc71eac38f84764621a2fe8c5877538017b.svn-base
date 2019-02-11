@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="活动参与人员-详情">
+    <snd>
+        <field name="actId" desc="id"/>
+    </snd>
+    <rcv>
+        <field name="actId" desc="活动id"/>
+        <field name="joinupUserId" desc="用户id"/>
+        <field name="joinupDate" desc="参加时间"/>
+    </rcv>
+</trans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.testing.mapper.TestingStudentPaperMapper">
+	<select id="queryTestNum" parameterType="TestingStudentPaper" resultType="java.lang.Integer">
+		SELECT count(*)
+		from TESTING_STUDENT_PAPER
+		WHERE STUDENT_USER_ID = #{studentUserId,jdbcType=VARCHAR}
+		AND TS_ID = #{tsId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="queryMaxScore" resultType="java.lang.Double">
+		SELECT max(SCORE)
+		from TESTING_STUDENT_PAPER
+		WHERE STUDENT_USER_ID = #{studentUserId,jdbcType=VARCHAR}
+		AND TS_ID = #{tsId,jdbcType=VARCHAR} AND STATUS = "3"
+	</select>
+	
+	<select id="querySumScore" resultType="java.lang.Double">
+		SELECT sum(SCORE)
+		from TESTING_STUDENT_PAPER
+		WHERE STUDENT_USER_ID = #{studentUserId,jdbcType=VARCHAR}
+		AND TS_ID = #{tsId,jdbcType=VARCHAR} AND STATUS = "3"
+	</select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <!-- schame: 数据库 -->
+    <schema id="${schema.interPlat}">
+        <!-- table 表配置> id:主键（表名） type: M 主表, R: 关系表 name:中文名 primaryKey:主键字段名 -->
+        <table id="MZJ_FILES_DATA" name="资源" primaryKey="FILE_ID">
+            <!-- foreighTable 关联表配置> ref:外键表 name:外键表别名 foreignKey:外键表对应的外键字段名 cascade:是否可级联删除（默认 false） -->
+            <foreighTable refId="MZJ_PROPA_DATA" name="档案资源" foreignKey="FILE_ID" cascade="false"/>
+            <foreighTable refId="MZJ_PROPA_DATA" name="档案图片" foreignKey="PROPA_PIC" cascade="false"/>
+            <foreighTable refId="MZJ_BANNER_DATA" name="广告资源" foreignKey="FILE_ID" cascade="false"/>
+            <foreighTable refId="MZJ_BANNER_DATA" name="广告图片" foreignKey="BANNER_PIC" cascade="false"/>
+        </table>
+
+        <table id="CFG_MODULE" name="模块" primaryKey="MDL_ID">
+            <foreighTable refId="CFG_SCHM_MDL_REL" name="行业方案" foreignKey="MDL_ID" cascade="false"/>
+        </table>
+
+        <table id="CFG_FUNCTION_PACKAGE" name="功能包" primaryKey="PKG_ID">
+            <foreighTable refId="CFG_SCHM_EDT_PACKAGE_HIS" name="方案版本功能包" foreignKey="PKG_ID" cascade="false"/>
+        </table>
+        <table id="CFG_SCHEME" name="行业方案" primaryKey="SCHM_ID">
+            <foreighTable refId="CFG_SCHEME_EDITION" name="方案版本" foreignKey="SCHM_ID" cascade="false"/>
+        </table>
+
+
+        <table id="CFG_SCHEME_EDITION" name="方案版本" primaryKey="SCHM_EDT_ID">
+            <foreighTable refId="CFG_SCHEME_EDITION_HIS" name="方案版本历史" foreignKey="SCHM_EDT_ID" cascade="false"/>
+        </table>
+
+        <!--功能包上线后不能删除-->
+        <table id="CFG_SCHM_EDT_PACKAGE" name="方案版本功能包" primaryKey="EDT_PKG_ID">
+            <foreighTable refId="CFG_SCHM_EDT_PACKAGE_HIS" name="方案版本功能包历史" foreignKey="EDT_PKG_ID" cascade="false"/>
+        </table>
+    </schema>
+
+    <schema id="${schema.configPlat}">
+        <table id="SYS_AREA" name="区域" primaryKey="ID">
+            <!-- foreighTable 关联表配置> ref:外键表 name:外键表别名 foreignKey:外键表对应的外键字段名 cascade:是否可级联删除（默认 false） -->
+            <foreighTable refId="SYS_ORGAN" name="机构" foreignKey="AREA_ID" cascade="false"/>
+            <foreighTable refId="SYS_AREA" name="下级区域" foreignKey="PARENT_ID" cascade="false"/>
+        </table>
+    </schema>
+
+</config>

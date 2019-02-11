@@ -1,0 +1,28 @@
+package com.learnyeai.interact.web;
+
+import com.learnyeai.learnai.support.BaseController;
+import com.learnyeai.learnai.support.BaseService;
+
+import com.learnyeai.interact.model.InaGainStars;
+import com.learnyeai.interact.service.InaGainStarsWyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ *
+ * @author yl
+ */
+@Component
+public class InaGainStarsController extends BaseController<InaGainStars> {
+    public static final String BASE_URL = "/InaGainStars/";
+
+    @Autowired
+    private InaGainStarsWyService inaGainStarsWyService;
+
+    @Override
+    protected BaseService<InaGainStars> getService() {
+        return inaGainStarsWyService;
+    }
+}

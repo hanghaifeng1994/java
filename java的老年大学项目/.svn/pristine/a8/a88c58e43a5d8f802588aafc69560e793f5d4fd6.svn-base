@@ -1,0 +1,139 @@
+package com.learnyeai.course.service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.common.utils.WeyeCons;
+import com.learnyeai.common.utils.WeyeThreadContextUtils;
+import com.learnyeai.course.mapper.CrsCatalogMapper;
+import com.learnyeai.course.model.CrsCatalog;
+import com.learnyeai.course.model.CrsSiteCatalogRel;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.tools.common.BeanUtils;
+import com.learnyeai.tools.common.StringUtils;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class CrsCatalogWyService extends WeyeBaseService<CrsCatalog> {
+
+	@Resource
+	private CrsCatalogMapper crsCatalogMapper;
+
+	@Autowired
+	private CrsSiteCatalogRelWyService crsSiteCatalogRelWyService;
+
+	@Override
+	public BaseMapper<CrsCatalog> getMapper() {
+		return crsCatalogMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return true;
+	}
+
+	/**
+	 * status0操作成功 1操作失败
+	 * 
+	 * @param cc
+	 * @return
+	 */
+	@Transactional
+	public Map<String, Object> saveOrUpdate(CrsCatalog cc) {
+		Map<String, Object> map = new HashMap();
+		String parentId = cc.getParentId();
+		String parentIds;
+		int catLevel = 1;
+		if (StringUtils.isNotBlank(parentId)) {
+			CrsCatalog parent = super.queryById(parentId);
+			parentIds = (parent.getParentIds() == null ? "" : parent.getParentIds()) + parentId + ",";
+			catLevel = parent.getCatLevel() + 1;
+			cc.setParentIds(parentIds);
+			cc.setCatLevel(catLevel);
+		}
+
+		if (StringUtils.isBlank(cc.getCatId())) {
+			if (StringUtils.isBlank(parentId)) {
+				cc.setCatLevel(1);
+			}
+			if (cc.getCatSort() == null) {
+				long catNum = crsCatalogMapper.countByParent(cc.getSiteId(), parentId);
+				cc.setCatSort(catNum + 1);
+			}
+		}
+		super.save(cc);
+
+		// 保存关系表
+		CrsSiteCatalogRel crsSiteCatalogRel = new CrsSiteCatalogRel();
+		crsSiteCatalogRel.setCatId(cc.getCatId());
+		crsSiteCatalogRel.setCatCrtSiteId(cc.getSiteId());
+		crsSiteCatalogRel.setSiteId(cc.getSiteId());
+		crsSiteCatalogRel = crsSiteCatalogRelWyService.queryOne(crsSiteCatalogRel);
+		if (crsSiteCatalogRel == null) {
+			crsSiteCatalogRel = new CrsSiteCatalogRel();
+			crsSiteCatalogRel.setCatId(cc.getCatId());
+			crsSiteCatalogRel.setCatCrtSiteId(cc.getSiteId());
+			crsSiteCatalogRel.setSiteId(cc.getSiteId());
+			crsSiteCatalogRel.setCatSort(0l);
+			crsSiteCatalogRel.setShowStatus("1");
+		}
+		if (cc.getShowStatus() != null) {
+			crsSiteCatalogRel.setShowStatus(cc.getShowStatus());
+		}
+		if (crsSiteCatalogRel.getCatSort() != null) {
+			crsSiteCatalogRel.setCatSort(cc.getCatSort());
+		}
+		crsSiteCatalogRelWyService.save(crsSiteCatalogRel);
+		map.put("status", 0);
+		return map;
+
+	}
+
+	@Transactional
+	public Map<String, Object> deleteCat(CrsCatalog cc) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String catId : cc.getCatId().split(",")) {
+			CrsCatalog delOne = super.queryById(catId);
+			if (delOne != null) {
+				delOne.setDelFlag("1");
+				super.save(delOne);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public MyPage<CrsCatalog> queryManagePage(CrsCatalog cc) {
+		if (cc != null && cc.getPage() != null && cc.getRows() != null) {
+			PageHelper.startPage(cc.getPage(), cc.getRows());
+		}
+		MyPage<CrsCatalog> page = new MyPage<CrsCatalog>(crsCatalogMapper.queryManagePage(cc));
+		return page;
+	}
+
+	@Transactional
+	public MyPage<CrsCatalog> queryShowPage(CrsCatalog cc) {
+		if (cc != null && cc.getPage() != null && cc.getRows() != null) {
+			PageHelper.startPage(cc.getPage(), cc.getRows());
+		}
+		MyPage<CrsCatalog> page = new MyPage<CrsCatalog>(crsCatalogMapper.queryShowPage(cc));
+		return page;
+
+	}
+}

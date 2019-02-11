@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="用户-批量选定资源">
+	<snd>
+		<field name="studyUserId" desc="学习人id" required="true" />
+		<field name="resId" desc="资源id 多个逗号隔开" required="true" />
+		<field name="source" desc="来源0:资源;1:课程" required="true" />
+	</snd>
+	<rcv>
+		<field name="status" desc="状态为0时操作成功，1 操作异常" />
+		<field name="msg" desc="msg" />
+	</rcv>
+</trans>

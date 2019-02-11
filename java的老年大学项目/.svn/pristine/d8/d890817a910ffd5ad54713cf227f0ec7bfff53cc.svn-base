@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="delResource" desc="课程章节-取消关联资源">
+    <snd>
+        <field name="cptId" desc="课程章节id" required="true"/>
+        <field name="resId" desc="资源id 多个id用英文逗号隔开" required="true"/>
+    </snd>
+    <rcv>
+        <field name="status" desc="状态 0删除成功，1删除失败" />
+    </rcv>
+</trans>

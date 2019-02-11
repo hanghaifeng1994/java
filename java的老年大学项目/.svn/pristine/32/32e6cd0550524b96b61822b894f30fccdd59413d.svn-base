@@ -1,0 +1,119 @@
+package com.learnyeai.activity.service;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.activity.model.ActActivity;
+import com.learnyeai.activity.model.ActSiteActivityRel;
+import com.learnyeai.activity.mapper.ActSiteActivityRelMapper;
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.learnai.support.BaseService;
+import com.learnyeai.learnai.support.MyPage;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActSiteActivityRelWyService extends WeyeBaseService<ActSiteActivityRel> {
+
+    @Resource
+    private ActSiteActivityRelMapper actSiteActivityRelMapper;
+
+    @Resource
+    private ActActivityWyService actActivityWyService;
+    @Override
+    protected Weekend genSqlExample(ActSiteActivityRel t, Map params) {
+        Weekend<ActSiteActivityRel> weekend = super.genSqlExample(t,params);
+        WeekendCriteria<ActSiteActivityRel,Object> c=weekend.weekendCriteria();
+        if(StringUtils.isNotBlank(t.getActManageStatus())){
+            c.andEqualTo(ActSiteActivityRel::getActManageStatus,t.getActManageStatus());
+        }
+        if(StringUtils.isNotBlank(t.getActPubStatus())){
+            c.andEqualTo(ActSiteActivityRel::getActPubStatus,t.getActPubStatus());
+        }
+        if(StringUtils.isNotBlank(t.getSiteId())){
+            c.andEqualTo(ActSiteActivityRel::getSiteId,t.getSiteId());
+        }
+        weekend.and(c);
+        weekend.setOrderByClause("ACT_PUB_DATE desc");
+        return weekend;
+    }
+
+    @Override
+    public BaseMapper<ActSiteActivityRel> getMapper() {
+        return actSiteActivityRelMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return false;
+    }
+
+    public List<ActActivity> queryPageRel(ActSiteActivityRel asar){
+        //新建咨讯列表
+        List<ActActivity> actList=new ArrayList<>();
+        //先查询出可管理的活动id
+        asar.setActManageStatus("1");
+        MyPage<ActSiteActivityRel> page=super.queryPage(asar,new HashMap());
+        List<ActSiteActivityRel> list=page.getList();
+        for (ActSiteActivityRel as:list){
+            //通过活动id 查询出活动
+            ActActivity aa= actActivityWyService.queryById(as.getActId());
+            actList.add(aa);
+        }
+        rtnPageList4Report(page);
+        return actList;
+    }
+
+    public int updateBySelective(ActSiteActivityRel asar){
+
+        return  actSiteActivityRelMapper.updateBySelective(asar);
+    }
+
+    /**
+     * 站点可用活动列表
+     * @param ac
+     * @return
+     */
+    public List<ActActivity> queryPageByUse(ActSiteActivityRel ac){
+        if (ac != null) {
+            ac.initPage();
+            PageHelper.startPage(ac.getPage(), ac.getRows());
+        }
+        Map<String,Object> map=new HashMap<>();
+        if(StringUtils.isNotBlank(ac.getSiteId())){
+            String[] siteIds=(ac.getSiteId()).split(",");
+            map.put("siteIds",siteIds);
+        }
+        map.put("t",ac);
+        //根据站点或者栏目查询出可用站点的id
+        List<ActSiteActivityRel> list = actSiteActivityRelMapper.queryPageByUse(map);
+        MyPage  page=new MyPage(list);
+        List<ActActivity> aalist=new ArrayList<>();
+        for(ActSiteActivityRel asar:list){
+            //根据id 查询活动
+            ActActivity a=  actActivityWyService.queryById(asar.getActId());
+            aalist.add(a);
+        }
+        page.setList(aalist);
+        return rtnPageList4Report(page);
+    }
+
+    public static List rtnPageList4Report(MyPage page) {
+        if (page.getTotal() > -1L) {
+            ThreadContext.put("totalCount", page);
+        }
+
+        return page.getList();
+    }
+}

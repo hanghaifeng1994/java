@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans desc="服务日期时间">
+	<snd>
+	</snd>
+	<rcv>
+		<field name="CUR_DATE" desc="服务日期" />
+		<field name="CUR_TIME" desc="服务时间" />
+	</rcv>
+</trans>

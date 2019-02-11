@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="normal" title="非动账交易流程">
+	<!-- 服务编排 -->
+	<actions>
+		<action ref="accountCheckOp" title="账号有效性检查"></action>
+		<action ref="aresInteTransOp" title="主交易服务调用">
+			<datas>
+				<data key="_transCode">@param:transCode</data>
+			</datas>
+		</action> 
+	</actions>
+</config>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="queryUserPage" desc="资源最近学习的人员" isPage="true">
+	<snd>
+		<field name="resId" desc="资源id 多个逗号隔开" required="true" />
+	</snd>
+	<rcv>
+		<field-list name="LIST" type="E" desc="资源最近学习的人员">
+			<field name="studyUserId" desc="学习人id" />
+		</field-list>
+	</rcv>
+</trans>

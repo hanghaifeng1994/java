@@ -1,0 +1,110 @@
+package com.learnyeai.course.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.course.mapper.CrsCourseHomeworkMapper;
+import com.learnyeai.course.model.CrsCourseHomework;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.tools.common.StringUtils;
+
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class CrsCourseHomeworkWyService extends WeyeBaseService<CrsCourseHomework> {
+
+	@Resource
+	private CrsCourseHomeworkMapper crsCourseHomeworkMapper;
+
+	@Override
+	public BaseMapper<CrsCourseHomework> getMapper() {
+		return crsCourseHomeworkMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	@Transactional
+	public Map<String, Object> addHomework(CrsCourseHomework courseHomework) {
+		Map<String, Object> map = new HashMap();
+		int num = 0;
+		for (String hwId : courseHomework.getHwId().split(",")) {
+			CrsCourseHomework t = new CrsCourseHomework();
+			t.setCsId(courseHomework.getCsId());
+			t.setHwId(hwId);
+			CrsCourseHomework obj = super.queryOne(t);
+			if (obj == null) {
+				super.save(t);
+				num++;
+			}
+		}
+		map.put("status", 0);
+		map.put("num", num);
+		map.put("msg", "保存成功!");
+		return map;
+	}
+
+	@Transactional
+	public Map<String, Object> delHomework(CrsCourseHomework courseHomework) {
+		Map<String, Object> result = new HashMap();
+		int num = 0;
+		for (String hwId : courseHomework.getHwId().split(",")) {
+			CrsCourseHomework t = new CrsCourseHomework();
+			t.setCsId(courseHomework.getCsId());
+			t.setHwId(hwId);
+			t = super.queryOne(t);
+			if (t != null) {
+				super.delete(t);
+				num++;
+			}
+		}
+		result.put("status", "0");
+		result.put("num", num);
+		return result;
+	}
+
+	@Transactional
+	public List<CrsCourseHomework> homeworkList(CrsCourseHomework t) {
+		List<CrsCourseHomework> list = super.queryByExample(t, null);
+		String hwIds = "";
+		for(CrsCourseHomework ch : list) {
+			hwIds += ","+ch.getHwId();
+		}
+		if(StringUtils.isNotBlank(hwIds)) {
+			hwIds = hwIds.substring(1);
+		}
+		System.out.println("去取作业信息");
+		System.out.println("************************************************************");
+		
+		return list;
+	}
+
+	@Override
+	protected Weekend<CrsCourseHomework> genSqlExample(CrsCourseHomework t, Map params) {
+		Weekend<CrsCourseHomework> w = super.genSqlExample(t, params);
+		WeekendCriteria<CrsCourseHomework, Object> c = w.weekendCriteria();
+		if (StringUtils.isNotBlank(t.getCsId())) {
+			c.andEqualTo(CrsCourseHomework::getCsId, t.getCsId());
+		}
+		if (StringUtils.isNotBlank(t.getHwId())) {
+			c.andEqualTo(CrsCourseHomework::getHwId, t.getHwId());
+		}
+		w.and(c);
+		return w;
+	}
+
+}

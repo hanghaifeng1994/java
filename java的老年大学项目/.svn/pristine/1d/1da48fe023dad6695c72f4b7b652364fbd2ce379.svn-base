@@ -1,0 +1,201 @@
+package com.learnyeai.base.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+import java.util.Date;
+
+/**
+ * 商户方案
+ *
+ * @author zhangpz
+ */
+public class ShMerchantSchemeVo extends BaseVo {
+
+    /**
+    * 商家方案id
+    */
+    private String mchtSchmId;
+
+    /**
+     * 到期时间
+     */
+    private Date mchtSchmExpireDate;
+    /**
+     * 当前订单id
+     */
+    private String ordId;
+    /**
+     * 0禁用、1启用
+     */
+    private String mchtSchmStatus;
+    /**
+     * 0未付费、1已付费、2欠费
+     */
+    private String mchtSchmPayStatus;
+    /**
+     * 0不升级、1免费升级
+     */
+    private String mchtUpgradeStatus;
+    /**
+     * 方案版本id
+     */
+    private String schmEdtId;
+    /**
+     * 方案版本历史id
+     */
+    private String schmEdtHisId;
+    /**
+     * 商户id
+     */
+    private String mchtId;
+    /**
+     * 创建人名称
+     */
+    private String createUserName;
+    /**
+     * 修改人名称
+     */
+    private String updateUserName;
+    /**
+     * 创建人
+     */
+    private String createBy;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
+    /**
+     * 更新人
+     */
+    private String updateBy;
+    /**
+     * 更新时间
+     */
+    private Date updateDate;
+
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+    public Date getMchtSchmExpireDate() {
+        return mchtSchmExpireDate;
+    }
+
+    public void setMchtSchmExpireDate(Date mchtSchmExpireDate) {
+        this.mchtSchmExpireDate = mchtSchmExpireDate;
+    }
+    public String getOrdId() {
+        return ordId;
+    }
+
+    public void setOrdId(String ordId) {
+        this.ordId = ordId;
+    }
+    public String getMchtSchmStatus() {
+        return mchtSchmStatus;
+    }
+
+    public void setMchtSchmStatus(String mchtSchmStatus) {
+        this.mchtSchmStatus = mchtSchmStatus;
+    }
+    public String getMchtSchmPayStatus() {
+        return mchtSchmPayStatus;
+    }
+
+    public void setMchtSchmPayStatus(String mchtSchmPayStatus) {
+        this.mchtSchmPayStatus = mchtSchmPayStatus;
+    }
+    public String getMchtUpgradeStatus() {
+        return mchtUpgradeStatus;
+    }
+
+    public void setMchtUpgradeStatus(String mchtUpgradeStatus) {
+        this.mchtUpgradeStatus = mchtUpgradeStatus;
+    }
+    public String getSchmEdtId() {
+        return schmEdtId;
+    }
+
+    public void setSchmEdtId(String schmEdtId) {
+        this.schmEdtId = schmEdtId;
+    }
+    public String getSchmEdtHisId() {
+        return schmEdtHisId;
+    }
+
+    public void setSchmEdtHisId(String schmEdtHisId) {
+        this.schmEdtHisId = schmEdtHisId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
+    }
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public static class TF {
+        public static String mchtSchmId = "mchtSchmId";  // 商家方案id
+        public static String mchtSchmExpireDate = "mchtSchmExpireDate";  // 到期时间
+        public static String ordId = "ordId";  // 当前订单id
+        public static String mchtSchmStatus = "mchtSchmStatus";  // 0禁用、1启用
+        public static String mchtSchmPayStatus = "mchtSchmPayStatus";  // 0未付费、1已付费、2欠费
+        public static String mchtUpgradeStatus = "mchtUpgradeStatus";  // 0不升级、1免费升级
+        public static String schmEdtId = "schmEdtId";  // 方案版本id
+        public static String schmEdtHisId = "schmEdtHisId";  // 方案版本历史id
+        public static String mchtId = "mchtId";  // 商户id
+        public static String createUserName = "createUserName";  // 创建人名称
+        public static String updateUserName = "updateUserName";  // 修改人名称
+        public static String createBy = "createBy";  // 创建人
+        public static String createDate = "createDate";  // 创建时间
+        public static String updateBy = "updateBy";  // 更新人
+        public static String updateDate = "updateDate";  // 更新时间
+        public static String delFlag = "delFlag";  // 删除标记
+
+    }
+
+}

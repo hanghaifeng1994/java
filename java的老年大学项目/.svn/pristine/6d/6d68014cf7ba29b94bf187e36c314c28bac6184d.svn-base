@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="pageQuery" desc="索引名字：res-center、site。多条件查询时:查询参数的key val的json如：{'createDate':'2018*'}；多字段查询固定为：{fields:'field1,field2..',param:'xx'}，如{'fields':'custName,createDate','param':'2018*'}">
+    <snd>
+        <field name="indexName" desc="索引名称" required="true"/>
+        <field name="queryType" desc="查询类型" comment="1多条件查询、2多字段查询" required="true"/>
+
+        <field name="pageNo" desc="当前页"/>
+        <field name="pageSize" desc="分页大小"/>
+        <field name="total" desc="总记录条数" comment="如果有值不会重新统计个数"/>
+        <field name="afterDocId" desc="上一页最后一个docId" comment="如果没有值，会获取第一条到当前页数据"/>
+
+        <field name="hightLighter" desc="是否高这显示" comment="1 高亮、0不高亮"/>
+        <field name="hlFiledId" desc="高亮显示字段" comment="必须是搜索中的字段"/>
+        <field name="hlPrefix" desc="高亮前缀" comment="如&lt;font color='red'&gt;"/>
+        <field name="hlSuffix" desc="高亮后缀" comment="&lt;/font&gt;"/>
+
+        <field name="sorts" desc="排序" comment="多个字段排序用逗号分割"/>
+        <field name="sortTypes" desc="排序类型" comment="与sorts对应:SCORE DOC STRING INT DOUBLE LONG STRING_VAL"/>
+
+        <field name="queryParams" desc="请求参数，json格式。"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

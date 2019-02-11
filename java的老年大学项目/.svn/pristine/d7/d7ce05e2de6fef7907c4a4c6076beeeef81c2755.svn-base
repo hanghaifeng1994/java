@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="detail" desc="学员测验试卷">
+	<snd>
+		<field name="studentUserId" desc="考试用户id" />
+		<field name="tsId" desc="使用哪个测验" />
+	</snd>
+	<rcv>
+		<field name="awId" desc="ID" />
+		<field name="paperNo" desc="考生ID+测验id+考试次数" />
+		<field name="status" desc="1:测试中;3:已提交" />
+		<field name="studentUserId" desc="考试用户id" />
+		<field name="studentName" desc="考生姓名" />
+		<field name="paperId" desc="对应试卷id" />
+		<field name="tsId" desc="测验id" />
+		<field name="startTime" desc="测验开始时间" />
+		<field name="endTime" desc="测验结束时间" />
+		<field name="hasSubject" desc="是否有主观题" />
+		<field-list name="questionCats" type="E" desc="题型列表">
+			<field name="itemTypeId" desc="题型ID" />
+			<field name="name" desc="题型名称" />
+			<field name="itemType" desc="题型code(ms:单选/dx:多选/pd:判断/tk:填空)" />
+			<field name="orderNum" desc="题型排序" />
+			<field name="queNum" desc="出题数量" />
+			<field-list name="questions" type="E" desc="题型对应的试题列表">
+				<field name="questionId" desc="试题id" />
+				<field name="stemContent" desc="题干内容" />
+				<field name="answerDesc" desc="答案描述" />
+				<field name="queScore" desc="单题分值" />
+				<field name="orderNum" desc="题目排序" />
+				<field name="itemTypeId" desc="题型" />
+				<field-list name="options" type="E" desc="试题选项列表">
+					<field name="itemId" desc="选项ID" />
+					<field name="optionContent" desc="题支内容" />
+					<field name="orderNum" desc="序号" />
+					<field name="checked" desc="学员是否选中这个选项 0/1" />
+				</field-list>
+				<field name="answered" desc="学员是否已答题   0/1" />
+				<field name="itemIds" desc="学员已答题选项列表 逗号隔开" />
+			</field-list>
+		</field-list>
+	</rcv>
+</trans>

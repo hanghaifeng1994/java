@@ -1,0 +1,110 @@
+package com.learnyeai.core.cache;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.learnyeai.tools.common.Reflections;
+import org.springframework.data.redis.core.RedisTemplate;
+
+import java.io.Serializable;
+import java.util.*;
+
+/**
+ * Created by zpz on 2018/8/10.
+ */
+public class RedisGenericUtil extends RedisUtil {
+    private Class objType;
+
+    public RedisGenericUtil(String cacheName, Class objType) {
+        super(cacheName);
+        this.objType = objType;
+    }
+
+    public RedisGenericUtil(RedisTemplate redisTemplate, String cacheName, Class objType) {
+        super(redisTemplate, cacheName);
+        this.objType = objType;
+    }
+
+    private List conver2T(List list, List rstList){
+        if(null == list || list.size() == 0)
+            return new ArrayList();
+        if(list.get(0).getClass().getName().equals(objType.getName())){
+            return list;
+        }
+        for(Object o : list){
+            Object rst = null;
+            if (o != null && o instanceof String) {
+                rst = JSON.parseObject((String) o, objType);
+            }else if(o instanceof JSONObject){
+                rst = ((JSONObject)o).toJavaObject(objType);
+            }else{
+                continue;
+            }
+            rstList.add(rst);
+        }
+        return rstList;
+    }
+    @Override
+    public <T> T get(String key) {
+        Object o = super.get(key);
+        if(objType.getName().equals(String.class.getName())){
+            return (T)o;
+        }
+        T rst = null;
+        if (o != null && o instanceof String) {
+            rst = (T)JSON.parseObject((String) o, objType);
+        }else if(o instanceof JSONObject){
+            rst = (T)((JSONObject)o).toJavaObject(objType);
+        }
+        return rst;
+    }
+
+    @Override
+    public <T> List<T> get(String... keys) {
+        List<Object> list = super.get(keys);
+        List<T> rstList = new ArrayList<T>();
+        return (List<T>)conver2T(list, rstList);
+    }
+
+    @Override
+    public <T> List<T> getPattern(String pattern) {
+        List<Object> list = super.getPattern(pattern);
+        List<T> rstList = new ArrayList<T>();
+        return (List<T>)conver2T(list, rstList);
+    }
+
+    @Override
+    public <T> List<T> getAll() {
+        List<Object> list = super.getAll();
+        List<T> rstList = new ArrayList<T>();
+        return (List<T>)conver2T(list, rstList);
+    }
+
+    @Override
+    public boolean set(String key, Object value) {
+        return super.set(key, JSON.toJSONString(value, SerializerFeature.UseSingleQuotes));
+    }
+
+    @Override
+    public boolean set(String key, Object value, Long expireTime) {
+        return super.set(key, JSON.toJSONString(value, SerializerFeature.UseSingleQuotes), expireTime);
+    }
+
+    @Override
+    public boolean set(Map<String, Serializable> keyVals) {
+        boolean result = false;
+        try {
+            Map newKeyVal = new HashMap();
+
+            for(Iterator<Map.Entry<String, Serializable>> it = keyVals.entrySet().iterator(); it.hasNext();){
+                Map.Entry<String, Serializable> entry = it.next();
+                newKeyVal.put(genKey(entry.getKey()), JSON.toJSONString(entry.getValue(), SerializerFeature.UseSingleQuotes));
+            }
+            redisTemplate.opsForValue().multiSet(newKeyVal);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+}

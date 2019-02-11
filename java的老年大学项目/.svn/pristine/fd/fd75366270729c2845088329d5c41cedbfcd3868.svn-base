@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="save" desc="图片-批量新增">
+    <snd>
+        <field name="phId" desc="id"/>
+        <field name="phImgs" desc="图片路径多个路径用英文逗号隔开"/>
+        <field name="phImgNames" desc="图片名称"/>
+        <field name="abmId" desc="相册id" />
+        <field name="gpId" desc="分组id"/>
+        <field name="siteId" desc="站点"/>
+    </snd>
+    <rcv>
+        <field name="num" desc="批量操作数量"/>
+    </rcv>
+</trans>

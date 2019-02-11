@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="bindEmail" desc="绑定邮件">
+    <snd>
+        <field name="EMAIL" desc="邮箱" required="true" />
+        <field name="DYN_CODE" desc="验证码" required="true"/>
+    </snd>
+    <rcv>
+    </rcv>
+</trans>

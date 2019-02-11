@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="scheduleParRateCount" desc="班级日程-出勤率统计">
+    <snd>
+        <field name="czId" desc="班级id"  required="true"/>
+    </snd>
+    <rcv>
+        <field name="totalMember" desc="活动总人数" />
+        <field name="totalPar" desc="总出勤人数" />
+        <field name="avgParRate" desc="总出勤率" />
+        <field name="commentNumber" desc="参与评价人数" />
+        <field name="msg" desc="提示"/>
+    </rcv>
+</trans>

@@ -1,0 +1,16 @@
+package com.learnyeai.lucene.web;
+
+import com.learnyeai.learnai.support.IBusinessContext;
+import com.learnyeai.learnai.support.IController;
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by zpz on 2018/9/10.
+ */
+@Component
+public class PageQueryController implements IController{
+    @Override
+    public Object execute(IBusinessContext iBusinessContext) {
+        return null;
+    }
+}

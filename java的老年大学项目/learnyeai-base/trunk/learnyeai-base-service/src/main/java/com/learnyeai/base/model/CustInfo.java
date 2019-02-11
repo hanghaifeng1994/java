@@ -1,0 +1,378 @@
+package com.learnyeai.base.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.Date;
+
+/**
+ * 客户
+ *
+ * @author zhangpz
+ */
+public class CustInfo extends BaseEntity {
+
+    /**
+    * 用户id
+    */
+    @Id
+    @Column(name = "CUST_ID")
+    private String custId;
+
+    /**
+     * 姓名
+     */
+    @Column(name = "CUST_NAME")
+    private String custName;
+    /**
+     * 用户昵称
+     */
+    @Column(name = "SHORT_NAME")
+    private String shortName;
+    /**
+     * 登录名
+     */
+    @Column(name = "LOGIN_NAME")
+    private String loginName;
+    /**
+     * 密码
+     */
+    @Column(name = "PASSWORD")
+    private String password;
+    /**
+     * 人员类型 1员工、2用户、3系统人员
+     */
+    @Column(name = "CUST_TYPE")
+    private String custType;
+    /**
+     * N: 正常 D: 普通冻结 C: 注销 E:人工冻结
+     */
+    @Column(name = "USER_STATUS")
+    private String userStatus;
+    /**
+     * 冻结时间
+     */
+    @Column(name = "FREEZE_DATE")
+    private Date freezeDate;
+    /**
+     * 性别
+     */
+    @Column(name = "SEX")
+    private String sex;
+    /**
+     * 用户生日
+     */
+    @Column(name = "BIRTHDAY")
+    private Date birthday;
+    /**
+     * 头像
+     */
+    @Column(name = "PHOTO")
+    private String photo;
+    /**
+     * 个性签名
+     */
+    @Column(name = "SIGN")
+    private String sign;
+    /**
+     * 手机号
+     */
+    @Column(name = "PHONE")
+    private String phone;
+    /**
+     * 邮箱
+     */
+    @Column(name = "EMAIL")
+    private String email;
+    /**
+     * qq
+     */
+    @Column(name = "QQ")
+    private String qq;
+    /**
+     * 微信
+     */
+    @Column(name = "WEIXIN")
+    private String weixin;
+    /**
+     * 所属单位
+     */
+    @Column(name = "OFFICE")
+    private String office;
+    /**
+     * 身份证号码
+     */
+    @Column(name = "IDCAR_NO")
+    private String idcarNo;
+    /**
+     * 创建时间
+     */
+    @Column(name = "CREATE_DATE")
+    private Date createDate;
+    /**
+     * OPEN_ID
+     */
+    @Column(name = "OPEN_ID")
+    private String openId;
+    /**
+     * UNIONID
+     */
+    @Column(name = "UNIONID")
+    private String unionid;
+    /**
+     * 员工类型由各方案定义
+     */
+    @Column(name = "STAFF_TYPE")
+    private String staffType;
+    /**
+     * 员工用户时，管理员标识：0否、1是
+     */
+    @Column(name = "CUST_IS_ADMIN")
+    private String custIsAdmin;
+    /**
+     * 商户方案id
+     */
+    @Column(name = "MCHT_SCHM_ID")
+    private String mchtSchmId;
+    /**
+     * 商户id
+     */
+    @Column(name = "MCHT_ID")
+    private String mchtId;
+    /**
+     * 删除标记
+     */
+    @Column(name = "DEL_FLAG")
+    private String delFlag;
+    /**
+     * 站点id
+     */
+    @Column(name = "SITE_ID")
+    private String siteId;
+
+    public String getCustId() {
+        return custId;
+    }
+
+    public void setCustId(String custId) {
+        this.custId = custId;
+    }
+    public String getCustName() {
+        return custName;
+    }
+
+    public void setCustName(String custName) {
+        this.custName = custName;
+    }
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getCustType() {
+        return custType;
+    }
+
+    public void setCustType(String custType) {
+        this.custType = custType;
+    }
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+    public Date getFreezeDate() {
+        return freezeDate;
+    }
+
+    public void setFreezeDate(Date freezeDate) {
+        this.freezeDate = freezeDate;
+    }
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+    public String getWeixin() {
+        return weixin;
+    }
+
+    public void setWeixin(String weixin) {
+        this.weixin = weixin;
+    }
+    public String getOffice() {
+        return office;
+    }
+
+    public void setOffice(String office) {
+        this.office = office;
+    }
+    public String getIdcarNo() {
+        return idcarNo;
+    }
+
+    public void setIdcarNo(String idcarNo) {
+        this.idcarNo = idcarNo;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public void setUnionid(String unionid) {
+        this.unionid = unionid;
+    }
+    public String getStaffType() {
+        return staffType;
+    }
+
+    public void setStaffType(String staffType) {
+        this.staffType = staffType;
+    }
+    public String getCustIsAdmin() {
+        return custIsAdmin;
+    }
+
+    public void setCustIsAdmin(String custIsAdmin) {
+        this.custIsAdmin = custIsAdmin;
+    }
+    public String getMchtSchmId() {
+        return mchtSchmId;
+    }
+
+    public void setMchtSchmId(String mchtSchmId) {
+        this.mchtSchmId = mchtSchmId;
+    }
+    public String getMchtId() {
+        return mchtId;
+    }
+
+    public void setMchtId(String mchtId) {
+        this.mchtId = mchtId;
+    }
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "CUST_INFO";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("schema.interPlat");   // 库名
+
+        public static String custId = "CUST_ID";  // 用户id
+        public static String custName = "CUST_NAME";  // 姓名
+        public static String shortName = "SHORT_NAME";  // 用户昵称
+        public static String loginName = "LOGIN_NAME";  // 登录名
+        public static String password = "PASSWORD";  // 密码
+        public static String custType = "CUST_TYPE";  // 人员类型 1员工、2用户、3系统人员
+        public static String userStatus = "USER_STATUS";  // N: 正常 D: 普通冻结 C: 注销 E:人工冻结
+        public static String freezeDate = "FREEZE_DATE";  // 冻结时间
+        public static String sex = "SEX";  // 性别
+        public static String birthday = "BIRTHDAY";  // 用户生日
+        public static String photo = "PHOTO";  // 头像
+        public static String sign = "SIGN";  // 个性签名
+        public static String phone = "PHONE";  // 手机号
+        public static String email = "EMAIL";  // 邮箱
+        public static String qq = "QQ";  // qq
+        public static String weixin = "WEIXIN";  // 微信
+        public static String office = "OFFICE";  // 所属单位
+        public static String idcarNo = "IDCAR_NO";  // 身份证号码
+        public static String createDate = "CREATE_DATE";  // 创建时间
+        public static String openId = "OPEN_ID";  // OPEN_ID
+        public static String unionid = "UNIONID";  // UNIONID
+        public static String staffType = "STAFF_TYPE";  // 员工类型由各方案定义
+        public static String custIsAdmin = "CUST_IS_ADMIN";  // 员工用户时，管理员标识：0否、1是
+        public static String mchtSchmId = "MCHT_SCHM_ID";  // 商户方案id
+        public static String mchtId = "MCHT_ID";  // 商户id
+        public static String delFlag = "DEL_FLAG";  // 删除标记
+        public static String siteId = "SITE_ID";  // 站点id
+
+    }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="smsSend" desc="短信发送" sendCode="O75750" backCode="O75751">
+	<snd>
+		<!--过滤响应信息，并对数据字典进行解析 -->
+	    <field name="mobile" required="true" desc="手机号"  />
+	    <field name="msg" required="true" desc="发送内容"/>
+	</snd>
+	<!-- 响应报文，可过滤响应信息，并对数据字典进行解析 -->
+	<rcv>
+		<field name="mobile" desc="手机号" />
+	</rcv>
+</trans>

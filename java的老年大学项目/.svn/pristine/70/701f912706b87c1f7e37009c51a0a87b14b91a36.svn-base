@@ -1,0 +1,110 @@
+package com.learnyeai.resource.service;
+
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.learnyeai.common.support.WeyeBaseService;
+import com.learnyeai.learnai.support.BaseMapper;
+import com.learnyeai.resource.mapper.ResUserResourceMapper;
+import com.learnyeai.resource.model.ResResource;
+import com.learnyeai.resource.model.ResUserResource;
+
+/**
+ *
+ * @author twang
+ */
+@Service
+public class ResUserResourceWyService extends WeyeBaseService<ResUserResource> {
+
+	@Resource
+	private ResUserResourceMapper resUserResourceMapper;
+
+	@Resource
+	private ResUserResourceRecordWyService resUserResourceRecordWyService;
+
+	@Resource
+	private ResResourceWyService resResourceWyService;
+
+	@Override
+	public BaseMapper<ResUserResource> getMapper() {
+		return resUserResourceMapper;
+	}
+
+	@Override
+	protected boolean isLogicDelete() {
+		return false;
+	}
+
+	public Map<String, Object> saveOrUpdate(ResUserResource ur) {
+		Map<String, Object> map = new HashMap();
+		ResUserResource resUserResource = super.queryOne(ur);
+		if (resUserResource == null) {
+			resUserResource = new ResUserResource();
+			resUserResource.setUserId(ur.getUserId());
+			resUserResource.setResId(ur.getResId());
+			resUserResource.setCreateDate(new Date());
+			resUserResource.setStudyNo(0);
+			resUserResource.setAppStudyTime(0);
+			resUserResource.setStudyTime(0);
+			super.save(resUserResource);
+		}
+		map.put("status", 0);
+		map.put("msg", "保存成功!");
+		return map;
+	}
+
+	public ResUserResource detail(ResUserResource ur) {
+		ResUserResource resUserResource = super.queryOne(ur);
+		return resUserResource;
+	}
+
+	public Map<String, Object> learnSave(ResUserResource ur, int sec) {
+		Map<String, Object> map = new HashMap();
+		ResUserResource params = new ResUserResource();
+		params.setUserId(ur.getUserId());
+		params.setResId(ur.getResId());
+		ResUserResource resUserResource = super.queryOne(params);
+		if (resUserResource == null) {
+			map.put("status", 2);
+			map.put("msg", "用户还没有加入资源学习!");
+			return map;
+		}
+		boolean success = resUserResourceRecordWyService.learnSave(resUserResource.getId(), ur.isApp(), sec);
+		if (!success) {
+			map.put("status", 3);
+			map.put("msg", "记录学习明细失败!");
+			return map;
+		}
+		Date nowDate = new Date();
+		if (resUserResource.getStudyTime() == 0) {
+			resUserResource.setStartLearningDate(new Date(nowDate.getTime() - sec*1000));
+		}
+		if (ur.isApp()) {
+			resUserResource.setAppStudyTime(resUserResource.getAppStudyTime() + sec);
+		}
+		resUserResource.setStudyTime(resUserResource.getStudyTime() + sec);
+		resUserResource.setEndLearningDate(nowDate);
+		resUserResource.setLastPage(ur.getLastPage());
+		resUserResource.setProcessPercent(computeProcessPercent(resUserResource));
+		super.save(resUserResource);
+		map.put("status", 0);
+		map.put("msg", "保存成功!");
+		return map;
+	}
+
+	private double computeProcessPercent(ResUserResource resUserResource) {
+		ResResource rr = resResourceWyService.queryById(resUserResource.getResId());
+		long totalTime = rr.getFileTimeLen();
+		if (totalTime == 0)
+			return 0d;
+		DecimalFormat df = new DecimalFormat("#0.00");
+		String percent = df.format((resUserResource.getStudyTime()/ totalTime) * 100d);
+		return Double.valueOf(percent);
+	}
+}

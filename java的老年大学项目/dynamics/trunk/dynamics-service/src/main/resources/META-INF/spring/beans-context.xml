@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       ">
+
+	<!-- 公共检查 -->
+	<bean id="uuidLogin" class="com.learnyeai.common.bean.UUIDLogin">
+	</bean>
+
+	<bean id="responseValParser" class="com.learnyeai.learnai.net.netMsg.filter.ResponseValParser">
+		<constructor-arg index="0">
+			<map>
+			<!--	<entry key="dict">
+					<bean class="com.learnyeai.common..report.ReportItemVal_DictParser"></bean>
+				</entry>
+				<entry key="res">
+					<bean class="com.learnyeai.learnai.net.netMsg.filter.ReportItemVal_ConsParser"></bean>
+				</entry>-->
+
+				<entry key="F">
+					<bean class="com.learnyeai.learnai.net.netMsg.filter.ReportItemVal_DoubleParser">
+						<property name="defDolt" value="1"></property>
+					</bean>
+				</entry>
+				<entry key="D">
+					<bean class="com.learnyeai.learnai.net.netMsg.filter.ReportItemVal_DateParser">
+						<constructor-arg index="0" value="yyyy-MM-dd HH:mm:ss">	</constructor-arg>
+					</bean>
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean name="requestValParser" class="com.learnyeai.learnai.net.netMsg.filter.RequestValParser"></bean>
+
+</beans>

@@ -1,0 +1,183 @@
+package com.learnyeai.resource.model;
+
+import com.learnyeai.learnai.support.BaseEntity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import java.util.Date;
+
+/**
+ * 
+ *
+ * @author twang
+ */
+public class ResUserResource extends BaseEntity {
+
+    /**
+    * id
+    */
+    @Id
+    @Column(name = "ID")
+    private String id;
+
+    /**
+     * 用户id
+     */
+    @Column(name = "USER_ID")
+    private String userId;
+    /**
+     * 资源id
+     */
+    @Column(name = "RES_ID")
+    private String resId;
+    /**
+     * 最后学习时间点，秒
+     */
+    @Column(name = "LAST_PAGE")
+    private String lastPage;
+    /**
+     * 
+     */
+    @Column(name = "STUDY_TIME")
+    private Integer studyTime;
+    /**
+     * 
+     */
+    @Column(name = "APP_STUDY_TIME")
+    private Integer appStudyTime;
+    /**
+     * 进度百分比*100
+     */
+    @Column(name = "PROCESS_PERCENT")
+    private Double processPercent;
+    /**
+     * 
+     */
+    @Column(name = "STUDY_NO")
+    private Integer studyNo;
+    /**
+     * 
+     */
+    @Column(name = "START_LEARNING_DATE")
+    private Date startLearningDate;
+    /**
+     * 
+     */
+    @Column(name = "END_LEARNING_DATE")
+    private Date endLearningDate;
+    /**
+     * 
+     */
+    @Column(name = "CREATE_DATE")
+    private Date createDate;
+    
+    @Transient
+    private boolean app;//是否app学习
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    public String getResId() {
+        return resId;
+    }
+
+    public void setResId(String resId) {
+        this.resId = resId;
+    }
+    public String getLastPage() {
+        return lastPage;
+    }
+
+    public void setLastPage(String lastPage) {
+        this.lastPage = lastPage;
+    }
+    public Integer getStudyTime() {
+        return studyTime;
+    }
+
+    public void setStudyTime(Integer studyTime) {
+        this.studyTime = studyTime;
+    }
+    public Integer getAppStudyTime() {
+        return appStudyTime;
+    }
+
+    public void setAppStudyTime(Integer appStudyTime) {
+        this.appStudyTime = appStudyTime;
+    }
+    public Double getProcessPercent() {
+        return processPercent;
+    }
+
+    public void setProcessPercent(Double processPercent) {
+        this.processPercent = processPercent;
+    }
+    public Integer getStudyNo() {
+        return studyNo;
+    }
+
+    public void setStudyNo(Integer studyNo) {
+        this.studyNo = studyNo;
+    }
+    public Date getStartLearningDate() {
+        return startLearningDate;
+    }
+
+    public void setStartLearningDate(Date startLearningDate) {
+        this.startLearningDate = startLearningDate;
+    }
+    public Date getEndLearningDate() {
+        return endLearningDate;
+    }
+
+    public void setEndLearningDate(Date endLearningDate) {
+        this.endLearningDate = endLearningDate;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public static class TF {
+
+        public static String TABLE_NAME = "RES_USER_RESOURCE";   // 表名
+
+        //public static String TABLE_SCHEMA = ConfigUtils.getValue("");   // 库名
+
+        public static String id = "ID";  // id
+        public static String userId = "USER_ID";  // 用户id
+        public static String resId = "RES_ID";  // 资源id
+        public static String lastPage = "LAST_PAGE";  // 最后学习时间点，秒
+        public static String studyTime = "STUDY_TIME";  // 
+        public static String appStudyTime = "APP_STUDY_TIME";  // 
+        public static String processPercent = "PROCESS_PERCENT";  // 进度百分比*100
+        public static String studyNo = "STUDY_NO";  // 
+        public static String startLearningDate = "START_LEARNING_DATE";  // 
+        public static String endLearningDate = "END_LEARNING_DATE";  // 
+        public static String createDate = "CREATE_DATE";  // 
+
+    }
+
+	public boolean isApp() {
+		return app;
+	}
+
+	public void setApp(boolean app) {
+		this.app = app;
+	}
+}

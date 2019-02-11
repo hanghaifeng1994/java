@@ -1,0 +1,190 @@
+package com.learnyeai.base.api.vo;
+
+import com.learnyeai.core.support.BaseVo;
+
+import java.util.Date;
+
+/**
+ * 模块
+ *
+ * @author zhangpz
+ */
+public class CfgModuleVo extends BaseVo {
+
+    /**
+    * 模块id
+    */
+    private String mdlId;
+
+    /**
+     * 模块编码
+     */
+    private String mdlCode;
+    /**
+     * 模块名称
+     */
+    private String mdlName;
+    /**
+     * 0禁用、1启用
+     */
+    private String mdlStatus;
+    /**
+     * 员工扩展表名
+     */
+    private String mdlStaffTableName;
+    /**
+     * 用户表扩展名
+     */
+    private String mdlUserTableName;
+    /**
+     * 模块上下文
+     */
+    private String mdlServerContext;
+    /**
+     * 版本号
+     */
+    private String mdlVerName;
+    /**
+     * 版本编码
+     */
+    private Long mdlVerCode;
+    /**
+     * 版本id
+     */
+    private String mdlVerId;
+    /**
+     * 创建人
+     */
+    private String createBy;
+    /**
+     * 创建时间
+     */
+    private Date createDate;
+    /**
+     * 更新人
+     */
+    private String updateBy;
+    /**
+     * 更新时间
+     */
+    private Date updateDate;
+
+    public String getMdlId() {
+        return mdlId;
+    }
+
+    public void setMdlId(String mdlId) {
+        this.mdlId = mdlId;
+    }
+    public String getMdlCode() {
+        return mdlCode;
+    }
+
+    public void setMdlCode(String mdlCode) {
+        this.mdlCode = mdlCode;
+    }
+    public String getMdlName() {
+        return mdlName;
+    }
+
+    public void setMdlName(String mdlName) {
+        this.mdlName = mdlName;
+    }
+    public String getMdlStatus() {
+        return mdlStatus;
+    }
+
+    public void setMdlStatus(String mdlStatus) {
+        this.mdlStatus = mdlStatus;
+    }
+    public String getMdlStaffTableName() {
+        return mdlStaffTableName;
+    }
+
+    public void setMdlStaffTableName(String mdlStaffTableName) {
+        this.mdlStaffTableName = mdlStaffTableName;
+    }
+    public String getMdlUserTableName() {
+        return mdlUserTableName;
+    }
+
+    public void setMdlUserTableName(String mdlUserTableName) {
+        this.mdlUserTableName = mdlUserTableName;
+    }
+    public String getMdlServerContext() {
+        return mdlServerContext;
+    }
+
+    public void setMdlServerContext(String mdlServerContext) {
+        this.mdlServerContext = mdlServerContext;
+    }
+    public String getMdlVerName() {
+        return mdlVerName;
+    }
+
+    public void setMdlVerName(String mdlVerName) {
+        this.mdlVerName = mdlVerName;
+    }
+    public Long getMdlVerCode() {
+        return mdlVerCode;
+    }
+
+    public void setMdlVerCode(Long mdlVerCode) {
+        this.mdlVerCode = mdlVerCode;
+    }
+    public String getMdlVerId() {
+        return mdlVerId;
+    }
+
+    public void setMdlVerId(String mdlVerId) {
+        this.mdlVerId = mdlVerId;
+    }
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public static class CF {
+        public static String mdlId = "mdlId";  // 模块id
+        public static String mdlCode = "mdlCode";  // 模块编码
+        public static String mdlName = "mdlName";  // 模块名称
+        public static String mdlStatus = "mdlStatus";  // 0禁用、1启用
+        public static String mdlStaffTableName = "mdlStaffTableName";  // 员工扩展表名
+        public static String mdlUserTableName = "mdlUserTableName";  // 用户表扩展名
+        public static String mdlServerContext = "mdlServerContext";  // 模块上下文
+        public static String mdlVerName = "mdlVerName";  // 版本号
+        public static String mdlVerCode = "mdlVerCode";  // 版本编码
+        public static String mdlVerId = "mdlVerId";  // 版本id
+        public static String createBy = "createBy";  // 创建人
+        public static String createDate = "createDate";  // 创建时间
+        public static String updateBy = "updateBy";  // 更新人
+        public static String updateDate = "updateDate";  // 更新时间
+        public static String delFlag = "delFlag";  // 删除标记
+
+    }
+
+}

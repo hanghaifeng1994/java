@@ -1,0 +1,301 @@
+package com.learnyeai.activity.service;
+
+import com.github.pagehelper.PageHelper;
+import com.learnyeai.activity.mapper.ActCategoryActivityMapper;
+import com.learnyeai.activity.mapper.ActSiteActivityRelMapper;
+import com.learnyeai.activity.model.*;
+import com.learnyeai.activity.mapper.ActActivityMapper;
+import com.learnyeai.activity.util.ActivityUtil;
+import com.learnyeai.core.support.ThreadContext;
+import com.learnyeai.learnai.support.*;
+import com.learnyeai.learnai.support.iml.CurrentUserInfoIml;
+import com.learnyeai.mq.AuditlogMq;
+import com.learnyeai.mq.ParseRabbitMsg;
+import com.learnyeai.rabbitmq.bean.RabbitMetaMessage;
+import com.learnyeai.rabbitmq.sender.RabbitSender;
+import com.learnyeai.rabbitmq.util.WeyeRabbitException;
+import com.learnyeai.tools.common.BeanMapUtils;
+import com.learnyeai.tools.common.JsonUtils;
+import com.learnyeai.tools.common.MapUtil;
+import com.learnyeai.tools.common.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
+
+import javax.annotation.Resource;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author yl
+ */
+@Service
+public class ActActivityWyService extends BaseService<ActActivity> {
+
+    @Resource
+    private ActActivityMapper actActivityMapper;
+    @Resource
+    private ActActivityWorksWyService actActivityWorksWyService;
+    @Resource
+    private ActCategoryActivityWyService actCategoryActivityWyService;
+    @Resource
+    private ActResultsWyService actResultsWyService;
+    @Resource
+    private  ActActivityMemerWyService actActivityMemerWyService;
+    @Resource
+    private ActCategoryActivityMapper actCategoryActivityMapper;
+    @Resource
+    private ActSiteActivityRelMapper actSiteActivityRelMapper;
+    @Autowired
+    private RabbitSender rabbitSender;
+    @Resource
+    private ActSiteActivityRelWyService actSiteActivityRelWyService;
+    @Resource
+    private CurrentUserInfoIml currentUserInfoIml;
+
+    @Override
+    public BaseMapper<ActActivity> getMapper() {
+        return actActivityMapper;
+    }
+    @Override
+    protected boolean isLogicDelete(){
+        return true;
+    }
+    @Override
+    protected Weekend genSqlExample(ActActivity t, Map params) {
+        Weekend w=super.genSqlExample(t,params);
+        WeekendCriteria<ActActivity,Object> c=w.weekendCriteria();
+        w.and(c);
+        return w;
+    }
+
+    /**
+     * 0表示删除成功 1表示存在活动作品不能删除 2存在活动分类3存在活动成员 4存在活动成果
+     * @param ac
+     * @return
+     */
+    public Map<String,Object> saveData(ActActivity ac){
+        Map<String,Object> map=new HashMap<>();
+        boolean flag=false;
+        //有id为修改，没有id 为新增
+        if(StringUtils.isNotBlank(ac.getActId())){
+          map=operate(map,ac.getActId());
+           if(map.containsKey("status")){
+               return map;
+           }
+           flag=true;
+        }
+        super.save(ac);
+        ActCategoryActivity aca=new ActCategoryActivity();
+        aca.setActId(ac.getActId());
+        aca.setCatId(ac.getCatId());
+        if(flag){
+            actCategoryActivityMapper.insert(aca);
+        }
+        return map;
+    }
+
+    /**
+     * 批量删除
+     * @param ac
+     * @return
+     */
+    @Transactional
+    public Map<String,Object> deleteData(ActActivity ac){
+        String[] arr=(ac.getActId()).split(",");
+        Map<String,Object> result=new HashMap<>();
+        int count= 0;
+        for (String id:arr){
+            Map<String,Object> map=new HashMap<>();
+            map=  operate(map,id);
+            //活动不关联其他数据可以删除
+            if(!(map.containsKey("status"))){
+                ActActivity actActivity=super.queryById(id) ;
+                //删除活动
+                count+= super.deleteById(id);
+                //删除活动站点关联表
+                actSiteActivityRelMapper.deleteBySiteIdAndActId(actActivity);
+            }
+
+        }
+        result.put("num",count);
+        return  result;
+    }
+
+    /**
+     * 如果存在关联数据返回状态
+     * @param map
+     * @param actId
+     * @return
+     */
+    public Map<String,Object>  operate(Map<String,Object> map,String actId){
+        //修改时判断该活动下有没有活动作品有活动作品不给出
+        ActActivityWorks aw=new ActActivityWorks();
+        aw.setActId(actId);
+        //存在活动作品不给删除
+        List<ActActivityWorks> list=  actActivityWorksWyService.queryList(aw,new HashMap());
+        if(list.size()>0){
+            map.put("status","1");
+            return map;
+        }
+        //存在活动分类关联数据
+        ActCategoryActivity aca=new ActCategoryActivity();
+        aca.setActId(actId);
+        List<ActCategoryActivity> acalist=  actCategoryActivityWyService.queryList(aca,new HashMap());
+        if(list.size()>0){
+            map.put("status","2");
+            return map;
+        }
+        //存在活动成员
+        ActActivityMemer aam=new ActActivityMemer();
+        aam.setActId(actId);
+        List<ActActivityMemer> aamlist=  actActivityMemerWyService.queryList(aam,new HashMap());
+        if(aamlist.size()>0){
+            map.put("status","3");
+            return map;
+        }
+        //存在活动成果
+        ActResults ar=new ActResults();
+        ar.setActId(actId);
+        List<ActResults> arlist=  actResultsWyService.queryList(ar,new HashMap());
+        if(arlist.size()>0){
+            map.put("status","4");
+            return map;
+        }
+        return map;
+    }
+
+    public  List<ActActivity>  queryPageByCriteria(ActActivity t){
+        if (t != null) {
+            t.initPage();
+            PageHelper.startPage(t.getPage(), t.getRows());
+        }
+        //存放商户id以及商户方案id
+//        t.setMchtId(currentUserInfoIml.get);
+        List<ActActivity> list=   actActivityMapper.queryPageByCriteria(t);
+        MyPage<ActActivity> page=new MyPage(list);
+        return  rtnPageList4Report(page);
+    }
+
+    /**
+     * 批量提交
+     * @param t
+     * @return
+     */
+    public Map<String,Object> sumbitAudit(ActActivity t){
+        String[] actIds=(t.getActId()).split(",");
+        ActActivity actActivity=new ActActivity();
+        int num =0;
+        for (String actId:actIds){
+            actActivity.setActId(actId);
+            actActivity.setActStatus(t.getActStatus());
+           num = super.save(actActivity);
+        }
+        return MapUtil.newMap("num",num);
+    }
+
+    /**
+     *  审核 /批量审核
+     * @param ctx
+     * @return
+     */
+    public Map<String,Object> audit(IBusinessContext ctx) throws WeyeRabbitException {
+        ActActivity act=new ActActivity();
+        //新建实体对象
+        AuditlogMq auditlogMq= toParseAuditLog(ctx);
+        String[] actIds=(auditlogMq.getObjId()).split(",");
+        int num =0;
+        act.setActStatus(auditlogMq.getStatus());
+        for(String actId:actIds){
+            act.setActId(actId);
+            //活动表中保存
+            num+=  super.save(act);
+            auditlogMq.setObjId(actId);
+            RabbitMetaMessage msg=ParseRabbitMsg.toParseRabbitMetaMessage(auditlogMq);
+            rabbitSender.send(msg);
+        }
+        return MapUtil.newMap("num",num);
+    }
+
+    /**
+     * 发布/取消发布
+     * status 0 取消发布1 发布
+     * @param ac
+     * @return
+     */
+    @Transactional
+    public  int publish(ActActivity ac){
+        String[] actIds=(ac.getActId()).split(",");
+        int count=0;
+        for (String actId:actIds){
+            String status =ac.getActPubStatus();
+            ac.setActId(actId);
+            //修改活动发布状态
+            count+=super.save(ac);
+            if("0".equals(status)){
+                ActSiteActivityRel asar =new ActSiteActivityRel();
+                asar.setActPubStatus(status);
+                //根据活动id 查询出关联表中所有数据
+                List<ActSiteActivityRel> list= actSiteActivityRelWyService.queryList(asar,new HashMap());
+                for (ActSiteActivityRel as:list){
+                    as.setActPubStatus(status);
+                    actSiteActivityRelWyService.updateBySelective(as);
+                }
+            }else if("1".equals(status)){
+                //发布时先查询该站点是不是主站点，是主站点关联表中加上他所有子站点数据
+                List<String> sitelist= ActivityUtil.GetPriSite(ac.getSiteId());
+                ActSiteActivityRel rel =new ActSiteActivityRel();
+                rel.setActId(ac.getActId());
+                rel.setActPubStatus(ac.getActPubStatus());
+                rel.setActPubDate(new Date());
+                rel.setActManageStatus("0");
+                //先将所有的状态都为0
+                rel.setActPubStatus(status);
+                for (String siteId:sitelist){
+                    rel.setSiteId(siteId);
+                    rel.setActCrtSiteId(ac.getSiteId());
+                    actSiteActivityRelMapper.insertSelective(rel);
+                }
+                //不管这个站点是不是主站点他的管理状态都是1
+                rel.setSiteId(ac.getSiteId());
+                rel.setActCrtSiteId(ac.getSiteId());
+                rel.setActManageStatus("1");
+                actSiteActivityRelMapper.updateBySelective(rel);
+            }
+        }
+        return  count;
+    }
+
+    public static List rtnPageList4Report(MyPage page) {
+        if (page.getTotal() > -1L) {
+            ThreadContext.put("totalCount", page.getTotal());
+        }
+
+        return page.getList();
+    }
+    /**
+     * 将入参转为审核日志对象
+     */
+    public AuditlogMq toParseAuditLog(IBusinessContext ctx){
+        try {
+            AuditlogMq a= (AuditlogMq)BeanMapUtils.convertMap(AuditlogMq.class, ctx.getParamMap());
+            return a;
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
+}

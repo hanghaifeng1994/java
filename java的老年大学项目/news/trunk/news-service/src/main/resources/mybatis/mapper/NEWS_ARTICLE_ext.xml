@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.learnyeai.news.mapper.NewsArticleMapper">
+    <resultMap id="BaseResultMapExt" type="NewsArticle">
+        <id property="articleId" column="ARTICLE_ID" jdbcType="VARCHAR" />
+
+        <result property="title" column="TITLE" jdbcType="VARCHAR" />
+        <result property="link" column="LINK" jdbcType="VARCHAR" />
+        <result property="color" column="COLOR" jdbcType="VARCHAR" />
+        <result property="photo" column="PHOTO" jdbcType="VARCHAR" />
+        <result property="keywords" column="KEYWORDS" jdbcType="VARCHAR" />
+        <result property="description" column="DESCRIPTION" jdbcType="VARCHAR" />
+        <result property="weight" column="WEIGHT" jdbcType="INTEGER" />
+        <result property="weightDate" column="WEIGHT_DATE" jdbcType="TIMESTAMP" />
+        <result property="posid" column="POSID" jdbcType="VARCHAR" />
+        <result property="copyfrom" column="COPYFROM" jdbcType="VARCHAR" />
+        <result property="author" column="AUTHOR" jdbcType="VARCHAR" />
+        <result property="allowComment" column="ALLOW_COMMENT" jdbcType="CHAR" />
+        <result property="content" column="CONTENT" jdbcType="VARCHAR" />
+        <result property="relation" column="RELATION" jdbcType="VARCHAR" />
+        <result property="fileIds" column="FILE_IDS" jdbcType="VARCHAR" />
+        <result property="fileIdNames" column="FILE_ID_NAMES" jdbcType="VARCHAR" />
+        <result property="status" column="STATUS" jdbcType="CHAR" />
+        <result property="pubStatus" column="PUB_STATUS" jdbcType="CHAR" />
+        <result property="auditId" column="AUDIT_ID" jdbcType="VARCHAR" />
+        <result property="articleBit" column="ARTICLE_BIT" jdbcType="CHAR" />
+        <result property="createBy" column="CREATE_BY" jdbcType="VARCHAR" />
+        <result property="createDate" column="CREATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="updateBy" column="UPDATE_BY" jdbcType="VARCHAR" />
+        <result property="updateDate" column="UPDATE_DATE" jdbcType="TIMESTAMP" />
+        <result property="delFlag" column="DEL_FLAG" jdbcType="CHAR" />
+        <result property="siteId" column="SITE_ID" jdbcType="VARCHAR" />
+        <result property="mchtId" column="MCHT_ID" jdbcType="VARCHAR" />
+        <result property="mchtSchmId" column="MCHT_SCHM_ID" jdbcType="VARCHAR" />
+        <result property="newsManageStatus" column="NEWS_MANAGE_STATUS" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="queryPageByCriteria" parameterType="NewsArticle" resultMap="BaseResultMapExt">
+        SELECT
+        t.*
+        FROM
+        (SELECT
+        a.*,s.`NEWS_MANAGE_STATUS` as NEWS_MANAGE_STATUS
+        FROM
+        news_article a
+        LEFT JOIN news_news_site_rel s
+        ON a.`SITE_ID` =s.`SITE_ID`
+        WHERE 1=1
+        <if test="title !=null and title!=''">
+            and   a.title=#{title,jdbcType=VARCHAR}
+        </if>
+        <if test="status !=null and status!=''">
+            and   a.status=#{status,jdbcType=VARCHAR}
+        </if>
+        <if test="pubStatus !=null and pubStatus!=''">
+            and   a.PUB_STATUS=#{pubStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="weight !=null and weight!=''">
+            and   a.weight=#{weight,jdbcType=VARCHAR}
+        </if>
+        <if test="posid !=null and posid!=''">
+            and   a.posid=#{posid,jdbcType=VARCHAR}
+        </if>
+        <if test="siteId !=null and siteId!=''">
+            and   a.SITE_ID=#{siteId,jdbcType=VARCHAR}
+        </if>
+        ) t
+        LEFT JOIN news_category_article_rel r
+        ON t.`ARTICLE_ID` = r.`ARTICLE_ID`
+        WHERE 1=1
+        <if test="catId !=null and catId!=''">
+            <foreach collection="catIds" item="item" open="and r.CAT_ID in(" separator="," close=")">
+                '${item}'
+            </foreach>
+        </if>
+        ORDER  BY  t.weight ASC
+    </select>
+
+    <select id="lowerSendList" parameterType="NewsArticle" resultMap="BaseResultMap" >
+        select
+          *
+        from
+          news_article a
+        where ARTICLE_Id in
+          (select
+            ART_ID
+          from
+            news_news_site_rel
+          where site_id != NEWS_CRT_SITE_ID
+            and NEWS_CRT_SITE_ID = #{siteId,jdbcType=VARCHAR}
+          )
+
+          order by WEIGHT asc
+    </select>
+
+</mapper>

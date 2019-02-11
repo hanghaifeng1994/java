@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trans name="attendClass" desc="班级日程-老师上课/下课">
+    <snd>
+        <field name="czScId" desc="id" required="true"/>
+        <field name="scStatus" desc="状态0未开始上课1进行中2已结束" required="true"/>
+    </snd>
+    <rcv>
+
+    </rcv>
+</trans>
